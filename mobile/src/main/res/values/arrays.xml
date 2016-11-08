@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="tabs">
+    <item>@string/tab_Genres</item>
+    <item>@string/tab_Playlists</item>
+    <item>@string/tab_Songs</item>
+    <item>@string/tab_Artists</item>
+    <item>@string/tab_Albums</item>
+    <item>@string/tab_My_Files</item>
+  </string-array>
+</resources>
