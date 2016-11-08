@@ -5,20 +5,21 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import com.kingbull.musicplayer.ui.main.songgroup.genres.GenresFragment;
 
-class CustomPagerAdapter extends FragmentPagerAdapter {
+class PagerAdapter extends FragmentPagerAdapter {
 
   Context mContext;
   private String[] tabs;
 
-  public CustomPagerAdapter(FragmentManager fm, Context context, String[] tabs) {
+  public PagerAdapter(FragmentManager fm, Context context, String[] tabs) {
     super(fm);
     mContext = context;
     this.tabs = tabs;
   }
 
   @Override public Fragment getItem(int position) {
-    Fragment fragment = new MainActivity.DemoFragment();
+    Fragment fragment =new GenresFragment();
     Bundle args = new Bundle();
     args.putInt("page_position", position + 1);
     fragment.setArguments(args);

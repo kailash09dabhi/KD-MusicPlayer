@@ -2,29 +2,43 @@ package com.kingbull.musicplayer.ui.main;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerTitleStrip;
-import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
+import butterknife.BindArray;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
+import java.util.Random;
 
-public class MainActivity extends FragmentActivity {
+public final class MainActivity extends FragmentActivity {
 
-  CustomPagerAdapter mCustomPagerAdapter;
-  ViewPager mViewPager;
+  PagerAdapter pagerAdapter;
+  @BindView(R.id.pager) com.kingbull.musicplayer.ui.main.ViewPagerParallax viewPager;
+  @BindView(R.id.tabTitleStrip) PagerTitleStrip pagerTitleStrip;
+  @BindArray(R.array.tabs) String[] tabs;
+  int arrayBg[] = {
+      R.drawable.a1, R.drawable.a2, R.drawable.a3, R.drawable.a4, R.drawable.a5, R.drawable.a6,
+      R.drawable.a7, R.drawable.a8, R.drawable.a9, R.drawable.a10, R.drawable.a11, R.drawable.a12,
+      R.drawable.a13, R.drawable.a14, R.drawable.a15, R.drawable.a16, R.drawable.a17,
+      R.drawable.a18,
+  };
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    String[] tabs = getResources().getStringArray(R.array.tabs);
-    mCustomPagerAdapter = new CustomPagerAdapter(getSupportFragmentManager(), this, tabs);
-    mViewPager = (ViewPager) findViewById(R.id.pager);
-    mViewPager.setAdapter(mCustomPagerAdapter);
-    PagerTitleStrip pagerTitleStrip = (PagerTitleStrip) findViewById(R.id.tabTitleStrip);
+    ButterKnife.bind(this);
+    pagerAdapter = new PagerAdapter(getSupportFragmentManager(), this, tabs);
+    viewPager.setAdapter(pagerAdapter);
+    setupPagerTitleStrip();
+    int i2 = new Random().nextInt(18);
+    viewPager.setBackgroundAsset(arrayBg[i2]);
+    viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+    viewPager.setOffscreenPageLimit(3);
+    viewPager.setCurrentItem(2);
+  }
+
+  private void setupPagerTitleStrip() {
     Typeface localTypeface = Typeface.createFromAsset(getAssets(), "fonts/julius-sans-one.ttf");
     for (int i1 = 0; i1 < pagerTitleStrip.getChildCount(); i1++) {
       if ((pagerTitleStrip.getChildAt(i1) instanceof TextView)) {
@@ -32,16 +46,4 @@ public class MainActivity extends FragmentActivity {
       }
     }
   }
-
-  public static class DemoFragment extends Fragment {
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-        Bundle savedInstanceState) {
-      View rootView = inflater.inflate(R.layout.item_song_type, container, false);
-      Bundle args = getArguments();
-      ((TextView) rootView.findViewById(R.id.text_view1)).setText(
-          "Page " + args.getInt("page_position"));
-      return rootView;
-    }
-  }
-
 }
