@@ -4,16 +4,16 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.PagerTitleStrip;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.ui.base.BaseActivity;
 import java.util.Random;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public final class MainActivity extends AppCompatActivity {
+public final class MainActivity extends BaseActivity {
 
   PagerAdapter pagerAdapter;
   @BindView(R.id.pager) com.kingbull.musicplayer.ui.main.ViewPagerParallax viewPager;
@@ -38,7 +38,7 @@ public final class MainActivity extends AppCompatActivity {
     viewPager.setAdapter(pagerAdapter);
     setupPagerTitleStrip();
     int i2 = new Random().nextInt(18);
-    viewPager.setBackgroundAsset(arrayBg[i2]);
+    viewPager.setBackgroundAsset(arrayBg[i2],getWindow());
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.setOffscreenPageLimit(3);
     viewPager.setCurrentItem(2);

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
     android:background="@drawable/artistbg"
     android:orientation="vertical">
   <TextView
-      android:id="@+id/shimmer_tv"
+      android:id="@+id/titleView"
       android:background="@color/transparent_black"
       android:ellipsize="marquee"
       android:fadingEdge="none"

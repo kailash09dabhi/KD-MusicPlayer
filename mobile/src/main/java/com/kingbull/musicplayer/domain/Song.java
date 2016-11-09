@@ -1,7 +1,9 @@
 package com.kingbull.musicplayer.domain;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 
 /**
  * Created with Android Studio.
@@ -13,145 +15,147 @@ import android.os.Parcelable;
 //@Table("song")
 public class Song implements Parcelable {
 
-    //@PrimaryKey(AssignType.AUTO_INCREMENT)
-    private int id;
-
-    private String title;
-
-    private String displayName;
-
-    private String artist;
-
-    private String album;
-
-    //@Unique
-    private String path;
-
-    private int duration;
-
-    private int size;
-
-    private boolean favorite;
-
-    public Song() {
-        // Empty
+  public static final Parcelable.Creator<Song> CREATOR = new Parcelable.Creator<Song>() {
+    @Override public Song createFromParcel(Parcel source) {
+      return new Song(source);
     }
 
-    public Song(Parcel in) {
-        readFromParcel(in);
+    @Override public Song[] newArray(int size) {
+      return new Song[size];
     }
+  };
+  //@PrimaryKey(AssignType.AUTO_INCREMENT)
+  private int id;
+  private String title;
+  private String displayName;
+  private String artist;
+  private String album;
+  //@Unique
+  private String path;
+  private int duration;
+  private int size;
+  private boolean favorite;
 
-    public int getId() {
-        return id;
+  public Song() {
+    // Empty
+  }
+
+  public Song(Parcel in) {
+    readFromParcel(in);
+  }
+
+  public Song(Cursor cursor) {
+    title = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
+    String displayName =
+        cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME));
+    if (displayName.endsWith(".mp3")) {
+      displayName = displayName.substring(0, displayName.length() - 4);
     }
+    this.displayName = displayName;
+    artist = (cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)));
+    album = (cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)));
+    path = (cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
+    duration = (cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
+    size = (cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)));
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  public String getTitle() {
+    return title;
+  }
 
-    public String getDisplayName() {
-        return displayName;
-    }
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
+  public String getDisplayName() {
+    return displayName;
+  }
 
-    public String getArtist() {
-        return artist;
-    }
+  public void setDisplayName(String displayName) {
+    this.displayName = displayName;
+  }
 
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
+  public String getArtist() {
+    return artist;
+  }
 
-    public String getAlbum() {
-        return album;
-    }
+  public void setArtist(String artist) {
+    this.artist = artist;
+  }
 
-    public void setAlbum(String album) {
-        this.album = album;
-    }
+  public String getAlbum() {
+    return album;
+  }
 
-    public String getPath() {
-        return path;
-    }
+  public void setAlbum(String album) {
+    this.album = album;
+  }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
+  public String getPath() {
+    return path;
+  }
 
-    public int getDuration() {
-        return duration;
-    }
+  public void setPath(String path) {
+    this.path = path;
+  }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
+  public int getDuration() {
+    return duration;
+  }
 
-    public int getSize() {
-        return size;
-    }
+  public void setDuration(int duration) {
+    this.duration = duration;
+  }
 
-    public void setSize(int size) {
-        this.size = size;
-    }
+  public int getSize() {
+    return size;
+  }
 
-    public boolean isFavorite() {
-        return favorite;
-    }
+  public void setSize(int size) {
+    this.size = size;
+  }
 
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
-    }
+  public boolean isFavorite() {
+    return favorite;
+  }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
+  public void setFavorite(boolean favorite) {
+    this.favorite = favorite;
+  }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id);
-        dest.writeString(this.title);
-        dest.writeString(this.displayName);
-        dest.writeString(this.artist);
-        dest.writeString(this.album);
-        dest.writeString(this.path);
-        dest.writeInt(this.duration);
-        dest.writeInt(this.size);
-        dest.writeInt(this.favorite ? 1 : 0);
-    }
+  @Override public int describeContents() {
+    return 0;
+  }
 
-    public void readFromParcel(Parcel in) {
-        this.id = in.readInt();
-        this.title = in.readString();
-        this.displayName = in.readString();
-        this.artist = in.readString();
-        this.album = in.readString();
-        this.path = in.readString();
-        this.duration = in.readInt();
-        this.size = in.readInt();
-        this.favorite = in.readInt() == 1;
-    }
+  @Override public void writeToParcel(Parcel dest, int flags) {
+    dest.writeInt(this.id);
+    dest.writeString(this.title);
+    dest.writeString(this.displayName);
+    dest.writeString(this.artist);
+    dest.writeString(this.album);
+    dest.writeString(this.path);
+    dest.writeInt(this.duration);
+    dest.writeInt(this.size);
+    dest.writeInt(this.favorite ? 1 : 0);
+  }
 
-    public static final Parcelable.Creator<Song> CREATOR = new Parcelable.Creator<Song>() {
-        @Override
-        public Song createFromParcel(Parcel source) {
-            return new Song(source);
-        }
-
-        @Override
-        public Song[] newArray(int size) {
-            return new Song[size];
-        }
-    };
+  public void readFromParcel(Parcel in) {
+    this.id = in.readInt();
+    this.title = in.readString();
+    this.displayName = in.readString();
+    this.artist = in.readString();
+    this.album = in.readString();
+    this.path = in.readString();
+    this.duration = in.readInt();
+    this.size = in.readInt();
+    this.favorite = in.readInt() == 1;
+  }
 }

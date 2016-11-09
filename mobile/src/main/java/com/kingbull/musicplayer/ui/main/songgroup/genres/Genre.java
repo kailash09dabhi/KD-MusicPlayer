@@ -1,20 +1,20 @@
 package com.kingbull.musicplayer.ui.main.songgroup.genres;
 
+import android.database.Cursor;
+import android.provider.MediaStore;
+
 /**
  * @author Kailash Dabhi
  * @date 11/8/2016.
  */
 
 public final class Genre {
-  private int  _id;
+  private int _id;
   private String name;
 
-  public void setId(int _id) {
-    this._id = _id;
-  }
-
-  public void setName(String name) {
-    this.name = name;
+  Genre(Cursor cursor) {
+    this._id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Genres._ID));
+    this.name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Genres.NAME));
   }
 
   public int id() {

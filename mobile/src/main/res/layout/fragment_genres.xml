@@ -11,7 +11,7 @@
       android:layout_marginTop="1px"
       android:background="@color/transparent_black"
       android:clipToPadding="false"
-      android:fadingEdge="none"
+      android:overScrollMode="never"
       android:paddingLeft="10dp"
       android:paddingRight="10dp"/>
 

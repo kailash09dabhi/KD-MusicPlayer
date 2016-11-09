@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorPrimary">#3F51B5</color>
-  <color name="colorPrimaryDark">#303F9F</color>
-  <color name="colorAccent">#FF4081</color>
+  <color name="colorPrimary">#3C5F78</color>
+  <color name="colorPrimaryDark">#3C5F78</color>
+  <color name="colorAccent">#DDF9FF</color>
   <color name="transparent_black">#33000000</color>
+
+  <color name="mp.theme.dark_blue.background">#3C5F78</color>
+
+  <color name="mp.theme.dark_blue.gradientColor">#507E9F</color>
+
+  <color name="transparent">#00000000</color>
 </resources>

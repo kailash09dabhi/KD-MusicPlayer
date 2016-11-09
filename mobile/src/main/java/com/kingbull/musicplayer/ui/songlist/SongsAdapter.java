@@ -17,7 +17,7 @@ import java.util.List;
  * @date 11/8/2016.
  */
 
-public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> {
+public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> {
 
   List<Song> songs;
   Typeface localTypeface;
