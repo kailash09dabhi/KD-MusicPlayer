@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="font.julius.sans.one">fonts/julius-sans-one.ttf</string>
+  <string name="font.roboto.medium">fonts/julius-sans-one.ttf</string>
+  <string name="font.roboto.thin">fonts/julius-sans-one.ttf</string>
+  <string name="font.roboto.monospace.regular">fonts/julius-sans-one.ttf</string>
+</resources>

@@ -1,6 +1,6 @@
-package com.kingbull.musicplayer.ui.main.songgroup.genres;
+package com.kingbull.musicplayer.ui.songlist;
 
-import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.ui.songlist.SongListActivity;
+import com.kingbull.musicplayer.domain.Song;
 import java.util.List;
 
 /**
@@ -17,25 +17,28 @@ import java.util.List;
  * @date 11/8/2016.
  */
 
-public final class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.ViewHolder> {
+public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> {
 
-  List<Genre> genres;
+  List<Song> songs;
+  Typeface localTypeface;
 
-  public GenresAdapter(List<Genre> genres) {
-    this.genres = genres;
+  public SongsAdapter(List<Song> songs) {
+    this.songs = songs;
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    localTypeface =
+        Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/julius-sans-one.ttf");
     return new ViewHolder(
         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genres, null));
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    holder.textView.setText(genres.get(position).name());
+    holder.textView.setText(songs.get(position).getDisplayName());
   }
 
   @Override public int getItemCount() {
-    return genres.size();
+    return songs.size();
   }
 
   class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -44,13 +47,12 @@ public final class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.View
     public ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
+      textView.setTypeface(localTypeface);
       itemView.setOnClickListener(this);
     }
 
     @Override public void onClick(View view) {
-      Intent intent = new Intent(view.getContext(), SongListActivity.class);
-      intent.putExtra("genre_id", genres.get(getAdapterPosition()).id());
-      view.getContext().startActivity(intent);
+
     }
   }
 }

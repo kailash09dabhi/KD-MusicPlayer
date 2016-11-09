@@ -8,7 +8,7 @@ import android.os.Parcelable;
  * User: ryan.hoo.j@gmail.com
  * Date: 9/2/16
  * Time: 4:01 PM
- * Desc: Song
+ * Desc: Genre
  */
 //@Table("song")
 public class Song implements Parcelable {

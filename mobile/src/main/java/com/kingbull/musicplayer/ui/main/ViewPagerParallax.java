@@ -16,7 +16,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
-public class ViewPagerParallax extends ViewPager {
+public final class ViewPagerParallax extends ViewPager {
     private int background_id = -1;
     private int background_saved_id = -1;
     private int saved_width = -1;

@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import com.kingbull.musicplayer.ui.main.songgroup.genres.GenresFragment;
 
-class PagerAdapter extends FragmentPagerAdapter {
+final class PagerAdapter extends FragmentPagerAdapter {
 
   Context mContext;
   private String[] tabs;

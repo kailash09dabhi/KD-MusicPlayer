@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/artistbg"
+    android:orientation="vertical">
+  <TextView
+      android:id="@+id/shimmer_tv"
+      android:background="@color/transparent_black"
+      android:ellipsize="marquee"
+      android:fadingEdge="none"
+      android:fadingEdgeLength="0dp"
+      android:focusable="false"
+      android:focusableInTouchMode="false"
+      android:lines="1"
+      android:marqueeRepeatLimit="marquee_forever"
+      android:paddingBottom="4dp"
+      android:paddingLeft="30dp"
+      android:paddingRight="30dp"
+      android:paddingTop="16dp"
+      android:scrollHorizontally="true"
+      android:text="shimmer adfsfdasdadf skkkk"
+      style="@style/AppTheme.TextAppearance.Title"
+      />
+
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/recyclerview_grid"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="1px"
+      android:background="@color/transparent_black"
+      android:clipToPadding="false"
+      android:fadingEdge="none"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"/>
+
+</LinearLayout>

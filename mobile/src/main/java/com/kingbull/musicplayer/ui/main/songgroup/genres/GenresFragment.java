@@ -6,12 +6,10 @@
 package com.kingbull.musicplayer.ui.main.songgroup.genres;
 
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,15 +32,7 @@ import rx.subscriptions.CompositeSubscription;
 
 import static android.content.ContentValues.TAG;
 
-public class GenresFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-
-  private static final int URL_LOAD_LOCAL_MUSIC = 0;
-  private static final Uri MEDIA_URI = MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI;
-  private static final String ORDER_BY = MediaStore.Audio.Genres.NAME + " ASC";
-  private static String[] PROJECTIONS = {
-      MediaStore.Audio.Genres._ID, // the real path
-      MediaStore.Audio.Genres.NAME,
-  };
+public final class GenresFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
   private RecyclerView recyclerView;
 
   private CompositeSubscription mSubscriptions;
@@ -61,12 +51,11 @@ public class GenresFragment extends Fragment implements LoaderManager.LoaderCall
   private void setupView(View v) {
     recyclerView = (RecyclerView) v.findViewById(R.id.recyclerview_grid);
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    getLoaderManager().initLoader(URL_LOAD_LOCAL_MUSIC, null, this);
+    getLoaderManager().initLoader(0, null, this);
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    if (id != URL_LOAD_LOCAL_MUSIC) return null;
-    return new CursorLoader(getContext(), MEDIA_URI, PROJECTIONS, null, null, ORDER_BY);
+    return new GenresCursorLoader(getContext());
   }
 
   @Override public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
@@ -74,15 +63,15 @@ public class GenresFragment extends Fragment implements LoaderManager.LoaderCall
         rx.Observable.just(cursor)
             .flatMap(new Func1<Cursor, rx.Observable<List<Genre>>>() {
               @Override public rx.Observable<List<Genre>> call(Cursor cursor) {
-                List<Genre> songs = new ArrayList<>();
+                List<Genre> genres = new ArrayList<>();
                 if (cursor != null && cursor.getCount() > 0) {
                   cursor.moveToFirst();
                   do {
-                    Genre song = cursorToMusic(cursor);
-                    songs.add(song);
+                    Genre genre = cursorToMusic(cursor);
+                    genres.add(genre);
                   } while (cursor.moveToNext());
                 }
-                return rx.Observable.just(songs);
+                return rx.Observable.just(genres);
               }
             })
             .doOnNext(new Action1<List<Genre>>() {
@@ -112,8 +101,8 @@ public class GenresFragment extends Fragment implements LoaderManager.LoaderCall
               }
 
               @Override public void onNext(List<Genre> songs) {
-                //mView.onLocalMusicLoaded(songs);
-                //mView.emptyView(songs.isEmpty());
+                //mView.onLocalMusicLoaded(genres);
+                //mView.emptyView(genres.isEmpty());
                 recyclerView.setAdapter(new GenresAdapter(songs));
               }
             });
@@ -125,9 +114,9 @@ public class GenresFragment extends Fragment implements LoaderManager.LoaderCall
   }
 
   private Genre cursorToMusic(Cursor cursor) {
-    Genre song = new Genre();
-    song.setId(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Genres._ID)));
-    song.setName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Genres.NAME)));
-    return song;
+    Genre genre = new Genre();
+    genre.setId(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Genres._ID)));
+    genre.setName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Genres.NAME)));
+    return genre;
   }
 }

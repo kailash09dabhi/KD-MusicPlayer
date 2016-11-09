@@ -6,10 +6,10 @@ package com.kingbull.musicplayer.ui.main.songgroup.genres;
  */
 
 public final class Genre {
-  private String _id;
+  private int  _id;
   private String name;
 
-  public void setId(String _id) {
+  public void setId(int _id) {
     this._id = _id;
   }
 
@@ -17,7 +17,7 @@ public final class Genre {
     this.name = name;
   }
 
-  public String id() {
+  public int id() {
     return _id;
   }
 
