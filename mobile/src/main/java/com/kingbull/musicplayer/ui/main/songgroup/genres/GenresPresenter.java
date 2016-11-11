@@ -24,7 +24,7 @@ import static android.content.ContentValues.TAG;
  * @date 11/10/2016.
  */
 
-public class GenresPresenter extends Presenter<Genres.View> implements Genres.Presenter{
+public final class GenresPresenter extends Presenter<Genres.View> implements Genres.Presenter {
 
   private CompositeSubscription compositeSubscription;
 
@@ -79,7 +79,7 @@ public class GenresPresenter extends Presenter<Genres.View> implements Genres.Pr
                 //mView.onLocalMusicLoaded(genres);
                 //mView.emptyView(genres.isEmpty());
                 view().showGenres(songs);
-               }
+              }
             });
     compositeSubscription.add(subscription);
   }

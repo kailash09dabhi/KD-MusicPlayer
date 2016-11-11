@@ -36,5 +36,8 @@
 
   <!-- The fast scroll thumb will show one character from this string depending on the position in the list -->
   <string name="fast_scroll_alphabet">\u0020ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+  <!-- Music -->
+
+  <string name="mp.music.default_duration">00:00</string>
 
 </resources>

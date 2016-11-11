@@ -19,5 +19,7 @@ public interface Mvp {
     boolean hasView();
 
     V view();
+
+
   }
 }

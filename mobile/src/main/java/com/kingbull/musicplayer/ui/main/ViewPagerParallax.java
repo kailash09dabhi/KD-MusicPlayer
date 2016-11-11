@@ -16,6 +16,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Window;
+import com.commit451.nativestackblur.NativeStackBlur;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -102,6 +103,7 @@ public final class ViewPagerParallax extends ViewPager {
           getWidth() / 2); // how many pixels to shift for each panel
       is.reset();
       saved_bitmap = BitmapFactory.decodeStream(is, null, options);
+      saved_bitmap = NativeStackBlur.process(saved_bitmap, 20);
       if (window != null) {
         Palette.from(saved_bitmap).generate(new Palette.PaletteAsyncListener() {
           public void onGenerated(Palette palette) {

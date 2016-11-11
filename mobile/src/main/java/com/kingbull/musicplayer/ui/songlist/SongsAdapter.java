@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.songlist;
 
-import android.graphics.Typeface;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
 import java.util.List;
 
 /**
@@ -20,15 +21,12 @@ import java.util.List;
 public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> {
 
   List<Song> songs;
-  Typeface localTypeface;
 
   public SongsAdapter(List<Song> songs) {
     this.songs = songs;
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    localTypeface =
-        Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/julius-sans-one.ttf");
     return new ViewHolder(
         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genres, null));
   }
@@ -47,12 +45,16 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHo
     public ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
-      textView.setTypeface(localTypeface);
       itemView.setOnClickListener(this);
     }
 
     @Override public void onClick(View view) {
-
+      ((FragmentActivity) view.getContext()).getSupportFragmentManager()
+          .beginTransaction()
+          .replace(android.R.id.content,
+              MusicPlayerFragment.instance(songs.get(getAdapterPosition())))
+          .addToBackStack(MusicPlayerFragment.class.getSimpleName())
+          .commit();
     }
   }
 }
