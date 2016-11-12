@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.main.songgroup.genres;
+package com.kingbull.musicplayer.ui.main.songgroup.artists;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -17,25 +17,25 @@ import java.util.List;
  * @date 11/8/2016.
  */
 
-public final class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.ViewHolder> {
+public final class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder> {
 
-  List<Genre> genres;
+  List<ArtistItem> artistItems;
 
-  public GenresAdapter(List<Genre> genres) {
-    this.genres = genres;
+  public ArtistAdapter(List<ArtistItem> artistItems) {
+    this.artistItems = artistItems;
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     return new ViewHolder(
-        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genres,parent,false));
+        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genres, parent, false));
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    holder.textView.setText(genres.get(position).name());
+    holder.textView.setText(artistItems.get(position).name());
   }
 
   @Override public int getItemCount() {
-    return genres.size();
+    return artistItems.size();
   }
 
   class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -44,14 +44,12 @@ public final class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.View
     public ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
-      textView.setTransformationMethod(null);
-
       itemView.setOnClickListener(this);
     }
 
     @Override public void onClick(View view) {
       Intent intent = new Intent(view.getContext(), SongListActivity.class);
-      intent.putExtra("genre_id", genres.get(getAdapterPosition()).id());
+      intent.putExtra("album_id", artistItems.get(getAdapterPosition()).id());
       view.getContext().startActivity(intent);
     }
   }

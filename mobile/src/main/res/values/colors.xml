@@ -4,6 +4,7 @@
   <color name="colorPrimaryDark">#3C5F78</color>
   <color name="colorAccent">#DDF9FF</color>
   <color name="transparent_black">#33000000</color>
+  <color name="transparent_strong_black">#66000000</color>
 
   <color name="mp.theme.dark_blue.background">#3C5F78</color>
 

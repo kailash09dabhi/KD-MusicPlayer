@@ -3,7 +3,7 @@
  * You should have received a copy of the license in this archive (see LICENSE).
  * Copyright @Dibakar_Mistry, 2015.
  */
-package com.kingbull.musicplayer.ui.main.songgroup.album;
+package com.kingbull.musicplayer.ui.main.songgroup.artists;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -18,9 +18,9 @@ import android.view.ViewGroup;
 import com.kingbull.musicplayer.R;
 import java.util.List;
 
-public final class AlbumFragment extends Fragment
-    implements LoaderManager.LoaderCallbacks<Cursor>, Album.View {
-  Album.Presenter presenter = new AlbumPresenter();
+public final class ArtistFragment extends Fragment
+    implements LoaderManager.LoaderCallbacks<Cursor>, Artist.View {
+  Artist.Presenter presenter = new ArtistPresenter();
   private RecyclerView recyclerView;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,18 +38,18 @@ public final class AlbumFragment extends Fragment
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    return new AlbumCursorLoader(getContext());
+    return new ArtistCursorLoader(getContext());
   }
 
   @Override public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-    presenter.onAlbumCursorLoadFinished(cursor);
+    presenter.onArtistCursorLoadFinished(cursor);
   }
 
   @Override public void onLoaderReset(Loader<Cursor> loader) {
     // Empty
   }
 
-  @Override public void showAlbums(List<AlbumItem> songs) {
-    recyclerView.setAdapter(new AlbumAdapter(songs));
+  @Override public void showAlbums(List<ArtistItem> songs) {
+    recyclerView.setAdapter(new ArtistAdapter(songs));
   }
 }

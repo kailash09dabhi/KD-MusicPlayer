@@ -32,7 +32,7 @@ public final class GenresFragment extends Fragment
   }
 
   private void setupView(View v) {
-    recyclerView = (RecyclerView) v.findViewById(R.id.recyclerview_grid);
+    recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     getLoaderManager().initLoader(0, null, this);
   }

@@ -17,7 +17,7 @@ import rx.subjects.PublishSubject;
  * received because this subscription has be terminated after onError(Throwable).
  */
 
-public class RxBus {
+public final class RxBus {
 
     private static final String TAG = "RxBus";
 

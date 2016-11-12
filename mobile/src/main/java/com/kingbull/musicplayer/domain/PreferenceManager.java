@@ -11,7 +11,7 @@ import com.kingbull.musicplayer.player.PlayMode;
  * Time: 11:05 PM
  * Desc: PreferenceManager
  */
-public class PreferenceManager {
+public final class PreferenceManager {
 
     private static final String PREFS_NAME = "config.xml";
 

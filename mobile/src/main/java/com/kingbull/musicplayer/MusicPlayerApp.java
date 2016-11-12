@@ -20,7 +20,7 @@ public final class MusicPlayerApp extends Application {
     sInstance = this;
     // Custom fonts
     CalligraphyConfig.initDefault(
-        new CalligraphyConfig.Builder().setDefaultFontPath("fonts/julius-sans-one.ttf")
+        new CalligraphyConfig.Builder().setDefaultFontPath("fonts/JosefinSans-Regular.ttf")
             .setFontAttrId(R.attr.fontPath)
             .build());
   }

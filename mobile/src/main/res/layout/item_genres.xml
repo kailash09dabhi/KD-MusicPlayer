@@ -11,9 +11,9 @@
   <!---->
   <TextView
       android:id="@+id/textview"
-      android:padding="16dp"
       tools:text="afd"
-      style="@style/AppTheme.TextAppearance.List"
 
+      style="@style/AppTheme.TextAppearance.List.Medium"
+android:layout_height="wrap_content"
       android:layout_width="match_parent"/>
 </LinearLayout>

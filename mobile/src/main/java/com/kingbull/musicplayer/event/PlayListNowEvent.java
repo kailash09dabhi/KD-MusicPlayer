@@ -9,7 +9,7 @@ import com.kingbull.musicplayer.domain.PlayList;
  * Time: 9:22 PM
  * Desc: PlayListNowEvent
  */
-public class PlayListNowEvent {
+public final class PlayListNowEvent {
 
     public PlayList playList;
     public int playIndex;

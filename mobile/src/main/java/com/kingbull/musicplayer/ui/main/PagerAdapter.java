@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import com.kingbull.musicplayer.ui.main.songgroup.album.AlbumFragment;
+import com.kingbull.musicplayer.ui.main.songgroup.artists.ArtistFragment;
+import com.kingbull.musicplayer.ui.main.songgroup.folder.MyFilesFragment;
 import com.kingbull.musicplayer.ui.main.songgroup.genres.GenresFragment;
 
 final class PagerAdapter extends FragmentPagerAdapter {
@@ -23,8 +25,14 @@ final class PagerAdapter extends FragmentPagerAdapter {
     Fragment fragment;
     if (position == 0) {
       fragment = new GenresFragment();
-    } else {
+    } else if (position == 1) {
       fragment = new AlbumFragment();
+    } else if (position == 2) {
+      fragment = new ArtistFragment();
+    } else if (position == 5) {
+      fragment = new MyFilesFragment();
+    } else {
+      fragment = new ArtistFragment();
     }
     Bundle args = new Bundle();
     args.putInt("page_position", position + 1);

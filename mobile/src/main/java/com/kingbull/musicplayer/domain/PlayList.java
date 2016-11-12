@@ -19,7 +19,7 @@ import java.util.Random;
  * Desc: PlayList
  */
 //@Table("playlist")
-public class PlayList implements Parcelable {
+public final class PlayList implements Parcelable {
 
     // Play List: Favorite
     public static final int NO_POSITION = -1;

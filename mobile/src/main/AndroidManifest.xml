@@ -16,6 +16,7 @@
       </intent-filter>
     </activity>
     <activity android:name=".ui.songlist.SongListActivity"/>
+    <activity android:name=".ui.music.MusicPlayerActivity"/>
     <!--<activity android:name=".ui.main.MainActivity"/>-->
 
     <service android:name=".player.PlaybackService">

@@ -109,9 +109,8 @@ public final class ViewPagerParallax extends ViewPager {
           public void onGenerated(Palette palette) {
             Palette.Swatch vibrantSwatch = palette.getDarkMutedSwatch();
             if (vibrantSwatch != null) {
-              window.setBackgroundDrawable(new ColorDrawable(palette.getDarkMutedColor(Color
-                  .DKGRAY)));
-
+              window.setBackgroundDrawable(
+                  new ColorDrawable(palette.getDarkMutedColor(Color.DKGRAY)));
             }
           }
         });

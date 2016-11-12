@@ -26,7 +26,7 @@ import android.widget.ImageView;
  * Stole from {@link android.support.v4.widget.SwipeRefreshLayout}'s implementation to display beautiful shadow
  * for circle ImageView.
  */
-public class ShadowImageView extends ImageView {
+public final class ShadowImageView extends ImageView {
 
     private static final int KEY_SHADOW_COLOR = 0x1E000000;
     private static final int FILL_SHADOW_COLOR = 0x3D000000;

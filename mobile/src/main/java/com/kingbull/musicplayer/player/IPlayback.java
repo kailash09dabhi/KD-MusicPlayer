@@ -13,48 +13,48 @@ import com.kingbull.musicplayer.domain.Song;
  */
 public interface IPlayback {
 
-    void setPlayList(PlayList list);
+  void setPlayList(PlayList list);
 
-    boolean play();
+  boolean play();
 
-    boolean play(PlayList list);
+  boolean play(PlayList list);
 
-    boolean play(PlayList list, int startIndex);
+  boolean play(PlayList list, int startIndex);
 
-    boolean play(Song song);
+  boolean play(Song song);
 
-    boolean playLast();
+  boolean playLast();
 
-    boolean playNext();
+  boolean playNext();
 
-    boolean pause();
+  boolean pause();
 
-    boolean isPlaying();
+  boolean isPlaying();
 
-    int getProgress();
+  int getProgress();
 
-    Song getPlayingSong();
+  Song getPlayingSong();
 
-    boolean seekTo(int progress);
+  boolean seekTo(int progress);
 
-    void setPlayMode(PlayMode playMode);
+  void setPlayMode(PlayMode playMode);
 
-    void registerCallback(Callback callback);
+  void registerCallback(Callback callback);
 
-    void unregisterCallback(Callback callback);
+  void unregisterCallback(Callback callback);
 
-    void removeCallbacks();
+  void removeCallbacks();
 
-    void releasePlayer();
+  void releasePlayer();
 
-    interface Callback {
+  interface Callback {
 
-        void onSwitchLast(@Nullable Song last);
+    void onSwitchLast(@Nullable Song last);
 
-        void onSwitchNext(@Nullable Song next);
+    void onSwitchNext(@Nullable Song next);
 
-        void onComplete(@Nullable Song next);
+    void onComplete(@Nullable Song next);
 
-        void onPlayStatusChanged(boolean isPlaying);
-    }
+    void onPlayStatusChanged(boolean isPlaying);
+  }
 }

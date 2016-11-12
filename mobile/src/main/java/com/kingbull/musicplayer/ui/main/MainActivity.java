@@ -1,7 +1,9 @@
 package com.kingbull.musicplayer.ui.main;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.PagerTitleStrip;
+import android.widget.TextView;
 import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,5 +35,16 @@ public final class MainActivity extends BaseActivity {
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.setOffscreenPageLimit(3);
     viewPager.setCurrentItem(2);
+    setupPagerTitleStrip();
+  }
+
+  private void setupPagerTitleStrip() {
+    Typeface localTypeface = Typeface.createFromAsset(getAssets(), "fonts/julius-sans-one.ttf");
+    for (int i = 0; i < pagerTitleStrip.getChildCount(); i++) {
+      if ((pagerTitleStrip.getChildAt(i) instanceof TextView)) {
+        final TextView titleView = ((TextView) pagerTitleStrip.getChildAt(i));
+        titleView.setTypeface(localTypeface);
+      }
+    }
   }
 }

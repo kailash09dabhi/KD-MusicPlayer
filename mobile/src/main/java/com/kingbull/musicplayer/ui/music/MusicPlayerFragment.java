@@ -158,41 +158,40 @@ public final class MusicPlayerFragment extends BaseFragment implements MusicPlay
     } else {
       bitmap = AlbumUtils.getCroppedBitmap(bitmap);
       imageViewAlbum.setImageBitmap(bitmap);
-    }
-    Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-      public void onGenerated(Palette palette) {
-        Palette.Swatch vibrantSwatch = palette.getDarkMutedSwatch();
-        if (vibrantSwatch != null) {
-          getActivity().getWindow()
-              .setBackgroundDrawable(new ColorDrawable(palette.getDarkMutedSwatch().getRgb()));
-          getView().setBackgroundColor(palette.getDarkMutedSwatch().getRgb());
-          textViewName.setTextColor(palette.getLightMutedSwatch().getRgb());
-          textViewArtist.setTextColor(palette.getLightMutedSwatch().getRgb());
-          textViewProgress.setTextColor(palette.getLightMutedSwatch().getRgb());
-          textViewDuration.setTextColor(palette.getLightMutedSwatch().getRgb());
-
-          //playModeToggleView.setImageDrawable(DrawableHelper.withContext(getContext())
-          //    .withColor(palette.getVibrantSwatch().getRgb())
-          //    .withDrawable(R.drawable.ic_play_mode_shuffle)
-          //    .tint()
-          //    .get());
-          //buttonPlayToggle.setImageDrawable(DrawableHelper.withContext(getContext())
-          //    .withColor(palette.getVibrantSwatch().getRgb())
-          //    .withDrawable(R.drawable.ic_play)
-          //    .tint()
-          //    .get());
-          //buttonFavoriteToggle.setImageDrawable(DrawableHelper.withContext(getContext())
-          //    .withColor(palette.getVibrantSwatch().getRgb())
-          //    .withDrawable(R.drawable.ic_favorite_yes)
-          //    .tint()
-          //    .get());
-          //buttonFavoriteToggle.set
-          //          @BindView(R.id.button_play_mode_toggle) ImageView playModeToggleView;
-          //          @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
-          //          @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
+      Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+        public void onGenerated(Palette palette) {
+          Palette.Swatch vibrantSwatch = palette.getDarkMutedSwatch();
+          if (vibrantSwatch != null) {
+            getActivity().getWindow()
+                .setBackgroundDrawable(new ColorDrawable(palette.getDarkMutedSwatch().getRgb()));
+            getView().setBackgroundColor(palette.getDarkMutedSwatch().getRgb());
+            textViewName.setTextColor(palette.getLightMutedSwatch().getRgb());
+            textViewArtist.setTextColor(palette.getLightMutedSwatch().getRgb());
+            textViewProgress.setTextColor(palette.getLightMutedSwatch().getRgb());
+            textViewDuration.setTextColor(palette.getLightMutedSwatch().getRgb());
+            //playModeToggleView.setImageDrawable(DrawableHelper.withContext(getContext())
+            //    .withColor(palette.getVibrantSwatch().getRgb())
+            //    .withDrawable(R.drawable.ic_play_mode_shuffle)
+            //    .tint()
+            //    .get());
+            //buttonPlayToggle.setImageDrawable(DrawableHelper.withContext(getContext())
+            //    .withColor(palette.getVibrantSwatch().getRgb())
+            //    .withDrawable(R.drawable.ic_play)
+            //    .tint()
+            //    .get());
+            //buttonFavoriteToggle.setImageDrawable(DrawableHelper.withContext(getContext())
+            //    .withColor(palette.getVibrantSwatch().getRgb())
+            //    .withDrawable(R.drawable.ic_favorite_yes)
+            //    .tint()
+            //    .get());
+            //buttonFavoriteToggle.set
+            //          @BindView(R.id.button_play_mode_toggle) ImageView playModeToggleView;
+            //          @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
+            //          @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
+          }
         }
-      }
-    });
+      });
+    }
     imageViewAlbum.pauseRotateAnimation();
     seekBarProgress.dontAnimate();
     //if (player.isPlaying()) {

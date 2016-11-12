@@ -51,7 +51,7 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHo
     @Override public void onClick(View view) {
       ((FragmentActivity) view.getContext()).getSupportFragmentManager()
           .beginTransaction()
-          .replace(android.R.id.content,
+          .add(android.R.id.content,
               MusicPlayerFragment.instance(songs.get(getAdapterPosition())))
           .addToBackStack(MusicPlayerFragment.class.getSimpleName())
           .commit();

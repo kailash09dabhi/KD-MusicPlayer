@@ -23,7 +23,7 @@ import java.util.List;
 public final class SongListActivity extends BaseActivity
     implements LoaderManager.LoaderCallbacks<Cursor>, SongList.View {
 
-  @BindView(R.id.recyclerview_grid) RecyclerView recyclerView;
+  @BindView(R.id.recyclerView) RecyclerView recyclerView;
   SongList.Presenter songListPresenter = new SongListPresenter();
 
   @Override protected void onCreate(Bundle savedInstanceState) {

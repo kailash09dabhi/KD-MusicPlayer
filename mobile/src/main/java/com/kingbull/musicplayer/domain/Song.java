@@ -13,7 +13,7 @@ import android.provider.MediaStore;
  * Desc: Genre
  */
 //@Table("song")
-public class Song implements Parcelable {
+public final class Song implements Parcelable {
 
   public static final Parcelable.Creator<Song> CREATOR = new Parcelable.Creator<Song>() {
     @Override public Song createFromParcel(Parcel source) {

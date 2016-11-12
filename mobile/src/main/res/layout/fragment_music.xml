@@ -6,6 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
+    android:background="?android:windowBackground"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="@dimen/mp.padding.large">

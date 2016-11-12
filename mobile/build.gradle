@@ -4,11 +4,11 @@ apply plugin: 'android-apt'
 
 android {
   compileSdkVersion 24
-  buildToolsVersion "25.0.0"
+  buildToolsVersion "24.0.0"
   defaultConfig {
     applicationId "com.kingbull.musicplayer"
     minSdkVersion 16
-    targetSdkVersion 25
+    targetSdkVersion 22
     versionCode 1
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -33,10 +33,9 @@ dependencies {
   })
 //  wearApp project(':wear')
 //  compile 'com.google.android.gms:play-services:9.8.0'
-  compile 'com.android.support:appcompat-v7:25.0.0'
-  compile 'com.android.support:recyclerview-v7:25.0.0'
-
-  compile 'com.android.support:palette-v7:25.0.0'
+  compile 'com.android.support:appcompat-v7:24.0.0'
+  compile 'com.android.support:recyclerview-v7:24.0.0'
+  compile 'com.android.support:palette-v7:24.0.0'
   testCompile 'junit:junit:4.12'
 
   compile 'io.reactivex:rxjava:1.1.9'
