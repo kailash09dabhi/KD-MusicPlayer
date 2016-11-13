@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,16 +24,27 @@ import java.util.List;
 public final class SongListActivity extends BaseActivity
     implements LoaderManager.LoaderCallbacks<Cursor>, SongList.View {
 
+  public static final String GENRE_ID = "genre_id";
+  public static final String ARTIST_ID = "artist_id";
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
+  @BindView(R.id.titleView) TextView titleView;
   SongList.Presenter songListPresenter = new SongListPresenter();
+  SongsAdapter adapter;
+  List<Song> songList = new ArrayList<>();
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_song_list);
     ButterKnife.bind(this);
+    adapter = new SongsAdapter(songList);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    getSupportLoaderManager().initLoader(getIntent().getIntExtra("genre_id", 0), null, this);
-    TextView titleView = (TextView) this.findViewById(R.id.titleView);
+    recyclerView.setAdapter(adapter);
+    if (getIntent().hasExtra(GENRE_ID)) {
+      getSupportLoaderManager().initLoader(getIntent().getIntExtra(GENRE_ID, 0), null, this);
+    } else if (getIntent().hasExtra(ARTIST_ID)) {
+      getSupportLoaderManager().initLoader(getIntent().getIntExtra(ARTIST_ID, 0), null, this);
+    }
+    titleView.setText(getIntent().getStringExtra("title"));
     titleView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
     titleView.setSingleLine(true);
     titleView.setMarqueeRepeatLimit(-1);
@@ -41,7 +53,13 @@ public final class SongListActivity extends BaseActivity
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    return new SongListCursorLoader(this, id);
+    if (getIntent().hasExtra(GENRE_ID)) {
+      return SongListCursorLoader.instance(this, id, GENRE_ID);
+    } else if (getIntent().hasExtra(ARTIST_ID)) {
+      return SongListCursorLoader.instance(this, id, ARTIST_ID);
+    } else {
+      return SongListCursorLoader.instance(this, id, GENRE_ID);
+    }
   }
 
   @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -52,6 +70,8 @@ public final class SongListActivity extends BaseActivity
   }
 
   @Override public void showSongs(List<Song> songs) {
-    recyclerView.setAdapter(new SongsAdapter(songs));
+    songList.clear();
+    songList.addAll(songs);
+    adapter.notifyDataSetChanged();
   }
 }

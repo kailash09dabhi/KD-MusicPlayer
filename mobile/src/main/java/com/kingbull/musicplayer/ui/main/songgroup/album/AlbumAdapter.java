@@ -50,6 +50,7 @@ public final class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHo
     @Override public void onClick(View view) {
       Intent intent = new Intent(view.getContext(), SongListActivity.class);
       intent.putExtra("album_id", albumItems.get(getAdapterPosition()).id());
+      intent.putExtra("title", albumItems.get(getAdapterPosition()).name());
       view.getContext().startActivity(intent);
     }
   }

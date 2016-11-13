@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.ui.songlist;
 
 import android.content.Context;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
@@ -17,11 +18,27 @@ public final class SongListCursorLoader extends CursorLoader {
       MediaStore.Audio.Media.MIME_TYPE, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM,
       MediaStore.Audio.Media.IS_RINGTONE, MediaStore.Audio.Media.IS_MUSIC,
       MediaStore.Audio.Media.IS_NOTIFICATION, MediaStore.Audio.Media.DURATION,
-      MediaStore.Audio.Media.SIZE
+      MediaStore.Audio.Media.SIZE, MediaStore.Audio.Media._ID, MediaStore.Audio.Media.ARTIST,
+      MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DATA,
+      MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.DURATION
   };
 
-  public SongListCursorLoader(Context context,int id) {
-    super(context, MediaStore.Audio.Genres.Members.getContentUri("external", id), PROJECTIONS, null,
-        null, ORDER_BY);
+  public SongListCursorLoader(Context context, Uri uri, String where) {
+    super(context, uri, PROJECTIONS, where, null, ORDER_BY);
+  }
+
+  public static SongListCursorLoader instance(Context context, int id, String type) {
+    if (type == SongListActivity.GENRE_ID) {
+      return new SongListCursorLoader(context,
+          MediaStore.Audio.Genres.Members.getContentUri("external", id), null);
+    } else {
+      String where = MediaStore.Audio.Media.ARTIST_ID
+          + "="
+          + id
+          + " AND "
+          + MediaStore.Audio.Media.IS_MUSIC
+          + "=1";
+      return new SongListCursorLoader(context, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, where);
+    }
   }
 }

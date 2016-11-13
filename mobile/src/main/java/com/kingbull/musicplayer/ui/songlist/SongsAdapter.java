@@ -9,6 +9,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
  * @date 11/8/2016.
  */
 
-public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> {
+public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFileViewHolder> {
 
   List<Song> songs;
 
@@ -26,13 +27,16 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHo
     this.songs = songs;
   }
 
-  @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    return new ViewHolder(
-        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genres, null));
+  @Override public SongFileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    return new SongFileViewHolder(
+        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_file_song, parent, false));
   }
 
-  @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    holder.textView.setText(songs.get(position).getDisplayName());
+  @Override public void onBindViewHolder(SongFileViewHolder holder, int position) {
+    Song song = songs.get(position);
+    holder.fileNameView.setText(song.getTitle());
+    holder.albumView.setText(song.getAlbum());
+    holder.durationView.setText(new Milliseconds(song.getDuration()).toMmSs());
   }
 
   @Override public int getItemCount() {
@@ -51,8 +55,27 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHo
     @Override public void onClick(View view) {
       ((FragmentActivity) view.getContext()).getSupportFragmentManager()
           .beginTransaction()
-          .add(android.R.id.content,
-              MusicPlayerFragment.instance(songs.get(getAdapterPosition())))
+          .add(android.R.id.content, MusicPlayerFragment.instance(songs.get(getAdapterPosition())))
+          .addToBackStack(MusicPlayerFragment.class.getSimpleName())
+          .commit();
+    }
+  }
+
+  class SongFileViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    @BindView(R.id.fileName) TextView fileNameView;
+    @BindView(R.id.durationView) TextView durationView;
+    @BindView(R.id.artistView) TextView albumView;
+
+    public SongFileViewHolder(View itemView) {
+      super(itemView);
+      ButterKnife.bind(this, itemView);
+      itemView.setOnClickListener(this);
+    }
+
+    @Override public void onClick(View view) {
+      ((FragmentActivity) view.getContext()).getSupportFragmentManager()
+          .beginTransaction()
+          .add(android.R.id.content, MusicPlayerFragment.instance(songs.get(getAdapterPosition())))
           .addToBackStack(MusicPlayerFragment.class.getSimpleName())
           .commit();
     }

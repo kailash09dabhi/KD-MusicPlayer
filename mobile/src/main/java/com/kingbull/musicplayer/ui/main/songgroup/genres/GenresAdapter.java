@@ -27,7 +27,7 @@ public final class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.View
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     return new ViewHolder(
-        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genres,parent,false));
+        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genres, parent, false));
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
@@ -45,13 +45,13 @@ public final class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.View
       super(itemView);
       ButterKnife.bind(this, itemView);
       textView.setTransformationMethod(null);
-
       itemView.setOnClickListener(this);
     }
 
     @Override public void onClick(View view) {
       Intent intent = new Intent(view.getContext(), SongListActivity.class);
       intent.putExtra("genre_id", genres.get(getAdapterPosition()).id());
+      intent.putExtra("title", genres.get(getAdapterPosition()).name());
       view.getContext().startActivity(intent);
     }
   }
