@@ -14,7 +14,7 @@ import rx.Observable;
 public final class Songs {
   private Cursor cursor;
 
-  protected Songs(Cursor cursor) {
+  Songs(Cursor cursor) {
     this.cursor = cursor;
   }
 

@@ -147,6 +147,36 @@ public final class Song implements Parcelable {
     dest.writeInt(this.favorite ? 1 : 0);
   }
 
+  @Override public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Song song = (Song) o;
+    if (id != song.id) return false;
+    if (duration != song.duration) return false;
+    if (size != song.size) return false;
+    if (favorite != song.favorite) return false;
+    if (title != null ? !title.equals(song.title) : song.title != null) return false;
+    if (displayName != null ? !displayName.equals(song.displayName) : song.displayName != null) {
+      return false;
+    }
+    if (artist != null ? !artist.equals(song.artist) : song.artist != null) return false;
+    if (album != null ? !album.equals(song.album) : song.album != null) return false;
+    return path != null ? path.equals(song.path) : song.path == null;
+  }
+
+  @Override public int hashCode() {
+    int result = id;
+    result = 31 * result + (title != null ? title.hashCode() : 0);
+    result = 31 * result + (displayName != null ? displayName.hashCode() : 0);
+    result = 31 * result + (artist != null ? artist.hashCode() : 0);
+    result = 31 * result + (album != null ? album.hashCode() : 0);
+    result = 31 * result + (path != null ? path.hashCode() : 0);
+    result = 31 * result + duration;
+    result = 31 * result + size;
+    result = 31 * result + (favorite ? 1 : 0);
+    return result;
+  }
+
   public void readFromParcel(Parcel in) {
     this.id = in.readInt();
     this.title = in.readString();

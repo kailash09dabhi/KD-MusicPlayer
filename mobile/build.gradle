@@ -20,7 +20,7 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
     release {
-      minifyEnabled false
+      minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
@@ -43,6 +43,6 @@ dependencies {
   compile 'com.jakewharton:butterknife:8.4.0'
   apt 'com.jakewharton:butterknife-compiler:8.4.0'
   compile 'com.github.Commit451:NativeStackBlur:1.0.5'
-
   compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+  compile 'com.github.crosswall:Android-Coverflow:release-v1.0.4'
 }

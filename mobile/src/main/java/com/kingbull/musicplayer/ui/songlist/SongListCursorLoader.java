@@ -31,8 +31,16 @@ public final class SongListCursorLoader extends CursorLoader {
     if (type == SongListActivity.GENRE_ID) {
       return new SongListCursorLoader(context,
           MediaStore.Audio.Genres.Members.getContentUri("external", id), null);
-    } else {
+    } else if (type == SongListActivity.ARTIST_ID) {
       String where = MediaStore.Audio.Media.ARTIST_ID
+          + "="
+          + id
+          + " AND "
+          + MediaStore.Audio.Media.IS_MUSIC
+          + "=1";
+      return new SongListCursorLoader(context, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, where);
+    } else {
+      String where = MediaStore.Audio.Media.ALBUM_ID
           + "="
           + id
           + " AND "

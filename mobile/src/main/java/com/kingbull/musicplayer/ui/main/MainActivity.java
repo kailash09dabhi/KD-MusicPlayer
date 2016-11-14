@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.ui.main;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerTitleStrip;
 import android.widget.TextView;
 import butterknife.BindArray;
@@ -9,6 +10,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
+import com.kingbull.musicplayer.ui.base.Presenter;
+import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import java.util.Random;
 
 public final class MainActivity extends BaseActivity {
@@ -36,6 +39,14 @@ public final class MainActivity extends BaseActivity {
     viewPager.setOffscreenPageLimit(3);
     viewPager.setCurrentItem(2);
     setupPagerTitleStrip();
+  }
+
+  @Override protected void onPresenterPrepared(Presenter presenter) {
+
+  }
+
+  @NonNull @Override protected PresenterFactory presenterFactory() {
+    return new PresenterFactory.MyFiles();
   }
 
   private void setupPagerTitleStrip() {

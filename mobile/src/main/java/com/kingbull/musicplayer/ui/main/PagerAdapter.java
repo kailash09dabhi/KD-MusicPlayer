@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import com.kingbull.musicplayer.ui.main.songgroup.album.AlbumFragment;
-import com.kingbull.musicplayer.ui.main.songgroup.artists.ArtistFragment;
-import com.kingbull.musicplayer.ui.main.songgroup.folder.MyFilesFragment;
-import com.kingbull.musicplayer.ui.main.songgroup.genres.GenresFragment;
+import com.kingbull.musicplayer.ui.main.categories.album.AlbumFragment;
+import com.kingbull.musicplayer.ui.main.categories.all.AllSongsFragment;
+import com.kingbull.musicplayer.ui.main.categories.artists.ArtistFragment;
+import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesFragment;
+import com.kingbull.musicplayer.ui.main.categories.genres.GenresFragment;
+import com.kingbull.musicplayer.ui.main.categories.playlists.PlayListsFragment;
 
 final class PagerAdapter extends FragmentPagerAdapter {
 
@@ -26,9 +28,13 @@ final class PagerAdapter extends FragmentPagerAdapter {
     if (position == 0) {
       fragment = new GenresFragment();
     } else if (position == 1) {
-      fragment = new AlbumFragment();
+      fragment = new PlayListsFragment();
     } else if (position == 2) {
+      fragment = new AllSongsFragment();
+    } else if (position == 3) {
       fragment = new ArtistFragment();
+    } else if (position == 4) {
+      fragment = new AlbumFragment();
     } else if (position == 5) {
       fragment = new MyFilesFragment();
     } else {

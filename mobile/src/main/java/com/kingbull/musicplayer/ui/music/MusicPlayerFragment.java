@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.player.PlayMode;
 import com.kingbull.musicplayer.player.PlaybackService;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
+import com.kingbull.musicplayer.ui.base.Presenter;
+import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.widget.ShadowImageView;
 import com.kingbull.musicplayer.utils.AlbumUtils;
 import com.kingbull.musicplayer.utils.TimeUtils;
@@ -60,9 +63,6 @@ public final class MusicPlayerFragment extends BaseFragment implements MusicPlay
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    presenter = new MusicPlayerPresenter();
-    presenter.takeView(this);
-    presenter.onTakeSong(song);
     seekBarProgress.takePresenter(presenter);
     seekBarProgress.updateMusic(song);
     playbackServiceConnection = new PlaybackServiceConnection(presenter);
@@ -107,6 +107,15 @@ public final class MusicPlayerFragment extends BaseFragment implements MusicPlay
   }
 
   @Override protected Subscription subscribeEvents() {
+    return null;
+  }
+
+  @Override protected void onPresenterPrepared(Presenter presenter) {
+    this.presenter.takeView(this);
+    this.presenter.onTakeSong(song);
+  }
+
+  @NonNull @Override protected PresenterFactory presenterFactory() {
     return null;
   }
 
