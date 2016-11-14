@@ -1,5 +1,6 @@
-package com.kingbull.musicplayer.ui.main.categories.playlists;
+package com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +9,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.ui.base.BaseActivity;
-import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAddedFragment;
+import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.ui.songlist.SongListActivity;
 import java.util.List;
 
 /**
@@ -17,12 +18,12 @@ import java.util.List;
  * @date 11/8/2016.
  */
 
-public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapter.ViewHolder> {
+public final class RecentlyAddedAdapter extends RecyclerView.Adapter<RecentlyAddedAdapter.ViewHolder> {
 
-  List<PlayList> playLists;
+  List<Song> songs;
 
-  public PlayListsAdapter(List<PlayList> playLists) {
-    this.playLists = playLists;
+  public RecentlyAddedAdapter(List<Song> songs) {
+    this.songs = songs;
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,11 +32,11 @@ public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapte
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    holder.textView.setText(playLists.get(position).name());
+    holder.textView.setText(songs.get(position).getTitle());
   }
 
   @Override public int getItemCount() {
-    return playLists.size();
+    return songs.size();
   }
 
   class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -49,14 +50,10 @@ public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapte
     }
 
     @Override public void onClick(View view) {
-      if (playLists.get(getAdapterPosition()).name().equals("Recently Added")) {
-        ((BaseActivity) view.getContext()).getSupportFragmentManager()
-            .beginTransaction()
-            .add(android.R.id.content, new RecentlyAddedFragment(),
-                RecentlyAddedFragment.class.getSimpleName())
-            .addToBackStack(RecentlyAddedFragment.class.getSimpleName())
-            .commit();
-      }
+      Intent intent = new Intent(view.getContext(), SongListActivity.class);
+      intent.putExtra("genre_id", songs.get(getAdapterPosition()).getId());
+      intent.putExtra("title", songs.get(getAdapterPosition()).getTitle());
+      view.getContext().startActivity(intent);
     }
   }
 }

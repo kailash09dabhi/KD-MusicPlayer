@@ -34,6 +34,21 @@ public final class PagerFragment extends Fragment {
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.item_coverflow, container, false);
     ButterKnife.bind(this, view);
+    return view;
+  }
+
+  //
+  @Override public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putParcelable("song", song);
+  }
+
+  @Override public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    if (savedInstanceState != null) {
+      // Restore last state for checked position.
+      song = savedInstanceState.getParcelable("song");
+    }
     Bitmap bitmap = AlbumUtils.parseAlbum(song);
     if (bitmap == null) {
       imageView.setImageResource(R.drawable.default_record_album);
@@ -42,21 +57,5 @@ public final class PagerFragment extends Fragment {
       imageView.setImageBitmap(bitmap);
     }
     labelView.setText(song.getAlbum());
-    return view;
-  }
-  //
-  @Override public void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
-    outState.putParcelable("song", song);
-  }
-
-
-
-  @Override public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    if (savedInstanceState != null) {
-      // Restore last state for checked position.
-      song = savedInstanceState.getParcelable("song");
-    }
   }
 }
