@@ -7,7 +7,6 @@ import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
@@ -16,7 +15,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 import static android.content.ContentValues.TAG;
 
@@ -28,14 +26,11 @@ import static android.content.ContentValues.TAG;
 public final class RecentlyAddedPresenter extends Presenter<RecentlyAdded.View>
     implements RecentlyAdded.Presenter {
 
-  private CompositeSubscription compositeSubscription;
-
   @Override public void takeView(@NonNull RecentlyAdded.View view) {
     super.takeView(view);
-    compositeSubscription = new CompositeSubscription();
   }
 
-  @Override public void onAllSongsCursorLoadFinished(Cursor cursor) {
+  @Override public void onRecentlyAddedCursorLoadFinished(Cursor cursor) {
     Subscription subscription =
         Observable.just(cursor)
             .flatMap(new Func1<Cursor, Observable<List<Song>>>() {
@@ -54,11 +49,7 @@ public final class RecentlyAddedPresenter extends Presenter<RecentlyAdded.View>
             .doOnNext(new Action1<List<Song>>() {
               @Override public void call(List<Song> songs) {
                 Log.d(TAG, "onLoadFinished: " + songs.size());
-                Collections.sort(songs, new Comparator<Song>() {
-                  @Override public int compare(Song left, Song right) {
-                    return left.getTitle().compareTo(right.getTitle());
-                  }
-                });
+                Collections.sort(songs, new RecentlyAddedComparator());
               }
             })
             .subscribeOn(Schedulers.io())
@@ -80,7 +71,7 @@ public final class RecentlyAddedPresenter extends Presenter<RecentlyAdded.View>
               @Override public void onNext(List<Song> songs) {
                 //mView.onLocalMusicLoaded(genres);
                 //mView.emptyView(genres.isEmpty());
-                view().showAllSongs(songs);
+                view().showRecentlyAddedSongs(songs);
               }
             });
     compositeSubscription.add(subscription);

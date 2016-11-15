@@ -6,7 +6,7 @@ import android.util.Log;
 
 import static android.R.attr.tag;
 
-public final class PresenterLoader<T extends Presenter> extends Loader<T> {
+public final class PresenterLoader<T extends Mvp.Presenter> extends Loader<T> {
 
   private final PresenterFactory<T> factory;
   private T presenter;

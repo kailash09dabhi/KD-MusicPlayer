@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.ui.songlist.SongsAdapter;
 import java.util.List;
 
 public final class AllSongsFragment extends Fragment
@@ -51,6 +52,6 @@ public final class AllSongsFragment extends Fragment
   }
 
   @Override public void showAllSongs(List<Song> songs) {
-    recyclerView.setAdapter(new AllSongsAdapter(songs));
+    recyclerView.setAdapter(new SongsAdapter(songs));
   }
 }

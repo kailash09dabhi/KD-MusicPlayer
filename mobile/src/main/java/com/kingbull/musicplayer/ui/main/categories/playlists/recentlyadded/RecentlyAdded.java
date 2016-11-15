@@ -12,13 +12,13 @@ import java.util.List;
 
 public interface RecentlyAdded {
   interface View extends Mvp.View {
-    void showAllSongs(List<Song> songs);
+    void showRecentlyAddedSongs(List<Song> songs);
   }
 
   interface Model extends Mvp.Model {
   }
 
   interface Presenter extends Mvp.Presenter<RecentlyAdded.View> {
-    void onAllSongsCursorLoadFinished(Cursor cursor);
+    void onRecentlyAddedCursorLoadFinished(Cursor cursor);
   }
 }

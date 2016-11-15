@@ -13,7 +13,7 @@ import com.kingbull.musicplayer.ui.base.Mvp;
  * Time: 8:27 AM
  * Desc: MusicPlayer
  */
-/* package */ interface MusicPlayer {
+public interface MusicPlayer {
 
   interface View extends Mvp.View {
 

@@ -2,8 +2,6 @@ package com.kingbull.musicplayer.ui.base;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -19,17 +17,17 @@ import rx.subscriptions.CompositeSubscription;
  * Time: 12:14 AM
  * Desc: BaseFragment
  */
-public abstract class BaseFragment<P extends Presenter> extends Fragment {
+public abstract class BaseFragment<P extends Mvp.Presenter> extends Fragment {
 
   private static final int LOADER_ID = 101;
-  private Presenter presenter;
+  protected P presenter;
   private CompositeSubscription mSubscriptions;
 
   @Override public void onAttach(Context context) {
     super.onAttach(context);
   }
 
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+  @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     addSubscription(subscribeEvents());
   }
@@ -84,5 +82,5 @@ public abstract class BaseFragment<P extends Presenter> extends Fragment {
    * should
    * not contain {@link android.app.Activity} context reference since it will be keep on rotations.
    */
-  @NonNull protected abstract PresenterFactory<P> presenterFactory();
+  protected abstract PresenterFactory<P> presenterFactory();
 }

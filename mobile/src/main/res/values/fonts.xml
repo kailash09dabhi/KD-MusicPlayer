@@ -3,7 +3,7 @@
 
   <string name="font.julius.sans.one">fonts/julius-sans-one.ttf</string><!--public domain-->
   <string name="font.josefin.sans.regular">fonts/JosefinSans-Regular.ttf</string><!--public domain-->
-  <string name="font.semplicita.light">fonts/semplicita.light.ttf</string>
+  <string name="font.semplicita.light">fonts/semplicita.light.otf</string>
   <string name="font.hanken.round.regular">fonts/hankenround-Regular.ttf</string>
   <string name="font.faber.sans.pro.45.reduced">fonts/FaberSansPro45reduced.otf</string>
   <!--not sure abt this one-->

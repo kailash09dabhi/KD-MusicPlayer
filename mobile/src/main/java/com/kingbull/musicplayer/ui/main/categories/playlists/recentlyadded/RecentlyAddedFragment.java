@@ -7,7 +7,7 @@ package com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,9 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.ui.base.BaseFragment;
+import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.main.categories.all.AllSongsCursorLoader;
+import com.kingbull.musicplayer.ui.songlist.SongsAdapter;
 import java.util.List;
 
-public final class RecentlyAddedFragment extends Fragment
+public final class RecentlyAddedFragment extends BaseFragment<RecentlyAdded.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, RecentlyAdded.View {
   RecentlyAdded.Presenter presenter = new RecentlyAddedPresenter();
   private RecyclerView recyclerView;
@@ -32,6 +36,13 @@ public final class RecentlyAddedFragment extends Fragment
     return view;
   }
 
+  @Override protected void onPresenterPrepared(RecentlyAdded.Presenter presenter) {
+  }
+
+  @NonNull @Override protected PresenterFactory<RecentlyAdded.Presenter> presenterFactory() {
+    return new PresenterFactory.RecentlyAdded();
+  }
+
   private void setupView(View v) {
     recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -40,18 +51,18 @@ public final class RecentlyAddedFragment extends Fragment
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    return new RecentlyAddedCursorLoader(getContext());
+    return new AllSongsCursorLoader(getContext());
   }
 
   @Override public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-    presenter.onAllSongsCursorLoadFinished(cursor);
+    presenter.onRecentlyAddedCursorLoadFinished(cursor);
   }
 
   @Override public void onLoaderReset(Loader<Cursor> loader) {
     // Empty
   }
 
-  @Override public void showAllSongs(List<Song> songs) {
-    recyclerView.setAdapter(new RecentlyAddedAdapter(songs));
+  @Override public void showRecentlyAddedSongs(List<Song> songs) {
+    recyclerView.setAdapter(new SongsAdapter(songs));
   }
 }

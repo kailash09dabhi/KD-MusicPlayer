@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import java.io.File;
 
 /**
  * Created with Android Studio.
@@ -34,7 +35,12 @@ public final class Song implements Parcelable {
   private String path;
   private int duration;
   private int size;
+  private long dateAdded;
   private boolean favorite;
+
+  public long dateAdded() {
+    return dateAdded;
+  }
 
   public Song() {
     // Empty
@@ -56,6 +62,9 @@ public final class Song implements Parcelable {
     album = (cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)));
     path = (cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
     duration = (cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
+    //dateAdded = (cursor.getLong(cursor.getColumnIndexOrThrow(
+    //    MediaStore.Audio.Media.DATE_ADDED)));//this seems not working everytime gives 1970 date
+    dateAdded = new File(path).lastModified();
     size = (cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)));
   }
 

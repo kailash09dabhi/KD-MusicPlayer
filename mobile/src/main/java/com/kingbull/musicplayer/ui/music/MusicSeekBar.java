@@ -2,7 +2,9 @@ package com.kingbull.musicplayer.ui.music;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.widget.SeekBar;
 import com.kingbull.musicplayer.domain.Song;
@@ -56,6 +58,23 @@ public final class MusicSeekBar extends SeekBar {
         presenter.onStopTrackingTouch(seekBar.getProgress());
       }
     });
+  }
+
+  @Override public Parcelable onSaveInstanceState() {
+    Bundle bundle = new Bundle();
+    bundle.putParcelable("song", song);
+    bundle.putParcelable("instanceState", super.onSaveInstanceState());
+    return bundle;
+  }
+
+  @Override public void onRestoreInstanceState(Parcelable state) {
+    if (state instanceof Bundle) {
+      Bundle bundle = (Bundle) state;
+      this.song = bundle.getParcelable("song");
+      // ... load everything
+      state = bundle.getParcelable("instanceState");
+    }
+    super.onRestoreInstanceState(state);
   }
 
   public void updateThumb(int progress) {

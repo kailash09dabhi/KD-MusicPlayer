@@ -16,7 +16,6 @@ import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
-import com.kingbull.musicplayer.ui.base.Presenter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import java.io.File;
@@ -28,7 +27,7 @@ import java.util.List;
  * @date 11/12/2016.
  */
 
-public final class MyFilesFragment extends BaseFragment implements MyFiles.View {
+public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> implements MyFiles.View {
   MyFiles.Presenter presenter;
   @BindView(R.id.directoryPathView) TextView directoryPathView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
@@ -95,7 +94,8 @@ public final class MyFilesFragment extends BaseFragment implements MyFiles.View 
     //    .commit();
   }
 
-  @Override protected void onPresenterPrepared(Presenter presenter) {
+
+  @Override protected void onPresenterPrepared(MyFiles.Presenter presenter) {
     presenter.takeView(this);
   }
 

@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +20,6 @@ import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.player.PlayMode;
 import com.kingbull.musicplayer.player.PlaybackService;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
-import com.kingbull.musicplayer.ui.base.Presenter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.widget.ShadowImageView;
 import com.kingbull.musicplayer.utils.AlbumUtils;
@@ -31,7 +28,8 @@ import rx.Subscription;
 
 import static com.kingbull.musicplayer.R.id.text_view_artist;
 
-public final class MusicPlayerFragment extends BaseFragment implements MusicPlayer.View {
+public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presenter>
+    implements MusicPlayer.View {
 
   @BindView(R.id.image_view_album) ShadowImageView imageViewAlbum;
   @BindView(R.id.text_view_name) TextView textViewName;
@@ -39,13 +37,11 @@ public final class MusicPlayerFragment extends BaseFragment implements MusicPlay
   @BindView(R.id.text_view_progress) TextView textViewProgress;
   @BindView(R.id.text_view_duration) TextView textViewDuration;
   @BindView(R.id.seek_bar) MusicSeekBar seekBarProgress;
-
   @BindView(R.id.button_play_mode_toggle) PlayModeToggleView playModeToggleView;
   @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
   @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
   Song song;
   PlaybackServiceConnection playbackServiceConnection;
-  private MusicPlayer.Presenter presenter;
   private boolean mIsServiceBound;
 
   public static MusicPlayerFragment instance(Song song) {
@@ -54,20 +50,16 @@ public final class MusicPlayerFragment extends BaseFragment implements MusicPlay
     return fragment;
   }
 
-  @Nullable @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_music, container, false);
   }
 
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+  @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    seekBarProgress.takePresenter(presenter);
     seekBarProgress.updateMusic(song);
-    playbackServiceConnection = new PlaybackServiceConnection(presenter);
     updatePlayMode(PreferenceManager.lastPlayMode(getActivity()));
-    bindPlaybackService();
   }
 
   @Override public void onStop() {
@@ -110,13 +102,16 @@ public final class MusicPlayerFragment extends BaseFragment implements MusicPlay
     return null;
   }
 
-  @Override protected void onPresenterPrepared(Presenter presenter) {
+  @Override protected void onPresenterPrepared(MusicPlayer.Presenter presenter) {
     this.presenter.takeView(this);
-    this.presenter.onTakeSong(song);
+    if (song != null) this.presenter.onTakeSong(song);
+    playbackServiceConnection = new PlaybackServiceConnection(presenter);
+    bindPlaybackService();
+    seekBarProgress.takePresenter(presenter);
   }
 
-  @NonNull @Override protected PresenterFactory presenterFactory() {
-    return null;
+  @Override protected PresenterFactory presenterFactory() {
+    return new PresenterFactory.MusicPlayer();
   }
 
   @Override public void updateProgressDurationText(int duration) {
@@ -140,7 +135,7 @@ public final class MusicPlayerFragment extends BaseFragment implements MusicPlay
     seekBarProgress.startProgresssAnimation();
   }
 
-  public void onSongUpdated(@Nullable Song song) {
+  public void onSongUpdated(Song song) {
     if (song == null) {
       imageViewAlbum.cancelRotateAnimation();
       buttonPlayToggle.setImageResource(R.drawable.ic_play);
