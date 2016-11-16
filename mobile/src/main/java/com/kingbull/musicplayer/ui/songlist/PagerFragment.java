@@ -56,6 +56,6 @@ public final class PagerFragment extends Fragment {
       bitmap = AlbumUtils.getCroppedBitmap(bitmap);
       imageView.setImageBitmap(bitmap);
     }
-    labelView.setText(song.getAlbum());
+    labelView.setText(song.album());
   }
 }

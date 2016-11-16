@@ -65,7 +65,7 @@ public final class Player implements IPlayback, MediaPlayer.OnCompletionListener
       Song song = mPlayList.getCurrentSong();
       try {
         mPlayer.reset();
-        mPlayer.setDataSource(song.getPath());
+        mPlayer.setDataSource(song.path());
         mPlayer.prepare();
         mPlayer.start();
         notifyPlayStatusChanged(true);
@@ -152,7 +152,7 @@ public final class Player implements IPlayback, MediaPlayer.OnCompletionListener
     if (mPlayList.getSongs().isEmpty()) return false;
     Song currentSong = mPlayList.getCurrentSong();
     if (currentSong != null) {
-      if (currentSong.getDuration() <= progress) {
+      if (currentSong.duration() <= progress) {
         onCompletion(mPlayer);
       } else {
         mPlayer.seekTo(progress);

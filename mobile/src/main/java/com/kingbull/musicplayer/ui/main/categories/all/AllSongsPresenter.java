@@ -56,7 +56,7 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                 Log.d(TAG, "onLoadFinished: " + songs.size());
                 Collections.sort(songs, new Comparator<Song>() {
                   @Override public int compare(Song left, Song right) {
-                    return left.getTitle().compareTo(right.getTitle());
+                    return left.title().compareTo(right.title());
                   }
                 });
               }

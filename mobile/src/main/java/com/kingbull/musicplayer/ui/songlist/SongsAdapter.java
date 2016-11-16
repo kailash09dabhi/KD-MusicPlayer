@@ -34,9 +34,9 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
 
   @Override public void onBindViewHolder(SongFileViewHolder holder, int position) {
     Song song = songs.get(position);
-    holder.fileNameView.setText(song.getTitle());
-    holder.albumView.setText(song.getAlbum());
-    holder.durationView.setText(new Milliseconds(song.getDuration()).toMmSs());
+    holder.fileNameView.setText(song.title());
+    holder.albumView.setText(song.album());
+    holder.durationView.setText(new Milliseconds(song.duration()).toMmSs());
   }
 
   @Override public int getItemCount() {

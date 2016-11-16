@@ -229,7 +229,7 @@ public final class PlayList implements Parcelable {
         } else {
             for (Iterator<Song> iterator = songs.iterator(); iterator.hasNext(); ) {
                 Song item = iterator.next();
-                if (song.getPath().equals(item.getPath())) {
+                if (song.path().equals(item.path())) {
                     iterator.remove();
                     numOfSongs = songs.size();
                     return true;

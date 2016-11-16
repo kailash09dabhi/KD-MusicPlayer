@@ -64,7 +64,7 @@ public class FileUtils {
             Collections.sort(songs, new Comparator<Song>() {
                 @Override
                 public int compare(Song left, Song right) {
-                    return left.getTitle().compareTo(right.getTitle());
+                    return left.title().compareTo(right.title());
                 }
             });
         }

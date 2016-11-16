@@ -221,7 +221,7 @@ public final class PlaybackService extends Service implements IPlayback, IPlayba
   private void updateRemoteViews(RemoteViews remoteView) {
     Song currentSong = mPlayer.getPlayingSong();
     if (currentSong != null) {
-      remoteView.setTextViewText(R.id.text_view_name, currentSong.getDisplayName());
+      remoteView.setTextViewText(R.id.text_view_name, currentSong.displayName());
       remoteView.setTextViewText(R.id.text_view_artist, currentSong.getArtist());
     }
     remoteView.setImageViewResource(R.id.image_view_play_toggle,

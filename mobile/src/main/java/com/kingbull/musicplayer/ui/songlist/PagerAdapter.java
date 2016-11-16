@@ -32,6 +32,6 @@ final class PagerAdapter extends FragmentPagerAdapter {
   }
 
   @Override public CharSequence getPageTitle(int position) {
-    return tabs[position].getAlbum();
+    return tabs[position].album();
   }
 }

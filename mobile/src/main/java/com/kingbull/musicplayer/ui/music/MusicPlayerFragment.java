@@ -146,13 +146,13 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
       return;
     }
     // Step 1: Song name and artist
-    textViewName.setText(song.getDisplayName());
+    textViewName.setText(song.displayName());
     textViewArtist.setText(song.getArtist());
     // Step 2: favorite
     buttonFavoriteToggle.setImageResource(
         song.isFavorite() ? R.drawable.ic_favorite_yes : R.drawable.ic_favorite_no);
     // Step 3: Duration
-    textViewDuration.setText(TimeUtils.formatDuration(song.getDuration()));
+    textViewDuration.setText(TimeUtils.formatDuration(song.duration()));
     // Step 4: Keep these things updated
     // - Album rotation
     // - Progress(textViewProgress & seekBarProgress)

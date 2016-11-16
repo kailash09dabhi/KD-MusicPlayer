@@ -62,9 +62,9 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
       SongFileViewHolder holder = (SongFileViewHolder) viewHolder;
       try {
         Song song = new SongFile(files.get(position)).song(holder.fileNameView.getContext());
-        holder.fileNameView.setText(song.getTitle());
+        holder.fileNameView.setText(song.title());
         holder.artistView.setText(song.getArtist());
-        holder.durationView.setText(new Milliseconds(song.getDuration()).toMmSs());
+        holder.durationView.setText(new Milliseconds(song.duration()).toMmSs());
       } catch (IOException e) {
       }
     }

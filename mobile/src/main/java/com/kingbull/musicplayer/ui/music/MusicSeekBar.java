@@ -46,7 +46,7 @@ public final class MusicSeekBar extends SeekBar {
       @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (fromUser) {
           presenter.onProgressChanged(
-              (int) (MusicSeekBar.this.song.getDuration() * ((float) progress / 100)));
+              (int) (MusicSeekBar.this.song.duration() * ((float) progress / 100)));
         }
       }
 

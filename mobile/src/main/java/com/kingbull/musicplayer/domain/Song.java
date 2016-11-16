@@ -76,7 +76,7 @@ public final class Song implements Parcelable {
     this.id = id;
   }
 
-  public String getTitle() {
+  public String title() {
     return title;
   }
 
@@ -84,7 +84,7 @@ public final class Song implements Parcelable {
     this.title = title;
   }
 
-  public String getDisplayName() {
+  public String displayName() {
     return displayName;
   }
 
@@ -100,7 +100,7 @@ public final class Song implements Parcelable {
     this.artist = artist;
   }
 
-  public String getAlbum() {
+  public String album() {
     return album;
   }
 
@@ -108,7 +108,7 @@ public final class Song implements Parcelable {
     this.album = album;
   }
 
-  public String getPath() {
+  public String path() {
     return path;
   }
 
@@ -116,7 +116,7 @@ public final class Song implements Parcelable {
     this.path = path;
   }
 
-  public int getDuration() {
+  public int duration() {
     return duration;
   }
 
@@ -124,7 +124,7 @@ public final class Song implements Parcelable {
     this.duration = duration;
   }
 
-  public int getSize() {
+  public int size() {
     return size;
   }
 
