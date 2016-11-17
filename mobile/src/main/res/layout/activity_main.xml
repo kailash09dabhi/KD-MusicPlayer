@@ -4,30 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/artistbg"
-    android:fitsSystemWindows="true"
-    tools:context=".ui.main.MainActivity">
+    android:fitsSystemWindows="true">
 
 
   <com.kingbull.musicplayer.ui.main.ViewPagerParallax
-      xmlns:android="http://schemas.android.com/apk/res/android"
       android:id="@+id/pager"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
-    <android.support.v4.view.PagerTitleStrip
+      android:layout_height="match_parent">
+    <com.kingbull.musicplayer.ui.main.PagerClickTitleStrip
         android:id="@+id/tabTitleStrip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="top"
         android:background="@color/transparent_black"
         android:paddingBottom="4dp"
         android:paddingTop="16dp"
         android:textAppearance="@style/AppTheme.TextAppearance.Title">
-    </android.support.v4.view.PagerTitleStrip>
+    </com.kingbull.musicplayer.ui.main.PagerClickTitleStrip>
   </com.kingbull.musicplayer.ui.main.ViewPagerParallax>
   <!--<FrameLayout-->
-      <!--android:id="@+id/fragmentContainer"-->
-      <!--android:layout_width="match_parent"-->
-      <!--android:background="@color/black"-->
-      <!--android:layout_height="match_parent">-->
+  <!--android:id="@+id/fragmentContainer"-->
+  <!--android:layout_width="match_parent"-->
+  <!--android:background="@color/black"-->
+  <!--android:layout_height="match_parent">-->
 
   <!--</FrameLayout>-->
 </FrameLayout>

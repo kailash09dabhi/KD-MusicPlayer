@@ -11,10 +11,6 @@
       android:background="@color/transparent_strong_black"
       android:gravity="center"
       android:minHeight="?actionBarSize"
-      android:shadowColor="#000"
-      android:shadowDx="0"
-      android:shadowDy="0"
-      android:shadowRadius="50"
       style="@style/AppTheme.TextAppearance.Title"
       />
   <android.support.v7.widget.RecyclerView
