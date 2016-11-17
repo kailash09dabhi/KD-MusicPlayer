@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.utils;
 
 import android.media.MediaMetadataRetriever;
 import android.text.TextUtils;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import java.io.File;
 import java.io.FileFilter;
 import java.text.DecimalFormat;
@@ -44,8 +44,8 @@ public class FileUtils {
         return file.getName().toLowerCase().endsWith(".lrc");
     }
 
-    public static List<Song> musicFiles(File dir) {
-        List<Song> songs = new ArrayList<>();
+    public static List<Music> musicFiles(File dir) {
+        List<Music> songs = new ArrayList<>();
         if (dir != null && dir.isDirectory()) {
             final File[] files = dir.listFiles(new FileFilter() {
                 @Override
@@ -54,16 +54,16 @@ public class FileUtils {
                 }
             });
             for (File file : files) {
-                Song song = fileToMusic(file);
+                Music song = fileToMusic(file);
                 if (song != null) {
                     songs.add(song);
                 }
             }
         }
         if (songs.size() > 1) {
-            Collections.sort(songs, new Comparator<Song>() {
+            Collections.sort(songs, new Comparator<Music>() {
                 @Override
-                public int compare(Song left, Song right) {
+                public int compare(Music left, Music right) {
                     return left.title().compareTo(right.title());
                 }
             });
@@ -71,7 +71,7 @@ public class FileUtils {
         return songs;
     }
 
-    public static Song fileToMusic(File file) {
+    public static Music fileToMusic(File file) {
         if (file.length() == 0) return null;
 
         MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
@@ -89,14 +89,14 @@ public class FileUtils {
         final String artist = extractMetadata(metadataRetriever, MediaMetadataRetriever.METADATA_KEY_ARTIST, UNKNOWN);
         final String album = extractMetadata(metadataRetriever, MediaMetadataRetriever.METADATA_KEY_ALBUM, UNKNOWN);
 
-        final Song song = new Song();
-        song.setTitle(title);
-        song.setDisplayName(displayName);
-        song.setArtist(artist);
-        song.setPath(file.getAbsolutePath());
-        song.setAlbum(album);
-        song.setDuration(duration);
-        song.setSize((int) file.length());
+        final Music song = null;
+        //song.setTitle(title);
+        //song.setDisplayName(displayName);
+        //song.setArtist(artist);
+        //song.setPath(file.getAbsolutePath());
+        //song.setAlbum(album);
+        //song.setDuration(duration);
+        //song.setSize((int) file.length());
         return song;
     }
 

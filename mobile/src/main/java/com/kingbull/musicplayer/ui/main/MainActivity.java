@@ -3,7 +3,9 @@ package com.kingbull.musicplayer.ui.main;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerTitleStrip;
+import android.util.Log;
 import android.widget.TextView;
 import butterknife.BindArray;
 import butterknife.BindView;
@@ -12,6 +14,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.main.categories.playlists.mostplayed.MostPlayedFragment;
 import java.util.Random;
 
 public final class MainActivity extends BaseActivity {
@@ -39,10 +42,26 @@ public final class MainActivity extends BaseActivity {
     viewPager.setOffscreenPageLimit(3);
     viewPager.setCurrentItem(2);
     setupPagerTitleStrip();
+    getSupportFragmentManager().addOnBackStackChangedListener(
+        new FragmentManager.OnBackStackChangedListener() {
+          public void onBackStackChanged() {
+            // Update your UI here.
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+              Log.e("backstack", getSupportFragmentManager().getBackStackEntryAt(
+                  getSupportFragmentManager().getBackStackEntryCount() - 1).getName());
+              if (getSupportFragmentManager().getBackStackEntryAt(
+                  getSupportFragmentManager().getBackStackEntryCount() - 1)
+                  .getName()
+                  .equals(MostPlayedFragment.class.getSimpleName())) {
+                ((MostPlayedFragment) getSupportFragmentManager().findFragmentByTag(
+                    MostPlayedFragment.class.getSimpleName())).refresh();
+              }
+            }
+          }
+        });
   }
 
   @Override protected void onPresenterPrepared(Presenter presenter) {
-
   }
 
   @NonNull @Override protected PresenterFactory presenterFactory() {

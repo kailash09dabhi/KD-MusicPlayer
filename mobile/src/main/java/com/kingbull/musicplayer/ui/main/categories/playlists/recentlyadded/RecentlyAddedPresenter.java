@@ -4,7 +4,8 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.storage.MediaCursor;
+import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,7 +41,7 @@ public final class RecentlyAddedPresenter extends Presenter<RecentlyAdded.View>
                 if (cursor != null && cursor.getCount() > 0) {
                   cursor.moveToFirst();
                   do {
-                    Song song = new Song(cursor);
+                    Music song = new SqlMusic(new MediaCursor(cursor));
                     songs.add(song);
                   } while (cursor.moveToNext());
                 }

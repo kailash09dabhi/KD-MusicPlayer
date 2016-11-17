@@ -3,9 +3,12 @@ package com.kingbull.musicplayer.domain.storage;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Music;
-import java.io.File;
+import java.util.Date;
 import javax.inject.Inject;
 
 /**
@@ -13,7 +16,17 @@ import javax.inject.Inject;
  * @date 11/17/2016.
  */
 
-public class SqlMusic implements com.kingbull.musicplayer.domain.Music, SqlTableRow {
+public final class SqlMusic
+    implements com.kingbull.musicplayer.domain.Music, SqlTableRow, Parcelable {
+  public static final Parcelable.Creator<SqlMusic> CREATOR = new Parcelable.Creator<SqlMusic>() {
+    @Override public SqlMusic createFromParcel(Parcel source) {
+      return new SqlMusic(source);
+    }
+
+    @Override public SqlMusic[] newArray(int size) {
+      return new SqlMusic[size];
+    }
+  };
   private final long duration;
   private final int size;
   @Inject SQLiteDatabase sqliteDatabase;
@@ -26,41 +39,74 @@ public class SqlMusic implements com.kingbull.musicplayer.domain.Music, SqlTable
   private String path;
   private long dateAdded;
   private boolean isFavorite;
-
   private long lastTimePlayed;
   private long numberOfTimesPlayed;
 
-  public SqlMusic(Cursor cursor) {
-    sqlite_id = cursor.getInt(cursor.getColumnIndexOrThrow(MusicTable.Columns.SQLITE_ID));
-    id = cursor.getInt(cursor.getColumnIndexOrThrow(MusicTable.Columns.ID));
-    title = cursor.getString(cursor.getColumnIndexOrThrow(MusicTable.Columns.TITLE));
-    artist = cursor.getString(cursor.getColumnIndexOrThrow(MusicTable.Columns.ARTIST));
-    album = cursor.getString(cursor.getColumnIndexOrThrow(MusicTable.Columns.ALBUM));
-    path = cursor.getString(cursor.getColumnIndexOrThrow(MusicTable.Columns.PATH));
-    duration = cursor.getInt(cursor.getColumnIndexOrThrow(MusicTable.Columns.DURATION));
-    //dateAdded = (cursor.getLong(cursor.getColumnIndexOrThrow(
-    //    MediaStore.Audio.Media.DATE_ADDED)));//this seems not working everytime gives 1970 date
-    dateAdded = new File(path).lastModified();
-    size = cursor.getInt(cursor.getColumnIndexOrThrow(MusicTable.Columns.DATE_ADDED));
-    isFavorite = cursor.getInt(cursor.getColumnIndexOrThrow(MusicTable.Columns.FAVORITE)) == 1;
+  public SqlMusic(MediaCursor cursor) {
+    this((Music) cursor);
+    SqlMusicCursor sqlMusicCursor = sqlMusicCursor(id);
+    if (sqlMusicCursor != null) {
+      isFavorite = sqlMusicCursor.isFavorite();
+      lastTimePlayed = sqlMusicCursor.lastTimePlayed();
+      numberOfTimesPlayed = sqlMusicCursor.numberOfTimesPlayed();
+      sqlMusicCursor.close();
+    }
+  }
+
+  public SqlMusic(SqlMusicCursor cursor) {
+    this((Music) cursor);
+    isFavorite = cursor.isFavorite();
+    lastTimePlayed = cursor.lastTimePlayed();
+    numberOfTimesPlayed = cursor.numberOfTimesPlayed();
+    Log.e("lastTimePlayed", new Date(lastTimePlayed).toString());
+    Log.e("NUMBER_OF_TIMES_PLAYED", String.valueOf(numberOfTimesPlayed));
+  }
+
+  public SqlMusic(Music music) {
+    id = music.id();
+    title = music.title();
+    artist = music.artist();
+    album = music.album();
+    path = music.path();
+    duration = music.duration();
+    dateAdded = music.dateAdded();
+    size = music.size();
     MusicPlayerApp.instance().component().inject(this);
   }
 
-  public SqlMusic(Music song) {
-    id = song.id();
-    title = song.title();
-    artist = song.artist();
-    album = song.album();
-    path = song.path();
-    duration = song.duration();
-    //dateAdded = (cursor.getLong(cursor.getColumnIndexOrThrow(
-    //    MediaStore.Audio.Media.DATE_ADDED)));//this seems not working everytime gives 1970 date
-    dateAdded = new File(path).lastModified();
-    size = song.size();
-    isFavorite = song.isFavorite();
-    lastTimePlayed = System.currentTimeMillis();
-    numberOfTimesPlayed = numberOfTimesPlayed++;
+  public SqlMusic(Parcel in) {
+    this.id = in.readInt();
+    this.title = in.readString();
+    this.artist = in.readString();
+    this.album = in.readString();
+    this.path = in.readString();
+    this.duration = in.readLong();
+    this.size = in.readInt();
+    this.isFavorite = in.readInt() == 1;
+    this.lastTimePlayed = in.readLong();
+    this.numberOfTimesPlayed = in.readLong();
+
     MusicPlayerApp.instance().component().inject(this);
+  }
+
+  private SqlMusicCursor sqlMusicCursor(int mediaId) {
+    Cursor cursor = sqliteDatabase.rawQuery("select "
+        + MusicTable.Columns.FAVORITE
+        + ", "
+        + MusicTable.Columns.LAST_TIME_PLAYED
+        + ", "
+        + MusicTable.Columns.NUMBER_OF_TIMES_PLAYED
+        + " from "
+        + MusicTable.NAME
+        + " where "
+        + MusicTable.Columns.ID
+        + " = ?", new String[] { String.valueOf(mediaId) });
+    if (cursor != null && cursor.getCount() > 0) {
+      cursor.moveToFirst();
+      return new SqlMusicCursor(cursor);
+    } else {
+      return null;
+    }
   }
 
   @Override public int id() {
@@ -99,6 +145,14 @@ public class SqlMusic implements com.kingbull.musicplayer.domain.Music, SqlTable
     return isFavorite;
   }
 
+  @Override public long numberOfTimesPlayed() {
+    return numberOfTimesPlayed;
+  }
+
+  @Override public long lastTimePlayed() {
+    return lastTimePlayed;
+  }
+
   @Override public long save() {
     ContentValues values = new ContentValues();
     values.put(MusicTable.Columns.ID, id);
@@ -108,8 +162,8 @@ public class SqlMusic implements com.kingbull.musicplayer.domain.Music, SqlTable
     values.put(MusicTable.Columns.PATH, path);
     values.put(MusicTable.Columns.DATE_ADDED, dateAdded);
     values.put(MusicTable.Columns.DURATION, duration);
-    values.put(MusicTable.Columns.LAST_TIME_PLAYED, lastTimePlayed);
-    values.put(MusicTable.Columns.NUMBER_OF_TIMES_PLAYED, numberOfTimesPlayed);
+    values.put(MusicTable.Columns.LAST_TIME_PLAYED, new CurrentDateTime().toString());
+    values.put(MusicTable.Columns.NUMBER_OF_TIMES_PLAYED, ++numberOfTimesPlayed);
     values.put(MusicTable.Columns.DATE_ADDED, dateAdded);
     values.put(MusicTable.Columns.UPDATED_AT, new CurrentDateTime().toString());
     return sqliteDatabase.insertWithOnConflict(MusicTable.NAME, null, values,
@@ -137,5 +191,22 @@ public class SqlMusic implements com.kingbull.musicplayer.domain.Music, SqlTable
         ", lastTimePlayed=" + lastTimePlayed +
         ", numberOfTimesPlayed=" + numberOfTimesPlayed +
         '}';
+  }
+
+  @Override public int describeContents() {
+    return 0;
+  }
+
+  @Override public void writeToParcel(Parcel dest, int flags) {
+    dest.writeInt(this.id);
+    dest.writeString(this.title);
+    dest.writeString(this.artist);
+    dest.writeString(this.album);
+    dest.writeString(this.path);
+    dest.writeLong(this.duration);
+    dest.writeInt(this.size);
+    dest.writeInt(this.isFavorite ? 1 : 0);
+    dest.writeLong(this.lastTimePlayed);
+    dest.writeLong(this.numberOfTimesPlayed);
   }
 }

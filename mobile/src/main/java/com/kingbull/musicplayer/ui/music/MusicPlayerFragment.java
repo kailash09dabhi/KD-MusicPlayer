@@ -134,8 +134,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.dontAnimate();
     seekBarProgress.startProgresssAnimation();
   }
-@Override
-  public void onSongUpdated(Music song) {
+
+  @Override public void onSongUpdated(Music song) {
     if (song == null) {
       imageViewAlbum.cancelRotateAnimation();
       buttonPlayToggle.setImageResource(R.drawable.ic_play);
@@ -164,45 +164,35 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
       imageViewAlbum.setImageBitmap(bitmap);
       Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
         public void onGenerated(Palette palette) {
-          Palette.Swatch vibrantSwatch = palette.getDarkMutedSwatch();
-          if (vibrantSwatch != null) {
-            getActivity().getWindow()
-                .setBackgroundDrawable(new ColorDrawable(palette.getDarkMutedSwatch().getRgb()));
-            getView().setBackgroundColor(palette.getDarkMutedSwatch().getRgb());
-            textViewName.setTextColor(palette.getLightMutedSwatch().getRgb());
-            textViewArtist.setTextColor(palette.getLightMutedSwatch().getRgb());
-            textViewProgress.setTextColor(palette.getLightMutedSwatch().getRgb());
-            textViewDuration.setTextColor(palette.getLightMutedSwatch().getRgb());
-            //playModeToggleView.setImageDrawable(DrawableHelper.withContext(getContext())
-            //    .withColor(palette.getVibrantSwatch().getRgb())
-            //    .withDrawable(R.drawable.ic_play_mode_shuffle)
-            //    .tint()
-            //    .get());
-            //buttonPlayToggle.setImageDrawable(DrawableHelper.withContext(getContext())
-            //    .withColor(palette.getVibrantSwatch().getRgb())
-            //    .withDrawable(R.drawable.ic_play)
-            //    .tint()
-            //    .get());
-            //buttonFavoriteToggle.setImageDrawable(DrawableHelper.withContext(getContext())
-            //    .withColor(palette.getVibrantSwatch().getRgb())
-            //    .withDrawable(R.drawable.ic_favorite_yes)
-            //    .tint()
-            //    .get());
-            //buttonFavoriteToggle.set
-            //          @BindView(R.id.button_play_mode_toggle) ImageView playModeToggleView;
-            //          @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
-            //          @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
+          if (palette != null) {
+            Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
+            Palette.Swatch mutedSwatch = palette.getMutedSwatch();
+            Palette.Swatch lightMutedSwatch = palette.getLightMutedSwatch();
+            Palette.Swatch lightVibrantSwatch = palette.getLightVibrantSwatch();
+            Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();
+            Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
+            if (darkMutedSwatch != null && lightMutedSwatch != null) {
+              updateUiWithPalleteSwatch(darkMutedSwatch, lightMutedSwatch);
+            } else if (darkVibrantSwatch != null && lightVibrantSwatch != null) {
+              updateUiWithPalleteSwatch(darkVibrantSwatch, lightVibrantSwatch);
+            } else if (vibrantSwatch != null && mutedSwatch != null) {
+              updateUiWithPalleteSwatch(vibrantSwatch, mutedSwatch);
+            }
           }
         }
       });
     }
     imageViewAlbum.pauseRotateAnimation();
     seekBarProgress.dontAnimate();
-    //if (player.isPlaying()) {
-    //  imageViewAlbum.startRotateAnimation();
-    //  handler.post(progressRunnable);
-    //  buttonPlayToggle.setImageResource(R.drawable.ic_pause);
-    //}
+  }
+
+  private void updateUiWithPalleteSwatch(Palette.Swatch darkSwatch, Palette.Swatch lightSwatch) {
+    getActivity().getWindow().setBackgroundDrawable(new ColorDrawable(darkSwatch.getRgb()));
+    getView().setBackgroundColor(darkSwatch.getRgb());
+    textViewName.setTextColor(lightSwatch.getRgb());
+    textViewArtist.setTextColor(lightSwatch.getRgb());
+    textViewProgress.setTextColor(lightSwatch.getRgb());
+    textViewDuration.setTextColor(lightSwatch.getRgb());
   }
 
   @Override public void updatePlayMode(PlayMode playMode) {

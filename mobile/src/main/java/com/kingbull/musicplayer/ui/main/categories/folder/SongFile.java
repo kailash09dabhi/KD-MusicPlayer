@@ -3,7 +3,9 @@ package com.kingbull.musicplayer.ui.main.categories.folder;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.MediaCursor;
+import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,15 +17,15 @@ import java.util.HashMap;
 
 public final class SongFile {
 
-  private static final HashMap<File, Song> hashMap = new HashMap<>();
+  private static final HashMap<File, Music> hashMap = new HashMap<>();
   private final File songFile;
 
   public SongFile(File songFile) {
     this.songFile = songFile;
   }
 
-  Song song(Context context) throws IOException {
-    Song song;
+  Music song(Context context) throws IOException {
+    Music song;
     if (hashMap.containsKey(songFile)) {
       song = hashMap.get(songFile);
     } else {
@@ -39,7 +41,7 @@ public final class SongFile {
               songFile.getCanonicalPath()
           }, "");
       cursor.moveToFirst();
-      song = new Song(cursor);
+      song = new  SqlMusic(new MediaCursor(cursor));
       hashMap.put(songFile, song);
     }
     return song;

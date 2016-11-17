@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/artistbg"
+    android:orientation="vertical">
+  <TextView
+      android:id="@+id/titleView"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/transparent_strong_black"
+      android:gravity="center"
+      android:minHeight="?actionBarSize"
+      android:shadowColor="#000"
+      android:shadowDx="0"
+      android:shadowDy="0"
+      android:shadowRadius="50"
+      style="@style/AppTheme.TextAppearance.Title"
+      />
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/recyclerView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="1px"
+      android:background="@color/transparent_strong_black"
+      android:clipToPadding="false"
+      android:overScrollMode="never"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"/>
+
+</LinearLayout>

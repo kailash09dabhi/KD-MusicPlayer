@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.ui.songlist;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,8 +25,8 @@ import rx.subscriptions.CompositeSubscription;
 public final class SongListPresenter extends Presenter<SongList.View>
     implements SongList.Presenter {
 
-  private HashMap<Song, List<Song>> songListHashMap;
-  private Song[] albums;
+  private HashMap<Music, List<Music>> songListHashMap;
+  private Music[] albums;
   private CompositeSubscription compositeSubscription;
 
   @Override public void takeView(@NonNull SongList.View view) {
@@ -37,24 +37,24 @@ public final class SongListPresenter extends Presenter<SongList.View>
   @Override public void onSongCursorLoadFinished(Cursor cursor) {
     Subscription subscription =
         Observable.just(cursor)
-            .flatMap(new Func1<Cursor, Observable<List<Song>>>() {
-              @Override public Observable<List<Song>> call(Cursor cursor) {
+            .flatMap(new Func1<Cursor, Observable<List<Music>>>() {
+              @Override public Observable<List<Music>> call(Cursor cursor) {
                 return new Songs(cursor).toObservable();
               }
             })
-            .doOnNext(new Action1<List<Song>>() {
-              @Override public void call(List<Song> songs) {
+            .doOnNext(new Action1<List<Music>>() {
+              @Override public void call(List<Music> songs) {
                 //Log.d(TAG, "onLoadFinished: " + songs.size());
-                Collections.sort(songs, new Comparator<Song>() {
-                  @Override public int compare(Song left, Song right) {
-                    return left.displayName().compareTo(right.displayName());
+                Collections.sort(songs, new Comparator<Music>() {
+                  @Override public int compare(Music left, Music right) {
+                    return left.title().compareTo(right.title());
                   }
                 });
               }
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Subscriber<List<Song>>() {
+            .subscribe(new Subscriber<List<Music>>() {
               @Override public void onStart() {
                 //mView.showProgress();
               }
@@ -68,10 +68,10 @@ public final class SongListPresenter extends Presenter<SongList.View>
                 //Log.e(TAG, "onError: ", throwable);
               }
 
-              @Override public void onNext(List<Song> songs) {
+              @Override public void onNext(List<Music> songs) {
                 songListHashMap = new SongGroup(songs).ofAlbum();
                 albums =
-                    songListHashMap.keySet().toArray(new Song[songListHashMap.keySet().size()]);
+                    songListHashMap.keySet().toArray(new Music[songListHashMap.keySet().size()]);
                 view().setAlbumPager(albums);
                 view().showSongs(songListHashMap.get(albums[0]));
               }

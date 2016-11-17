@@ -9,7 +9,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Milliseconds;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -61,7 +61,7 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
     } else if (viewHolder instanceof SongFileViewHolder) {
       SongFileViewHolder holder = (SongFileViewHolder) viewHolder;
       try {
-        Song song = new SongFile(files.get(position)).song(holder.fileNameView.getContext());
+        Music song = new SongFile(files.get(position)).song(holder.fileNameView.getContext());
         holder.fileNameView.setText(song.title());
         holder.artistView.setText(song.artist());
         holder.durationView.setText(new Milliseconds(song.duration()).toMmSs());

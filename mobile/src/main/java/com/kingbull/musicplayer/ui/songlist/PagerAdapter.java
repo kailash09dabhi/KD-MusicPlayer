@@ -5,14 +5,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 
 final class PagerAdapter extends FragmentPagerAdapter {
 
   Context mContext;
-  private Song[] tabs;
+  private Music[] tabs;
 
-  public PagerAdapter(FragmentManager fm, Context context, Song[] tabs) {
+  public PagerAdapter(FragmentManager fm, Context context, Music[] tabs) {
     super(fm);
     mContext = context;
     this.tabs = tabs;

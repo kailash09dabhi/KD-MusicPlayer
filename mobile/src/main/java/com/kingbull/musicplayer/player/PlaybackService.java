@@ -13,7 +13,6 @@ import android.widget.RemoteViews;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PlayList;
-import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.ui.main.MainActivity;
 import com.kingbull.musicplayer.utils.AlbumUtils;
 

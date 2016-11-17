@@ -55,7 +55,7 @@ public final class PlayList implements Parcelable {
         // EMPTY
     }
 
-    public PlayList(Song song) {
+    public PlayList(Music song) {
         songs.add(song);
         numOfSongs = 1;
     }
@@ -196,28 +196,28 @@ public final class PlayList implements Parcelable {
         return songs == null ? 0 : songs.size();
     }
 
-    public void addSong(@Nullable Song song) {
+    public void addSong(@Nullable Music song) {
         if (song == null) return;
 
         songs.add(song);
         numOfSongs = songs.size();
     }
 
-    public void addSong(@Nullable Song song, int index) {
+    public void addSong(@Nullable Music song, int index) {
         if (song == null) return;
 
         songs.add(index, song);
         numOfSongs = songs.size();
     }
 
-    public void addSong(@Nullable List<Song> songs, int index) {
+    public void addSong(@Nullable List<Music> songs, int index) {
         if (songs == null || songs.isEmpty()) return;
 
         this.songs.addAll(index, songs);
         this.numOfSongs = this.songs.size();
     }
 
-    public boolean removeSong(Song song) {
+    public boolean removeSong(Music song) {
         if (song == null) return false;
 
         int index;

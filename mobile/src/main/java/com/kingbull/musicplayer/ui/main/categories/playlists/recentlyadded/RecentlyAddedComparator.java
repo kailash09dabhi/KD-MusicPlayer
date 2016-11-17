@@ -8,7 +8,7 @@ import java.util.Comparator;
  * @date 11/15/2016.
  */
 
-public class RecentlyAddedComparator implements Comparator<Music> {
+public final class RecentlyAddedComparator implements Comparator<Music> {
 
   @Override public int compare(Music song1, Music song2) {
     long dateAddedSong1 = song1.dateAdded();

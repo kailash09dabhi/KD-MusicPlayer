@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.folder;
 
 import android.support.annotation.NonNull;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import java.io.File;
 import rx.subscriptions.CompositeSubscription;
@@ -44,7 +44,7 @@ public final class MyFilesPresenter extends Presenter<MyFiles.View> implements M
     }
   }
 
-  @Override public void onSongClick(Song song) {
+  @Override public void onSongClick(Music song) {
     view().showMusicPlayer(song);
   }
 }

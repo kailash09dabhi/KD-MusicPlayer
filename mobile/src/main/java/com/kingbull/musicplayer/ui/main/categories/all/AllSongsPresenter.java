@@ -1,10 +1,10 @@
 package com.kingbull.musicplayer.ui.main.categories.all;
 
 import android.database.Cursor;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.storage.MediaCursor;
+import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +17,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 import static android.content.ContentValues.TAG;
 
@@ -29,13 +28,6 @@ import static android.content.ContentValues.TAG;
 public final class AllSongsPresenter extends Presenter<AllSongs.View>
     implements AllSongs.Presenter {
 
-  private CompositeSubscription compositeSubscription;
-
-  @Override public void takeView(@NonNull AllSongs.View view) {
-    super.takeView(view);
-    compositeSubscription = new CompositeSubscription();
-  }
-
   @Override public void onAllSongsCursorLoadFinished(Cursor cursor) {
     Subscription subscription =
         Observable.just(cursor)
@@ -45,7 +37,7 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                 if (cursor != null && cursor.getCount() > 0) {
                   cursor.moveToFirst();
                   do {
-                    Song song = new Song(cursor);
+                    Music song = new SqlMusic(new MediaCursor(cursor));
                     songs.add(song);
                   } while (cursor.moveToNext());
                 }

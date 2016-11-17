@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.event;
 
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 
 /**
  * Created with Android Studio.
@@ -11,9 +11,9 @@ import com.kingbull.musicplayer.domain.Song;
  */
 public final class PlaySongEvent {
 
-    public Song song;
+    public Music song;
 
-    public PlaySongEvent(Song song) {
+    public PlaySongEvent(Music song) {
         this.song = song;
     }
 }

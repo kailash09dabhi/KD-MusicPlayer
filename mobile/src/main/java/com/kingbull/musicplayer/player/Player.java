@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PlayList;
-import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,9 +70,7 @@ public final class Player implements IPlayback, MediaPlayer.OnCompletionListener
         mPlayer.prepare();
         mPlayer.start();
         notifyPlayStatusChanged(true);
-        new SqlMusic(song).save();
-
-
+        ((SqlMusic) song).save();
       } catch (IOException e) {
         Log.e(TAG, "play: ", e);
         notifyPlayStatusChanged(false);

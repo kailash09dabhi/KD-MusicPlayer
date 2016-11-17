@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists;
 
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import java.util.List;
 
 /**
@@ -10,7 +10,7 @@ import java.util.List;
 
 public final class PlayList {
   private String name;
-  private List<Song> songs;
+  private List<Music> songs;
   PlayList(String name){
     this.name = name;
   }
@@ -19,7 +19,7 @@ public final class PlayList {
     return name;
   }
 
-  public List<Song> songs() {
+  public List<Music> songs() {
     return songs;
   }
 }

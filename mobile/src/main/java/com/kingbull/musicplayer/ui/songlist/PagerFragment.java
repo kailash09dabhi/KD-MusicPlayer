@@ -7,6 +7,7 @@ package com.kingbull.musicplayer.ui.songlist;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +17,15 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.utils.AlbumUtils;
 
 public final class PagerFragment extends Fragment {
   @BindView(R.id.image) ImageView imageView;
   @BindView(R.id.label) TextView labelView;
-  Song song;
+  Music song;
 
-  static PagerFragment instance(Song song) {
+  static PagerFragment instance(Music song) {
     PagerFragment fragment = new PagerFragment();
     fragment.song = song;
     return fragment;
@@ -40,7 +41,7 @@ public final class PagerFragment extends Fragment {
   //
   @Override public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    outState.putParcelable("song", song);
+    outState.putParcelable("song", (Parcelable) song);
   }
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {

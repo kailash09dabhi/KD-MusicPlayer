@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.folder;
 
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.io.File;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 
     void close();
 
-    void showMusicPlayer(Song song);
+    void showMusicPlayer(Music song);
   }
 
   interface Model extends Mvp.Model {
@@ -37,6 +37,6 @@ import java.util.List;
 
     void onBackPressed();
 
-    void onSongClick(Song song);
+    void onSongClick(Music song);
   }
 }

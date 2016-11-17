@@ -31,7 +31,7 @@ public final class Folder implements Parcelable {
 
     //@MapCollection(ArrayList.class)
     //@Mapping(Relation.OneToMany)
-    private List<Song> songs = new ArrayList<>();
+    private List<Music> songs = new ArrayList<>();
 
     private Date createdAt;
 
@@ -80,11 +80,11 @@ public final class Folder implements Parcelable {
         this.numOfSongs = numOfSongs;
     }
 
-    public List<Song> getSongs() {
+    public List<Music> getSongs() {
         return songs;
     }
 
-    public void setSongs(List<Song> songs) {
+    public void setSongs(List<Music> songs) {
         this.songs = songs;
     }
 
@@ -107,7 +107,7 @@ public final class Folder implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.path);
         dest.writeInt(this.numOfSongs);
-        dest.writeTypedList(this.songs);
+        //dest.writeTypedList(this.songs);
         dest.writeLong(this.createdAt != null ? this.createdAt.getTime() : -1);
     }
 
@@ -116,7 +116,7 @@ public final class Folder implements Parcelable {
         this.name = in.readString();
         this.path = in.readString();
         this.numOfSongs = in.readInt();
-        this.songs = in.createTypedArrayList(Song.CREATOR);
+        //this.songs = in.createTypedArrayList(Music.CREATOR);
         long tmpCreatedAt = in.readLong();
         this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
     }

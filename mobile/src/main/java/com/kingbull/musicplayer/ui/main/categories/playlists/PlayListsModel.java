@@ -13,7 +13,8 @@ public final class PlayListsModel implements PlayLists.Model {
   @Override public List<PlayList> listOfPlayList() {
     PlayList playList1 = new PlayList("Recently Added");
     PlayList playList2 = new PlayList("Last Played");
-    PlayList playList3 = new PlayList("FM Recordings");
-    return Arrays.asList(playList1, playList2, playList3);
+    PlayList playList3 = new PlayList("Most Played");
+    PlayList playList4 = new PlayList("FM Recordings");
+    return Arrays.asList(playList1, playList2, playList3, playList4);
   }
 }

@@ -3,7 +3,6 @@ package com.kingbull.musicplayer.domain.storage;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.Song;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -59,7 +58,7 @@ public final class MusicTable implements SqlTable {
     if (cursor != null) {
       if (cursor.getCount() > 0 && cursor.moveToFirst()) {
         do {
-          SqlMusic item = new SqlMusic(cursor);
+          SqlMusic item = new SqlMusic(new SqlMusicCursor(cursor));
           itemList.add(item);
         } while (cursor.moveToNext());
       }
@@ -72,16 +71,16 @@ public final class MusicTable implements SqlTable {
     String query = "select * from "
         + MusicTable.NAME
         + "  order  by datetime("
-        + Columns.UPDATED_AT
+        + Columns.LAST_TIME_PLAYED
         + ") "
-        + "ASC";
+        + "DESC";
     ;
     Cursor cursor = sqliteDatabase.rawQuery(query, null);
     List<Music> itemList = new ArrayList<>();
     if (cursor != null) {
       if (cursor.getCount() > 0 && cursor.moveToFirst()) {
         do {
-          SqlMusic song = new SqlMusic(cursor);
+          SqlMusic song = new SqlMusic(new SqlMusicCursor(cursor));
           itemList.add(song);
         } while (cursor.moveToNext());
       }
@@ -90,7 +89,7 @@ public final class MusicTable implements SqlTable {
     return itemList;
   }
 
-  public List<Song> fetchAllWithMostRecentFirstOrder() {
+  public List<Music> fetchAllWithMostRecentFirstOrder() {
     String query = "select * from "
         + MusicTable.NAME
         + "  order  by datetime("
@@ -98,11 +97,11 @@ public final class MusicTable implements SqlTable {
         + ") "
         + "DESC";
     Cursor cursor = sqliteDatabase.rawQuery(query, null);
-    List<Song> itemList = new ArrayList<>();
+    List<Music> itemList = new ArrayList<>();
     if (cursor != null) {
       if (cursor.getCount() > 0 && cursor.moveToFirst()) {
         do {
-          Song item = new Song(cursor);
+          Music item = new SqlMusic(new SqlMusicCursor(cursor));
           itemList.add(item);
         } while (cursor.moveToNext());
       }
@@ -111,18 +110,18 @@ public final class MusicTable implements SqlTable {
     return itemList;
   }
 
-  public Song fetchMostRecentTimestamp() {
+  public Music fetchMostRecentTimestamp() {
     String query = "select * from "
         + MusicTable.NAME
         + "  order  by datetime("
         + Columns.CREATED_AT
         + ") DESC limit 1";
     Cursor cursor = sqliteDatabase.rawQuery(query, null);
-    Song song = null;
+    Music song = null;
     if (cursor != null) {
       if (cursor.getCount() > 0 && cursor.moveToFirst()) {
         do {
-          song = new Song(cursor);
+          song = new  SqlMusic(new SqlMusicCursor(cursor));
         } while (cursor.moveToNext());
       }
       cursor.close();
@@ -132,6 +131,27 @@ public final class MusicTable implements SqlTable {
 
   @Override public void clear() {
     sqliteDatabase.delete(MusicTable.NAME, null, null);
+  }
+
+  public List<Music> mostPlayedSongs() {
+    String query = "select * from "
+        + MusicTable.NAME
+        + "  order  by "
+        + Columns.NUMBER_OF_TIMES_PLAYED
+        + " DESC";
+    ;
+    Cursor cursor = sqliteDatabase.rawQuery(query, null);
+    List<Music> itemList = new ArrayList<>();
+    if (cursor != null) {
+      if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        do {
+          SqlMusic song = new SqlMusic(new SqlMusicCursor(cursor));
+          itemList.add(song);
+        } while (cursor.moveToNext());
+      }
+      cursor.close();
+    }
+    return itemList;
   }
 
   public static final class Columns {

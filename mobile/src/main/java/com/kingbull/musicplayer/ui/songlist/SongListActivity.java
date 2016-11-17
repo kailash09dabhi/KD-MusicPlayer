@@ -14,7 +14,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
@@ -113,13 +112,13 @@ public final class SongListActivity extends BaseActivity
   @Override public void onLoaderReset(Loader<Cursor> loader) {
   }
 
-  @Override public void showSongs(List<Song> songs) {
+  @Override public void showSongs(List<Music> songs) {
     songList.clear();
     songList.addAll(songs);
     adapter.notifyDataSetChanged();
   }
 
-  @Override public void setAlbumPager(Song[] songs) {
+  @Override public void setAlbumPager(Music[] songs) {
     viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), this, songs));
   }
 }

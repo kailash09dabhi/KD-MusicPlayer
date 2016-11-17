@@ -8,8 +8,6 @@ package com.kingbull.musicplayer.domain;
 public interface Music {
   int id();
 
-
-
   String title();
 
   String artist();
@@ -26,5 +24,7 @@ public interface Music {
 
   boolean isFavorite();
 
+  long numberOfTimesPlayed();
 
+  long lastTimePlayed();
 }

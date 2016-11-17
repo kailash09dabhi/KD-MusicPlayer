@@ -15,6 +15,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
@@ -25,18 +28,20 @@ import java.util.List;
 
 public final class RecentlyAddedFragment extends BaseFragment<RecentlyAdded.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, RecentlyAdded.View {
-  RecentlyAdded.Presenter presenter = new RecentlyAddedPresenter();
-  private RecyclerView recyclerView;
+  @BindView(R.id.titleView) TextView titleView;
+  @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_genres, null);
+    View view = inflater.inflate(R.layout.fragment_playlist, null);
+    ButterKnife.bind(this, view);
     setupView(view);
-    presenter.takeView(this);
     return view;
   }
 
   @Override protected void onPresenterPrepared(RecentlyAdded.Presenter presenter) {
+    presenter.takeView(this);
+    getLoaderManager().initLoader(0, null, this);
   }
 
   @NonNull @Override protected PresenterFactory<RecentlyAdded.Presenter> presenterFactory() {
@@ -44,10 +49,8 @@ public final class RecentlyAddedFragment extends BaseFragment<RecentlyAdded.Pres
   }
 
   private void setupView(View v) {
-    recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+    titleView.setText("Recently Added".toUpperCase());
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    getLoaderManager().initLoader(0, null, this);
-    v.setBackgroundResource(R.drawable.artistbg);
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

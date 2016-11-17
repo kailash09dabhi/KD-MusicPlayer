@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.songlist;
 
 import android.database.Cursor;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.util.List;
 
@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface SongList {
   interface View extends Mvp.View {
-    void showSongs(List<Song> songs);
+    void showSongs(List<Music> songs);
 
-    void setAlbumPager(Song[] songs);
+    void setAlbumPager(Music[] songs);
   }
 
   interface Model extends Mvp.Model {

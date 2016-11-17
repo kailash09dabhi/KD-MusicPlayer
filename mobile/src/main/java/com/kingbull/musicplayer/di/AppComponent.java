@@ -4,6 +4,7 @@ import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import com.kingbull.musicplayer.player.PlaybackService;
 import com.kingbull.musicplayer.ui.main.categories.playlists.lastplayed.LastPlayedModel;
+import com.kingbull.musicplayer.ui.main.categories.playlists.mostplayed.MostPlayedModel;
 import dagger.Component;
 import javax.inject.Singleton;
 
@@ -16,6 +17,8 @@ public interface AppComponent {
   void inject(SqlMusic music);
 
   void inject(LastPlayedModel lastPlayedModel);
+
+  void inject(MostPlayedModel mostPlayedModel);
 
   MusicPlayerApp app();
 }

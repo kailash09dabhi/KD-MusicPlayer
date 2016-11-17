@@ -1,7 +1,9 @@
 package com.kingbull.musicplayer.ui.songlist;
 
 import android.database.Cursor;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.MediaCursor;
+import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
@@ -18,12 +20,12 @@ public final class Songs {
     this.cursor = cursor;
   }
 
-  Observable<List<Song>> toObservable() {
-    List<Song> songs = new ArrayList<>();
+  Observable<List<Music>> toObservable() {
+    List<Music> songs = new ArrayList<>();
     if (cursor != null && cursor.getCount() > 0) {
       cursor.moveToFirst();
       do {
-        Song song = new Song(cursor);
+        Music song = new SqlMusic(new MediaCursor(cursor));
         songs.add(song);
       } while (cursor.moveToNext());
     }

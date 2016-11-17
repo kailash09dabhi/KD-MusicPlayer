@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.ui.main.categories.folder;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
@@ -39,21 +40,8 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_my_files, null);
     ButterKnife.bind(this, view);
-    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-      view.setOnKeyListener(new View.OnKeyListener() {
-      @Override public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-          presenter.onBackPressed();
-          return true;
-        } else {
-          return false;
-        }
-      }
-    });
-     return view;
+    return view;
   }
-
-
 
   @Override public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
@@ -81,9 +69,9 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
     getActivity().onBackPressed();
   }
 
-  @Override public void showMusicPlayer(Song song) {
+  @Override public void showMusicPlayer(Music song) {
     Intent intent = new Intent(getActivity(), MusicPlayerActivity.class);
-    intent.putExtra("song", song);
+    intent.putExtra("song", (Parcelable) song);
     startActivity(intent);
     //getActivity().getSupportFragmentManager()
     //    .beginTransaction()
@@ -92,13 +80,21 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
     //    .commit();
   }
 
-
-  @Override protected void onPresenterPrepared(MyFiles.Presenter presenter) {
+  @Override protected void onPresenterPrepared(final MyFiles.Presenter presenter) {
     myFilesAdapter = new MyFilesAdapter(files, presenter);
     recyclerView.setAdapter(myFilesAdapter);
     presenter.takeView(this);
-
-
+    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    getView().setOnKeyListener(new View.OnKeyListener() {
+      @Override public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+          presenter.onBackPressed();
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
   }
 
   @NonNull @Override protected PresenterFactory presenterFactory() {
