@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.widget.SeekBar;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 
 /**
  * @author Kailash Dabhi
@@ -17,7 +17,7 @@ import com.kingbull.musicplayer.domain.Song;
 public final class MusicSeekBar extends SeekBar {
   private final Handler handler = new Handler();
   MusicPlayer.Presenter presenter;
-  private Song song;
+  private Music song;
   private Runnable progressRunnable = new Runnable() {
     @Override public void run() {
       presenter.onSeekbarProgress();
@@ -40,7 +40,7 @@ public final class MusicSeekBar extends SeekBar {
     this.presenter = presenter;
   }
 
-  void updateMusic(Song song) {
+  void updateMusic(Music song) {
     this.song = song;
     setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
       @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -62,7 +62,7 @@ public final class MusicSeekBar extends SeekBar {
 
   @Override public Parcelable onSaveInstanceState() {
     Bundle bundle = new Bundle();
-    bundle.putParcelable("song", song);
+    bundle.putParcelable("song", (Parcelable) song);
     bundle.putParcelable("instanceState", super.onSaveInstanceState());
     return bundle;
   }

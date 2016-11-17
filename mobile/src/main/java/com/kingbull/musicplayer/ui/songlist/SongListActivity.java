@@ -13,6 +13,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.Presenter;
@@ -41,7 +42,7 @@ public final class SongListActivity extends BaseActivity
   @BindView(R.id.pager_container) PagerContainer pagerContainer;
   SongList.Presenter songListPresenter = new SongListPresenter();
   SongsAdapter adapter;
-  List<Song> songList = new ArrayList<>();
+  List<Music> songList = new ArrayList<>();
   @BindView(pager) ViewPager viewPager;
 
   PagerAdapter pagerAdapter;

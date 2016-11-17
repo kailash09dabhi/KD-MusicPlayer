@@ -39,10 +39,8 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_my_files, null);
     ButterKnife.bind(this, view);
-    myFilesAdapter = new MyFilesAdapter(files, presenter);
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    recyclerView.setAdapter(myFilesAdapter);
-    view.setOnKeyListener(new View.OnKeyListener() {
+      view.setOnKeyListener(new View.OnKeyListener() {
       @Override public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
           presenter.onBackPressed();
@@ -96,7 +94,11 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
 
 
   @Override protected void onPresenterPrepared(MyFiles.Presenter presenter) {
+    myFilesAdapter = new MyFilesAdapter(files, presenter);
+    recyclerView.setAdapter(myFilesAdapter);
     presenter.takeView(this);
+
+
   }
 
   @NonNull @Override protected PresenterFactory presenterFactory() {

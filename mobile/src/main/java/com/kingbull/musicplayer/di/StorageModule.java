@@ -18,8 +18,8 @@ package com.kingbull.musicplayer.di;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.domain.storage.MusicTable;
 import com.kingbull.musicplayer.domain.storage.MusicSqliteOpenHelper;
-import com.kingbull.musicplayer.domain.storage.SongTable;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -41,8 +41,8 @@ import javax.inject.Singleton;
     return openHelper.getWritableDatabase();
   }
 
-  @Provides @Singleton SongTable provideTimestampTable(SQLiteDatabase sqLiteDatabase) {
-    return new SongTable(sqLiteDatabase);
+  @Provides @Singleton MusicTable provideTimestampTable(SQLiteDatabase sqLiteDatabase) {
+    return new MusicTable(sqLiteDatabase);
   }
   //@Provides @Singleton File provideStorageDirectory(TimestampApplication app) {
   //  File storageDir =

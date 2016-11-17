@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded;
 
 import android.database.Cursor;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface RecentlyAdded {
   interface View extends Mvp.View {
-    void showRecentlyAddedSongs(List<Song> songs);
+    void showRecentlyAddedSongs(List<Music> songs);
   }
 
   interface Model extends Mvp.Model {

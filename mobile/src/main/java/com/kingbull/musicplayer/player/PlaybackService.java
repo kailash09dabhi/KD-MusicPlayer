@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.widget.RemoteViews;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.ui.main.MainActivity;
@@ -96,7 +97,7 @@ public final class PlaybackService extends Service implements IPlayback, IPlayba
     return mPlayer.play(list, startIndex);
   }
 
-  @Override public boolean play(Song song) {
+  @Override public boolean play(Music song) {
     return mPlayer.play(song);
   }
 
@@ -120,7 +121,7 @@ public final class PlaybackService extends Service implements IPlayback, IPlayba
     return mPlayer.getProgress();
   }
 
-  @Override public Song getPlayingSong() {
+  @Override public Music getPlayingSong() {
     return mPlayer.getPlayingSong();
   }
 
@@ -149,16 +150,16 @@ public final class PlaybackService extends Service implements IPlayback, IPlayba
     super.onDestroy();
   }
 
-  @Override public void onSwitchLast(@Nullable Song last) {
+  @Override public void onSwitchLast(@Nullable Music last) {
     showNotification();
   }
   // Playback Callbacks
 
-  @Override public void onSwitchNext(@Nullable Song next) {
+  @Override public void onSwitchNext(@Nullable Music next) {
     showNotification();
   }
 
-  @Override public void onComplete(@Nullable Song next) {
+  @Override public void onComplete(@Nullable Music next) {
     showNotification();
   }
 
@@ -219,10 +220,10 @@ public final class PlaybackService extends Service implements IPlayback, IPlayba
   }
 
   private void updateRemoteViews(RemoteViews remoteView) {
-    Song currentSong = mPlayer.getPlayingSong();
+    Music currentSong = mPlayer.getPlayingSong();
     if (currentSong != null) {
-      remoteView.setTextViewText(R.id.text_view_name, currentSong.displayName());
-      remoteView.setTextViewText(R.id.text_view_artist, currentSong.getArtist());
+      remoteView.setTextViewText(R.id.text_view_name, currentSong.title());
+      remoteView.setTextViewText(R.id.text_view_artist, currentSong.artist());
     }
     remoteView.setImageViewResource(R.id.image_view_play_toggle,
         isPlaying() ? R.drawable.ic_remote_view_pause : R.drawable.ic_remote_view_play);

@@ -15,8 +15,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PreferenceManager;
-import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.player.PlayMode;
 import com.kingbull.musicplayer.player.PlaybackService;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
@@ -40,11 +40,11 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @BindView(R.id.button_play_mode_toggle) PlayModeToggleView playModeToggleView;
   @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
   @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
-  Song song;
+  Music song;
   PlaybackServiceConnection playbackServiceConnection;
   private boolean mIsServiceBound;
 
-  public static MusicPlayerFragment instance(Song song) {
+  public static MusicPlayerFragment instance(Music song) {
     MusicPlayerFragment fragment = new MusicPlayerFragment();
     fragment.song = song;
     return fragment;
@@ -134,8 +134,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.dontAnimate();
     seekBarProgress.startProgresssAnimation();
   }
-
-  public void onSongUpdated(Song song) {
+@Override
+  public void onSongUpdated(Music song) {
     if (song == null) {
       imageViewAlbum.cancelRotateAnimation();
       buttonPlayToggle.setImageResource(R.drawable.ic_play);
@@ -146,8 +146,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
       return;
     }
     // Step 1: Song name and artist
-    textViewName.setText(song.displayName());
-    textViewArtist.setText(song.getArtist());
+    textViewName.setText(song.title());
+    textViewArtist.setText(song.artist());
     // Step 2: favorite
     buttonFavoriteToggle.setImageResource(
         song.isFavorite() ? R.drawable.ic_favorite_yes : R.drawable.ic_favorite_no);

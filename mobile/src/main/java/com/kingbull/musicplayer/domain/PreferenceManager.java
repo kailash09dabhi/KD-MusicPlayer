@@ -16,7 +16,7 @@ public final class PreferenceManager {
     private static final String PREFS_NAME = "config.xml";
 
     /**
-     * For deciding whether to add the default folders(SDCard/Download/Music),
+     * For deciding whether to add the default folders(SDCard/Download/MusicTable),
      * if it's being deleted manually by users, then they should not be auto-recreated.
      * {@link #isFirstQueryFolders(Context)}, {@link #reportFirstQueryFolders(Context)}
      */

@@ -9,7 +9,7 @@
   <string name="tab_Songs">Songs</string>
 
 
-  <!-- Music Player -->
+  <!-- MusicTable Player -->
   <string name="albumsongseparator">\n</string>
   <!-- used in various places to indicate there is one genre for a given artist or album -->
   <string name="onesong">1 genre</string>
@@ -36,7 +36,7 @@
 
   <!-- The fast scroll thumb will show one character from this string depending on the position in the list -->
   <string name="fast_scroll_alphabet">\u0020ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
-  <!-- Music -->
+  <!-- MusicTable -->
 
   <string name="mp.music.default_duration">00:00</string>
 

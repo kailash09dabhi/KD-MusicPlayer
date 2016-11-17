@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded;
 
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import java.util.Comparator;
 
 /**
@@ -8,9 +8,9 @@ import java.util.Comparator;
  * @date 11/15/2016.
  */
 
-public class RecentlyAddedComparator implements Comparator<Song> {
+public class RecentlyAddedComparator implements Comparator<Music> {
 
-  @Override public int compare(Song song1, Song song2) {
+  @Override public int compare(Music song1, Music song2) {
     long dateAddedSong1 = song1.dateAdded();
     long dateAddedSong2 = song2.dateAdded();
     if (dateAddedSong1 < dateAddedSong2) {

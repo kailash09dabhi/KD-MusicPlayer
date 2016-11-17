@@ -1,8 +1,8 @@
 package com.kingbull.musicplayer.player;
 
 import android.support.annotation.Nullable;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PlayList;
-import com.kingbull.musicplayer.domain.Song;
 
 /**
  * Created with Android Studio.
@@ -21,7 +21,7 @@ public interface IPlayback {
 
   boolean play(PlayList list, int startIndex);
 
-  boolean play(Song song);
+  boolean play(Music song);
 
   boolean playLast();
 
@@ -33,7 +33,7 @@ public interface IPlayback {
 
   int getProgress();
 
-  Song getPlayingSong();
+  Music getPlayingSong();
 
   boolean seekTo(int progress);
 
@@ -49,11 +49,11 @@ public interface IPlayback {
 
   interface Callback {
 
-    void onSwitchLast(@Nullable Song last);
+    void onSwitchLast(@Nullable Music last);
 
-    void onSwitchNext(@Nullable Song next);
+    void onSwitchNext(@Nullable Music next);
 
-    void onComplete(@Nullable Song next);
+    void onComplete(@Nullable Music next);
 
     void onPlayStatusChanged(boolean isPlaying);
   }

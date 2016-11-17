@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.ui.base;
 
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
+import com.kingbull.musicplayer.ui.main.categories.playlists.lastplayed.LastPlayedPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAddedPresenter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
 import com.kingbull.musicplayer.ui.songlist.SongListPresenter;
@@ -41,6 +42,15 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
 
     @Override public com.kingbull.musicplayer.ui.music.MusicPlayer.Presenter create() {
       return new MusicPlayerPresenter();
+    }
+  }
+
+  class LastPlayed implements
+      PresenterFactory<com.kingbull.musicplayer.ui.main.categories.playlists.lastplayed.LastPlayed.Presenter> {
+
+    @Override
+    public com.kingbull.musicplayer.ui.main.categories.playlists.lastplayed.LastPlayed.Presenter create() {
+      return new LastPlayedPresenter();
     }
   }
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 7:19 PM
  * Desc: Folder
  */
-//@Table("folder")
+//@SqlTable("folder")
 public final class Folder implements Parcelable {
 
     public static final String COLUMN_NAME = "name";

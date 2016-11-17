@@ -2,8 +2,8 @@ package com.kingbull.musicplayer.ui.music;
 
 import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PreferenceManager;
-import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.player.IPlayback;
 import com.kingbull.musicplayer.player.PlayMode;
 import com.kingbull.musicplayer.ui.base.Presenter;
@@ -19,7 +19,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     implements MusicPlayer.Presenter, IPlayback.Callback {
   private static final long UPDATE_PROGRESS_INTERVAL = 1000;
   private IPlayback player;
-  private Song song;
+  private Music song;
 
   @Override public void onTakePlayBack(IPlayback iPlayback) {
     if (iPlayback == null) {
@@ -32,13 +32,13 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     }
   }
 
-  @Override public void onTakeSong(Song song) {
+  @Override public void onTakeSong(Music song) {
     this.song = song;
   }
 
   @Override public void onFavoriteToggleClick() {
     if (player == null) return;
-    Song currentSong = player.getPlayingSong();
+    Music currentSong = player.getPlayingSong();
     if (currentSong != null) {
     }
   }
@@ -102,24 +102,24 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     view().updateProgressDurationText(duration);
   }
 
-  public int getCurrentSongDuration() {
-    Song currentSong = player.getPlayingSong();
-    int duration = 0;
+  public long getCurrentSongDuration() {
+    Music currentSong = player.getPlayingSong();
+    long duration = 0;
     if (currentSong != null) {
       duration = currentSong.duration();
     }
     return duration;
   }
 
-  @Override public void onSwitchLast(@Nullable Song last) {
+  @Override public void onSwitchLast(@Nullable Music last) {
     view().onSongUpdated(last);
   }
 
-  @Override public void onSwitchNext(@Nullable Song next) {
+  @Override public void onSwitchNext(@Nullable Music next) {
     view().onSongUpdated(next);
   }
 
-  @Override public void onComplete(@Nullable Song next) {
+  @Override public void onComplete(@Nullable Music next) {
     view().onSongUpdated(next);
   }
 

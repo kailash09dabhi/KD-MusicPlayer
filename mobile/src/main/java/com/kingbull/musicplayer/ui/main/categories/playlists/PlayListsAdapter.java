@@ -9,6 +9,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
+import com.kingbull.musicplayer.ui.main.categories.playlists.lastplayed.LastPlayedFragment;
 import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAddedFragment;
 import java.util.List;
 
@@ -55,6 +56,14 @@ public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapte
             .add(android.R.id.content, new RecentlyAddedFragment(),
                 RecentlyAddedFragment.class.getSimpleName())
             .addToBackStack(RecentlyAddedFragment.class.getSimpleName())
+            .commit();
+      }
+      if (playLists.get(getAdapterPosition()).name().equals("Last Played")) {
+        ((BaseActivity) view.getContext()).getSupportFragmentManager()
+            .beginTransaction()
+            .add(android.R.id.content, new LastPlayedFragment(),
+                LastPlayedFragment.class.getSimpleName())
+            .addToBackStack(LastPlayedFragment.class.getSimpleName())
             .commit();
       }
     }

@@ -17,12 +17,12 @@ public class TimeUtils {
      * @param duration The time needs to be parsed.
      */
     @SuppressLint("DefaultLocale")
-    public static String formatDuration(int duration) {
+    public static String formatDuration(long duration) {
         duration /= 1000; // milliseconds into seconds
-        int minute = duration / 60;
-        int hour = minute / 60;
+        long minute = duration / 60;
+        long hour = minute / 60;
         minute %= 60;
-        int second = duration % 60;
+        long second = duration % 60;
         if (hour != 0)
             return String.format("%2d:%02d:%02d", hour, minute, second);
         else

@@ -9,7 +9,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.media.MediaMetadataRetriever;
 import android.util.Log;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import java.io.File;
 
 /**
@@ -24,7 +24,7 @@ public class AlbumUtils {
 
     private static final String TAG = "AlbumUtils";
 
-    public static Bitmap parseAlbum(Song song) {
+    public static Bitmap parseAlbum(Music song) {
         return parseAlbum(new File(song.path()));
     }
 

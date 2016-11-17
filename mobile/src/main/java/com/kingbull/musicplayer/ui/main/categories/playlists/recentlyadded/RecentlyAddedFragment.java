@@ -16,7 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsCursorLoader;
@@ -62,7 +62,7 @@ public final class RecentlyAddedFragment extends BaseFragment<RecentlyAdded.Pres
     // Empty
   }
 
-  @Override public void showRecentlyAddedSongs(List<Song> songs) {
+  @Override public void showRecentlyAddedSongs(List<Music> songs) {
     recyclerView.setAdapter(new SongsAdapter(songs));
   }
 }

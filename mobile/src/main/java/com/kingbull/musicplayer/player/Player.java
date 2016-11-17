@@ -3,8 +3,10 @@ package com.kingbull.musicplayer.player;
 import android.media.MediaPlayer;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,13 +64,16 @@ public final class Player implements IPlayback, MediaPlayer.OnCompletionListener
       return true;
     }
     if (mPlayList.prepare()) {
-      Song song = mPlayList.getCurrentSong();
+      Music song = mPlayList.getCurrentSong();
       try {
         mPlayer.reset();
         mPlayer.setDataSource(song.path());
         mPlayer.prepare();
         mPlayer.start();
         notifyPlayStatusChanged(true);
+        new SqlMusic(song).save();
+
+
       } catch (IOException e) {
         Log.e(TAG, "play: ", e);
         notifyPlayStatusChanged(false);
@@ -94,7 +99,7 @@ public final class Player implements IPlayback, MediaPlayer.OnCompletionListener
     return play();
   }
 
-  @Override public boolean play(Song song) {
+  @Override public boolean play(Music song) {
     if (song == null) return false;
     isPaused = false;
     mPlayList.getSongs().clear();
@@ -106,7 +111,7 @@ public final class Player implements IPlayback, MediaPlayer.OnCompletionListener
     isPaused = false;
     boolean hasLast = mPlayList.hasLast();
     if (hasLast) {
-      Song last = mPlayList.last();
+      Music last = mPlayList.last();
       play();
       notifyPlayLast(last);
       return true;
@@ -118,7 +123,7 @@ public final class Player implements IPlayback, MediaPlayer.OnCompletionListener
     isPaused = false;
     boolean hasNext = mPlayList.hasNext(false);
     if (hasNext) {
-      Song next = mPlayList.next();
+      Music next = mPlayList.next();
       play();
       notifyPlayNext(next);
       return true;
@@ -144,13 +149,13 @@ public final class Player implements IPlayback, MediaPlayer.OnCompletionListener
     return mPlayer.getCurrentPosition();
   }
 
-  @Nullable @Override public Song getPlayingSong() {
+  @Nullable @Override public Music getPlayingSong() {
     return mPlayList.getCurrentSong();
   }
 
   @Override public boolean seekTo(int progress) {
     if (mPlayList.getSongs().isEmpty()) return false;
-    Song currentSong = mPlayList.getCurrentSong();
+    Music currentSong = mPlayList.getCurrentSong();
     if (currentSong != null) {
       if (currentSong.duration() <= progress) {
         onCompletion(mPlayer);
@@ -168,7 +173,7 @@ public final class Player implements IPlayback, MediaPlayer.OnCompletionListener
   // Listeners
 
   @Override public void onCompletion(MediaPlayer mp) {
-    Song next = null;
+    Music next = null;
     // There is only one limited play mode which is list, player should be stopped when hitting the list end
     if (mPlayList.getPlayMode() == PlayMode.LIST
         && mPlayList.getPlayingIndex() == mPlayList.getNumOfSongs() - 1) {
@@ -214,19 +219,19 @@ public final class Player implements IPlayback, MediaPlayer.OnCompletionListener
     }
   }
 
-  private void notifyPlayLast(Song song) {
+  private void notifyPlayLast(Music song) {
     for (Callback callback : mCallbacks) {
       callback.onSwitchLast(song);
     }
   }
 
-  private void notifyPlayNext(Song song) {
+  private void notifyPlayNext(Music song) {
     for (Callback callback : mCallbacks) {
       callback.onSwitchNext(song);
     }
   }
 
-  private void notifyComplete(Song song) {
+  private void notifyComplete(Music song) {
     for (Callback callback : mCallbacks) {
       callback.onComplete(song);
     }

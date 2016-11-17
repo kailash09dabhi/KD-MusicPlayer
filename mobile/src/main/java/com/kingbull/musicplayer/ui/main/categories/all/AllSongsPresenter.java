@@ -3,6 +3,7 @@ package com.kingbull.musicplayer.ui.main.categories.all;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.Song;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import java.util.ArrayList;
@@ -38,9 +39,9 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
   @Override public void onAllSongsCursorLoadFinished(Cursor cursor) {
     Subscription subscription =
         Observable.just(cursor)
-            .flatMap(new Func1<Cursor, Observable<List<Song>>>() {
-              @Override public Observable<List<Song>> call(Cursor cursor) {
-                List<Song> songs = new ArrayList<>();
+            .flatMap(new Func1<Cursor, Observable<List<Music>>>() {
+              @Override public Observable<List<Music>> call(Cursor cursor) {
+                List<Music> songs = new ArrayList<>();
                 if (cursor != null && cursor.getCount() > 0) {
                   cursor.moveToFirst();
                   do {
@@ -51,11 +52,11 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                 return Observable.just(songs);
               }
             })
-            .doOnNext(new Action1<List<Song>>() {
-              @Override public void call(List<Song> songs) {
+            .doOnNext(new Action1<List<Music>>() {
+              @Override public void call(List<Music> songs) {
                 Log.d(TAG, "onLoadFinished: " + songs.size());
-                Collections.sort(songs, new Comparator<Song>() {
-                  @Override public int compare(Song left, Song right) {
+                Collections.sort(songs, new Comparator<Music>() {
+                  @Override public int compare(Music left, Music right) {
                     return left.title().compareTo(right.title());
                   }
                 });
@@ -63,7 +64,7 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Subscriber<List<Song>>() {
+            .subscribe(new Subscriber<List<Music>>() {
               @Override public void onStart() {
                 //mView.showProgress();
               }
@@ -77,7 +78,7 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                 Log.e(TAG, "onError: ", throwable);
               }
 
-              @Override public void onNext(List<Song> songs) {
+              @Override public void onNext(List<Music> songs) {
                 //mView.onLocalMusicLoaded(genres);
                 //mView.emptyView(genres.isEmpty());
                 view().showAllSongs(songs);

@@ -10,7 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Milliseconds;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
 import java.util.List;
 
@@ -21,9 +21,9 @@ import java.util.List;
 
 public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFileViewHolder> {
 
-  List<Song> songs;
+  List<Music> songs;
 
-  public SongsAdapter(List<Song> songs) {
+  public SongsAdapter(List<Music> songs) {
     this.songs = songs;
   }
 
@@ -33,10 +33,10 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
   }
 
   @Override public void onBindViewHolder(SongFileViewHolder holder, int position) {
-    Song song = songs.get(position);
-    holder.fileNameView.setText(song.title());
-    holder.albumView.setText(song.album());
-    holder.durationView.setText(new Milliseconds(song.duration()).toMmSs());
+    Music music = songs.get(position);
+    holder.fileNameView.setText(music.title());
+    holder.albumView.setText(music.album());
+    holder.durationView.setText(new Milliseconds(music.duration()).toMmSs());
   }
 
   @Override public int getItemCount() {

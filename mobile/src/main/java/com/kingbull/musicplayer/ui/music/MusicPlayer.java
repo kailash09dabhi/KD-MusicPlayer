@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.music;
 
 import android.support.annotation.Nullable;
-import com.kingbull.musicplayer.domain.Song;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.player.IPlayback;
 import com.kingbull.musicplayer.player.PlayMode;
 import com.kingbull.musicplayer.ui.base.Mvp;
@@ -17,7 +17,7 @@ public interface MusicPlayer {
 
   interface View extends Mvp.View {
 
-    void onSongUpdated(@Nullable Song song);
+    void onSongUpdated(@Nullable Music song);
 
     void updatePlayMode(PlayMode playMode);
 
@@ -38,7 +38,7 @@ public interface MusicPlayer {
 
     void onTakePlayBack(IPlayback iPlayback);
 
-    void onTakeSong(Song song);
+    void onTakeSong(Music song);
 
     void onFavoriteToggleClick();
 

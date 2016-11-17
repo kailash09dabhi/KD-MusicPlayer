@@ -3,13 +3,9 @@
  * You should have received a copy of the license in this archive (see LICENSE).
  * Copyright @Dibakar_Mistry, 2015.
  */
-package com.kingbull.musicplayer.ui.main.categories.all;
+package com.kingbull.musicplayer.ui.main.categories.playlists.lastplayed;
 
-import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,41 +13,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.ui.base.BaseFragment;
+import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.songlist.SongsAdapter;
 import java.util.List;
 
-public final class AllSongsFragment extends Fragment
-    implements LoaderManager.LoaderCallbacks<Cursor>, AllSongs.View {
-  AllSongs.Presenter presenter = new AllSongsPresenter();
+public final class LastPlayedFragment extends BaseFragment<LastPlayed.Presenter>
+    implements LastPlayed.View {
   private RecyclerView recyclerView;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_genres, null);
     setupView(view);
-    presenter.takeView(this);
     return view;
   }
 
   private void setupView(View v) {
     recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    getLoaderManager().initLoader(0, null, this);
+    v.setBackgroundResource(R.drawable.artistbg);
   }
 
-  @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    return new AllSongsCursorLoader(getContext());
+  @Override public void showLastPlayedMusic(List<Music> lastPlayedMusic) {
+    recyclerView.setAdapter(new SongsAdapter(lastPlayedMusic));
   }
 
-  @Override public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-    presenter.onAllSongsCursorLoadFinished(cursor);
+  @Override protected void onPresenterPrepared(LastPlayed.Presenter presenter) {
+    presenter.takeView(this);
   }
 
-  @Override public void onLoaderReset(Loader<Cursor> loader) {
-    // Empty
-  }
-
-  @Override public void showAllSongs(List<Music> songs) {
-    recyclerView.setAdapter(new SongsAdapter(songs));
+  @Override protected PresenterFactory<LastPlayed.Presenter> presenterFactory() {
+    return new PresenterFactory.LastPlayed();
   }
 }

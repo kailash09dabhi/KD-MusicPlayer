@@ -13,8 +13,8 @@ import java.io.File;
  * Time: 4:01 PM
  * Desc: Genre
  */
-//@Table("song")
-public final class Song implements Parcelable {
+//@SqlTable("song")
+public final class Song implements Parcelable, Music {
 
   public static final Parcelable.Creator<Song> CREATOR = new Parcelable.Creator<Song>() {
     @Override public Song createFromParcel(Parcel source) {
@@ -38,10 +38,6 @@ public final class Song implements Parcelable {
   private long dateAdded;
   private boolean favorite;
 
-  public long dateAdded() {
-    return dateAdded;
-  }
-
   public Song() {
     // Empty
   }
@@ -51,6 +47,7 @@ public final class Song implements Parcelable {
   }
 
   public Song(Cursor cursor) {
+    id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
     title = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
     String displayName =
         cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME));
@@ -68,16 +65,24 @@ public final class Song implements Parcelable {
     size = (cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)));
   }
 
-  public int getId() {
-    return id;
+  public long dateAdded() {
+    return dateAdded;
   }
 
   public void setId(int id) {
     this.id = id;
   }
 
+  @Override public int id() {
+    return id;
+  }
+
   public String title() {
     return title;
+  }
+
+  @Override public String artist() {
+    return artist;
   }
 
   public void setTitle(String title) {
@@ -90,10 +95,6 @@ public final class Song implements Parcelable {
 
   public void setDisplayName(String displayName) {
     this.displayName = displayName;
-  }
-
-  public String getArtist() {
-    return artist;
   }
 
   public void setArtist(String artist) {
@@ -116,7 +117,7 @@ public final class Song implements Parcelable {
     this.path = path;
   }
 
-  public int duration() {
+  public long duration() {
     return duration;
   }
 

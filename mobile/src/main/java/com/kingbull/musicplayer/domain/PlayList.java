@@ -18,7 +18,7 @@ import java.util.Random;
  * Time: 5:53 PM
  * Desc: PlayList
  */
-//@Table("playlist")
+//@SqlTable("playlist")
 public final class PlayList implements Parcelable {
 
     // Play List: Favorite
@@ -41,7 +41,7 @@ public final class PlayList implements Parcelable {
 
     //@MapCollection(ArrayList.class)
     //@Mapping(Relation.OneToMany)
-    private List<Song> songs = new ArrayList<>();
+    private List<Music> songs = new ArrayList<>();
 
     //@Ignore
     private int playingIndex = -1;
@@ -113,14 +113,14 @@ public final class PlayList implements Parcelable {
     }
 
     @NonNull
-    public List<Song> getSongs() {
+    public List<Music> getSongs() {
         if (songs == null) {
             songs = new ArrayList<>();
         }
         return songs;
     }
 
-    public void setSongs(@Nullable List<Song> songs) {
+    public void setSongs(@Nullable List<Music> songs) {
         if (songs == null) {
             songs = new ArrayList<>();
         }
@@ -158,7 +158,7 @@ public final class PlayList implements Parcelable {
         dest.writeByte(this.favorite ? (byte) 1 : (byte) 0);
         dest.writeLong(this.createdAt != null ? this.createdAt.getTime() : -1);
         dest.writeLong(this.updatedAt != null ? this.updatedAt.getTime() : -1);
-        dest.writeTypedList(this.songs);
+        //dest.writeTypedList(this.songs);
         dest.writeInt(this.playingIndex);
         dest.writeInt(this.playMode == null ? -1 : this.playMode.ordinal());
     }
@@ -172,7 +172,7 @@ public final class PlayList implements Parcelable {
         this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
         long tmpUpdatedAt = in.readLong();
         this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
-        this.songs = in.createTypedArrayList(Song.CREATOR);
+        //this.songs = in.createTypedArrayList(Song.CREATOR);
         this.playingIndex = in.readInt();
         int tmpPlayMode = in.readInt();
         this.playMode = tmpPlayMode == -1 ? null : PlayMode.values()[tmpPlayMode];
@@ -227,8 +227,8 @@ public final class PlayList implements Parcelable {
                 return true;
             }
         } else {
-            for (Iterator<Song> iterator = songs.iterator(); iterator.hasNext(); ) {
-                Song item = iterator.next();
+            for (Iterator<Music> iterator = songs.iterator(); iterator.hasNext(); ) {
+                Music item = iterator.next();
                 if (song.path().equals(item.path())) {
                     iterator.remove();
                     numOfSongs = songs.size();
@@ -253,7 +253,7 @@ public final class PlayList implements Parcelable {
     /**
      * The current song being played or is playing based on the {@link #playingIndex}
      */
-    public Song getCurrentSong() {
+    public Music getCurrentSong() {
         if (playingIndex != NO_POSITION) {
             return songs.get(playingIndex);
         }
@@ -264,7 +264,7 @@ public final class PlayList implements Parcelable {
         return songs != null && songs.size() != 0;
     }
 
-    public Song last() {
+    public Music last() {
         switch (playMode) {
             case LOOP:
             case LIST:
@@ -307,7 +307,7 @@ public final class PlayList implements Parcelable {
      *
      * @return The next song to play
      */
-    public Song next() {
+    public Music next() {
         switch (playMode) {
             case LOOP:
             case LIST:
