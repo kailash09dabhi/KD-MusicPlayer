@@ -4,7 +4,7 @@ import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PreferenceManager;
-import com.kingbull.musicplayer.player.IPlayback;
+import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.player.PlayMode;
 import com.kingbull.musicplayer.ui.base.Presenter;
 
@@ -16,18 +16,18 @@ import com.kingbull.musicplayer.ui.base.Presenter;
  * Desc: MusicPlayerPresenter
  */
 public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
-    implements MusicPlayer.Presenter, IPlayback.Callback {
+    implements MusicPlayer.Presenter, Player.Callback {
   private static final long UPDATE_PROGRESS_INTERVAL = 1000;
-  private IPlayback player;
+  private Player player;
   private Music song;
 
-  @Override public void onTakePlayBack(IPlayback iPlayback) {
-    if (iPlayback == null) {
-      player.unregisterCallback(this);
-      player = null;
+  @Override public void onTakePlayBack(Player player) {
+    if (player == null) {
+      this.player.unregisterCallback(this);
+      this.player = null;
     } else {
-      player = iPlayback;
-      player.registerCallback(this);
+      this.player = player;
+      this.player.registerCallback(this);
       view().onSongUpdated(song);
     }
   }

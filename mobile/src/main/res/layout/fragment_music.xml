@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="true"
     android:background="?android:windowBackground"
-    android:focusableInTouchMode="true"
+    android:clickable="true"
     android:focusable="true"
+    android:focusableInTouchMode="true"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="@dimen/mp.padding.large">
@@ -28,6 +28,12 @@
         />
   </RelativeLayout>
 
+
+  <ImageView
+      android:id="@+id/equalizerView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/ksw_md_thumb"/>
   <TextView
       android:id="@+id/text_view_name"
       android:layout_width="wrap_content"

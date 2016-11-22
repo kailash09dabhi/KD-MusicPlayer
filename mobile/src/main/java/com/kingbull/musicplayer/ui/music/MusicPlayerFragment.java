@@ -17,10 +17,11 @@ import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PreferenceManager;
+import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.player.PlayMode;
-import com.kingbull.musicplayer.player.PlaybackService;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
 import com.kingbull.musicplayer.ui.widget.ShadowImageView;
 import com.kingbull.musicplayer.utils.AlbumUtils;
 import com.kingbull.musicplayer.utils.TimeUtils;
@@ -48,6 +49,13 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     MusicPlayerFragment fragment = new MusicPlayerFragment();
     fragment.song = song;
     return fragment;
+  }
+
+  @OnClick(R.id.equalizerView) void onEqualizerView() {
+    Intent intent = new Intent(getActivity(), EqualizerActivity.class);
+    intent.putExtra("audio_session_id",
+        com.kingbull.musicplayer.player.MusicPlayer.instance().audioSessionId());
+    startActivity(intent);
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -217,7 +225,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     // class name because we want a specific service implementation that
     // we know will be running in our own process (and thus won't be
     // supporting component replacement by other applications).
-    getActivity().bindService(new Intent(getActivity(), PlaybackService.class),
+    getActivity().bindService(new Intent(getActivity(), MusicService.class),
         playbackServiceConnection, Context.BIND_AUTO_CREATE);
     mIsServiceBound = true;
   }

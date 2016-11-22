@@ -23,7 +23,7 @@ import com.kingbull.musicplayer.utils.AlbumUtils;
  * Time: 4:27 PM
  * Desc: PlayService
  */
-public final class PlaybackService extends Service implements IPlayback, IPlayback.Callback {
+public final class MusicService extends Service implements Player, Player.Callback {
 
   private static final String ACTION_PLAY_TOGGLE = "io.github.ryanhoo.music.ACTION.PLAY_TOGGLE";
   private static final String ACTION_PLAY_LAST = "io.github.ryanhoo.music.ACTION.PLAY_LAST";
@@ -33,12 +33,12 @@ public final class PlaybackService extends Service implements IPlayback, IPlayba
   private static final int NOTIFICATION_ID = 1;
   private final Binder mBinder = new LocalBinder();
   private RemoteViews mContentViewBig, mContentViewSmall;
-  private Player mPlayer;
+  private MusicPlayer mMusicPlayer;
 
   @Override public void onCreate() {
     super.onCreate();
-    mPlayer = Player.getInstance();
-    mPlayer.registerCallback(this);
+    mMusicPlayer = MusicPlayer.instance();
+    mMusicPlayer.registerCallback(this);
   }
 
   @Override public int onStartCommand(Intent intent, int flags, int startId) {
@@ -81,71 +81,71 @@ public final class PlaybackService extends Service implements IPlayback, IPlayba
   }
 
   @Override public void setPlayList(PlayList list) {
-    mPlayer.setPlayList(list);
+    mMusicPlayer.setPlayList(list);
   }
 
   @Override public boolean play() {
-    return mPlayer.play();
+    return mMusicPlayer.play();
   }
 
   @Override public boolean play(PlayList list) {
-    return mPlayer.play(list);
+    return mMusicPlayer.play(list);
   }
 
   @Override public boolean play(PlayList list, int startIndex) {
-    return mPlayer.play(list, startIndex);
+    return mMusicPlayer.play(list, startIndex);
   }
 
   @Override public boolean play(Music song) {
-    return mPlayer.play(song);
+    return mMusicPlayer.play(song);
   }
 
   @Override public boolean playLast() {
-    return mPlayer.playLast();
+    return mMusicPlayer.playLast();
   }
 
   @Override public boolean playNext() {
-    return mPlayer.playNext();
+    return mMusicPlayer.playNext();
   }
 
   @Override public boolean pause() {
-    return mPlayer.pause();
+    return mMusicPlayer.pause();
   }
 
   @Override public boolean isPlaying() {
-    return mPlayer.isPlaying();
+    return mMusicPlayer.isPlaying();
   }
 
   @Override public int getProgress() {
-    return mPlayer.getProgress();
+    return mMusicPlayer.getProgress();
   }
 
   @Override public Music getPlayingSong() {
-    return mPlayer.getPlayingSong();
+    return mMusicPlayer.getPlayingSong();
   }
 
   @Override public boolean seekTo(int progress) {
-    return mPlayer.seekTo(progress);
+    return mMusicPlayer.seekTo(progress);
   }
 
   @Override public void setPlayMode(PlayMode playMode) {
-    mPlayer.setPlayMode(playMode);
+    mMusicPlayer.setPlayMode(playMode);
   }
 
   @Override public void registerCallback(Callback callback) {
-    mPlayer.registerCallback(callback);
+    mMusicPlayer.registerCallback(callback);
   }
 
   @Override public void unregisterCallback(Callback callback) {
-    mPlayer.unregisterCallback(callback);
+    mMusicPlayer.unregisterCallback(callback);
   }
 
   @Override public void removeCallbacks() {
-    mPlayer.removeCallbacks();
+    mMusicPlayer.removeCallbacks();
   }
 
   @Override public void releasePlayer() {
-    mPlayer.releasePlayer();
+    mMusicPlayer.releasePlayer();
     super.onDestroy();
   }
 
@@ -219,7 +219,7 @@ public final class PlaybackService extends Service implements IPlayback, IPlayba
   }
 
   private void updateRemoteViews(RemoteViews remoteView) {
-    Music currentSong = mPlayer.getPlayingSong();
+    Music currentSong = mMusicPlayer.getPlayingSong();
     if (currentSong != null) {
       remoteView.setTextViewText(R.id.text_view_name, currentSong.title());
       remoteView.setTextViewText(R.id.text_view_artist, currentSong.artist());
@@ -240,8 +240,8 @@ public final class PlaybackService extends Service implements IPlayback, IPlayba
   // PendingIntent
 
   public class LocalBinder extends Binder {
-    public PlaybackService getService() {
-      return PlaybackService.this;
+    public MusicService getService() {
+      return MusicService.this;
     }
   }
 }

@@ -9,7 +9,7 @@
   <string name="tab_Songs">Songs</string>
 
 
-  <!-- MusicTable Player -->
+  <!-- MusicTable MusicPlayer -->
   <string name="albumsongseparator">\n</string>
   <!-- used in various places to indicate there is one genre for a given artist or album -->
   <string name="onesong">1 genre</string>

@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.ui.music;
 
 import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.player.IPlayback;
+import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.player.PlayMode;
 import com.kingbull.musicplayer.ui.base.Mvp;
 
@@ -32,11 +32,12 @@ public interface MusicPlayer {
     void onPlayStatusChanged(boolean isPlaying);
 
     void stopSeekbarProgress();
+
   }
 
   interface Presenter extends Mvp.Presenter<MusicPlayer.View> {
 
-    void onTakePlayBack(IPlayback iPlayback);
+    void onTakePlayBack(Player player);
 
     void onTakeSong(Music song);
 
@@ -57,5 +58,6 @@ public interface MusicPlayer {
     void onStopTrackingTouch(int progress);
 
     void onProgressChanged(int i);
+
   }
 }

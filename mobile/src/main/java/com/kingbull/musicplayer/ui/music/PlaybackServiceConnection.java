@@ -3,7 +3,7 @@ package com.kingbull.musicplayer.ui.music;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import com.kingbull.musicplayer.player.PlaybackService;
+import com.kingbull.musicplayer.player.MusicService;
 
 /**
  * @author Kailash Dabhi
@@ -23,7 +23,7 @@ public final class PlaybackServiceConnection implements ServiceConnection {
     // interact with the service.  Because we have bound to a explicit
     // service that we know is running in our own process, we can
     // cast its IBinder to a concrete class and directly access it.
-    presenter.onTakePlayBack(((PlaybackService.LocalBinder) service).getService());
+    presenter.onTakePlayBack(((MusicService.LocalBinder) service).getService());
   }
 
   public void onServiceDisconnected(ComponentName className) {

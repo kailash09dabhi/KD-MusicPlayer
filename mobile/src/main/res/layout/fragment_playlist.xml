@@ -17,10 +17,12 @@
       android:id="@+id/recyclerView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginTop="1px"
       android:background="@color/transparent_strong_black"
       android:clipToPadding="false"
       android:overScrollMode="never"
+      android:requiresFadingEdge="vertical"
+      android:fadeScrollbars="true"
+      android:fadingEdgeLength="34dp"
       android:paddingLeft="10dp"
       android:paddingRight="10dp"/>
 
