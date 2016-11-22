@@ -72,7 +72,7 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
       itemView.setOnClickListener(this);
     }
 
-    @Override public void onClick(View view) {
+    @Override public void onClick(final View view) {
       ((FragmentActivity) view.getContext()).getSupportFragmentManager()
           .beginTransaction()
           .add(android.R.id.content, MusicPlayerFragment.instance(songs.get(getAdapterPosition())))

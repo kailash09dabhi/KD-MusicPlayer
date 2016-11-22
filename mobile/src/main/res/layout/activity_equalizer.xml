@@ -1,327 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f5f5f5"
+    android:background="@drawable/artistbg"
     android:orientation="vertical">
-
-
-  <RelativeLayout
-      android:layout_width="fill_parent"
-      android:layout_height="50dp"
-      >
-
-    <Spinner
-        android:id="@+id/equalizerSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"/>
-
-    <TextView
-        android:id="@+id/onOffText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@+id/ToggleButton"
-        android:text="OFF"
-        android:visibility="invisible"/>
-
-    <com.kyleduo.switchbutton.SwitchButton
-        android:id="@+id/ToggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:visibility="gone"/>
-
-    <Button
-        android:id="@+id/button_add_preset"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:padding="10dp"/>
-
-  </RelativeLayout>
-
-  <LinearLayout
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:layout_weight="120"
-      android:background="#fff"
-      >
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="20"
-        android:paddingBottom="10dp"
-        android:paddingLeft="15dp"
-        android:paddingTop="10dp"
-        >
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_alignParentTop="true"
-          android:text="15db"
-          android:textColor="#818181"
-          android:textSize="13dp"/>
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_centerVertical="true"
-          android:text="0db"
-          android:textColor="#818181"
-          android:textSize="13dp"/>
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_alignParentBottom="true"
-          android:text="-15db"
-          android:textColor="#818181"
-          android:textSize="13dp"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="20">
-
-      <View
-          android:layout_width="4dp"
-          android:layout_height="fill_parent"
-          android:layout_centerHorizontal="true"
-          android:layout_marginBottom="15dp"
-          android:layout_marginTop="10dp"
-          android:background="#e1e1e1"
-          />
-
-      <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
-          android:layout_width="wrap_content"
-          android:layout_height="fill_parent"
-          android:layout_centerHorizontal="true">
-
-        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
-            android:id="@+id/mySeekBar1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:seekBarRotation="CW270"/> <!-- Rotation: CW90 or CW270 -->
-
-      </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="20">
-
-      <View
-          android:layout_width="4dp"
-          android:layout_height="fill_parent"
-          android:layout_centerHorizontal="true"
-          android:layout_marginBottom="15dp"
-          android:layout_marginTop="10dp"
-          android:background="#e1e1e1"
-          />
-
-      <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
-          android:layout_width="wrap_content"
-          android:layout_height="fill_parent"
-          android:layout_centerHorizontal="true">
-
-        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
-            android:id="@+id/mySeekBar2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:seekBarRotation="CW270"/> <!-- Rotation: CW90 or CW270 -->
-
-      </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="20">
-
-      <View
-          android:layout_width="4dp"
-          android:layout_height="fill_parent"
-          android:layout_centerHorizontal="true"
-          android:layout_marginBottom="15dp"
-          android:layout_marginTop="10dp"
-          android:background="#e1e1e1"
-          />
-
-      <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
-          android:layout_width="wrap_content"
-          android:layout_height="fill_parent"
-          android:layout_centerHorizontal="true">
-
-        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
-            android:id="@+id/mySeekBar3"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:seekBarRotation="CW270"/> <!-- Rotation: CW90 or CW270 -->
-
-      </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="20">
-
-      <View
-          android:layout_width="4dp"
-          android:layout_height="fill_parent"
-          android:layout_centerHorizontal="true"
-          android:layout_marginBottom="15dp"
-          android:layout_marginTop="10dp"
-          android:background="#e1e1e1"
-          />
-
-      <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
-          android:layout_width="wrap_content"
-          android:layout_height="fill_parent"
-          android:layout_centerHorizontal="true">
-
-        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
-            android:id="@+id/mySeekBar4"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:seekBarRotation="CW270"/> <!-- Rotation: CW90 or CW270 -->
-
-      </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="20">
-
-      <View
-          android:layout_width="4dp"
-          android:layout_height="fill_parent"
-          android:layout_centerHorizontal="true"
-          android:layout_marginBottom="15dp"
-          android:layout_marginTop="10dp"
-          android:background="#e1e1e1"
-          />
-
-      <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
-          android:layout_width="wrap_content"
-          android:layout_height="fill_parent"
-          android:layout_centerHorizontal="true">
-
-        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
-            android:id="@+id/mySeekBar5"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:seekBarRotation="CW270"/> <!-- Rotation: CW90 or CW270 -->
-
-      </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
-
-    </RelativeLayout>
-
-
-  </LinearLayout>
-
-  <LinearLayout
-      android:layout_width="fill_parent"
+  <TextView
+      android:id="@+id/titleView"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="#fff"
-      android:orientation="horizontal"
-      android:weightSum="120">
+      android:background="@color/transparent_black"
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="20"
-        android:gravity="center"
-        android:text="TEST"
-        android:textColor="#fff"
-        android:visibility="invisible"/>
+      android:gravity="center"
+      android:minHeight="?actionBarSize"
+      fontPath="@string/font.julius.sans.one"
 
-    <TextView
-        android:id="@+id/slider1Layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="20"
-        android:gravity="center"
-        android:text="60Hz"
-        android:textColor="#818181"
-        android:textSize="13dp"/>
+      tools:ignore="MissingPrefix"
+      style="@style/AppTheme.TextAppearance.Title"
+      />
+  <Spinner
+      android:id="@+id/equalizerSpinner"
+      android:layout_width="match_parent"
+      android:layout_height="40dp"
 
-    <TextView
-        android:id="@+id/slider2Layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="20"
-        android:gravity="center"
-        android:text="230Hz"
-        android:textColor="#818181"
-        android:textSize="13dp"/>
-
-    <TextView
-        android:id="@+id/slider3Layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="20"
-        android:gravity="center"
-        android:text="60Hz"
-        android:textColor="#818181"
-        android:textSize="13dp"/>
-
-    <TextView
-        android:id="@+id/slider4Layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="20"
-        android:gravity="center"
-        android:text="60Hz"
-        android:textColor="#818181"
-        android:textSize="13dp"/>
-
-    <TextView
-        android:id="@+id/slider5Layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="20"
-        android:gravity="center"
-        android:text="220Hz"
-        android:textColor="#818181"
-        android:textSize="13dp"/>
+      android:background="@drawable/selector"
+      android:layout_alignParentLeft="true"
+      android:layout_centerVertical="true"/>
 
 
-  </LinearLayout>
+  <com.kingbull.musicplayer.ui.equalizer.EqualizerView
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:background="@color/transparent_black"/>
+
 
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
+      android:background="@color/transparent_strong_black"
       android:orientation="horizontal"
       android:paddingBottom="10dp"
-      android:paddingTop="20dp"
       >
 
     <LinearLayout
@@ -332,10 +52,10 @@
 
 
       <RelativeLayout
-          android:padding="16dp"
           android:id="@+id/bassBoostLayout"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"/>
+          android:layout_height="wrap_content"
+          android:padding="16dp"/>
 
 
       <TextView
@@ -344,7 +64,7 @@
           android:layout_gravity="center"
           android:layout_marginTop="-10dp"
           android:text="Bass"
-          android:textColor="#313131"/>
+          android:textColor="@android:color/white"/>
 
     </LinearLayout>
     <LinearLayout
@@ -356,9 +76,9 @@
 
       <RelativeLayout
           android:id="@+id/volumeLayout"
-          android:padding="16dp"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"/>
+          android:layout_height="wrap_content"
+          android:padding="16dp"/>
 
 
       <TextView
@@ -367,7 +87,7 @@
           android:layout_gravity="center"
           android:layout_marginTop="-10dp"
           android:text="Bass"
-          android:textColor="#313131"/>
+          android:textColor="@android:color/white"/>
 
     </LinearLayout>
     <LinearLayout
@@ -379,8 +99,8 @@
       <RelativeLayout
           android:id="@+id/verticalRoundKnobLayout"
           android:layout_width="match_parent"
-          android:padding="16dp"
-          android:layout_height="wrap_content"/>
+          android:layout_height="wrap_content"
+          android:padding="16dp"/>
 
 
       <TextView
@@ -389,7 +109,7 @@
           android:layout_gravity="center"
           android:layout_marginTop="-10dp"
           android:text="3D Effect"
-          android:textColor="#313131"/>
+          android:textColor="@android:color/white"/>
 
     </LinearLayout>
 

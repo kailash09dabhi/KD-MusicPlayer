@@ -1,6 +1,5 @@
 package com.kingbull.musicplayer.ui.equalizer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,9 +8,11 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RadialGradient;
 import android.graphics.Shader;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import com.kingbull.musicplayer.R;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +21,13 @@ import java.util.List;
  * @date 11/20/2016.
  */
 
-public class EqualizerView extends View {
-  Paint paint;
-  Paint circlePaint;
-  List<Point> pointList;
-  List<Point> curvePivotPointList;
-  Point lastTouchedPoint;
-  Point screenSize;
-  RadialGradient radialGradient;
+public final class EqualizerView extends View {
+  private final Paint paint = new Paint();
+  private final Paint circlePaint = new Paint();
+  private final List<Point> equalizerPointList = new ArrayList<>();
+  private final List<Point> curvePivotPointList = new ArrayList<>();
+  private RadialGradient radialGradient;
+  private Point lastTouchedPoint;
   private int maxHeight;
   private int minHeight;
 
@@ -42,17 +42,11 @@ public class EqualizerView extends View {
   }
 
   private void init() {
-    screenSize = new Point();
-    pointList = new ArrayList<>();
-    curvePivotPointList = new ArrayList<>();
-    paint = new Paint();
-    //paint.setColor(Color.parseColor("#656360"));
     paint.setStyle(Paint.Style.STROKE);
     paint.setAntiAlias(true);
     paint.setStrokeWidth(10);
     paint.setStrokeJoin(Paint.Join.ROUND);
     paint.setStrokeCap(Paint.Cap.ROUND);
-    circlePaint = new Paint();
     circlePaint.setColor(Color.WHITE);
     circlePaint.setStyle(Paint.Style.STROKE);
     circlePaint.setAntiAlias(true);
@@ -61,21 +55,21 @@ public class EqualizerView extends View {
       @Override public void run() {
         maxHeight = getHeight() * 80 / 100;
         minHeight = getHeight() * 20 / 100;
-        radialGradient = new RadialGradient(getWidth() / 2, getHeight() / 2, getHeight() * 2 / 5,
-            Color.parseColor("#656360"), Color.parseColor("#656360"), Shader.TileMode.CLAMP);
+        radialGradient = new RadialGradient(0, getHeight() / 2, getWidth() / 2,
+            ContextCompat.getColor(getContext(), R.color.dark_gray_shade),
+            ContextCompat.getColor(getContext(), R.color.light_gray_shade), Shader.TileMode.CLAMP);
         paint.setShader(radialGradient);
-        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getSize(screenSize);
-        pointList.add(new Point(screenSize.x / 10 * 1, getHeight() / 2));
-        pointList.add(new Point((screenSize.x / 10) * 3, getHeight() / 2));
-        pointList.add(new Point((screenSize.x / 10) * 5, getHeight() / 2));
-        pointList.add(new Point((screenSize.x / 10) * 7, getHeight() / 2));
-        pointList.add(new Point((screenSize.x / 10) * 9, getHeight() / 2));
+        equalizerPointList.add(new Point(getWidth() / 10 * 1, getHeight() / 2));
+        equalizerPointList.add(new Point((getWidth() / 10) * 3, getHeight() / 2));
+        equalizerPointList.add(new Point((getWidth() / 10) * 5, getHeight() / 2));
+        equalizerPointList.add(new Point((getWidth() / 10) * 7, getHeight() / 2));
+        equalizerPointList.add(new Point((getWidth() / 10) * 9, getHeight() / 2));
         curvePivotPointList.add(new Point(0, getHeight() / 2));
-        curvePivotPointList.add(new Point(screenSize.x / 10 * 2, getHeight() / 2));
-        curvePivotPointList.add(new Point(screenSize.x / 10 * 4, getHeight() / 2));
-        curvePivotPointList.add(new Point(screenSize.x / 10 * 6, getHeight() / 2));
-        curvePivotPointList.add(new Point(screenSize.x / 10 * 8, getHeight() / 2));
-        curvePivotPointList.add(new Point(screenSize.x / 10 * 10, getHeight() / 2));
+        curvePivotPointList.add(new Point(getWidth() / 10 * 2, getHeight() / 2));
+        curvePivotPointList.add(new Point(getWidth() / 10 * 4, getHeight() / 2));
+        curvePivotPointList.add(new Point(getWidth() / 10 * 6, getHeight() / 2));
+        curvePivotPointList.add(new Point(getWidth() / 10 * 8, getHeight() / 2));
+        curvePivotPointList.add(new Point(getWidth() / 10 * 10, getHeight() / 2));
       }
     });
   }
@@ -84,8 +78,8 @@ public class EqualizerView extends View {
     for (int i = 0; i < curvePivotPointList.size() - 1; i++) {
       Point pivotPoint1 = curvePivotPointList.get(i);
       Point pivotPoint2 = curvePivotPointList.get(i + 1);
-      Point eqPoint = pointList.get(i);
-      int yDesired = eqPoint.y;
+      Point equalizerPoint = equalizerPointList.get(i);
+      int yDesired = equalizerPoint.y;
       int xMin = pivotPoint1.x;
       int yMax = getHeight() / 2;
       int xMax = pivotPoint2.x;
@@ -108,8 +102,8 @@ public class EqualizerView extends View {
     int y = (int) event.getY();
     switch (event.getAction()) {
       case MotionEvent.ACTION_DOWN:
-        for (Point point : pointList) {
-          if (x >= (point.x - screenSize.x / 10) && x <= (point.x + screenSize.x / 10)) {
+        for (Point point : equalizerPointList) {
+          if (x >= (point.x - getWidth() / 10) && x <= (point.x + getWidth() / 10)) {
             lastTouchedPoint = point;
             if (y <= maxHeight && y >= minHeight) {
               lastTouchedPoint.y = y;
