@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.equalizer.adapter;
+package com.kingbull.musicplayer.ui.equalizer;
 
 import android.app.Activity;
 import android.view.View;
