@@ -42,7 +42,7 @@ import static com.kingbull.musicplayer.R.drawable.rotoron;
  * **************************************************************************
  */
 
-public class RoundKnobButton extends RelativeLayout implements OnGestureListener {
+public final class RoundKnobButton extends RelativeLayout implements OnGestureListener {
 
   ImageView ivBack;
   int imageRes[] = {

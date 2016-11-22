@@ -4,6 +4,9 @@ import android.graphics.Point;
 import android.media.audiofx.Equalizer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,10 +25,11 @@ import java.util.ArrayList;
 public final class EqualizerActivity extends BaseActivity {
 
   @BindView(R.id.titleView) TextView titleView;
+  @BindView(R.id.equalizerSpinner) Spinner equalizerSpinner;
+  @BindView(R.id.equalizerView) EqualizerView equalizerView;
   private Equalizer equalizer;
-@BindView(R.id.equalizerSpinner)
-  Spinner equalizerSpinner;
   private EqualizerSpinnerAdapter adapter;
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_equalizer);
@@ -56,12 +60,32 @@ public final class EqualizerActivity extends BaseActivity {
     equalizer.setEnabled(true);
     equalizer = new Equalizer(5, getIntent().getIntExtra("audio_session_id", 0));
     equalizer.setEnabled(true);
-    ArrayList<String> equalizerPresetNames = new ArrayList<String>();
+    ArrayList<String> equalizerPresetNames = new ArrayList<>();
     for (short i = 0; i < equalizer.getNumberOfPresets(); i++) {
       equalizerPresetNames.add(equalizer.getPresetName(i));
     }
     adapter = new EqualizerSpinnerAdapter(this, equalizerPresetNames);
     equalizerSpinner.setAdapter(adapter);
+    equalizerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      @Override
+      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        equalizer.usePreset((short) position);
+        equalizerView.adjustToSelectedPreset(equalizer);
+      }
+
+      @Override public void onNothingSelected(AdapterView<?> parent) {
+      }
+    });
+    equalizerView.addOnBandValueChangeListener(new EqualizerView.OnBandValueChangeListener() {
+      @Override public void onBandValueChange(short bandNumber, int percentageValue) {
+        Log.e("onBandValueChange", "band " + bandNumber + " percentage " + percentageValue);
+        final short lowerEqualizerBandLevel = (short)  equalizer.getBandLevelRange()[0];
+        final short upperEqualizerBandLevel = (short)  equalizer.getBandLevelRange()[1];
+        final short maxBandLevel = (short) (upperEqualizerBandLevel - lowerEqualizerBandLevel);
+        equalizer.setBandLevel(bandNumber,
+            (short) (maxBandLevel * percentageValue / 100.0 + lowerEqualizerBandLevel));
+      }
+    });
   }
 
   @Override protected void onPresenterPrepared(Presenter presenter) {

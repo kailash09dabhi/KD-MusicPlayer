@@ -31,6 +31,7 @@
   <com.kingbull.musicplayer.ui.equalizer.EqualizerView
       android:layout_width="match_parent"
       android:layout_height="0dp"
+      android:id="@+id/equalizerView"
       android:layout_weight="1"
       android:background="@color/transparent_black"/>
 
