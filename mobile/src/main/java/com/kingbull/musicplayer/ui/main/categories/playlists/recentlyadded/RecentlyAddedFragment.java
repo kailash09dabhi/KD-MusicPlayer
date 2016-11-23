@@ -18,8 +18,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.PlayList;
+import com.kingbull.musicplayer.player.MusicPlayer;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsCursorLoader;
@@ -30,6 +33,13 @@ public final class RecentlyAddedFragment extends BaseFragment<RecentlyAdded.Pres
     implements LoaderManager.LoaderCallbacks<Cursor>, RecentlyAdded.View {
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
+  List<Music> songs;
+
+  @OnClick(R.id.playAllView) void onPlayAllClick() {
+    PlayList playList = new PlayList();
+    playList.setSongs(songs);
+    MusicPlayer.instance().play(playList);
+  }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -67,5 +77,6 @@ public final class RecentlyAddedFragment extends BaseFragment<RecentlyAdded.Pres
 
   @Override public void showRecentlyAddedSongs(List<Music> songs) {
     recyclerView.setAdapter(new SongsAdapter(songs));
+    this.songs = songs;
   }
 }

@@ -1,11 +1,12 @@
 package com.kingbull.musicplayer.ui.music;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PreferenceManager;
-import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.player.PlayMode;
+import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
 
 /**
@@ -20,6 +21,11 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
   private static final long UPDATE_PROGRESS_INTERVAL = 1000;
   private Player player;
   private Music song;
+
+  @Override public void takeView(@NonNull MusicPlayer.View view) {
+    super.takeView(view);
+    if (view == null) player.unregisterCallback(this);
+  }
 
   @Override public void onTakePlayBack(Player player) {
     if (player == null) {
