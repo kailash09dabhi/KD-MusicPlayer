@@ -29,6 +29,13 @@
         style="@style/AppTheme.TextAppearance.List.Small"/>
   </LinearLayout>
 
+  <com.kingbull.musicplayer.ui.main.categories.all.raymenu.RayMenu
+      android:id="@+id/ray_menu"
+      android:layout_width="fill_parent"
+      android:layout_height="40dp"
+      android:paddingLeft="5dp"
+      android:paddingRight="5dp"/>
+
   <android.support.v7.widget.RecyclerView
       android:id="@+id/recyclerView"
       android:layout_width="match_parent"
