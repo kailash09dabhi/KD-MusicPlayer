@@ -6,6 +6,7 @@ import com.kingbull.musicplayer.ui.main.categories.playlists.lastplayed.LastPlay
 import com.kingbull.musicplayer.ui.main.categories.playlists.mostplayed.MostPlayedPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAddedPresenter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
+import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
 import com.kingbull.musicplayer.ui.songlist.SongListPresenter;
 
 /**
@@ -70,6 +71,14 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
 
     @Override public com.kingbull.musicplayer.ui.equalizer.Equalizer.Presenter create() {
       return new EqualizerPresenter();
+    }
+  }
+
+  class NowPlaying
+      implements PresenterFactory<com.kingbull.musicplayer.ui.nowplaying.NowPlaying.Presenter> {
+
+    @Override public com.kingbull.musicplayer.ui.nowplaying.NowPlaying.Presenter create() {
+      return new NowPlayingPresenter();
     }
   }
 }

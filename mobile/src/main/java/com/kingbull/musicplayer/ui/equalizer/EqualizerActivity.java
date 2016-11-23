@@ -1,16 +1,9 @@
 package com.kingbull.musicplayer.ui.equalizer;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import com.kingbull.musicplayer.ui.base.BaseActivity;
-import com.kingbull.musicplayer.ui.base.Presenter;
-import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import android.support.v7.app.AppCompatActivity;
 
-/**
- * Created by divyanshunegi on 11/9/15.
- */
-public final class EqualizerActivity extends BaseActivity {
-
+public final class EqualizerActivity extends AppCompatActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (savedInstanceState == null) {
@@ -20,12 +13,5 @@ public final class EqualizerActivity extends BaseActivity {
               EqualizerFragment.class.getSimpleName())
           .commit();
     }
-  }
-
-  @Override protected void onPresenterPrepared(Presenter presenter) {
-  }
-
-  @NonNull @Override protected PresenterFactory presenterFactory() {
-    return new PresenterFactory.MusicPlayer();
   }
 }

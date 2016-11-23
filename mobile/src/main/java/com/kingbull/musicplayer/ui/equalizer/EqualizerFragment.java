@@ -50,7 +50,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.activity_equalizer, null);
+    View view = inflater.inflate(R.layout.fragment_equalizer, null);
     ButterKnife.bind(this, view);
     titleView.setText("Equalizer".toUpperCase());
     setupRoundKnobButton();
