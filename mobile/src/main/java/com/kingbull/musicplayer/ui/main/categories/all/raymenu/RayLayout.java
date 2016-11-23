@@ -7,13 +7,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnticipateInterpolator;
 import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
-import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import com.kingbull.musicplayer.R;
 
 public class RayLayout extends ViewGroup {
@@ -76,9 +77,9 @@ public class RayLayout extends ViewGroup {
 
   private static Animation createExpandAnimation(float fromXDelta, float toXDelta, float fromYDelta,
       float toYDelta, long startOffset, long duration, Interpolator interpolator) {
-    Animation animation = new RotateAndTranslateAnimation(0, toXDelta, 0, toYDelta, 0, 720);
-    animation.setStartOffset(startOffset);
-    animation.setDuration(duration);
+    Animation animation = new TranslateAnimation(0, toXDelta, 0, toYDelta);
+    animation.setStartOffset(100);
+    animation.setDuration(1500);
     animation.setInterpolator(interpolator);
     animation.setFillAfter(true);
     return animation;
@@ -87,23 +88,16 @@ public class RayLayout extends ViewGroup {
   private static Animation createShrinkAnimation(float fromXDelta, float toXDelta, float fromYDelta,
       float toYDelta, long startOffset, long duration, Interpolator interpolator) {
     AnimationSet animationSet = new AnimationSet(false);
-    animationSet.setFillAfter(true);
-    final long preDuration = duration / 2;
-    Animation rotateAnimation =
-        new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-            0.5f);
-    rotateAnimation.setStartOffset(startOffset);
-    rotateAnimation.setDuration(preDuration);
-    rotateAnimation.setInterpolator(new LinearInterpolator());
-    rotateAnimation.setFillAfter(true);
-    animationSet.addAnimation(rotateAnimation);
-    Animation translateAnimation =
-        new RotateAndTranslateAnimation(0, toXDelta, 0, toYDelta, 360, 720);
-    translateAnimation.setStartOffset(startOffset + preDuration);
-    translateAnimation.setDuration(duration - preDuration);
-    translateAnimation.setInterpolator(interpolator);
-    translateAnimation.setFillAfter(true);
-    animationSet.addAnimation(translateAnimation);
+    AlphaAnimation localAlphaAnimation = new AlphaAnimation(1.0F, 0.1F);
+    localAlphaAnimation.setInterpolator(new AnticipateInterpolator());
+    localAlphaAnimation.setDuration(300L);
+    Animation animation = new TranslateAnimation(0, toXDelta, 0, toYDelta);
+    animation.setStartOffset(100);
+    animation.setDuration(300);
+    animation.setInterpolator(interpolator);
+    animation.setFillAfter(true);
+    animationSet.addAnimation(localAlphaAnimation);
+    animationSet.addAnimation(animation);
     return animationSet;
   }
 

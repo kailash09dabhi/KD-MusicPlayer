@@ -32,16 +32,16 @@
   <com.kingbull.musicplayer.ui.main.categories.all.raymenu.RayMenu
       android:id="@+id/ray_menu"
       android:layout_width="fill_parent"
-      android:layout_height="40dp"
-      android:paddingLeft="5dp"
-      android:paddingRight="5dp"/>
+      android:layout_height="wrap_content"
+      android:background="@color/transparent_strong_black"
+      android:paddingRight="?android:attr/listPreferredItemPaddingLeft"
+      android:paddingLeft="5dp"/>
 
   <android.support.v7.widget.RecyclerView
       android:id="@+id/recyclerView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginTop="1px"
-      android:background="@color/transparent_black"
+      android:background="@color/transparent_strong_black"
       android:clipToPadding="false"
       android:fadeScrollbars="true"
       android:fadingEdgeLength="34dp"

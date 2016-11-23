@@ -19,7 +19,7 @@
         android:background="@color/transparent_black"
         android:paddingBottom="4dp"
         android:paddingTop="16dp"
-        android:textAppearance="@style/AppTheme.TextAppearance.Title">
+        android:textAppearance="@style/AppTheme.TextAppearance.Title.Pager">
     </com.kingbull.musicplayer.ui.main.PagerClickTitleStrip>
   </com.kingbull.musicplayer.ui.main.ViewPagerParallax>
   <!--<FrameLayout-->

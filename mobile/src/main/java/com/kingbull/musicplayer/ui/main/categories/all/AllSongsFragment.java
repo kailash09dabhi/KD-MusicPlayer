@@ -30,7 +30,7 @@ import java.util.List;
 public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, AllSongs.View {
   private static final int[] ITEM_DRAWABLES = {
-      R.drawable.composer_button, R.drawable.composer_button_back, R.drawable.composer_button_queue,
+      R.drawable.composer_button_back, R.drawable.composer_button_queue,
       R.drawable.composer_icn_search, R.drawable.composer_button_shuffle,
       R.drawable.composer_button_multiselect
   };
