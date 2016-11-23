@@ -11,11 +11,11 @@
       android:layout_marginTop="1px"
       android:background="@color/transparent_black"
       android:clipToPadding="false"
-      android:overScrollMode="never"
-      android:requiresFadingEdge="vertical"
       android:fadeScrollbars="true"
       android:fadingEdgeLength="34dp"
-      android:paddingLeft="10dp"
-      android:paddingRight="10dp"/>
+      android:overScrollMode="never"
+      android:requiresFadingEdge="vertical"
+      android:scrollbars="vertical"
+      />
 
 </LinearLayout>
