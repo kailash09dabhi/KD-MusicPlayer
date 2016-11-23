@@ -22,6 +22,7 @@ import com.kingbull.musicplayer.player.PlayMode;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
+import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
 import com.kingbull.musicplayer.ui.widget.ShadowImageView;
 import com.kingbull.musicplayer.utils.AlbumUtils;
 import com.kingbull.musicplayer.utils.TimeUtils;
@@ -51,11 +52,18 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     return fragment;
   }
 
-  @OnClick(R.id.equalizerView) void onEqualizerView() {
+  @OnClick(R.id.equalizerView) void onEqualizerClick() {
     Intent intent = new Intent(getActivity(), EqualizerActivity.class);
     intent.putExtra("audio_session_id",
         com.kingbull.musicplayer.player.MusicPlayer.instance().audioSessionId());
     startActivity(intent);
+  }
+
+  @OnClick(R.id.nowPlayingView) void onNowPlayingClick() {
+    getFragmentManager().beginTransaction()
+        .add(android.R.id.content, new NowPlayingFragment())
+        .addToBackStack(NowPlayingFragment.class.getSimpleName())
+        .commit();
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -6,9 +6,13 @@
 package com.kingbull.musicplayer.ui.nowplaying;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
@@ -18,20 +22,20 @@ import java.util.List;
 
 public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
     implements NowPlaying.View {
-
-  public static NowPlayingFragment instance(int audioSessionId) {
-    NowPlayingFragment equalizerFragment = new NowPlayingFragment();
-    Bundle args = new Bundle();
-    args.putInt("audio_session_id", audioSessionId);
-    equalizerFragment.setArguments(args);
-    return equalizerFragment;
-  }
+  @BindView(R.id.titleView) TextView titleView;
+  @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_playlist, null);
     ButterKnife.bind(this, view);
+    setupView(view);
     return view;
+  }
+
+  private void setupView(View v) {
+    titleView.setText("Now Playing".toUpperCase());
+    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
   }
 
   @Override protected void onPresenterPrepared(NowPlaying.Presenter presenter) {
@@ -43,5 +47,6 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
   }
 
   @Override public void showNowPlayingList(List<Music> musicList) {
+    recyclerView.setAdapter(new NowPlayingAdapter(musicList));
   }
 }

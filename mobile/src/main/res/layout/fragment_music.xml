@@ -34,6 +34,12 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:src="@drawable/ksw_md_thumb"/>
+
+  <ImageView
+      android:id="@+id/nowPlayingView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/ksw_md_thumb"/>
   <TextView
       android:id="@+id/text_view_name"
       android:layout_width="wrap_content"
