@@ -9,6 +9,7 @@ import com.kingbull.musicplayer.ui.main.categories.playlists.mostplayed.MostPlay
 import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAdded;
 import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAddedPresenter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
+import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
 import com.kingbull.musicplayer.ui.songlist.SongsAdapter;
 import dagger.Component;
@@ -34,6 +35,7 @@ public interface AppComponent {
   void inject(NowPlayingPresenter presenter);
 
   void inject(MusicPlayerFragment fragment);
+  void inject(MusicPlayerPresenter presenter);
   void inject(SongsAdapter adapter);
 
   MusicPlayerApp app();

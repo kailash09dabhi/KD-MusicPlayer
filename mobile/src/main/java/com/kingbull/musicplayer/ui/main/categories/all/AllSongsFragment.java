@@ -5,6 +5,7 @@
  */
 package com.kingbull.musicplayer.ui.main.categories.all;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -27,7 +28,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
+import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.songlist.SongsAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,10 +80,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_all_songs, null);
-    ButterKnife.bind(this, view);
-    setupView();
-    return view;
+    return inflater.inflate(R.layout.fragment_all_songs, null);
   }
 
   private void setupView() {
@@ -147,13 +145,12 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override public void showMusicScreen() {
-    getFragmentManager().beginTransaction()
-        .add(android.R.id.content, MusicPlayerFragment.instance())
-        .addToBackStack(MusicPlayerFragment.class.getSimpleName())
-        .commit();
+    startActivity(new Intent(getActivity(), MusicPlayerActivity.class));
   }
 
   @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {
+    ButterKnife.bind(this, getView());
+    setupView();
     presenter.takeView(this);
   }
 

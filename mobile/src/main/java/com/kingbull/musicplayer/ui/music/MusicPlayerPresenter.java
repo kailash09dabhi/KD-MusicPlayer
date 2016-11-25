@@ -1,40 +1,22 @@
 package com.kingbull.musicplayer.ui.music;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PreferenceManager;
 import com.kingbull.musicplayer.player.PlayMode;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
+import javax.inject.Inject;
 
-/**
- * Created with Android Studio.
- * User: ryan.hoo.j@gmail.com
- * Date: 9/12/16
- * Time: 8:30 AM
- * Desc: MusicPlayerPresenter
- */
 public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
-    implements MusicPlayer.Presenter, Player.Callback {
+    implements MusicPlayer.Presenter {
   private static final long UPDATE_PROGRESS_INTERVAL = 1000;
-  private Player player;
+  @Inject Player player;
 
   @Override public void takeView(@NonNull MusicPlayer.View view) {
     super.takeView(view);
-    if (view == null) player.unregisterCallback(this);
-  }
-
-  @Override public void onTakePlayBack(Player player) {
-    if (player == null) {
-      this.player.unregisterCallback(this);
-      this.player = null;
-    } else {
-      this.player = player;
-      this.player.registerCallback(this);
-      view().onSongUpdated(player.getPlayingSong());
-    }
+    view().onSongUpdated(player.getPlayingSong());
   }
 
   @Override public void onFavoriteToggleClick() {
@@ -43,7 +25,6 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     if (currentSong != null) {
     }
   }
-
 
   @Override public void onPlayNextClick() {
     if (player == null) return;
@@ -96,7 +77,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
   }
 
   @Override public void onEqualizerClick() {
-  view().showEqualizerScreen(player.audioSessionId());
+    view().showEqualizerScreen(player.audioSessionId());
   }
 
   public long getCurrentSongDuration() {
@@ -106,21 +87,5 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
       duration = currentSong.duration();
     }
     return duration;
-  }
-
-  @Override public void onSwitchLast(@Nullable Music last) {
-    view().onSongUpdated(last);
-  }
-
-  @Override public void onSwitchNext(@Nullable Music next) {
-    view().onSongUpdated(next);
-  }
-
-  @Override public void onComplete(@Nullable Music next) {
-    view().onSongUpdated(next);
-  }
-
-  @Override public void onPlayStatusChanged(boolean isPlaying) {
-    view().onPlayStatusChanged(isPlaying);
   }
 }

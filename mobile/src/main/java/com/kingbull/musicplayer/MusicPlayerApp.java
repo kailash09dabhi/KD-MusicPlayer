@@ -1,10 +1,12 @@
 package com.kingbull.musicplayer;
 
 import android.app.Application;
+import android.content.Intent;
 import com.kingbull.musicplayer.di.AppComponent;
 import com.kingbull.musicplayer.di.AppModule;
 import com.kingbull.musicplayer.di.DaggerAppComponent;
 import com.kingbull.musicplayer.di.StorageModule;
+import com.kingbull.musicplayer.player.MusicService;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -33,6 +35,7 @@ public final class MusicPlayerApp extends Application {
             .setFontAttrId(R.attr.fontPath)
             .build());
     injectDependencies();
+    startService(new Intent(this, MusicService.class));
   }
 
   private void injectDependencies() {

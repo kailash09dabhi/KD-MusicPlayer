@@ -1,6 +1,5 @@
 package com.kingbull.musicplayer.ui.music;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
@@ -17,7 +16,6 @@ import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PreferenceManager;
-import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.player.PlayMode;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
@@ -42,8 +40,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @BindView(R.id.button_play_mode_toggle) PlayModeToggleView playModeToggleView;
   @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
   @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
-  PlaybackServiceConnection playbackServiceConnection;
-  private boolean mIsServiceBound;
 
   public static MusicPlayerFragment instance() {
     MusicPlayerFragment fragment = new MusicPlayerFragment();
@@ -76,17 +72,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.dontAnimate();
   }
 
-  @Override public void onDestroyView() {
-    if (mIsServiceBound) {
-      // Detach our existing connection.
-      getActivity().unbindService(playbackServiceConnection);
-      mIsServiceBound = false;
-    }
-    presenter.takeView(null);
-    presenter = null;
-    super.onDestroyView();
-  }
-
   @OnClick(R.id.button_play_toggle) public void onPlayToggleAction(View view) {
     presenter.onPlayToggleClick();
   }
@@ -109,8 +94,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
 
   @Override protected void onPresenterPrepared(MusicPlayer.Presenter presenter) {
     this.presenter.takeView(this);
-    playbackServiceConnection = new PlaybackServiceConnection(presenter);
-    bindPlaybackService();
     seekBarProgress.takePresenter(presenter);
     updatePlayMode(PreferenceManager.lastPlayMode(getActivity()));
   }
@@ -147,16 +130,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   }
 
   @Override public void onSongUpdated(Music song) {
-    if (song == null) {
-      imageViewAlbum.cancelRotateAnimation();
-      buttonPlayToggle.setImageResource(R.drawable.ic_play);
-      seekBarProgress.setProgress(0);
-      updateProgressDurationText(0);
-      presenter.seekTo(0);
-      seekBarProgress.dontAnimate();
-      return;
-    }
-    // Step 1: Song name and artist
     textViewName.setText(song.title());
     textViewArtist.setText(song.artist());
     // Step 2: favorite
@@ -195,6 +168,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     }
     imageViewAlbum.pauseRotateAnimation();
     seekBarProgress.dontAnimate();
+    seekBarProgress.updateMusic(song);
   }
 
   private void updateUiWithPalleteSwatch(Palette.Swatch darkSwatch, Palette.Swatch lightSwatch) {
@@ -221,15 +195,5 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
 
   @Override public void updateSeekBarAfter(long updateProgressInterval) {
     seekBarProgress.animateProgressAfter(updateProgressInterval);
-  }
-
-  private void bindPlaybackService() {
-    // Establish a connection with the service.  We use an explicit
-    // class name because we want a specific service implementation that
-    // we know will be running in our own process (and thus won't be
-    // supporting component replacement by other applications).
-    getActivity().bindService(new Intent(getActivity(), MusicService.class),
-        playbackServiceConnection, Context.BIND_AUTO_CREATE);
-    mIsServiceBound = true;
   }
 }

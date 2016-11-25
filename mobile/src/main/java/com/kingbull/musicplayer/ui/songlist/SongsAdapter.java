@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.songlist;
 
-import android.support.v4.app.FragmentActivity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +13,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.player.Player;
-import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
+import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -27,6 +27,7 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
   List<Music> songs;
 
   @Inject Player player;
+
   public SongsAdapter(List<Music> songs) {
     this.songs = songs;
     MusicPlayerApp.instance().component().inject(this);
@@ -58,11 +59,7 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
     }
 
     @Override public void onClick(View view) {
-      ((FragmentActivity) view.getContext()).getSupportFragmentManager()
-          .beginTransaction()
-          .add(android.R.id.content, MusicPlayerFragment.instance())
-          .addToBackStack(MusicPlayerFragment.class.getSimpleName())
-          .commit();
+      view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
     }
   }
 
@@ -78,13 +75,8 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
     }
 
     @Override public void onClick(final View view) {
-player.play(songs.get(getAdapterPosition()));
-
-      ((FragmentActivity) view.getContext()).getSupportFragmentManager()
-          .beginTransaction()
-          .add(android.R.id.content, MusicPlayerFragment.instance())
-          .addToBackStack(MusicPlayerFragment.class.getSimpleName())
-          .commit();
+      player.play(songs.get(getAdapterPosition()));
+      view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
     }
   }
 }

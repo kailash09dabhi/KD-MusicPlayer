@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.nowplaying;
 
-import android.support.v4.app.FragmentActivity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
+import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import java.util.List;
 
 /**
@@ -51,11 +51,7 @@ public final class NowPlayingAdapter
     }
 
     @Override public void onClick(View view) {
-      ((FragmentActivity) view.getContext()).getSupportFragmentManager()
-          .beginTransaction()
-          .add(android.R.id.content, MusicPlayerFragment.instance())
-          .addToBackStack(MusicPlayerFragment.class.getSimpleName())
-          .commit();
+      view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
     }
   }
 
@@ -69,11 +65,7 @@ public final class NowPlayingAdapter
     }
 
     @Override public void onClick(final View view) {
-      ((FragmentActivity) view.getContext()).getSupportFragmentManager()
-          .beginTransaction()
-          .add(android.R.id.content, MusicPlayerFragment.instance())
-          .addToBackStack(MusicPlayerFragment.class.getSimpleName())
-          .commit();
+      view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
     }
   }
 }

@@ -48,7 +48,9 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
       implements PresenterFactory<com.kingbull.musicplayer.ui.music.MusicPlayer.Presenter> {
 
     @Override public com.kingbull.musicplayer.ui.music.MusicPlayer.Presenter create() {
-      return new MusicPlayerPresenter();
+      MusicPlayerPresenter presenter = new MusicPlayerPresenter();
+      MusicPlayerApp.instance().component().inject(presenter);
+      return presenter;
     }
   }
 
