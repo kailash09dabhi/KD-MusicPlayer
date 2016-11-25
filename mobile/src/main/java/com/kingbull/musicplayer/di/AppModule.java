@@ -2,6 +2,8 @@ package com.kingbull.musicplayer.di;
 
 import android.content.res.Resources;
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.player.MusicPlayer;
+import com.kingbull.musicplayer.player.Player;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -19,5 +21,9 @@ import javax.inject.Singleton;
 
   @Singleton @Provides Resources provideResources() {
     return app.getResources();
+  }
+
+  @Singleton @Provides Player provideMusicPlayer() {
+    return new MusicPlayer();
   }
 }

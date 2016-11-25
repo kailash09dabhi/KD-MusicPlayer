@@ -13,6 +13,8 @@ import java.util.List;
 public interface AllSongs {
   interface View extends Mvp.View {
     void showAllSongs(List<Music> songs);
+
+    void showMusicScreen();
   }
 
   interface Model extends Mvp.Model {
@@ -20,5 +22,11 @@ public interface AllSongs {
 
   interface Presenter extends Mvp.Presenter<AllSongs.View> {
     void onAllSongsCursorLoadFinished(Cursor cursor);
+
+    void onSearchTextChanged(String text);
+
+    void onExitSearchClick();
+
+    void onShuffleMenuClick();
   }
 }

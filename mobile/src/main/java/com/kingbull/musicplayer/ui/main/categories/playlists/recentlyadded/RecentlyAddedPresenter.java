@@ -6,10 +6,12 @@ import android.util.Log;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.MediaCursor;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
+import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.inject.Inject;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -27,6 +29,9 @@ import static android.content.ContentValues.TAG;
 
 public final class RecentlyAddedPresenter extends Presenter<RecentlyAdded.View>
     implements RecentlyAdded.Presenter {
+
+  @Inject Player musicPlayer;
+  List<Music> songs;
 
   @Override public void takeView(@NonNull RecentlyAdded.View view) {
     super.takeView(view);
@@ -74,8 +79,13 @@ public final class RecentlyAddedPresenter extends Presenter<RecentlyAdded.View>
                 //mView.onLocalMusicLoaded(genres);
                 //mView.emptyView(genres.isEmpty());
                 view().showRecentlyAddedSongs(songs);
+                RecentlyAddedPresenter.this.songs = songs;
               }
             });
     compositeSubscription.add(subscription);
+  }
+
+  @Override public void onPlayAllClick() {
+    musicPlayer.addToNowPlaylist(songs);
   }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface NowPlaying {
   interface View extends Mvp.View {
-    void showNowPlayingList(List<Music> musicList);
+    void showNowPlayingList(List<Music> musicList, int jumpTo);
   }
 
   interface Model extends Mvp.Model {

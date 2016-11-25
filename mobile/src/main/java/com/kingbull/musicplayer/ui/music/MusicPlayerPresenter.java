@@ -20,7 +20,6 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     implements MusicPlayer.Presenter, Player.Callback {
   private static final long UPDATE_PROGRESS_INTERVAL = 1000;
   private Player player;
-  private Music song;
 
   @Override public void takeView(@NonNull MusicPlayer.View view) {
     super.takeView(view);
@@ -34,12 +33,8 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     } else {
       this.player = player;
       this.player.registerCallback(this);
-      view().onSongUpdated(song);
+      view().onSongUpdated(player.getPlayingSong());
     }
-  }
-
-  @Override public void onTakeSong(Music song) {
-    this.song = song;
   }
 
   @Override public void onFavoriteToggleClick() {
@@ -49,10 +44,6 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     }
   }
 
-  @Override public void onPlayLastClick() {
-    if (player == null) return;
-    player.playLast();
-  }
 
   @Override public void onPlayNextClick() {
     if (player == null) return;
@@ -73,11 +64,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     if (player.isPlaying()) {
       player.pause();
     } else {
-      if (player.getPlayingSong() != song) {
-        player.play(song);
-      } else {
-        player.play();
-      }
+      player.play();
     }
   }
 
@@ -106,6 +93,10 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
 
   @Override public void onProgressChanged(int duration) {
     view().updateProgressDurationText(duration);
+  }
+
+  @Override public void onEqualizerClick() {
+  view().showEqualizerScreen(player.audioSessionId());
   }
 
   public long getCurrentSongDuration() {

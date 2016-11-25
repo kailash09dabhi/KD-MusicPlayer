@@ -42,21 +42,16 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @BindView(R.id.button_play_mode_toggle) PlayModeToggleView playModeToggleView;
   @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
   @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
-  Music song;
   PlaybackServiceConnection playbackServiceConnection;
   private boolean mIsServiceBound;
 
-  public static MusicPlayerFragment instance(Music song) {
+  public static MusicPlayerFragment instance() {
     MusicPlayerFragment fragment = new MusicPlayerFragment();
-    fragment.song = song;
     return fragment;
   }
 
   @OnClick(R.id.equalizerView) void onEqualizerClick() {
-    Intent intent = new Intent(getActivity(), EqualizerActivity.class);
-    intent.putExtra("audio_session_id",
-        com.kingbull.musicplayer.player.MusicPlayer.instance().audioSessionId());
-    startActivity(intent);
+    presenter.onEqualizerClick();
   }
 
   @OnClick(R.id.nowPlayingView) void onNowPlayingClick() {
@@ -74,8 +69,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    seekBarProgress.updateMusic(song);
-    updatePlayMode(PreferenceManager.lastPlayMode(getActivity()));
   }
 
   @Override public void onStop() {
@@ -102,10 +95,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     presenter.onPlayModeToggleClick();
   }
 
-  @OnClick(R.id.button_play_last) public void onPlayLastAction(View view) {
-    presenter.onPlayLastClick();
-  }
-
   @OnClick(R.id.button_play_next) public void onPlayNextAction(View view) {
     presenter.onPlayNextClick();
   }
@@ -120,10 +109,10 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
 
   @Override protected void onPresenterPrepared(MusicPlayer.Presenter presenter) {
     this.presenter.takeView(this);
-    if (song != null) this.presenter.onTakeSong(song);
     playbackServiceConnection = new PlaybackServiceConnection(presenter);
     bindPlaybackService();
     seekBarProgress.takePresenter(presenter);
+    updatePlayMode(PreferenceManager.lastPlayMode(getActivity()));
   }
 
   @Override protected PresenterFactory presenterFactory() {
@@ -149,6 +138,12 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override public void stopSeekbarProgress() {
     seekBarProgress.dontAnimate();
     seekBarProgress.startProgresssAnimation();
+  }
+
+  @Override public void showEqualizerScreen(int audioSessionId) {
+    Intent intent = new Intent(getActivity(), EqualizerActivity.class);
+    intent.putExtra("audio_session_id", audioSessionId);
+    startActivity(intent);
   }
 
   @Override public void onSongUpdated(Music song) {

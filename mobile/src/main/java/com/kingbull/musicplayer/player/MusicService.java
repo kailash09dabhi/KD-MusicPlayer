@@ -12,11 +12,13 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.widget.RemoteViews;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.ui.main.MainActivity;
 import com.kingbull.musicplayer.utils.AlbumUtils;
+import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Created with Android Studio.
@@ -34,13 +36,13 @@ public final class MusicService extends Service implements Player, Player.Callba
 
   private static final int NOTIFICATION_ID = 1;
   private final Binder mBinder = new LocalBinder();
+  @Inject Player musicPlayer;
   private RemoteViews mContentViewBig, mContentViewSmall;
-  private MusicPlayer mMusicPlayer;
 
   @Override public void onCreate() {
     super.onCreate();
-    mMusicPlayer = MusicPlayer.instance();
-    mMusicPlayer.registerCallback(this);
+    MusicPlayerApp.instance().component().inject(this);
+    musicPlayer.registerCallback(this);
     bindService(new Intent(this, MusicService.class), new ServiceConnection() {
       @Override public void onServiceConnected(ComponentName name, IBinder service) {
       }
@@ -89,73 +91,73 @@ public final class MusicService extends Service implements Player, Player.Callba
     super.onDestroy();
   }
 
-  @Override public void setPlayList(PlayList list) {
-    mMusicPlayer.setPlayList(list);
-  }
-
   @Override public boolean play() {
-    return mMusicPlayer.play();
+    return musicPlayer.play();
   }
 
-  @Override public boolean play(PlayList list) {
-    return mMusicPlayer.play(list);
-  }
-
-  @Override public boolean play(PlayList list, int startIndex) {
-    return mMusicPlayer.play(list, startIndex);
-  }
-
-  @Override public boolean play(Music song) {
-    return mMusicPlayer.play(song);
+  @Override public boolean play(Music music) {
+    return musicPlayer.play(music);
   }
 
   @Override public boolean playLast() {
-    return mMusicPlayer.playLast();
+    return musicPlayer.playLast();
   }
 
   @Override public boolean playNext() {
-    return mMusicPlayer.playNext();
+    return musicPlayer.playNext();
   }
 
   @Override public boolean pause() {
-    return mMusicPlayer.pause();
+    return musicPlayer.pause();
   }
 
   @Override public boolean isPlaying() {
-    return mMusicPlayer.isPlaying();
+    return musicPlayer.isPlaying();
   }
 
   @Override public int getProgress() {
-    return mMusicPlayer.getProgress();
+    return musicPlayer.getProgress();
+  }
+
+  @Override public int audioSessionId() {
+    return musicPlayer.audioSessionId();
   }
 
   @Override public Music getPlayingSong() {
-    return mMusicPlayer.getPlayingSong();
+    return musicPlayer.getPlayingSong();
   }
 
   @Override public boolean seekTo(int progress) {
-    return mMusicPlayer.seekTo(progress);
+    return musicPlayer.seekTo(progress);
   }
 
   @Override public void setPlayMode(PlayMode playMode) {
-    mMusicPlayer.setPlayMode(playMode);
+    musicPlayer.setPlayMode(playMode);
   }
 
   @Override public void registerCallback(Callback callback) {
-    mMusicPlayer.registerCallback(callback);
+    musicPlayer.registerCallback(callback);
   }
 
   @Override public void unregisterCallback(Callback callback) {
-    mMusicPlayer.unregisterCallback(callback);
+    musicPlayer.unregisterCallback(callback);
   }
 
   @Override public void removeCallbacks() {
-    mMusicPlayer.removeCallbacks();
+    musicPlayer.removeCallbacks();
   }
 
   @Override public void releasePlayer() {
-    mMusicPlayer.releasePlayer();
+    musicPlayer.releasePlayer();
     super.onDestroy();
+  }
+
+  @Override public void addToNowPlaylist(List<Music> songs) {
+    musicPlayer.addToNowPlaylist(songs);
+  }
+
+  @Override public NowPlayingList nowPlayingMusicList() {
+    return musicPlayer.nowPlayingMusicList();
   }
 
   @Override public void onSwitchLast(@Nullable Music last) {
@@ -228,7 +230,7 @@ public final class MusicService extends Service implements Player, Player.Callba
   }
 
   private void updateRemoteViews(RemoteViews remoteView) {
-    Music currentSong = mMusicPlayer.getPlayingSong();
+    Music currentSong = musicPlayer.getPlayingSong();
     if (currentSong != null) {
       remoteView.setTextViewText(R.id.text_view_name, currentSong.title());
       remoteView.setTextViewText(R.id.text_view_artist, currentSong.artist());

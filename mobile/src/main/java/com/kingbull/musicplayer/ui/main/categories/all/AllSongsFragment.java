@@ -14,29 +14,68 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.OvershootInterpolator;
+import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.main.categories.all.raymenu.RayMenu;
+import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
 import com.kingbull.musicplayer.ui.songlist.SongsAdapter;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, AllSongs.View {
-  private static final int[] ITEM_DRAWABLES = {
-      R.drawable.composer_button_back, R.drawable.composer_button_queue,
-      R.drawable.composer_icn_search, R.drawable.composer_button_shuffle,
-      R.drawable.composer_button_multiselect
-  };
+  private final List<Music> musicList = new ArrayList<>();
   @BindView(R.id.totalSongCountView) TextView totalSongCountView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
-  @BindView(R.id.ray_menu) RayMenu rayMenu;
+  @BindView(R.id.songMenu) SongMenu songMenu;
+  @BindView(R.id.searchView) EditText searchView;
+  private SongsAdapter songsAdapter;
+
+  @OnTextChanged(R.id.searchView) void onSearchTextChanged(CharSequence text) {
+    presenter.onSearchTextChanged(text.toString());
+  }
+
+  @OnClick(R.id.exitSearchView) void onExitSearchClick() {
+    Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_left);
+    animation.setAnimationListener(new Animation.AnimationListener() {
+      @Override public void onAnimationStart(Animation animation) {
+      }
+
+      @Override public void onAnimationEnd(Animation animation) {
+        songMenu.setVisibility(View.VISIBLE);
+        Animation animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
+        animation1.setDuration(300);
+        animation1.setInterpolator(new OvershootInterpolator(1.5f));
+        animation1.setAnimationListener(new Animation.AnimationListener() {
+          @Override public void onAnimationStart(Animation animation) {
+          }
+
+          @Override public void onAnimationEnd(Animation animation) {
+            songMenu.expand(true);
+          }
+
+          @Override public void onAnimationRepeat(Animation animation) {
+          }
+        });
+        songMenu.startAnimation(animation1);
+      }
+
+      @Override public void onAnimationRepeat(Animation animation) {
+      }
+    });
+    ((View) searchView.getParent()).startAnimation(animation);
+    presenter.onExitSearchClick();
+  }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -49,18 +88,44 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   private void setupView() {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     getLoaderManager().initLoader(0, null, this);
-    final int itemCount = ITEM_DRAWABLES.length;
-    for (int i = 0; i < itemCount; i++) {
-      ImageView item = new ImageView(getActivity());
-      item.setImageResource(ITEM_DRAWABLES[i]);
-      final int position = i;
-      rayMenu.addItem(item, new View.OnClickListener() {
+    songsAdapter = new SongsAdapter(musicList);
+    recyclerView.setAdapter(songsAdapter);
+    songMenu.post(new Runnable() {
+      @Override public void run() {
+        searchView.getLayoutParams().height = songMenu.getHeight();
+      }
+    });
+    songMenu.addOnMenuClickListener(new SongMenu.OnMenuClickListener() {
+      @Override public void onSearchMenuClick() {
+        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_right);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+          @Override public void onAnimationStart(Animation animation) {
+          }
 
-        @Override public void onClick(View v) {
-          Toast.makeText(getActivity(), "position:" + position, Toast.LENGTH_SHORT).show();
-        }
-      });// Add a menu item
-    }
+          @Override public void onAnimationEnd(Animation animation) {
+            songMenu.setVisibility(View.GONE);
+            searchView.startAnimation(
+                AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_in_left));
+          }
+
+          @Override public void onAnimationRepeat(Animation animation) {
+          }
+        });
+        animation.setInterpolator(new OvershootInterpolator(1.5f));
+        songMenu.startAnimation(animation);
+        //searchView.startAnimation(animation);
+      }
+
+      @Override public void onShuffleMenuClick() {
+        presenter.onShuffleMenuClick();
+      }
+
+      @Override public void onSettingsMenuClick() {
+      }
+
+      @Override public void onAddToPlaylistMenuClick() {
+      }
+    });
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -76,7 +141,16 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public void showAllSongs(List<Music> songs) {
     totalSongCountView.setText(String.valueOf(songs.size()));
-    recyclerView.setAdapter(new SongsAdapter(songs));
+    musicList.clear();
+    musicList.addAll(songs);
+    songsAdapter.notifyDataSetChanged();
+  }
+
+  @Override public void showMusicScreen() {
+    getFragmentManager().beginTransaction()
+        .add(android.R.id.content, MusicPlayerFragment.instance())
+        .addToBackStack(MusicPlayerFragment.class.getSimpleName())
+        .commit();
   }
 
   @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {

@@ -20,5 +20,7 @@ public interface RecentlyAdded {
 
   interface Presenter extends Mvp.Presenter<RecentlyAdded.View> {
     void onRecentlyAddedCursorLoadFinished(Cursor cursor);
+
+    void onPlayAllClick();
   }
 }

@@ -4,56 +4,25 @@ import android.media.MediaPlayer;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
-/**
- * Created with Android Studio.
- * User: ryan.hoo.j@gmail.com
- * Date: 9/5/16
- * Time: 5:57 PM
- * Desc: MusicPlayer
- */
 public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListener {
-
-  private static final String TAG = "MusicPlayer";
-
-  private static volatile MusicPlayer sInstance;
+  private static final String TAG = MusicPlayer.class.getSimpleName();
 
   private MediaPlayer mPlayer;
-
-  private PlayList mPlayList;
+  private NowPlayingList nowPlayingList;
   // Default size 2: for service and UI
   private List<Callback> mCallbacks = new ArrayList<>(2);
-
-  // MusicPlayer status
   private boolean isPaused;
 
-  private MusicPlayer() {
+  @Inject public MusicPlayer() {
     mPlayer = new MediaPlayer();
-    mPlayList = new PlayList();
+    nowPlayingList = new NowPlayingList.Smart();
     mPlayer.setOnCompletionListener(this);
-  }
-
-  public static MusicPlayer instance() {
-    if (sInstance == null) {
-      synchronized (MusicPlayer.class) {
-        if (sInstance == null) {
-          sInstance = new MusicPlayer();
-        }
-      }
-    }
-    return sInstance;
-  }
-
-  @Override public void setPlayList(PlayList list) {
-    if (list == null) {
-      list = new PlayList();
-    }
-    mPlayList = list;
   }
 
   @Override public boolean play() {
@@ -62,53 +31,33 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
       notifyPlayStatusChanged(true);
       return true;
     }
-    if (mPlayList.prepare()) {
-      Music song = mPlayList.getCurrentSong();
-      try {
-        mPlayer.reset();
-        mPlayer.setDataSource(song.path());
-        mPlayer.prepare();
-        mPlayer.start();
-        notifyPlayStatusChanged(true);
-        ((SqlMusic) song).save();
-      } catch (IOException e) {
-        Log.e(TAG, "play: ", e);
-        notifyPlayStatusChanged(false);
-        return false;
-      }
-      return true;
+    Music song = nowPlayingList.currentMusic();
+    try {
+      mPlayer.reset();
+      mPlayer.setDataSource(song.path());
+      mPlayer.prepare();
+      mPlayer.start();
+      notifyPlayStatusChanged(true);
+      ((SqlMusic) song).save();
+    } catch (IOException e) {
+      Log.e(TAG, "play: ", e);
+      notifyPlayStatusChanged(false);
+      return false;
     }
-    return false;
+    return true;
   }
 
-  @Override public boolean play(PlayList list) {
-    if (list == null) return false;
-    isPaused = false;
-    setPlayList(list);
-    return play();
-  }
-
-  @Override public boolean play(PlayList list, int startIndex) {
-    if (list == null || startIndex < 0 || startIndex >= list.getNumOfSongs()) return false;
-    isPaused = false;
-    list.setPlayingIndex(startIndex);
-    setPlayList(list);
-    return play();
-  }
-
-  @Override public boolean play(Music song) {
-    if (song == null) return false;
-    isPaused = false;
-    mPlayList.getSongs().clear();
-    mPlayList.getSongs().add(song);
-    return play();
+  @Override public boolean play(Music music) {
+    nowPlayingList.jumpTo(music);
+    play();
+    return true;
   }
 
   @Override public boolean playLast() {
     isPaused = false;
-    boolean hasLast = mPlayList.hasLast();
+    boolean hasLast = nowPlayingList.size() > 0;
     if (hasLast) {
-      Music last = mPlayList.last();
+      Music last = nowPlayingList.get(nowPlayingList.size() - 1);
       play();
       notifyPlayLast(last);
       return true;
@@ -118,9 +67,9 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
 
   @Override public boolean playNext() {
     isPaused = false;
-    boolean hasNext = mPlayList.hasNext(false);
+    boolean hasNext = nowPlayingList.size() > nowPlayingList.indexOf(nowPlayingList.currentMusic());
     if (hasNext) {
-      Music next = mPlayList.next();
+      Music next = nowPlayingList.next();
       play();
       notifyPlayNext(next);
       return true;
@@ -147,12 +96,12 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   @Nullable @Override public Music getPlayingSong() {
-    return mPlayList.getCurrentSong();
+    return nowPlayingList.currentMusic();
   }
 
   @Override public boolean seekTo(int progress) {
-    if (mPlayList.getSongs().isEmpty()) return false;
-    Music currentSong = mPlayList.getCurrentSong();
+    if (nowPlayingList.isEmpty()) return false;
+    Music currentSong = nowPlayingList.currentMusic();
     if (currentSong != null) {
       if (currentSong.duration() <= progress) {
         onCompletion(mPlayer);
@@ -165,38 +114,31 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   @Override public void setPlayMode(PlayMode playMode) {
-    mPlayList.setPlayMode(playMode);
+    nowPlayingList.useMusicMode(playMode);
   }
   // Listeners
 
   @Override public void onCompletion(MediaPlayer mp) {
-    Music next = null;
-    // There is only one limited play mode which is list, player should be stopped when hitting the list end
-    if (mPlayList.getPlayMode() == PlayMode.LIST
-        && mPlayList.getPlayingIndex() == mPlayList.getNumOfSongs() - 1) {
-      // In the end of the list
-      // Do nothing, just deliver the callback
-    } else if (mPlayList.getPlayMode() == PlayMode.SINGLE) {
-      next = mPlayList.getCurrentSong();
-      play();
-    } else {
-      boolean hasNext = mPlayList.hasNext(true);
-      if (hasNext) {
-        next = mPlayList.next();
-        play();
-      }
-    }
+    Music next = nowPlayingList.next();
+    if (next != null) play();
     notifyComplete(next);
   }
 
   @Override public void releasePlayer() {
-    mPlayList = null;
+    nowPlayingList = null;
     mPlayer.reset();
     mPlayer.release();
     mPlayer = null;
-    sInstance = null;
   }
-  // Callbacks
+
+  @Override public void addToNowPlaylist(List<Music> songs) {
+    nowPlayingList.clear();
+    nowPlayingList.addAll(songs);
+  }
+
+  @Override public NowPlayingList nowPlayingMusicList() {
+    return nowPlayingList;
+  }
 
   @Override public void registerCallback(Callback callback) {
     mCallbacks.add(callback);
@@ -235,6 +177,6 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   public int audioSessionId() {
-   return mPlayer.getAudioSessionId();
+    return mPlayer.getAudioSessionId();
   }
 }

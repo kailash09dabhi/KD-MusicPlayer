@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.ui.base;
 
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerPresenter;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
@@ -37,7 +38,9 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
 
     @Override
     public com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAdded.Presenter create() {
-      return new RecentlyAddedPresenter();
+      RecentlyAddedPresenter presenter = new RecentlyAddedPresenter();
+      MusicPlayerApp.instance().component().inject(presenter);
+      return presenter;
     }
   }
 
@@ -79,7 +82,9 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
       implements PresenterFactory<com.kingbull.musicplayer.ui.nowplaying.NowPlaying.Presenter> {
 
     @Override public com.kingbull.musicplayer.ui.nowplaying.NowPlaying.Presenter create() {
-      return new NowPlayingPresenter();
+      NowPlayingPresenter presenter = new NowPlayingPresenter();
+      MusicPlayerApp.instance().component().inject(presenter);
+      return presenter;
     }
   }
 
@@ -87,7 +92,9 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
       PresenterFactory<com.kingbull.musicplayer.ui.main.categories.all.AllSongs.Presenter> {
 
     @Override public com.kingbull.musicplayer.ui.main.categories.all.AllSongs.Presenter create() {
-      return new AllSongsPresenter();
+      AllSongsPresenter presenter = new AllSongsPresenter();
+      MusicPlayerApp.instance().component().inject(presenter);
+      return presenter;
     }
   }
 }

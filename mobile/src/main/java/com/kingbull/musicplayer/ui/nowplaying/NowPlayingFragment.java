@@ -46,7 +46,8 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
     return new PresenterFactory.NowPlaying();
   }
 
-  @Override public void showNowPlayingList(List<Music> musicList) {
+  @Override public void showNowPlayingList(List<Music> musicList, int position) {
     recyclerView.setAdapter(new NowPlayingAdapter(musicList));
+    recyclerView.scrollToPosition(position);
   }
 }

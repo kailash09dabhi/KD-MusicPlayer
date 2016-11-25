@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.player;
 
 import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.PlayList;
+import java.util.List;
 
 /**
  * Created with Android Studio.
@@ -13,15 +13,8 @@ import com.kingbull.musicplayer.domain.PlayList;
  */
 public interface Player {
 
-  void setPlayList(PlayList list);
-
   boolean play();
-
-  boolean play(PlayList list);
-
-  boolean play(PlayList list, int startIndex);
-
-  boolean play(Music song);
+  boolean play(Music music);
 
   boolean playLast();
 
@@ -32,6 +25,8 @@ public interface Player {
   boolean isPlaying();
 
   int getProgress();
+
+  int audioSessionId();
 
   Music getPlayingSong();
 
@@ -46,6 +41,10 @@ public interface Player {
   void removeCallbacks();
 
   void releasePlayer();
+
+  void addToNowPlaylist(List<Music> songs);
+
+  NowPlayingList nowPlayingMusicList();
 
   interface Callback {
 

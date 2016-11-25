@@ -33,17 +33,16 @@ public interface MusicPlayer {
 
     void stopSeekbarProgress();
 
+    void showEqualizerScreen(int audioSessionId);
   }
 
   interface Presenter extends Mvp.Presenter<MusicPlayer.View> {
 
     void onTakePlayBack(Player player);
 
-    void onTakeSong(Music song);
 
     void onFavoriteToggleClick();
 
-    void onPlayLastClick();
 
     void onPlayNextClick();
 
@@ -59,5 +58,6 @@ public interface MusicPlayer {
 
     void onProgressChanged(int i);
 
+    void onEqualizerClick();
   }
 }

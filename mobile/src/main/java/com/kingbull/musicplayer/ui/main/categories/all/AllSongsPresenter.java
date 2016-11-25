@@ -5,12 +5,15 @@ import android.util.Log;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.MediaCursor;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
+import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import javax.inject.Inject;
 import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -27,6 +30,8 @@ import static android.content.ContentValues.TAG;
 
 public final class AllSongsPresenter extends Presenter<AllSongs.View>
     implements AllSongs.Presenter {
+  @Inject Player musicPlayer;
+  private List<Music> songs;
 
   @Override public void onAllSongsCursorLoadFinished(Cursor cursor) {
     Subscription subscription =
@@ -73,9 +78,46 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
               @Override public void onNext(List<Music> songs) {
                 //mView.onLocalMusicLoaded(genres);
                 //mView.emptyView(genres.isEmpty());
+                AllSongsPresenter.this.songs = songs;
+                musicPlayer.addToNowPlaylist(songs);
                 view().showAllSongs(songs);
               }
             });
     compositeSubscription.add(subscription);
+  }
+
+  @Override public void onSearchTextChanged(final String text) {
+    Subscription subscription = Observable.from(songs)
+        .filter(new Func1<Music, Boolean>() {
+          @Override public Boolean call(Music music) {
+            return music.title().toLowerCase().contains(text.toLowerCase());
+          }
+        })
+        .toList()
+        .subscribeOn(Schedulers.computation())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Observer<List<Music>>() {
+          @Override public void onCompleted() {
+          }
+
+          @Override public void onError(Throwable e) {
+          }
+
+          @Override public void onNext(List<Music> musicList) {
+            view().showAllSongs(musicList);
+          }
+        });
+    compositeSubscription.add(subscription);
+  }
+
+  @Override public void onExitSearchClick() {
+    view().showAllSongs(songs);
+  }
+
+  @Override public void onShuffleMenuClick() {
+    List<Music> musics = new ArrayList<>(songs);
+    Collections.shuffle(musics);
+    musicPlayer.addToNowPlaylist(musics);
+    view().showMusicScreen();
   }
 }

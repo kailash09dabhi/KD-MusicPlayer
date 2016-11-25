@@ -53,7 +53,7 @@ public final class NowPlayingAdapter
     @Override public void onClick(View view) {
       ((FragmentActivity) view.getContext()).getSupportFragmentManager()
           .beginTransaction()
-          .add(android.R.id.content, MusicPlayerFragment.instance(songs.get(getAdapterPosition())))
+          .add(android.R.id.content, MusicPlayerFragment.instance())
           .addToBackStack(MusicPlayerFragment.class.getSimpleName())
           .commit();
     }
@@ -71,7 +71,7 @@ public final class NowPlayingAdapter
     @Override public void onClick(final View view) {
       ((FragmentActivity) view.getContext()).getSupportFragmentManager()
           .beginTransaction()
-          .add(android.R.id.content, MusicPlayerFragment.instance(songs.get(getAdapterPosition())))
+          .add(android.R.id.content, MusicPlayerFragment.instance())
           .addToBackStack(MusicPlayerFragment.class.getSimpleName())
           .commit();
     }

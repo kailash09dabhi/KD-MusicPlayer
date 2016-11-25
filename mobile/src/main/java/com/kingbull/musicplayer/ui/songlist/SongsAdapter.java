@@ -8,11 +8,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * @author Kailash Dabhi
@@ -23,8 +26,10 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
 
   List<Music> songs;
 
+  @Inject Player player;
   public SongsAdapter(List<Music> songs) {
     this.songs = songs;
+    MusicPlayerApp.instance().component().inject(this);
   }
 
   @Override public SongFileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -55,7 +60,7 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
     @Override public void onClick(View view) {
       ((FragmentActivity) view.getContext()).getSupportFragmentManager()
           .beginTransaction()
-          .add(android.R.id.content, MusicPlayerFragment.instance(songs.get(getAdapterPosition())))
+          .add(android.R.id.content, MusicPlayerFragment.instance())
           .addToBackStack(MusicPlayerFragment.class.getSimpleName())
           .commit();
     }
@@ -73,9 +78,11 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
     }
 
     @Override public void onClick(final View view) {
+player.play(songs.get(getAdapterPosition()));
+
       ((FragmentActivity) view.getContext()).getSupportFragmentManager()
           .beginTransaction()
-          .add(android.R.id.content, MusicPlayerFragment.instance(songs.get(getAdapterPosition())))
+          .add(android.R.id.content, MusicPlayerFragment.instance())
           .addToBackStack(MusicPlayerFragment.class.getSimpleName())
           .commit();
     }
