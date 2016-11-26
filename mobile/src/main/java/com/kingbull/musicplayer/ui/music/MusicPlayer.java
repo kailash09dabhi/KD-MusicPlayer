@@ -28,11 +28,13 @@ public interface MusicPlayer {
 
     void updateSeekBarAfter(long updateProgressInterval);
 
-    void onPlayStatusChanged(boolean isPlaying);
-
     void stopSeekbarProgress();
 
     void showEqualizerScreen(int audioSessionId);
+
+    void pause();
+
+    void play();
   }
 
   interface Presenter extends Mvp.Presenter<MusicPlayer.View> {

@@ -29,10 +29,10 @@ import javax.inject.Inject;
  */
 public final class MusicService extends Service implements Player, Player.Callback {
 
-  private static final String ACTION_PLAY_TOGGLE = "io.github.ryanhoo.music.ACTION.PLAY_TOGGLE";
-  private static final String ACTION_PLAY_LAST = "io.github.ryanhoo.music.ACTION.PLAY_LAST";
-  private static final String ACTION_PLAY_NEXT = "io.github.ryanhoo.music.ACTION.PLAY_NEXT";
-  private static final String ACTION_STOP_SERVICE = "io.github.ryanhoo.music.ACTION.STOP_SERVICE";
+  private static final String ACTION_PLAY_TOGGLE = "com.kingbull.musicplayer.ACTION_PLAY_TOGGLE";
+  private static final String ACTION_PLAY_LAST = "com.kingbull.musicplayer.ACTION_PLAY_LAST";
+  private static final String ACTION_PLAY_NEXT = "com.kingbull.musicplayer.ACTION_PLAY_NEXT";
+  private static final String ACTION_STOP_SERVICE = "com.kingbull.musicplayer.ACTION_STOP_SERVICE";
 
   private static final int NOTIFICATION_ID = 1;
   private final Binder mBinder = new LocalBinder();
@@ -232,16 +232,16 @@ public final class MusicService extends Service implements Player, Player.Callba
   private void updateRemoteViews(RemoteViews remoteView) {
     Music currentSong = musicPlayer.getPlayingSong();
     if (currentSong != null) {
-      remoteView.setTextViewText(R.id.text_view_name, currentSong.title());
+      remoteView.setTextViewText(R.id.nameTextView, currentSong.title());
       remoteView.setTextViewText(R.id.text_view_artist, currentSong.artist());
     }
     remoteView.setImageViewResource(R.id.image_view_play_toggle,
         isPlaying() ? R.drawable.ic_remote_view_pause : R.drawable.ic_remote_view_play);
     Bitmap album = AlbumUtils.parseAlbum(getPlayingSong());
     if (album == null) {
-      remoteView.setImageViewResource(R.id.image_view_album, R.mipmap.ic_launcher);
+      remoteView.setImageViewResource(R.id.albumImageView, R.mipmap.ic_launcher);
     } else {
-      remoteView.setImageViewBitmap(R.id.image_view_album, album);
+      remoteView.setImageViewBitmap(R.id.albumImageView, album);
     }
   }
 

@@ -3,8 +3,10 @@ package com.kingbull.musicplayer.player;
 import android.media.MediaPlayer;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
+import com.kingbull.musicplayer.event.MusicEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,43 +15,45 @@ import javax.inject.Inject;
 public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListener {
   private static final String TAG = MusicPlayer.class.getSimpleName();
 
-  private MediaPlayer mPlayer;
+  private MediaPlayer player;
   private NowPlayingList nowPlayingList;
   // Default size 2: for service and UI
   private List<Callback> mCallbacks = new ArrayList<>(2);
   private boolean isPaused;
 
   @Inject public MusicPlayer() {
-    mPlayer = new MediaPlayer();
+    player = new MediaPlayer();
     nowPlayingList = new NowPlayingList.Smart();
-    mPlayer.setOnCompletionListener(this);
+    player.setOnCompletionListener(this);
   }
 
   @Override public boolean play() {
     if (isPaused) {
-      mPlayer.start();
+      player.start();
       notifyPlayStatusChanged(true);
-      return true;
+    } else {
+      Music song = nowPlayingList.currentMusic();
+      try {
+        player.reset();
+        player.setDataSource(song.path());
+        player.prepare();
+        player.start();
+        notifyPlayStatusChanged(true);
+        ((SqlMusic) song).save();
+      } catch (IOException e) {
+        Log.e(TAG, "play: ", e);
+        notifyPlayStatusChanged(false);
+        return false;
+      }
     }
-    Music song = nowPlayingList.currentMusic();
-    try {
-      mPlayer.reset();
-      mPlayer.setDataSource(song.path());
-      mPlayer.prepare();
-      mPlayer.start();
-      notifyPlayStatusChanged(true);
-      ((SqlMusic) song).save();
-    } catch (IOException e) {
-      Log.e(TAG, "play: ", e);
-      notifyPlayStatusChanged(false);
-      return false;
-    }
+    isPaused = false;
     return true;
   }
 
   @Override public boolean play(Music music) {
     nowPlayingList.jumpTo(music);
     play();
+    RxBus.getInstance().post(new MusicEvent(nowPlayingList.currentMusic(),MusicPlayerEvent.PLAY));
     return true;
   }
 
@@ -72,27 +76,29 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
       Music next = nowPlayingList.next();
       play();
       notifyPlayNext(next);
+      RxBus.getInstance().post(new MusicEvent(next,MusicPlayerEvent.NEXT));
       return true;
     }
     return false;
   }
 
   @Override public boolean pause() {
-    if (mPlayer.isPlaying()) {
-      mPlayer.pause();
+    if (player.isPlaying()) {
+      player.pause();
       isPaused = true;
       notifyPlayStatusChanged(false);
+      RxBus.getInstance().post(new MusicEvent(nowPlayingList.currentMusic(),MusicPlayerEvent.PAUSE));
       return true;
     }
     return false;
   }
 
   @Override public boolean isPlaying() {
-    return mPlayer.isPlaying();
+    return player.isPlaying();
   }
 
   @Override public int getProgress() {
-    return mPlayer.getCurrentPosition();
+    return player.getCurrentPosition();
   }
 
   @Nullable @Override public Music getPlayingSong() {
@@ -104,9 +110,9 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     Music currentSong = nowPlayingList.currentMusic();
     if (currentSong != null) {
       if (currentSong.duration() <= progress) {
-        onCompletion(mPlayer);
+        onCompletion(player);
       } else {
-        mPlayer.seekTo(progress);
+        player.seekTo(progress);
       }
       return true;
     }
@@ -126,9 +132,9 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
 
   @Override public void releasePlayer() {
     nowPlayingList = null;
-    mPlayer.reset();
-    mPlayer.release();
-    mPlayer = null;
+    player.reset();
+    player.release();
+    player = null;
   }
 
   @Override public void addToNowPlaylist(List<Music> songs) {
@@ -177,6 +183,6 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   public int audioSessionId() {
-    return mPlayer.getAudioSessionId();
+    return player.getAudioSessionId();
   }
 }

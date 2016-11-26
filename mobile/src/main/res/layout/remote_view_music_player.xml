@@ -10,7 +10,7 @@
     >
 
     <ImageView
-        android:id="@+id/image_view_album"
+        android:id="@+id/albumImageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"
@@ -38,11 +38,11 @@
 
 
     <TextView
-        android:id="@+id/text_view_name"
+        android:id="@+id/nameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/image_view_album"
-        android:layout_toRightOf="@+id/image_view_album"
+        android:layout_toEndOf="@+id/albumImageView"
+        android:layout_toRightOf="@+id/albumImageView"
         android:layout_toLeftOf="@+id/button_close"
         android:layout_toStartOf="@+id/button_close"
         android:layout_alignParentTop="true"
@@ -60,9 +60,9 @@
         android:id="@+id/text_view_artist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/text_view_name"
-        android:layout_alignStart="@+id/text_view_name"
-        android:layout_below="@id/text_view_name"
+        android:layout_alignLeft="@+id/nameTextView"
+        android:layout_alignStart="@+id/nameTextView"
+        android:layout_below="@id/nameTextView"
         android:layout_marginBottom="8dp"
         android:textColor="#AB000000"
         android:textSize="14sp"
@@ -89,8 +89,8 @@
         android:id="@+id/layout_play_controls"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_toRightOf="@+id/image_view_album"
-        android:layout_toEndOf="@+id/image_view_album"
+        android:layout_toRightOf="@+id/albumImageView"
+        android:layout_toEndOf="@+id/albumImageView"
         android:layout_alignParentBottom="true"
         >
 

@@ -14,8 +14,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PreferenceManager;
+import com.kingbull.musicplayer.event.MusicEvent;
+import com.kingbull.musicplayer.player.MusicPlayerEvent;
 import com.kingbull.musicplayer.player.PlayMode;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
@@ -25,21 +28,25 @@ import com.kingbull.musicplayer.ui.widget.ShadowImageView;
 import com.kingbull.musicplayer.utils.AlbumUtils;
 import com.kingbull.musicplayer.utils.TimeUtils;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
 
 import static com.kingbull.musicplayer.R.id.text_view_artist;
 
 public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presenter>
     implements MusicPlayer.View {
 
-  @BindView(R.id.image_view_album) ShadowImageView imageViewAlbum;
-  @BindView(R.id.text_view_name) TextView textViewName;
+  @BindView(R.id.albumImageView) ShadowImageView albumImageView;
+  @BindView(R.id.nameTextView) TextView nameTextView;
   @BindView(text_view_artist) TextView textViewArtist;
-  @BindView(R.id.text_view_progress) TextView textViewProgress;
-  @BindView(R.id.text_view_duration) TextView textViewDuration;
-  @BindView(R.id.seek_bar) MusicSeekBar seekBarProgress;
+  @BindView(R.id.progressTextView) TextView progressTextView;
+  @BindView(R.id.durationTextView) TextView durationTextView;
+  @BindView(R.id.seekbar) MusicSeekBar seekBarProgress;
   @BindView(R.id.button_play_mode_toggle) PlayModeToggleView playModeToggleView;
   @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
   @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
+  CompositeSubscription compositeSubscription = new CompositeSubscription();
 
   public static MusicPlayerFragment instance() {
     MusicPlayerFragment fragment = new MusicPlayerFragment();
@@ -65,6 +72,36 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
+    compositeSubscription.add(RxBus.getInstance()
+        .toObservable()
+        .ofType(MusicEvent.class)
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnNext(new Action1<MusicEvent>() {
+          @Override public void call(MusicEvent musicEvent) {
+            onSongUpdated(musicEvent.music());
+            if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.PLAY
+                || musicEvent.musicPlayerEvent() == MusicPlayerEvent.PAUSE) {
+              buttonPlayToggle.setImageResource(
+                  musicEvent.musicPlayerEvent() == MusicPlayerEvent.PAUSE ? R.drawable.ic_pause
+                      : R.drawable.ic_play);
+              if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.PLAY) {
+                albumImageView.resumeRotateAnimation();
+                seekBarProgress.startProgresssAnimation();
+              } else {
+                albumImageView.pauseRotateAnimation();
+                seekBarProgress.dontAnimate();
+              }
+            }
+          }
+        })
+        .subscribe(RxBus.defaultSubscriber()));
+  }
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    if (compositeSubscription != null) {
+      compositeSubscription.clear();
+    }
   }
 
   @Override public void onStop() {
@@ -103,19 +140,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   }
 
   @Override public void updateProgressDurationText(int duration) {
-    textViewProgress.setText(TimeUtils.formatDuration(duration));
-  }
-
-  @Override public void onPlayStatusChanged(boolean isPlaying) {
-    buttonPlayToggle.setImageResource(isPlaying ? R.drawable.ic_pause : R.drawable.ic_play);
-    if (isPlaying) {
-      imageViewAlbum.resumeRotateAnimation();
-      seekBarProgress.dontAnimate();
-      seekBarProgress.startProgresssAnimation();
-    } else {
-      imageViewAlbum.pauseRotateAnimation();
-      seekBarProgress.dontAnimate();
-    }
+    progressTextView.setText(TimeUtils.formatDuration(duration));
   }
 
   @Override public void stopSeekbarProgress() {
@@ -129,23 +154,33 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     startActivity(intent);
   }
 
+  @Override public void pause() {
+    albumImageView.pauseRotateAnimation();
+    seekBarProgress.dontAnimate();
+  }
+
+  @Override public void play() {
+    albumImageView.resumeRotateAnimation();
+    seekBarProgress.startProgresssAnimation();
+  }
+
   @Override public void onSongUpdated(Music song) {
-    textViewName.setText(song.title());
+    nameTextView.setText(song.title());
     textViewArtist.setText(song.artist());
     // Step 2: favorite
     buttonFavoriteToggle.setImageResource(
         song.isFavorite() ? R.drawable.ic_favorite_yes : R.drawable.ic_favorite_no);
     // Step 3: Duration
-    textViewDuration.setText(TimeUtils.formatDuration(song.duration()));
+    durationTextView.setText(TimeUtils.formatDuration(song.duration()));
     // Step 4: Keep these things updated
     // - Album rotation
-    // - Progress(textViewProgress & seekBarProgress)
+    // - Progress(progressTextView & seekBarProgress)
     Bitmap bitmap = AlbumUtils.parseAlbum(song);
     if (bitmap == null) {
-      imageViewAlbum.setImageResource(R.drawable.default_record_album);
+      albumImageView.setImageResource(R.drawable.default_record_album);
     } else {
       bitmap = AlbumUtils.getCroppedBitmap(bitmap);
-      imageViewAlbum.setImageBitmap(bitmap);
+      albumImageView.setImageBitmap(bitmap);
       Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
         public void onGenerated(Palette palette) {
           if (palette != null) {
@@ -166,18 +201,18 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         }
       });
     }
-    imageViewAlbum.pauseRotateAnimation();
-    seekBarProgress.dontAnimate();
     seekBarProgress.updateMusic(song);
+    albumImageView.startRotateAnimation();
+    seekBarProgress.startProgresssAnimation();
   }
 
   private void updateUiWithPalleteSwatch(Palette.Swatch darkSwatch, Palette.Swatch lightSwatch) {
     getActivity().getWindow().setBackgroundDrawable(new ColorDrawable(darkSwatch.getRgb()));
     getView().setBackgroundColor(darkSwatch.getRgb());
-    textViewName.setTextColor(lightSwatch.getRgb());
+    nameTextView.setTextColor(lightSwatch.getRgb());
     textViewArtist.setTextColor(lightSwatch.getRgb());
-    textViewProgress.setTextColor(lightSwatch.getRgb());
-    textViewDuration.setTextColor(lightSwatch.getRgb());
+    progressTextView.setTextColor(lightSwatch.getRgb());
+    durationTextView.setTextColor(lightSwatch.getRgb());
   }
 
   @Override public void updatePlayMode(PlayMode playMode) {

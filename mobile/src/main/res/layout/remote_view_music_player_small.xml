@@ -11,7 +11,7 @@
     >
 
     <ImageView
-        android:id="@+id/image_view_album"
+        android:id="@+id/albumImageView"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="12dp"
@@ -45,15 +45,15 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/image_view_album"
-        android:layout_toEndOf="@+id/image_view_album"
+        android:layout_toRightOf="@+id/albumImageView"
+        android:layout_toEndOf="@+id/albumImageView"
         android:layout_toLeftOf="@+id/layout_play_controls"
         android:layout_toStartOf="@+id/layout_play_controls"
         android:layout_centerVertical="true"
         >
 
         <TextView
-            android:id="@+id/text_view_name"
+            android:id="@+id/nameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"

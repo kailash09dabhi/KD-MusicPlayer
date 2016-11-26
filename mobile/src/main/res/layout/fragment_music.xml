@@ -20,7 +20,7 @@
       >
 
     <com.kingbull.musicplayer.ui.widget.ShadowImageView
-        android:id="@+id/image_view_album"
+        android:id="@+id/albumImageView"
         android:layout_width="@dimen/mp.music.album.size"
         android:layout_height="@dimen/mp.music.album.size"
         android:layout_centerInParent="true"
@@ -41,7 +41,7 @@
       android:layout_height="wrap_content"
       android:src="@drawable/ksw_md_thumb"/>
   <TextView
-      android:id="@+id/text_view_name"
+      android:id="@+id/nameTextView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/mp.margin.normal"
@@ -75,7 +75,7 @@
       >
 
     <TextView
-        android:id="@+id/text_view_progress"
+        android:id="@+id/progressTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
@@ -85,7 +85,7 @@
         />
 
     <com.kingbull.musicplayer.ui.music.MusicSeekBar
-        android:id="@+id/seek_bar"
+        android:id="@+id/seekbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -95,7 +95,7 @@
         />
 
     <TextView
-        android:id="@+id/text_view_duration"
+        android:id="@+id/durationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
