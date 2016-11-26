@@ -14,9 +14,10 @@ import java.util.List;
 public interface Player {
 
   boolean play();
+
   boolean play(Music music);
 
-  boolean playLast();
+  boolean playPrevious();
 
   boolean playNext();
 
@@ -31,8 +32,6 @@ public interface Player {
   Music getPlayingSong();
 
   boolean seekTo(int progress);
-
-  void setPlayMode(PlayMode playMode);
 
   void registerCallback(Callback callback);
 

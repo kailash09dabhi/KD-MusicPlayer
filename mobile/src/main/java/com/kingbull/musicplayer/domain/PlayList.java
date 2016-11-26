@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.kingbull.musicplayer.player.PlayMode;
+import com.kingbull.musicplayer.player.MusicMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -49,7 +49,7 @@ public final class PlayList implements Parcelable {
     /**
      * Use a singleton play mode
      */
-    private PlayMode playMode = PlayMode.LOOP;
+    private MusicMode musicMode = MusicMode.REPEAT_SINGLE;
 
     public PlayList() {
         // EMPTY
@@ -135,12 +135,12 @@ public final class PlayList implements Parcelable {
         this.playingIndex = playingIndex;
     }
 
-    public PlayMode getPlayMode() {
-        return playMode;
+    public MusicMode getMusicMode() {
+        return musicMode;
     }
 
-    public void setPlayMode(PlayMode playMode) {
-        this.playMode = playMode;
+    public void setMusicMode(MusicMode musicMode) {
+        this.musicMode = musicMode;
     }
 
     // Parcelable
@@ -160,7 +160,7 @@ public final class PlayList implements Parcelable {
         dest.writeLong(this.updatedAt != null ? this.updatedAt.getTime() : -1);
         //dest.writeTypedList(this.songs);
         dest.writeInt(this.playingIndex);
-        dest.writeInt(this.playMode == null ? -1 : this.playMode.ordinal());
+        dest.writeInt(this.musicMode == null ? -1 : this.musicMode.ordinal());
     }
 
     public void readFromParcel(Parcel in) {
@@ -175,7 +175,7 @@ public final class PlayList implements Parcelable {
         //this.songs = in.createTypedArrayList(Song.CREATOR);
         this.playingIndex = in.readInt();
         int tmpPlayMode = in.readInt();
-        this.playMode = tmpPlayMode == -1 ? null : PlayMode.values()[tmpPlayMode];
+        this.musicMode = tmpPlayMode == -1 ? null : MusicMode.values()[tmpPlayMode];
     }
 
     public static final Creator<PlayList> CREATOR = new Creator<PlayList>() {
@@ -265,19 +265,17 @@ public final class PlayList implements Parcelable {
     }
 
     public Music last() {
-        switch (playMode) {
-            case LOOP:
-            case LIST:
-            case SINGLE:
+        switch (musicMode) {
+            case REPEAT_SINGLE:
+            case REPEAT_ALL:
+            case REPEAT_NONE:
                 int newIndex = playingIndex - 1;
                 if (newIndex < 0) {
                     newIndex = songs.size() - 1;
                 }
                 playingIndex = newIndex;
                 break;
-            case SHUFFLE:
-                playingIndex = randomPlayIndex();
-                break;
+
         }
         return songs.get(playingIndex);
     }
@@ -287,7 +285,7 @@ public final class PlayList implements Parcelable {
      * <p/>
      * If this query satisfies these conditions
      * - comes from media player's complete listener
-     * - current play mode is PlayMode.LIST (the only limited play mode)
+     * - current play mode is MusicMode.REPEAT_ALL (the only limited play mode)
      * - current song is already in the end of the list
      * then there shouldn't be a next song to play, for this condition, it returns false.
      * <p/>
@@ -297,7 +295,7 @@ public final class PlayList implements Parcelable {
     public boolean hasNext(boolean fromComplete) {
         if (songs.isEmpty()) return false;
         if (fromComplete) {
-            if (playMode == PlayMode.LIST && playingIndex + 1 >= songs.size()) return false;
+            if (musicMode == MusicMode.REPEAT_ALL && playingIndex + 1 >= songs.size()) return false;
         }
         return true;
     }
@@ -308,18 +306,15 @@ public final class PlayList implements Parcelable {
      * @return The next song to play
      */
     public Music next() {
-        switch (playMode) {
-            case LOOP:
-            case LIST:
-            case SINGLE:
+        switch (musicMode) {
+            case REPEAT_SINGLE:
+            case REPEAT_ALL:
+            case REPEAT_NONE:
                 int newIndex = playingIndex + 1;
                 if (newIndex >= songs.size()) {
                     newIndex = 0;
                 }
                 playingIndex = newIndex;
-                break;
-            case SHUFFLE:
-                playingIndex = randomPlayIndex();
                 break;
         }
         return songs.get(playingIndex);

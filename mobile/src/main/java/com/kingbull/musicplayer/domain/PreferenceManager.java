@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.domain;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.kingbull.musicplayer.player.PlayMode;
+import com.kingbull.musicplayer.player.MusicMode;
 
 /**
  * Created with Android Studio.
@@ -52,19 +52,19 @@ public final class PreferenceManager {
     /**
      * {@link #KEY_PLAY_MODE}
      */
-    public static PlayMode lastPlayMode(Context context) {
+    public static MusicMode lastPlayMode(Context context) {
         String playModeName = preferences(context).getString(KEY_PLAY_MODE, null);
         if (playModeName != null) {
-            return PlayMode.valueOf(playModeName);
+            return MusicMode.valueOf(playModeName);
         }
-        return PlayMode.getDefault();
+        return MusicMode.getDefault();
     }
 
     /**
      * {@link #KEY_PLAY_MODE}
      */
-    public static void setPlayMode(Context context, PlayMode playMode) {
-        edit(context).putString(KEY_PLAY_MODE, playMode.name()).commit();
+    public static void setPlayMode(Context context, MusicMode musicMode) {
+        edit(context).putString(KEY_PLAY_MODE, musicMode.name()).commit();
     }
 
 }

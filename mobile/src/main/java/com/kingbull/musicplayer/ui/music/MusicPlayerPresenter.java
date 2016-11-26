@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PreferenceManager;
-import com.kingbull.musicplayer.player.PlayMode;
+import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import javax.inject.Inject;
@@ -31,12 +31,15 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     player.playNext();
   }
 
+  @Override public void onPlayPreviousClick() {
+    player.playPrevious();
+  }
+
   @Override public void onPlayModeToggleClick() {
     if (player == null) return;
-    PlayMode current = PreferenceManager.lastPlayMode(MusicPlayerApp.instance());
-    PlayMode newMode = PlayMode.switchNextMode(current);
+    MusicMode current = PreferenceManager.lastPlayMode(MusicPlayerApp.instance());
+    MusicMode newMode = MusicMode.switchNextMode(current);
     PreferenceManager.setPlayMode(MusicPlayerApp.instance(), newMode);
-    player.setPlayMode(newMode);
     view().updatePlayMode(newMode);
   }
 

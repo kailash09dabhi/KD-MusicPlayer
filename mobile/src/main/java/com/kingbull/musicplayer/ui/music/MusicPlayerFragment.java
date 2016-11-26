@@ -18,8 +18,8 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PreferenceManager;
 import com.kingbull.musicplayer.event.MusicEvent;
+import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.player.MusicPlayerEvent;
-import com.kingbull.musicplayer.player.PlayMode;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
@@ -121,6 +121,10 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     presenter.onPlayNextClick();
   }
 
+  @OnClick(R.id.button_play_previous) public void onPlayPreviousClick() {
+    presenter.onPlayPreviousClick();
+  }
+
   @OnClick(R.id.button_favorite_toggle) public void onFavoriteToggleAction(View view) {
     presenter.onFavoriteToggleClick();
   }
@@ -215,8 +219,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     durationTextView.setTextColor(lightSwatch.getRgb());
   }
 
-  @Override public void updatePlayMode(PlayMode playMode) {
-    playModeToggleView.takePlayMode(playMode);
+  @Override public void updatePlayMode(MusicMode musicMode) {
+    playModeToggleView.takePlayMode(musicMode);
   }
 
   @Override public void updateFavoriteToggle(boolean favorite) {

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.player.PlayMode;
+import com.kingbull.musicplayer.player.MusicMode;
 
 /**
  * @author Kailash Dabhi
@@ -12,7 +12,6 @@ import com.kingbull.musicplayer.player.PlayMode;
  */
 
 public final class PlayModeToggleView extends ImageView {
-  private PlayMode playMode;
 
   public PlayModeToggleView(Context context) {
     super(context);
@@ -26,22 +25,18 @@ public final class PlayModeToggleView extends ImageView {
     super(context, attrs, defStyleAttr);
   }
 
-  public void takePlayMode(PlayMode playMode) {
-    this.playMode = playMode;
-    if (playMode == null) {
-      this.playMode = PlayMode.getDefault();
-    }
-    switch (playMode) {
-      case LIST:
+  public void takePlayMode(MusicMode musicMode) {
+    switch (musicMode) {
+      case REPEAT_ALL:
         setImageResource(R.drawable.ic_play_mode_list);
         break;
-      case LOOP:
+      case REPEAT_SINGLE:
         setImageResource(R.drawable.ic_play_mode_loop);
         break;
-      case SHUFFLE:
-        setImageResource(R.drawable.ic_play_mode_shuffle);
-        break;
-      case SINGLE:
+      //case SHUFFLE:
+      //  setImageResource(R.drawable.ic_play_mode_shuffle);
+      //  break;
+      case REPEAT_NONE:
         setImageResource(R.drawable.ic_play_mode_single);
         break;
     }

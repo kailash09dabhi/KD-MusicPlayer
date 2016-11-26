@@ -3,8 +3,10 @@ package com.kingbull.musicplayer.player;
 import android.media.MediaPlayer;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.PreferenceManager;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import com.kingbull.musicplayer.event.MusicEvent;
 import java.io.IOException;
@@ -53,20 +55,18 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   @Override public boolean play(Music music) {
     nowPlayingList.jumpTo(music);
     play();
-    RxBus.getInstance().post(new MusicEvent(nowPlayingList.currentMusic(),MusicPlayerEvent.PLAY));
+    RxBus.getInstance().post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.PLAY));
     return true;
   }
 
-  @Override public boolean playLast() {
+  @Override public boolean playPrevious() {
     isPaused = false;
-    boolean hasLast = nowPlayingList.size() > 0;
-    if (hasLast) {
-      Music last = nowPlayingList.get(nowPlayingList.size() - 1);
-      play();
-      notifyPlayLast(last);
-      return true;
-    }
-    return false;
+    nowPlayingList.previous();
+    play();
+    notifyPlayPrevious(nowPlayingList.currentMusic());
+    RxBus.getInstance()
+        .post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.PREVIOUS));
+    return true;
   }
 
   @Override public boolean playNext() {
@@ -76,7 +76,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
       Music next = nowPlayingList.next();
       play();
       notifyPlayNext(next);
-      RxBus.getInstance().post(new MusicEvent(next,MusicPlayerEvent.NEXT));
+      RxBus.getInstance().post(new MusicEvent(next, MusicPlayerEvent.NEXT));
       return true;
     }
     return false;
@@ -87,7 +87,8 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
       player.pause();
       isPaused = true;
       notifyPlayStatusChanged(false);
-      RxBus.getInstance().post(new MusicEvent(nowPlayingList.currentMusic(),MusicPlayerEvent.PAUSE));
+      RxBus.getInstance()
+          .post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.PAUSE));
       return true;
     }
     return false;
@@ -119,15 +120,27 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     return false;
   }
 
-  @Override public void setPlayMode(PlayMode playMode) {
-    nowPlayingList.useMusicMode(playMode);
-  }
-  // Listeners
-
   @Override public void onCompletion(MediaPlayer mp) {
-    Music next = nowPlayingList.next();
-    if (next != null) play();
-    notifyComplete(next);
+    switch (PreferenceManager.lastPlayMode(MusicPlayerApp.instance())) {
+      case REPEAT_ALL:
+        if (nowPlayingList.indexOf(nowPlayingList.currentMusic()) >= nowPlayingList.size() - 1) {
+          nowPlayingList.jumpTo(nowPlayingList.get(0));
+        } else {
+          nowPlayingList.next();
+        }
+        break;
+      case REPEAT_SINGLE:
+        break;
+      case REPEAT_NONE:
+        if (nowPlayingList.indexOf(nowPlayingList.currentMusic()) >= nowPlayingList.size() - 1) {
+          nowPlayingList.jumpTo(null);
+        } else {
+          nowPlayingList.next();
+        }
+        break;
+    }
+    play();
+    notifyComplete(nowPlayingList.currentMusic());
   }
 
   @Override public void releasePlayer() {
@@ -164,7 +177,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     }
   }
 
-  private void notifyPlayLast(Music song) {
+  private void notifyPlayPrevious(Music song) {
     for (Callback callback : mCallbacks) {
       callback.onSwitchLast(song);
     }

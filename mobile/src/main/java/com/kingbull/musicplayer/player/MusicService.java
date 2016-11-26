@@ -4,12 +4,17 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
+import android.media.AudioManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.NotificationCompat;
 import android.widget.RemoteViews;
 import com.kingbull.musicplayer.MusicPlayerApp;
@@ -38,6 +43,7 @@ public final class MusicService extends Service implements Player, Player.Callba
   private final Binder mBinder = new LocalBinder();
   @Inject Player musicPlayer;
   private RemoteViews mContentViewBig, mContentViewSmall;
+  private MediaSessionCompat mediaSession;
 
   @Override public void onCreate() {
     super.onCreate();
@@ -50,8 +56,26 @@ public final class MusicService extends Service implements Player, Player.Callba
       @Override public void onServiceDisconnected(ComponentName name) {
       }
     }, BIND_AUTO_CREATE);
+    lockScreenMediaSessionSetup();
   }
 
+  private void lockScreenMediaSessionSetup(){
+    ComponentName receiver = new ComponentName(getPackageName(), RemoteReceiver.class.getName());
+    mediaSession = new MediaSessionCompat(this, "PlayerService", receiver, null);
+    mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
+        | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+    mediaSession.setPlaybackState(
+        new PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_PAUSED, 0, 0)
+            .setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE)
+            .build());
+    AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+    audioManager.requestAudioFocus(new AudioManager.OnAudioFocusChangeListener() {
+      @Override public void onAudioFocusChange(int focusChange) {
+        // Ignore
+      }
+    }, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+    mediaSession.setActive(true);
+  }
   @Override public int onStartCommand(Intent intent, int flags, int startId) {
     if (intent != null) {
       String action = intent.getAction();
@@ -64,7 +88,7 @@ public final class MusicService extends Service implements Player, Player.Callba
       } else if (ACTION_PLAY_NEXT.equals(action)) {
         playNext();
       } else if (ACTION_PLAY_LAST.equals(action)) {
-        playLast();
+        playPrevious();
       } else if (ACTION_STOP_SERVICE.equals(action)) {
         if (isPlaying()) {
           pause();
@@ -99,8 +123,8 @@ public final class MusicService extends Service implements Player, Player.Callba
     return musicPlayer.play(music);
   }
 
-  @Override public boolean playLast() {
-    return musicPlayer.playLast();
+  @Override public boolean playPrevious() {
+    return musicPlayer.playPrevious();
   }
 
   @Override public boolean playNext() {
@@ -129,10 +153,6 @@ public final class MusicService extends Service implements Player, Player.Callba
 
   @Override public boolean seekTo(int progress) {
     return musicPlayer.seekTo(progress);
-  }
-
-  @Override public void setPlayMode(PlayMode playMode) {
-    musicPlayer.setPlayMode(playMode);
   }
 
   @Override public void registerCallback(Callback callback) {
@@ -243,6 +263,14 @@ public final class MusicService extends Service implements Player, Player.Callba
     } else {
       remoteView.setImageViewBitmap(R.id.albumImageView, album);
     }
+    mediaSession.setMetadata(
+        new MediaMetadataCompat.Builder().putString(MediaMetadataCompat.METADATA_KEY_ARTIST,
+            currentSong.artist())
+            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.album())
+            .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.title())
+            .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, 10000)
+            .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, album)
+            .build());
   }
 
   private PendingIntent getPendingIntent(String action) {

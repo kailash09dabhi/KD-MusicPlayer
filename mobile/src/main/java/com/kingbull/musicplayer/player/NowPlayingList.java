@@ -20,12 +20,9 @@ public interface NowPlayingList extends List<Music> {
 
   Music previous();
 
-  void useMusicMode(PlayMode playmode);
-
   class Smart extends ArrayList<Music> implements NowPlayingList {
     private static final int NO_POSITION = -1;
     private int currentRunningMusicIndex = NO_POSITION;
-    private PlayMode playMode;
 
     @Override public Music currentMusic() {
       if (isEmpty() && currentRunningMusicIndex == NO_POSITION) {
@@ -39,15 +36,21 @@ public interface NowPlayingList extends List<Music> {
     }
 
     @Override public Music next() {
-      return get(++currentRunningMusicIndex);
+      if (currentRunningMusicIndex >= size() - 1) {
+        currentRunningMusicIndex = 0;
+      } else {
+        currentRunningMusicIndex++;
+      }
+      return get(currentRunningMusicIndex);
     }
 
     @Override public Music previous() {
-      return get(--currentRunningMusicIndex);
-    }
-
-    @Override public void useMusicMode(PlayMode playmode) {
-      this.playMode = playmode;
+      if (currentRunningMusicIndex <= 0) {
+        currentRunningMusicIndex = size() - 1;
+      } else {
+        currentRunningMusicIndex--;
+      }
+      return get(currentRunningMusicIndex);
     }
 
     @Override public boolean addAll(Collection<? extends Music> c) {

@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.ui.music;
 
 import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.player.PlayMode;
+import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.ui.base.Mvp;
 
 /**
@@ -18,7 +18,7 @@ public interface MusicPlayer {
 
     void onSongUpdated(@Nullable Music song);
 
-    void updatePlayMode(PlayMode playMode);
+    void updatePlayMode(MusicMode musicMode);
 
     void updateFavoriteToggle(boolean favorite);
 
@@ -42,6 +42,8 @@ public interface MusicPlayer {
     void onFavoriteToggleClick();
 
     void onPlayNextClick();
+
+    void onPlayPreviousClick();
 
     void onPlayModeToggleClick();
 
