@@ -123,6 +123,9 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
 
   @Override public void onSettingsMenuClick() {
     view().showSettingsScreen();
+  }
 
+  @Override public void onAddToPlayListMenuClick() {
+    view().showAddToPlayListDialog();
   }
 }

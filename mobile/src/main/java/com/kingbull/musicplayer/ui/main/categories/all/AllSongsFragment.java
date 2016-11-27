@@ -26,11 +26,11 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.settings.SettingsActivity;
-import com.kingbull.musicplayer.ui.songlist.SongsAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +41,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.songMenu) SongMenu songMenu;
   @BindView(R.id.searchView) EditText searchView;
-  private SongsAdapter songsAdapter;
+  private com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter songsAdapter;
 
   @OnTextChanged(R.id.searchView) void onSearchTextChanged(CharSequence text) {
     presenter.onSearchTextChanged(text.toString());
@@ -87,7 +87,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   private void setupView() {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     getLoaderManager().initLoader(0, null, this);
-    songsAdapter = new SongsAdapter(musicList);
+    songsAdapter = new com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter(musicList);
     recyclerView.setAdapter(songsAdapter);
     songMenu.post(new Runnable() {
       @Override public void run() {
@@ -124,6 +124,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
       }
 
       @Override public void onAddToPlaylistMenuClick() {
+        presenter.onAddToPlayListMenuClick();
       }
     });
   }
@@ -152,6 +153,12 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public void showSettingsScreen() {
     startActivity(new Intent(getActivity(), SettingsActivity.class));
+  }
+
+  @Override public void showAddToPlayListDialog() {
+    AddToPlayListDialogFragment.newInstance()
+        .show(getActivity().getSupportFragmentManager(),
+            AddToPlayListDialogFragment.class.getName());
   }
 
   @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {

@@ -17,6 +17,8 @@ public interface AllSongs {
     void showMusicScreen();
 
     void showSettingsScreen();
+
+    void showAddToPlayListDialog();
   }
 
   interface Model extends Mvp.Model {
@@ -32,5 +34,7 @@ public interface AllSongs {
     void onShuffleMenuClick();
 
     void onSettingsMenuClick();
+
+    void onAddToPlayListMenuClick();
   }
 }

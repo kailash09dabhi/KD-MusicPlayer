@@ -21,6 +21,8 @@ public interface AppComponent {
 
   void inject(MusicService service);
 
+  void inject(com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter adapter);
+
   void inject(SqlMusic music);
 
   void inject(LastPlayedModel lastPlayedModel);
@@ -32,10 +34,13 @@ public interface AppComponent {
   void inject(AllSongsPresenter presenter);
 
   void inject(RecentlyAddedPresenter presenter);
+
   void inject(NowPlayingPresenter presenter);
 
   void inject(MusicPlayerFragment fragment);
+
   void inject(MusicPlayerPresenter presenter);
+
   void inject(SongsAdapter adapter);
 
   MusicPlayerApp app();
