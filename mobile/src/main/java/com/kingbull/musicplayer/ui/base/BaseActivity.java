@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.WindowManager;
+import com.kingbull.musicplayer.domain.SettingPreferences;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -106,5 +108,13 @@ public abstract class BaseActivity<P extends Presenter> extends AppCompatActivit
 
   protected Subscription subscribeEvents() {
     return null;
+  }
+
+  @Override protected void onResume() {
+    super.onResume();
+    if (new SettingPreferences().isFullScreen()) {
+      getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+          WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
   }
 }

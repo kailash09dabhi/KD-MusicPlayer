@@ -1,9 +1,8 @@
 package com.kingbull.musicplayer.ui.music;
 
 import android.support.annotation.NonNull;
-import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.PreferenceManager;
+import com.kingbull.musicplayer.domain.SettingPreferences;
 import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
@@ -37,9 +36,10 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
 
   @Override public void onPlayModeToggleClick() {
     if (player == null) return;
-    MusicMode current = PreferenceManager.lastPlayMode(MusicPlayerApp.instance());
+    SettingPreferences prefs = new SettingPreferences();
+    MusicMode current = prefs.musicMode();
     MusicMode newMode = MusicMode.switchNextMode(current);
-    PreferenceManager.setPlayMode(MusicPlayerApp.instance(), newMode);
+    prefs.saveMusicMode(newMode);
     view().updatePlayMode(newMode);
   }
 

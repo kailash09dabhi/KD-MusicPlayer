@@ -3,10 +3,9 @@ package com.kingbull.musicplayer.player;
 import android.media.MediaPlayer;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.PreferenceManager;
+import com.kingbull.musicplayer.domain.SettingPreferences;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import com.kingbull.musicplayer.event.MusicEvent;
 import java.io.IOException;
@@ -119,9 +118,9 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     }
     return false;
   }
-
+SettingPreferences settingPrefs = new SettingPreferences();
   @Override public void onCompletion(MediaPlayer mp) {
-    switch (PreferenceManager.lastPlayMode(MusicPlayerApp.instance())) {
+    switch (settingPrefs.musicMode()) {
       case REPEAT_ALL:
         if (nowPlayingList.indexOf(nowPlayingList.currentMusic()) >= nowPlayingList.size() - 1) {
           nowPlayingList.jumpTo(nowPlayingList.get(0));

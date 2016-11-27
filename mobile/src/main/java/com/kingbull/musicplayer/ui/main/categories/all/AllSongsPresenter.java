@@ -120,4 +120,9 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
     musicPlayer.addToNowPlaylist(musics);
     view().showMusicScreen();
   }
+
+  @Override public void onSettingsMenuClick() {
+    view().showSettingsScreen();
+
+  }
 }

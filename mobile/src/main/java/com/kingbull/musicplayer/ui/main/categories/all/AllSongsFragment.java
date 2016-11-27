@@ -29,6 +29,7 @@ import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
+import com.kingbull.musicplayer.ui.settings.SettingsActivity;
 import com.kingbull.musicplayer.ui.songlist.SongsAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +120,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
       }
 
       @Override public void onSettingsMenuClick() {
+        presenter.onSettingsMenuClick();
       }
 
       @Override public void onAddToPlaylistMenuClick() {
@@ -146,6 +148,10 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public void showMusicScreen() {
     startActivity(new Intent(getActivity(), MusicPlayerActivity.class));
+  }
+
+  @Override public void showSettingsScreen() {
+    startActivity(new Intent(getActivity(), SettingsActivity.class));
   }
 
   @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {

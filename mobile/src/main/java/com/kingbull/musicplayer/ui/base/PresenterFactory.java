@@ -9,6 +9,7 @@ import com.kingbull.musicplayer.ui.main.categories.playlists.mostplayed.MostPlay
 import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAddedPresenter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
+import com.kingbull.musicplayer.ui.settings.SettingsPresenter;
 import com.kingbull.musicplayer.ui.songlist.SongListPresenter;
 
 /**
@@ -87,6 +88,14 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
       NowPlayingPresenter presenter = new NowPlayingPresenter();
       MusicPlayerApp.instance().component().inject(presenter);
       return presenter;
+    }
+  }
+
+  class Settings
+      implements PresenterFactory<com.kingbull.musicplayer.ui.settings.Settings.Presenter> {
+
+    @Override public com.kingbull.musicplayer.ui.settings.Settings.Presenter create() {
+      return new SettingsPresenter();
     }
   }
 

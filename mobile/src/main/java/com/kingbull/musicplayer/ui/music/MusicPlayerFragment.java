@@ -16,7 +16,7 @@ import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.PreferenceManager;
+import com.kingbull.musicplayer.domain.SettingPreferences;
 import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.player.MusicPlayerEvent;
@@ -136,7 +136,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override protected void onPresenterPrepared(MusicPlayer.Presenter presenter) {
     this.presenter.takeView(this);
     seekBarProgress.takePresenter(presenter);
-    updatePlayMode(PreferenceManager.lastPlayMode(getActivity()));
+    updatePlayMode(new SettingPreferences().musicMode());
   }
 
   @Override protected PresenterFactory presenterFactory() {

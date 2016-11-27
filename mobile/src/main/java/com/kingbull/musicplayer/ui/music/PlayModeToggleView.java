@@ -33,9 +33,6 @@ public final class PlayModeToggleView extends ImageView {
       case REPEAT_SINGLE:
         setImageResource(R.drawable.ic_play_mode_loop);
         break;
-      //case SHUFFLE:
-      //  setImageResource(R.drawable.ic_play_mode_shuffle);
-      //  break;
       case REPEAT_NONE:
         setImageResource(R.drawable.ic_play_mode_single);
         break;

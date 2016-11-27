@@ -13,7 +13,7 @@ public enum MusicMode {
   REPEAT_ALL;
 
   public static MusicMode getDefault() {
-    return REPEAT_SINGLE;
+    return REPEAT_NONE;
   }
 
   public static MusicMode switchNextMode(MusicMode current) {
