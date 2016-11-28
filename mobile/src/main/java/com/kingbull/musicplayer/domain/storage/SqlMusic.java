@@ -40,7 +40,8 @@ public final class SqlMusic
   private long dateAdded;
   private boolean isFavorite;
   private long lastTimePlayed;
-  private long numberOfTimesPlayed;
+  private long numberOfTimesPlayed = 0;
+  private String playlistId;// array of playlist id separated by ","
 
   public SqlMusic(MediaCursor cursor) {
     this((Music) cursor);
@@ -49,6 +50,7 @@ public final class SqlMusic
       isFavorite = sqlMusicCursor.isFavorite();
       lastTimePlayed = sqlMusicCursor.lastTimePlayed();
       numberOfTimesPlayed = sqlMusicCursor.numberOfTimesPlayed();
+      playlistId = sqlMusicCursor.playlistIds();
       sqlMusicCursor.close();
     }
   }
@@ -58,6 +60,7 @@ public final class SqlMusic
     isFavorite = cursor.isFavorite();
     lastTimePlayed = cursor.lastTimePlayed();
     numberOfTimesPlayed = cursor.numberOfTimesPlayed();
+    playlistId = cursor.playlistIds();
     Log.e("lastTimePlayed", new Date(lastTimePlayed).toString());
     Log.e("NUMBER_OF_TIMES_PLAYED", String.valueOf(numberOfTimesPlayed));
   }
@@ -85,7 +88,6 @@ public final class SqlMusic
     this.isFavorite = in.readInt() == 1;
     this.lastTimePlayed = in.readLong();
     this.numberOfTimesPlayed = in.readLong();
-
     MusicPlayerApp.instance().component().inject(this);
   }
 
@@ -96,6 +98,8 @@ public final class SqlMusic
         + MusicTable.Columns.LAST_TIME_PLAYED
         + ", "
         + MusicTable.Columns.NUMBER_OF_TIMES_PLAYED
+        + ", "
+        + MusicTable.Columns.PLAYLIST_IDS
         + " from "
         + MusicTable.NAME
         + " where "
@@ -156,6 +160,25 @@ public final class SqlMusic
   @Override public long save() {
     ContentValues values = new ContentValues();
     values.put(MusicTable.Columns.ID, id);
+    values.put(MusicTable.Columns.PLAYLIST_IDS, playlistId);
+    values.put(MusicTable.Columns.TITLE, title);
+    values.put(MusicTable.Columns.ALBUM, album);
+    values.put(MusicTable.Columns.ARTIST, artist);
+    values.put(MusicTable.Columns.PATH, path);
+    values.put(MusicTable.Columns.DATE_ADDED, dateAdded);
+    values.put(MusicTable.Columns.DURATION, duration);
+    values.put(MusicTable.Columns.LAST_TIME_PLAYED, new CurrentDateTime().toString());
+    values.put(MusicTable.Columns.NUMBER_OF_TIMES_PLAYED, numberOfTimesPlayed);
+    values.put(MusicTable.Columns.DATE_ADDED, dateAdded);
+    values.put(MusicTable.Columns.UPDATED_AT, new CurrentDateTime().toString());
+    return sqliteDatabase.insertWithOnConflict(MusicTable.NAME, null, values,
+        SQLiteDatabase.CONFLICT_REPLACE);
+  }
+
+
+  public void saveLastPlayed() {
+    ContentValues values = new ContentValues();
+    values.put(MusicTable.Columns.ID, id);
     values.put(MusicTable.Columns.TITLE, title);
     values.put(MusicTable.Columns.ALBUM, album);
     values.put(MusicTable.Columns.ARTIST, artist);
@@ -166,13 +189,17 @@ public final class SqlMusic
     values.put(MusicTable.Columns.NUMBER_OF_TIMES_PLAYED, ++numberOfTimesPlayed);
     values.put(MusicTable.Columns.DATE_ADDED, dateAdded);
     values.put(MusicTable.Columns.UPDATED_AT, new CurrentDateTime().toString());
-    return sqliteDatabase.insertWithOnConflict(MusicTable.NAME, null, values,
+    sqliteDatabase.insertWithOnConflict(MusicTable.NAME, null, values,
         SQLiteDatabase.CONFLICT_REPLACE);
   }
 
   @Override public boolean delete() {
-    return sqliteDatabase.delete(MusicTable.NAME, MusicTable.Columns.SQLITE_ID + "=" + id, null)
-        > 0;
+    return sqliteDatabase.delete(MusicTable.NAME, MusicTable.Columns.ID + "=" + id, null) > 0;
+  }
+
+  public void addToPlayList(long playlistId) {
+    this.playlistId = this.playlistId + "(" + playlistId + ")";
+    save();
   }
 
   @Override public String toString() {

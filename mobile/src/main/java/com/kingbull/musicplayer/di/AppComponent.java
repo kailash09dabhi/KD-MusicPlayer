@@ -1,9 +1,14 @@
 package com.kingbull.musicplayer.di;
 
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.domain.storage.LastPlayedPlayList;
+import com.kingbull.musicplayer.domain.storage.MostPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
+import com.kingbull.musicplayer.domain.storage.SqlPlayList;
 import com.kingbull.musicplayer.player.MusicService;
+import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
+import com.kingbull.musicplayer.ui.main.categories.playlists.PlayListsModel;
 import com.kingbull.musicplayer.ui.main.categories.playlists.lastplayed.LastPlayedModel;
 import com.kingbull.musicplayer.ui.main.categories.playlists.mostplayed.MostPlayedModel;
 import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAdded;
@@ -25,9 +30,19 @@ public interface AppComponent {
 
   void inject(SqlMusic music);
 
+  void inject(SqlPlayList playList);
+
+  void inject(AddToPlayListDialogFragment fragment);
+
   void inject(LastPlayedModel lastPlayedModel);
 
   void inject(MostPlayedModel mostPlayedModel);
+
+  void inject(PlayListsModel playListsModel);
+
+  void inject(LastPlayedPlayList playList);
+
+  void inject(MostPlayedPlayList playList);
 
   void inject(RecentlyAdded RecentlyAdded);
 

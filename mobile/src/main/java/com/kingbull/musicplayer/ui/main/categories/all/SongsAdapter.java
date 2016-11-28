@@ -14,6 +14,7 @@ import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import java.util.ArrayList;
@@ -97,6 +98,14 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
     List<Integer> items = new ArrayList<>(selectedItems.size());
     for (int i = 0; i < selectedItems.size(); ++i) {
       items.add(selectedItems.keyAt(i));
+    }
+    return items;
+  }
+
+  public List<SqlMusic> getSelectedMusics() {
+    List<SqlMusic> items = new ArrayList<>(selectedItems.size());
+    for (int i = 0; i < selectedItems.size(); ++i) {
+      items.add((SqlMusic) songs.get(selectedItems.keyAt(i)));
     }
     return items;
   }

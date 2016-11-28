@@ -8,7 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * Created by Kailash Dabhi on 04-09-2016.
+ * MusicListOfPlaylist by Kailash Dabhi on 04-09-2016.
  * Copyright (c) 2016 Kingbull Technology. All rights reserved.
  */
 public final class MusicTable implements SqlTable {
@@ -20,6 +20,8 @@ public final class MusicTable implements SqlTable {
       + " INTEGER PRIMARY KEY,"
       + Columns.ID
       + " TEXT UNIQUE,"
+      + Columns.PLAYLIST_IDS
+      + " TEXT,"
       + Columns.TITLE
       + " TEXT,"
       + Columns.ALBUM
@@ -37,7 +39,7 @@ public final class MusicTable implements SqlTable {
       + Columns.FAVORITE
       + " TEXT,"
       + Columns.NUMBER_OF_TIMES_PLAYED
-      + " TEXT,"
+      + " INTEGER,"
       + Columns.LAST_TIME_PLAYED
       + " DATETIME DEFAULT CURRENT_TIMESTAMP,"
       + Columns.CREATED_AT
@@ -70,6 +72,9 @@ public final class MusicTable implements SqlTable {
   public List<Music> lastPlayedSongs() {
     String query = "select * from "
         + MusicTable.NAME
+        + " where "
+        + Columns.NUMBER_OF_TIMES_PLAYED
+        + " > 0"
         + "  order  by datetime("
         + Columns.LAST_TIME_PLAYED
         + ") "
@@ -121,7 +126,7 @@ public final class MusicTable implements SqlTable {
     if (cursor != null) {
       if (cursor.getCount() > 0 && cursor.moveToFirst()) {
         do {
-          song = new  SqlMusic(new SqlMusicCursor(cursor));
+          song = new SqlMusic(new SqlMusicCursor(cursor));
         } while (cursor.moveToNext());
       }
       cursor.close();
@@ -136,7 +141,10 @@ public final class MusicTable implements SqlTable {
   public List<Music> mostPlayedSongs() {
     String query = "select * from "
         + MusicTable.NAME
-        + "  order  by "
+        + " where "
+        + Columns.NUMBER_OF_TIMES_PLAYED
+        + " > 0"
+        + " order  by "
         + Columns.NUMBER_OF_TIMES_PLAYED
         + " DESC";
     ;
@@ -154,6 +162,29 @@ public final class MusicTable implements SqlTable {
     return itemList;
   }
 
+  public List<Music> musicsOfPlayList(long playlistId) {
+    String query =
+        "select * from " + MusicTable.NAME + "  where " + Columns.PLAYLIST_IDS + " like " +
+            "'%(" + playlistId + ")%'";
+    Cursor cursor = sqliteDatabase.rawQuery(query, null);
+    List<Music> itemList = new ArrayList<>();
+    if (cursor != null) {
+      if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        do {
+          SqlMusic song = new SqlMusic(new SqlMusicCursor(cursor));
+          itemList.add(song);
+        } while (cursor.moveToNext());
+      }
+      cursor.close();
+    }
+    return itemList;
+  }
+
+  public void addToPlaylist(List<SqlMusic> musicList, long playlistId) {
+    for (SqlMusic music : musicList)
+      music.addToPlayList(playlistId);
+  }
+
   public static final class Columns {
     public static final String SQLITE_ID = "_id";
     public static final String ID = "id";
@@ -165,6 +196,8 @@ public final class MusicTable implements SqlTable {
     public static final String SIZE = "size";
     public static final String DURATION = "duration";
     public static final String FAVORITE = "favorite";
+    public static final String PLAYLIST_IDS = "playlist_ids";// each song is appeneded with
+    // playlist id and playlist id differentiated by "()"
     public static final String LAST_TIME_PLAYED = "last_time_played";
     public static final String NUMBER_OF_TIMES_PLAYED = "number_of_times_played";
     public static final String CREATED_AT = "created_at";

@@ -40,7 +40,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
         player.prepare();
         player.start();
         notifyPlayStatusChanged(true);
-        ((SqlMusic) song).save();
+        ((SqlMusic) song).saveLastPlayed();
       } catch (IOException e) {
         Log.e(TAG, "play: ", e);
         notifyPlayStatusChanged(false);

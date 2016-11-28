@@ -14,7 +14,6 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.main.categories.playlists.mostplayed.MostPlayedFragment;
 import java.util.Random;
 
 public final class MainActivity extends BaseActivity {
@@ -49,13 +48,6 @@ public final class MainActivity extends BaseActivity {
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
               Log.e("backstack", getSupportFragmentManager().getBackStackEntryAt(
                   getSupportFragmentManager().getBackStackEntryCount() - 1).getName());
-              if (getSupportFragmentManager().getBackStackEntryAt(
-                  getSupportFragmentManager().getBackStackEntryCount() - 1)
-                  .getName()
-                  .equals(MostPlayedFragment.class.getSimpleName())) {
-                ((MostPlayedFragment) getSupportFragmentManager().findFragmentByTag(
-                    MostPlayedFragment.class.getSimpleName())).refresh();
-              }
             }
           }
         });

@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists;
 
 import android.database.Cursor;
+import com.kingbull.musicplayer.domain.storage.PlayList;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.util.List;
 

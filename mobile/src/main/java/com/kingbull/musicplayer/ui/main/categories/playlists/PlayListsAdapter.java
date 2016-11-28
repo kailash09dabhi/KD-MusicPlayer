@@ -8,10 +8,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.storage.PlayList;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
-import com.kingbull.musicplayer.ui.main.categories.playlists.lastplayed.LastPlayedFragment;
-import com.kingbull.musicplayer.ui.main.categories.playlists.mostplayed.MostPlayedFragment;
-import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAddedFragment;
+import com.kingbull.musicplayer.ui.main.categories.playlists.musics.MusicListOfPlaylistsFragment;
 import java.util.List;
 
 /**
@@ -51,29 +50,13 @@ public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapte
     }
 
     @Override public void onClick(View view) {
-      if (playLists.get(getAdapterPosition()).name().equals("Recently Added")) {
-        ((BaseActivity) view.getContext()).getSupportFragmentManager()
-            .beginTransaction()
-            .add(android.R.id.content, new RecentlyAddedFragment(),
-                RecentlyAddedFragment.class.getSimpleName())
-            .addToBackStack(RecentlyAddedFragment.class.getSimpleName())
-            .commit();
-      } else if (playLists.get(getAdapterPosition()).name().equals("Last Played")) {
-        ((BaseActivity) view.getContext()).getSupportFragmentManager()
-            .beginTransaction()
-            .add(android.R.id.content, new LastPlayedFragment(),
-                LastPlayedFragment.class.getSimpleName())
-            .addToBackStack(LastPlayedFragment.class.getSimpleName())
-            .commit();
-      } else if (playLists.get(getAdapterPosition()).name().equals("Most Played")) {
-        ((BaseActivity) view.getContext()).getSupportFragmentManager()
-            .beginTransaction()
-            .add(android.R.id.content, new MostPlayedFragment(),
-                MostPlayedFragment.class.getSimpleName())
-            .addToBackStack(MostPlayedFragment.class.getSimpleName())
-            .commit();
-      } else {
-      }
+      ((BaseActivity) view.getContext()).getSupportFragmentManager()
+          .beginTransaction()
+          .add(android.R.id.content,
+              MusicListOfPlaylistsFragment.newInstance(playLists.get(getAdapterPosition())),
+              MusicListOfPlaylistsFragment.class.getSimpleName())
+          .addToBackStack(MusicListOfPlaylistsFragment.class.getSimpleName())
+          .commit();
     }
   }
 }

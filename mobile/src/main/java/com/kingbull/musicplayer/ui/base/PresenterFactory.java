@@ -6,6 +6,8 @@ import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.lastplayed.LastPlayedPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.mostplayed.MostPlayedPresenter;
+import com.kingbull.musicplayer.ui.main.categories.playlists.musics.MusicListOfPlaylist;
+import com.kingbull.musicplayer.ui.main.categories.playlists.musics.MusicListOfPlaylistsPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAddedPresenter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
@@ -96,6 +98,15 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
 
     @Override public com.kingbull.musicplayer.ui.settings.Settings.Presenter create() {
       return new SettingsPresenter();
+    }
+  }
+
+  class UserCreatedPlaylist implements
+      PresenterFactory<MusicListOfPlaylist.Presenter> {
+
+    @Override
+    public MusicListOfPlaylist.Presenter create() {
+      return new MusicListOfPlaylistsPresenter();
     }
   }
 

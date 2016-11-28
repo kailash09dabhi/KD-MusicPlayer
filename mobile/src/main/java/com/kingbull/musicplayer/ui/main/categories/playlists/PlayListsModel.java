@@ -1,7 +1,13 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists;
 
-import java.util.Arrays;
+import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.domain.storage.LastPlayedPlayList;
+import com.kingbull.musicplayer.domain.storage.MostPlayedPlayList;
+import com.kingbull.musicplayer.domain.storage.PlayList;
+import com.kingbull.musicplayer.domain.storage.PlayListTable;
+import com.kingbull.musicplayer.domain.storage.RecentlyAddedPlayList;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * @author Kailash Dabhi
@@ -9,12 +15,20 @@ import java.util.List;
  */
 
 public final class PlayListsModel implements PlayLists.Model {
+  @Inject PlayListTable playListTable;
+
+  PlayListsModel() {
+    MusicPlayerApp.instance().component().inject(this);
+  }
 
   @Override public List<PlayList> listOfPlayList() {
-    PlayList playList1 = new PlayList("Recently Added");
-    PlayList playList2 = new PlayList("Last Played");
-    PlayList playList3 = new PlayList("Most Played");
-    PlayList playList4 = new PlayList("FM Recordings");
-    return Arrays.asList(playList1, playList2, playList3, playList4);
+    PlayList playList1 = new RecentlyAddedPlayList();
+    PlayList playList2 = new LastPlayedPlayList();
+    PlayList playList3 = new MostPlayedPlayList();
+    List<com.kingbull.musicplayer.domain.storage.PlayList> playLists = playListTable.playlists();
+    playLists.add(0, playList1);
+    playLists.add(1, playList2);
+    playLists.add(2, playList3);
+    return playLists;
   }
 }

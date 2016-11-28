@@ -156,7 +156,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override public void showAddToPlayListDialog() {
-    AddToPlayListDialogFragment.newInstance()
+    AddToPlayListDialogFragment.newInstance(songsAdapter.getSelectedMusics())
         .show(getActivity().getSupportFragmentManager(),
             AddToPlayListDialogFragment.class.getName());
   }

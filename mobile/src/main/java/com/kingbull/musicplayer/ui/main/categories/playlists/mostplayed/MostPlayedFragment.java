@@ -51,7 +51,4 @@ public final class MostPlayedFragment extends BaseFragment<MostPlayed.Presenter>
     return new PresenterFactory.MostPlayed();
   }
 
-  public void refresh() {
-    if (presenter != null) presenter.takeView(this);
-  }
 }

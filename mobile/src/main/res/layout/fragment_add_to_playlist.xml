@@ -29,6 +29,7 @@
         android:text="Create New Playlist"
         style="@style/AppTheme.TextAppearance.List.Medium"/>
     <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -68,6 +69,7 @@
           android:text="Cancel"
           style="@style/AppTheme.TextAppearance.List.Medium"/>
       <TextView
+          android:id="@+id/doneView"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_alignParentRight="true"

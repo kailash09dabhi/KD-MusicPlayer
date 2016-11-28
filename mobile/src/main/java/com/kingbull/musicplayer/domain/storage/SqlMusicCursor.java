@@ -72,12 +72,17 @@ public final class SqlMusicCursor implements Music {
     return cursor.getLong(cursor.getColumnIndexOrThrow(MusicTable.Columns.NUMBER_OF_TIMES_PLAYED));
   }
 
+  public String playlistIds() {
+    if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
+    return cursor.getString(cursor.getColumnIndexOrThrow(MusicTable.Columns.PLAYLIST_IDS));
+  }
+
   @Override public long lastTimePlayed() {
     if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
     return cursor.getLong(cursor.getColumnIndexOrThrow(MusicTable.Columns.LAST_TIME_PLAYED));
   }
 
-  public void close(){
-     cursor.close();
+  public void close() {
+    cursor.close();
   }
 }
