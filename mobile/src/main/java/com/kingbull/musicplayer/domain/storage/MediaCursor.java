@@ -21,7 +21,7 @@ public final class MediaCursor implements Music {
     this.cursor = cursor;
   }
 
-  public int id() {
+  public int mediaId() {
     if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
     return cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
   }

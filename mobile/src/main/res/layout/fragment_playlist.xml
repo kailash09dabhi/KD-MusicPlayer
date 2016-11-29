@@ -18,15 +18,7 @@
         android:minHeight="?actionBarSize"
         style="@style/AppTheme.TextAppearance.Title"
         />
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/playAllView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:paddingRight="?attr/listPreferredItemPaddingRight"
-        app:srcCompat="@drawable/ic_remote_view_play"
-        />
+
   </RelativeLayout>
 
   <android.support.v7.widget.RecyclerView

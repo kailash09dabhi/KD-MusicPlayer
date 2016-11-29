@@ -4,11 +4,8 @@ import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerPresenter;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
-import com.kingbull.musicplayer.ui.main.categories.playlists.lastplayed.LastPlayedPresenter;
-import com.kingbull.musicplayer.ui.main.categories.playlists.mostplayed.MostPlayedPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.musics.MusicListOfPlaylist;
 import com.kingbull.musicplayer.ui.main.categories.playlists.musics.MusicListOfPlaylistsPresenter;
-import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAddedPresenter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
 import com.kingbull.musicplayer.ui.settings.SettingsPresenter;
@@ -36,16 +33,6 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
     }
   }
 
-  class RecentlyAdded implements
-      PresenterFactory<com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAdded.Presenter> {
-
-    @Override
-    public com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAdded.Presenter create() {
-      RecentlyAddedPresenter presenter = new RecentlyAddedPresenter();
-      MusicPlayerApp.instance().component().inject(presenter);
-      return presenter;
-    }
-  }
 
   class MusicPlayer
       implements PresenterFactory<com.kingbull.musicplayer.ui.music.MusicPlayer.Presenter> {
@@ -57,23 +44,7 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
     }
   }
 
-  class LastPlayed implements
-      PresenterFactory<com.kingbull.musicplayer.ui.main.categories.playlists.lastplayed.LastPlayed.Presenter> {
 
-    @Override
-    public com.kingbull.musicplayer.ui.main.categories.playlists.lastplayed.LastPlayed.Presenter create() {
-      return new LastPlayedPresenter();
-    }
-  }
-
-  class MostPlayed implements
-      PresenterFactory<com.kingbull.musicplayer.ui.main.categories.playlists.mostplayed.MostPlayed.Presenter> {
-
-    @Override
-    public com.kingbull.musicplayer.ui.main.categories.playlists.mostplayed.MostPlayed.Presenter create() {
-      return new MostPlayedPresenter();
-    }
-  }
 
   class Equalizer
       implements PresenterFactory<com.kingbull.musicplayer.ui.equalizer.Equalizer.Presenter> {

@@ -50,6 +50,7 @@ public final class SqlPlayList implements PlayList, SqlTableRow, Parcelable {
 
   @Override public long save() {
     ContentValues values = new ContentValues();
+    values.put(PlayListTable.Columns.SQLITE_ID, sqliteId);
     values.put(PlayListTable.Columns.NAME, name);
     values.put(PlayListTable.Columns.CREATED_AT, createdAt);
     values.put(PlayListTable.Columns.UPDATED_AT, new CurrentDateTime().toString());
@@ -76,6 +77,6 @@ public final class SqlPlayList implements PlayList, SqlTableRow, Parcelable {
   }
 
   @Override public List<Music> musicList() {
-    return musicTable.musicsOfPlayList(sqliteId );
+    return musicTable.musicsOfPlayList(sqliteId);
   }
 }

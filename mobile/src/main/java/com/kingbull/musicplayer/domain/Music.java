@@ -6,7 +6,7 @@ package com.kingbull.musicplayer.domain;
  */
 
 public interface Music {
-  int id();
+  int mediaId();
 
   String title();
 

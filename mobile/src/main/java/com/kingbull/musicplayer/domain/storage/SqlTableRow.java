@@ -9,7 +9,7 @@ public interface SqlTableRow {
   /**
    * either update or insert the  {@code SqlTableRow} in {@code SqlTable}
    *
-   * @return affected row id
+   * @return affected row Id
    */
   long save();
 

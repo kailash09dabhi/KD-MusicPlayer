@@ -159,6 +159,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     AddToPlayListDialogFragment.newInstance(songsAdapter.getSelectedMusics())
         .show(getActivity().getSupportFragmentManager(),
             AddToPlayListDialogFragment.class.getName());
+    songsAdapter.clearSelection();
   }
 
   @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {

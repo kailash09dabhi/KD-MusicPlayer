@@ -1,13 +1,13 @@
 package com.kingbull.musicplayer.ui.addtoplaylist;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.storage.PlayList;
 import java.util.List;
 
@@ -26,10 +26,9 @@ public final class PlayListAdapter extends ArrayAdapter<PlayList> {
 
   @NonNull @Override public View getView(int position, View convertView, ViewGroup parent) {
     TextView textView;
-    convertView = inflater.inflate(android.R.layout.simple_list_item_1, null);
-    textView = (TextView) convertView.findViewById(android.R.id.text1);
+    convertView = inflater.inflate(R.layout.item_now_playling, null);
+    textView = (TextView) convertView.findViewById(R.id.nameView);
     textView.setText(getItem(position).name());
-    textView.setTextColor(Color.WHITE);
     return convertView;
   }
 }

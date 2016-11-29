@@ -16,7 +16,7 @@ public final class PlayListTable implements SqlTable {
       + NAME
       + "("
       + Columns.SQLITE_ID
-      + " INTEGER PRIMARY KEY,"
+      + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
       + Columns.NAME
       + " TEXT UNIQUE,"
       + Columns.NUMBER_OF_TIMES_PLAYED

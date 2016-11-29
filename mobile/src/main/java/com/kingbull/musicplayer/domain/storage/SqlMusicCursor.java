@@ -20,9 +20,14 @@ public final class SqlMusicCursor implements Music {
     this.cursor = cursor;
   }
 
-  public int id() {
+  public int sqliteId() {
     if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
-    return cursor.getInt(cursor.getColumnIndexOrThrow(MusicTable.Columns.ID));
+    return cursor.getInt(cursor.getColumnIndexOrThrow(MusicTable.Columns.SQLITE_ID));
+  }
+
+  @Override public int mediaId() {
+    if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
+    return cursor.getInt(cursor.getColumnIndexOrThrow(MusicTable.Columns.MEDIA_ID));
   }
 
   @Override public String title() {

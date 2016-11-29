@@ -7,9 +7,9 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAddedComparator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public final class RecentlyAddedPlayList implements PlayList, Parcelable {
@@ -73,5 +73,20 @@ public final class RecentlyAddedPlayList implements PlayList, Parcelable {
   @Override public void writeToParcel(Parcel dest, int flags) {
     dest.writeParcelable(MEDIA_URI, flags);
     dest.writeStringArray(PROJECTIONS);
+  }
+
+  final class RecentlyAddedComparator implements Comparator<Music> {
+
+    @Override public int compare(Music song1, Music song2) {
+      long dateAddedSong1 = song1.dateAdded();
+      long dateAddedSong2 = song2.dateAdded();
+      if (dateAddedSong1 < dateAddedSong2) {
+        return 1;
+      } else if (dateAddedSong1 > dateAddedSong2) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
   }
 }

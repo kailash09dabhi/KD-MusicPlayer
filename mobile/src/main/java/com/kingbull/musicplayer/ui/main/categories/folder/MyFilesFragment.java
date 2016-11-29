@@ -71,11 +71,6 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
   @Override public void showMusicPlayer(Music song) {
     Intent intent = new Intent(getActivity(), MusicPlayerActivity.class);
     startActivity(intent);
-    //getActivity().getSupportFragmentManager()
-    //    .beginTransaction()
-    //    .add(android.R.id.content, MusicPlayerFragment.instance(song))
-    //    .addToBackStack(MusicPlayerFragment.class.getSimpleName())
-    //    .commit();
   }
 
   @Override protected void onPresenterPrepared(final MyFiles.Presenter presenter) {

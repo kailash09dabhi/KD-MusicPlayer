@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -20,6 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.storage.PlayList;
 import com.kingbull.musicplayer.domain.storage.PlayListTable;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import com.kingbull.musicplayer.domain.storage.SqlPlayList;
@@ -41,6 +43,8 @@ public final class AddToPlayListDialogFragment extends DialogFragment
   @BindView(R.id.listView) ListView listView;
   @BindView(R.id.viewFlipper) ViewFlipper viewFlipper;
   @Inject PlayListTable playListTable;
+  List<SqlMusic> musics;
+  List<PlayList> playLists;
 
   public static AddToPlayListDialogFragment newInstance(List<SqlMusic> musicList) {
     AddToPlayListDialogFragment frag = new AddToPlayListDialogFragment();
@@ -78,9 +82,16 @@ public final class AddToPlayListDialogFragment extends DialogFragment
     MusicPlayerApp.instance().component().inject(this);
     getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    musics = getArguments().getParcelableArrayList("music_list");
+    playLists = playListTable.playlists();
     presenter.takeView(this);
     listView.setAdapter(new PlayListAdapter(getActivity(), playListTable.playlists()));
-    //showPlaylistsScreen();
+    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        new SqlPlayList(playLists.get(position).name(), musics).save();
+        dismiss();
+      }
+    });
   }
 
   private void showPlaylistsScreen() {

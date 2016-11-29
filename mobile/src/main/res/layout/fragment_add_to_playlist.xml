@@ -65,15 +65,23 @@
           android:id="@+id/cancelView"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:background="@drawable/selector"
           android:layout_alignParentLeft="true"
           android:text="Cancel"
+          android:gravity="center"
+          android:minWidth="100dp"
+          android:minHeight="?listPreferredItemHeightSmall"
           style="@style/AppTheme.TextAppearance.List.Medium"/>
       <TextView
           android:id="@+id/doneView"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:background="@drawable/selector"
           android:layout_alignParentRight="true"
           android:text="Done"
+          android:gravity="center"
+          android:minWidth="100dp"
+          android:minHeight="?listPreferredItemHeightSmall"
           style="@style/AppTheme.TextAppearance.List.Medium"/>
     </RelativeLayout>
   </LinearLayout>

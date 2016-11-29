@@ -17,9 +17,9 @@ public final class MusicTable implements SqlTable {
       + NAME
       + "("
       + Columns.SQLITE_ID
-      + " INTEGER PRIMARY KEY,"
-      + Columns.ID
-      + " TEXT UNIQUE,"
+      + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+      + Columns.MEDIA_ID
+      + " INTEGER UNIQUE,"
       + Columns.PLAYLIST_IDS
       + " TEXT,"
       + Columns.TITLE
@@ -165,7 +165,10 @@ public final class MusicTable implements SqlTable {
   public List<Music> musicsOfPlayList(long playlistId) {
     String query =
         "select * from " + MusicTable.NAME + "  where " + Columns.PLAYLIST_IDS + " like " +
-            "'%(" + playlistId + ")%'";
+            "'%(" + playlistId + ")%'"  + " order by ("
+            + MusicTable.Columns.UPDATED_AT
+            + ") "
+            + "DESC" ;
     Cursor cursor = sqliteDatabase.rawQuery(query, null);
     List<Music> itemList = new ArrayList<>();
     if (cursor != null) {
@@ -187,7 +190,7 @@ public final class MusicTable implements SqlTable {
 
   public static final class Columns {
     public static final String SQLITE_ID = "_id";
-    public static final String ID = "id";
+    public static final String MEDIA_ID = "media_id";
     public static final String TITLE = "title";
     public static final String ARTIST = "artist";
     public static final String ALBUM = "album";
@@ -197,7 +200,7 @@ public final class MusicTable implements SqlTable {
     public static final String DURATION = "duration";
     public static final String FAVORITE = "favorite";
     public static final String PLAYLIST_IDS = "playlist_ids";// each song is appeneded with
-    // playlist id and playlist id differentiated by "()"
+    // playlist mediaId and playlist mediaId differentiated by "()"
     public static final String LAST_TIME_PLAYED = "last_time_played";
     public static final String NUMBER_OF_TIMES_PLAYED = "number_of_times_played";
     public static final String CREATED_AT = "created_at";
