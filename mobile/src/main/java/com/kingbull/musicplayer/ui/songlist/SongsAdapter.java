@@ -59,6 +59,8 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
     }
 
     @Override public void onClick(View view) {
+      player.addToNowPlaylist(songs);
+      player.play(songs.get(getAdapterPosition()));
       view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
     }
   }
@@ -75,6 +77,7 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
     }
 
     @Override public void onClick(final View view) {
+      player.addToNowPlaylist(songs);
       player.play(songs.get(getAdapterPosition()));
       view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
     }

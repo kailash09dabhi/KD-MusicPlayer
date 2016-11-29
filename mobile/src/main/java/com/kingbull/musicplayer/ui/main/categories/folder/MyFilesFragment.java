@@ -2,7 +2,6 @@ package com.kingbull.musicplayer.ui.main.categories.folder;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -71,7 +70,6 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
 
   @Override public void showMusicPlayer(Music song) {
     Intent intent = new Intent(getActivity(), MusicPlayerActivity.class);
-    intent.putExtra("song", (Parcelable) song);
     startActivity(intent);
     //getActivity().getSupportFragmentManager()
     //    .beginTransaction()

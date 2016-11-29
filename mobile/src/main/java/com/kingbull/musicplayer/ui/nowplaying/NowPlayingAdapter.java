@@ -8,10 +8,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * @author Kailash Dabhi
@@ -22,9 +25,11 @@ public final class NowPlayingAdapter
     extends RecyclerView.Adapter<NowPlayingAdapter.SongFileViewHolder> {
 
   List<Music> songs;
+  @Inject Player player;
 
   public NowPlayingAdapter(List<Music> songs) {
     this.songs = songs;
+    MusicPlayerApp.instance().component().inject(this);
   }
 
   @Override public SongFileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -51,6 +56,7 @@ public final class NowPlayingAdapter
     }
 
     @Override public void onClick(View view) {
+      player.play(songs.get(getAdapterPosition()));
       view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
     }
   }
@@ -65,6 +71,7 @@ public final class NowPlayingAdapter
     }
 
     @Override public void onClick(final View view) {
+      player.play(songs.get(getAdapterPosition()));
       view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
     }
   }

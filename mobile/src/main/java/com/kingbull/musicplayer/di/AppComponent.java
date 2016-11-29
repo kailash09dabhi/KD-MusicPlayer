@@ -15,6 +15,7 @@ import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.Recen
 import com.kingbull.musicplayer.ui.main.categories.playlists.recentlyadded.RecentlyAddedPresenter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
+import com.kingbull.musicplayer.ui.nowplaying.NowPlayingAdapter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
 import com.kingbull.musicplayer.ui.songlist.SongsAdapter;
 import dagger.Component;
@@ -27,6 +28,7 @@ public interface AppComponent {
   void inject(MusicService service);
 
   void inject(com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter adapter);
+  void inject(NowPlayingAdapter adapter);
 
   void inject(SqlMusic music);
 

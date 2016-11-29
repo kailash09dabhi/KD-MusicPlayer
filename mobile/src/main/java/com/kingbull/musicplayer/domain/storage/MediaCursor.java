@@ -3,6 +3,7 @@ package com.kingbull.musicplayer.domain.storage;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import com.kingbull.musicplayer.domain.Music;
+import java.io.File;
 
 /**
  * Never ever use this class anywhere in app except as an argument to {@link SqlMusic} Class
@@ -57,7 +58,7 @@ public final class MediaCursor implements Music {
 
   @Override public long dateAdded() {
     if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
-    return 0;
+    return new File(path()).lastModified();
   }
 
   @Override public boolean isFavorite() {

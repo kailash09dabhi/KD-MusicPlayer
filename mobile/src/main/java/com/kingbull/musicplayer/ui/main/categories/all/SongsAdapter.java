@@ -148,6 +148,7 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
 
     @Override public void onClick(final View view) {
       if (!isAnyItemSelected()) {
+        player.addToNowPlaylist(songs);
         player.play(songs.get(getAdapterPosition()));
         view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
       } else {
