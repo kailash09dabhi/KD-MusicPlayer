@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/playlistsView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#55000000"
+    android:orientation="vertical"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingTop="?android:attr/listPreferredItemPaddingLeft">
+
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:minHeight="?listPreferredItemHeight"
+      android:text="Sort"
+      style="@style/AppTheme.TextAppearance.Title"/>
+  <RadioGroup
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+    <RadioButton
+        android:id="@+id/titleRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+    <RadioButton
+        android:id="@+id/artistRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Artist"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+    <RadioButton
+        android:id="@+id/albumRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Album"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+    <RadioButton
+        android:id="@+id/durationRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Duration"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+    <RadioButton
+        android:id="@+id/dateAddedRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date Added"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+    <RadioButton
+        android:id="@+id/yearRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Year"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+  </RadioGroup>
+  <CheckBox
+      android:id="@+id/sortInDescendingCheckbox"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:text="Sort in descending order"
+      style="@style/AppTheme.TextAppearance.List.Medium"/>
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="20dp"
+      android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/closeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:padding="8dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+
+    <ImageView
+        android:id="@+id/doneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:src="@android:drawable/ic_menu_rotate"/>
+  </LinearLayout>
+
+
+</LinearLayout>
+

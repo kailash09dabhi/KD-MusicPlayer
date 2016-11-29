@@ -73,7 +73,7 @@ public final class AddToPlayListDialogFragment extends DialogFragment
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_add_to_playlist, null);
+    return inflater.inflate(R.layout.dialog_add_to_playlist, null);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

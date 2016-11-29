@@ -14,8 +14,9 @@ import com.kingbull.musicplayer.ui.main.categories.all.raymenu.RayMenu;
 
 public final class SongMenu extends RayMenu {
   private static final int[] MENUS = {
-      R.drawable.composer_button_queue, R.drawable.composer_button_shuffle,
-      R.drawable.composer_icn_search, R.drawable.composer_icn_settings,
+      R.drawable.composer_button_queue, R.drawable.composer_button_sort,
+      R.drawable.composer_button_shuffle, R.drawable.composer_icn_search,
+      R.drawable.composer_icn_settings,
   };
   private OnMenuClickListener onMenuClickListener;
 
@@ -48,10 +49,11 @@ public final class SongMenu extends RayMenu {
                 onMenuClickListener.onShuffleMenuClick();
               } else if (MENUS[position] == R.drawable.composer_button_queue) {
                 onMenuClickListener.onAddToPlaylistMenuClick();
+              } else if (MENUS[position] == R.drawable.composer_button_sort) {
+                onMenuClickListener.onSortMenuClick();
               }
             }
-          },400);
-
+          }, 400);
         }
       });// Add a menu item
     }
@@ -69,5 +71,7 @@ public final class SongMenu extends RayMenu {
     void onSettingsMenuClick();
 
     void onAddToPlaylistMenuClick();
+
+    void onSortMenuClick();
   }
 }

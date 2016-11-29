@@ -25,14 +25,20 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.settings.SettingsActivity;
+import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
 import java.util.ArrayList;
 import java.util.List;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
 
 public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, AllSongs.View {
@@ -41,6 +47,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.songMenu) SongMenu songMenu;
   @BindView(R.id.searchView) EditText searchView;
+  CompositeSubscription compositeSubscription = new CompositeSubscription();
   private com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter songsAdapter;
 
   @OnTextChanged(R.id.searchView) void onSearchTextChanged(CharSequence text) {
@@ -126,7 +133,28 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
       @Override public void onAddToPlaylistMenuClick() {
         presenter.onAddToPlayListMenuClick();
       }
+
+      @Override public void onSortMenuClick() {
+        presenter.onSortMenuClick();
+      }
     });
+    compositeSubscription.add(RxBus.getInstance()
+        .toObservable()
+        .ofType(SortEvent.class)
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnNext(new Action1<SortEvent>() {
+          @Override public void call(SortEvent sortEvent) {
+            presenter.onSortEvent(sortEvent);
+          }
+        })
+        .subscribe(RxBus.defaultSubscriber()));
+  }
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    if (compositeSubscription != null) {
+      compositeSubscription.clear();
+    }
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -160,6 +188,11 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
         .show(getActivity().getSupportFragmentManager(),
             AddToPlayListDialogFragment.class.getName());
     songsAdapter.clearSelection();
+  }
+
+  @Override public void showSortMusicScreen() {
+    new SortDialogFragment().show(getActivity().getSupportFragmentManager(),
+        SortDialogFragment.class.getName());
   }
 
   @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {

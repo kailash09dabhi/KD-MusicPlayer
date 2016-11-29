@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.ui.main.categories.all;
 
 import android.database.Cursor;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.util.List;
 
@@ -19,6 +20,8 @@ public interface AllSongs {
     void showSettingsScreen();
 
     void showAddToPlayListDialog();
+
+    void showSortMusicScreen();
   }
 
   interface Model extends Mvp.Model {
@@ -36,5 +39,10 @@ public interface AllSongs {
     void onSettingsMenuClick();
 
     void onAddToPlayListMenuClick();
+
+    void onSortMenuClick();
+
+
+    void onSortEvent(SortEvent sortEvent);
   }
 }
