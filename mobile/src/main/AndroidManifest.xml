@@ -3,6 +3,7 @@
 
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
   <application
       android:name="MusicPlayerApp"
@@ -22,6 +23,11 @@
     <activity android:name=".ui.equalizer.EqualizerActivity"/>
     <activity android:name=".ui.settings.SettingsActivity"/>
 
+    <receiver android:name=".player.CallReceiver">
+      <intent-filter>
+        <action android:name="android.intent.action.PHONE_STATE"/>
+      </intent-filter>
+    </receiver>
     <service android:name=".player.MusicService">
       <intent-filter>
         <action android:name="com.kingbull.musicplayer.ACTION_PLAY_TOGGLE"/>
@@ -30,6 +36,7 @@
         <action android:name="com.kingbull.musicplayer.ACTION_STOP_SERVICE"/>
       </intent-filter>
     </service>
+
   </application>
 
 </manifest>

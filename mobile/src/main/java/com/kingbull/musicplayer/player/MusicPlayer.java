@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListener {
   private static final String TAG = MusicPlayer.class.getSimpleName();
-
+  SettingPreferences settingPrefs = new SettingPreferences();
   private MediaPlayer player;
   private NowPlayingList nowPlayingList;
   // Default size 2: for service and UI
@@ -47,6 +47,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
         return false;
       }
     }
+    RxBus.getInstance().post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.PLAY));
     isPaused = false;
     return true;
   }
@@ -54,7 +55,6 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   @Override public boolean play(Music music) {
     nowPlayingList.jumpTo(music);
     play();
-    RxBus.getInstance().post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.PLAY));
     return true;
   }
 
@@ -118,7 +118,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     }
     return false;
   }
-SettingPreferences settingPrefs = new SettingPreferences();
+
   @Override public void onCompletion(MediaPlayer mp) {
     switch (settingPrefs.musicMode()) {
       case REPEAT_ALL:
