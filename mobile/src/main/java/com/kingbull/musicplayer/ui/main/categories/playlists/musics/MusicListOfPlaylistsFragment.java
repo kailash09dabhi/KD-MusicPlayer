@@ -52,7 +52,7 @@ public final class MusicListOfPlaylistsFragment extends BaseFragment<MusicListOf
   }
 
   @NonNull @Override protected PresenterFactory<MusicListOfPlaylist.Presenter> presenterFactory() {
-    return new PresenterFactory.UserCreatedPlaylist();
+    return new PresenterFactory.MusicListOfPlaylist();
   }
 
   private void setupView(View v) {

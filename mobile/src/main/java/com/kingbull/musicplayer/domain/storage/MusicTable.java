@@ -2,6 +2,8 @@ package com.kingbull.musicplayer.domain.storage;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.MediaStore;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Music;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,20 +24,6 @@ public final class MusicTable implements SqlTable {
       + " INTEGER UNIQUE,"
       + Columns.PLAYLIST_IDS
       + " TEXT,"
-      + Columns.TITLE
-      + " TEXT,"
-      + Columns.ALBUM
-      + " TEXT,"
-      + Columns.ARTIST
-      + " TEXT,"
-      + Columns.DATE_ADDED
-      + " TEXT,"
-      + Columns.DURATION
-      + " TEXT,"
-      + Columns.PATH
-      + " TEXT,"
-      + Columns.SIZE
-      + " TEXT,"
       + Columns.FAVORITE
       + " TEXT,"
       + Columns.NUMBER_OF_TIMES_PLAYED
@@ -51,22 +39,6 @@ public final class MusicTable implements SqlTable {
 
   @Inject public MusicTable(SQLiteDatabase sqLiteDatabase) {
     this.sqliteDatabase = sqLiteDatabase;
-  }
-
-  public List<SqlMusic> fetchAll() {
-    String query = "select * from " + MusicTable.NAME;
-    Cursor cursor = sqliteDatabase.rawQuery(query, null);
-    List<SqlMusic> itemList = new ArrayList<>();
-    if (cursor != null) {
-      if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-        do {
-          SqlMusic item = new SqlMusic(new SqlMusicCursor(cursor));
-          itemList.add(item);
-        } while (cursor.moveToNext());
-      }
-      cursor.close();
-    }
-    return itemList;
   }
 
   public List<Music> lastPlayedSongs() {
@@ -85,8 +57,25 @@ public final class MusicTable implements SqlTable {
     if (cursor != null) {
       if (cursor.getCount() > 0 && cursor.moveToFirst()) {
         do {
-          SqlMusic song = new SqlMusic(new SqlMusicCursor(cursor));
+          SqlMusicCursor sqlMusicCursor = new SqlMusicCursor(cursor);
+          Cursor mediaCursor = MusicPlayerApp.instance()
+              .getContentResolver()
+              .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, new String[] {
+                  MediaStore.Audio.Media.DATA, // the real path
+                  MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DISPLAY_NAME,
+                  MediaStore.Audio.Media.MIME_TYPE, MediaStore.Audio.Media.ARTIST,
+                  MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.IS_RINGTONE,
+                  MediaStore.Audio.Media.IS_MUSIC, MediaStore.Audio.Media.IS_NOTIFICATION,
+                  MediaStore.Audio.Media.SIZE, MediaStore.Audio.Media._ID,
+                  MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.DATE_ADDED,
+                  MediaStore.Audio.Media.YEAR
+              }, MediaStore.Audio.Media._ID + " = ?", new String[] {
+                  String.valueOf(sqlMusicCursor.mediaId())
+              }, "");
+          mediaCursor.moveToFirst();
+          SqlMusic song = new SqlMusic(new SqlMusicCursor(cursor), new MediaCursor(mediaCursor));
           itemList.add(song);
+          mediaCursor.close();
         } while (cursor.moveToNext());
       }
       cursor.close();
@@ -94,45 +83,7 @@ public final class MusicTable implements SqlTable {
     return itemList;
   }
 
-  public List<Music> fetchAllWithMostRecentFirstOrder() {
-    String query = "select * from "
-        + MusicTable.NAME
-        + "  order  by datetime("
-        + Columns.UPDATED_AT
-        + ") "
-        + "DESC";
-    Cursor cursor = sqliteDatabase.rawQuery(query, null);
-    List<Music> itemList = new ArrayList<>();
-    if (cursor != null) {
-      if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-        do {
-          Music item = new SqlMusic(new SqlMusicCursor(cursor));
-          itemList.add(item);
-        } while (cursor.moveToNext());
-      }
-      cursor.close();
-    }
-    return itemList;
-  }
 
-  public Music fetchMostRecentTimestamp() {
-    String query = "select * from "
-        + MusicTable.NAME
-        + "  order  by datetime("
-        + Columns.CREATED_AT
-        + ") DESC limit 1";
-    Cursor cursor = sqliteDatabase.rawQuery(query, null);
-    Music song = null;
-    if (cursor != null) {
-      if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-        do {
-          song = new SqlMusic(new SqlMusicCursor(cursor));
-        } while (cursor.moveToNext());
-      }
-      cursor.close();
-    }
-    return song;
-  }
 
   @Override public void clear() {
     sqliteDatabase.delete(MusicTable.NAME, null, null);
@@ -153,8 +104,25 @@ public final class MusicTable implements SqlTable {
     if (cursor != null) {
       if (cursor.getCount() > 0 && cursor.moveToFirst()) {
         do {
-          SqlMusic song = new SqlMusic(new SqlMusicCursor(cursor));
+          SqlMusicCursor sqlMusicCursor = new SqlMusicCursor(cursor);
+          Cursor mediaCursor = MusicPlayerApp.instance()
+              .getContentResolver()
+              .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, new String[] {
+                  MediaStore.Audio.Media.DATA, // the real path
+                  MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DISPLAY_NAME,
+                  MediaStore.Audio.Media.MIME_TYPE, MediaStore.Audio.Media.ARTIST,
+                  MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.IS_RINGTONE,
+                  MediaStore.Audio.Media.IS_MUSIC, MediaStore.Audio.Media.IS_NOTIFICATION,
+                  MediaStore.Audio.Media.SIZE, MediaStore.Audio.Media._ID,
+                  MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.DATE_ADDED,
+                  MediaStore.Audio.Media.YEAR
+              }, MediaStore.Audio.Media._ID + " = ?", new String[] {
+                  String.valueOf(sqlMusicCursor.mediaId())
+              }, "");
+          mediaCursor.moveToFirst();
+          SqlMusic song = new SqlMusic(new SqlMusicCursor(cursor), new MediaCursor(mediaCursor));
           itemList.add(song);
+          mediaCursor.close();
         } while (cursor.moveToNext());
       }
       cursor.close();
@@ -164,18 +132,43 @@ public final class MusicTable implements SqlTable {
 
   public List<Music> musicsOfPlayList(long playlistId) {
     String query =
-        "select * from " + MusicTable.NAME + "  where " + Columns.PLAYLIST_IDS + " like " +
-            "'%(" + playlistId + ")%'"  + " order by ("
+        "select * from "
+            + MusicTable.NAME
+            + "  where "
+            + Columns.PLAYLIST_IDS
+            + " like "
+            +
+            "'%("
+            + playlistId
+            + ")%'"
+            + " order by ("
             + MusicTable.Columns.UPDATED_AT
             + ") "
-            + "DESC" ;
+            + "DESC";
     Cursor cursor = sqliteDatabase.rawQuery(query, null);
     List<Music> itemList = new ArrayList<>();
     if (cursor != null) {
       if (cursor.getCount() > 0 && cursor.moveToFirst()) {
         do {
-          SqlMusic song = new SqlMusic(new SqlMusicCursor(cursor));
+          SqlMusicCursor sqlMusicCursor = new SqlMusicCursor(cursor);
+          Cursor mediaCursor = MusicPlayerApp.instance()
+              .getContentResolver()
+              .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, new String[] {
+                  MediaStore.Audio.Media.DATA, // the real path
+                  MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DISPLAY_NAME,
+                  MediaStore.Audio.Media.MIME_TYPE, MediaStore.Audio.Media.ARTIST,
+                  MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.IS_RINGTONE,
+                  MediaStore.Audio.Media.IS_MUSIC, MediaStore.Audio.Media.IS_NOTIFICATION,
+                  MediaStore.Audio.Media.SIZE, MediaStore.Audio.Media._ID,
+                  MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.DATE_ADDED,
+                  MediaStore.Audio.Media.YEAR
+              }, MediaStore.Audio.Media._ID + " = ?", new String[] {
+                  String.valueOf(sqlMusicCursor.mediaId())
+              }, "");
+          mediaCursor.moveToFirst();
+          SqlMusic song = new SqlMusic(new SqlMusicCursor(cursor), new MediaCursor(mediaCursor));
           itemList.add(song);
+          mediaCursor.close();
         } while (cursor.moveToNext());
       }
       cursor.close();
@@ -191,13 +184,7 @@ public final class MusicTable implements SqlTable {
   public static final class Columns {
     public static final String SQLITE_ID = "_id";
     public static final String MEDIA_ID = "media_id";
-    public static final String TITLE = "title";
-    public static final String ARTIST = "artist";
-    public static final String ALBUM = "album";
-    public static final String PATH = "path";
-    public static final String DATE_ADDED = "date_added";
-    public static final String SIZE = "size";
-    public static final String DURATION = "duration";
+
     public static final String FAVORITE = "favorite";
     public static final String PLAYLIST_IDS = "playlist_ids";// each song is appeneded with
     // playlist mediaId and playlist mediaId differentiated by "()"

@@ -78,4 +78,8 @@ public final class MediaCursor implements Music {
     if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
     return cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR));
   }
+
+  public void close() {
+    cursor.close();
+  }
 }

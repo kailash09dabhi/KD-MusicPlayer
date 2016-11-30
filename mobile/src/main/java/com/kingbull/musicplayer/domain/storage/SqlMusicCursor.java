@@ -31,33 +31,27 @@ public final class SqlMusicCursor implements Music {
   }
 
   @Override public String title() {
-    if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
-    return cursor.getString(cursor.getColumnIndexOrThrow(MusicTable.Columns.TITLE));
+    throw new UnsupportedOperationException("title() is MediaCursor's method!");
   }
 
   @Override public String artist() {
-    if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
-    return cursor.getString(cursor.getColumnIndexOrThrow(MusicTable.Columns.ARTIST));
+    throw new UnsupportedOperationException("artist() is MediaCursor's method!");
   }
 
   @Override public String album() {
-    if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
-    return cursor.getString(cursor.getColumnIndexOrThrow(MusicTable.Columns.ALBUM));
+    throw new UnsupportedOperationException("album() is MediaCursor's method!");
   }
 
   @Override public String path() {
-    if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
-    return cursor.getString(cursor.getColumnIndexOrThrow(MusicTable.Columns.PATH));
+    throw new UnsupportedOperationException("path() is MediaCursor's method!");
   }
 
   @Override public long duration() {
-    if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
-    return cursor.getInt(cursor.getColumnIndexOrThrow(MusicTable.Columns.DURATION));
+    throw new UnsupportedOperationException("duration() is MediaCursor's method!");
   }
 
   @Override public int size() {
-    if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
-    return cursor.getInt(cursor.getColumnIndexOrThrow(MusicTable.Columns.SIZE));
+    throw new UnsupportedOperationException("size() is MediaCursor's method!");
   }
 
   @Override public long dateAdded() {
@@ -88,8 +82,7 @@ public final class SqlMusicCursor implements Music {
   }
 
   @Override public long year() {
-    throw new TypeNotPresentException("its mediacursor method!",
-        new Exception("its mediacursor method!"));
+    throw new UnsupportedOperationException("year() is MediaCursor's method!");
   }
 
   public void close() {
