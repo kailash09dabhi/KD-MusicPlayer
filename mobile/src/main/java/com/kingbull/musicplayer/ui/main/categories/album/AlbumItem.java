@@ -13,7 +13,7 @@ public final class AlbumItem {
   private String name;
 
   AlbumItem(Cursor cursor) {
-    this._id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
+    this._id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
     this.name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
   }
 

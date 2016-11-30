@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.storage.PlayList;
+import com.kingbull.musicplayer.ui.main.categories.all.AllSongsCursorLoader;
 import java.util.List;
 
 public final class PlayListsFragment extends Fragment

@@ -11,11 +11,10 @@ import android.support.v4.content.CursorLoader;
  */
 
 public final class AlbumCursorLoader extends CursorLoader {
-  private static final Uri MEDIA_URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-  private static final String ORDER_BY = MediaStore.Audio.Media.ALBUM + " ASC";
+  private static final Uri MEDIA_URI = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
+  private static final String ORDER_BY = MediaStore.Audio.Albums.ALBUM_KEY + " ASC";
   private static String[] PROJECTIONS = {
-      MediaStore.Audio.Media.ALBUM_ID, // the real path
-      MediaStore.Audio.Media.ALBUM,
+      MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM,
   };
 
   public AlbumCursorLoader(Context context) {

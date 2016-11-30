@@ -35,7 +35,9 @@ public final class SongListActivity extends BaseActivity
   public static final String GENRE_ID = "genre_id";
   public static final int INT_GENRE_ID = 1;
   public static final int INT_ARTIST_ID = 2;
+  public static final int INT_ALBUM_ID = 3;
   public static final String ARTIST_ID = "artist_id";
+  public static final String ALBUM_ID = "album_id";
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.pager_container) PagerContainer pagerContainer;
@@ -80,6 +82,8 @@ public final class SongListActivity extends BaseActivity
       getSupportLoaderManager().initLoader(INT_GENRE_ID, null, this);
     } else if (getIntent().hasExtra(ARTIST_ID)) {
       getSupportLoaderManager().initLoader(INT_ARTIST_ID, null, this);
+    }else if (getIntent().hasExtra(ALBUM_ID)){
+      getSupportLoaderManager().initLoader(INT_ALBUM_ID, null, this);
     }
     titleView.setText(getIntent().getStringExtra("title"));
     titleView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
@@ -102,7 +106,7 @@ public final class SongListActivity extends BaseActivity
     } else if (id == INT_ARTIST_ID) {
       return SongListCursorLoader.instance(this, getIntent().getIntExtra(ARTIST_ID, 0), ARTIST_ID);
     }
-    return SongListCursorLoader.instance(this, getIntent().getIntExtra(ARTIST_ID, 0), ARTIST_ID);
+    return SongListCursorLoader.instance(this, getIntent().getIntExtra(ALBUM_ID, 0), ALBUM_ID);
   }
 
   @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
