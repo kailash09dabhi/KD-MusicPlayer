@@ -188,6 +188,19 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
         });
         break;
       case SortEvent.SortBy.YEAR:
+        Collections.sort(songs, new Comparator<Music>() {
+          @Override public int compare(Music song1, Music song2) {
+            long yearSong1 = song1.year();
+            long yearSong2 = song2.year();
+            if (yearSong1 < yearSong2) {
+              return 1;
+            } else if (yearSong1 > yearSong2) {
+              return -1;
+            } else {
+              return 0;
+            }
+          }
+        });
         break;
     }
     if (!sortEvent.isSortInAscending()) Collections.reverse(songs);

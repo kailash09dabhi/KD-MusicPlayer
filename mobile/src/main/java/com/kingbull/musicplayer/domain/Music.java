@@ -27,4 +27,6 @@ public interface Music {
   long numberOfTimesPlayed();
 
   long lastTimePlayed();
+
+  long year();
 }

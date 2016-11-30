@@ -87,6 +87,11 @@ public final class SqlMusicCursor implements Music {
     return cursor.getLong(cursor.getColumnIndexOrThrow(MusicTable.Columns.LAST_TIME_PLAYED));
   }
 
+  @Override public long year() {
+    throw new TypeNotPresentException("its mediacursor method!",
+        new Exception("its mediacursor method!"));
+  }
+
   public void close() {
     cursor.close();
   }

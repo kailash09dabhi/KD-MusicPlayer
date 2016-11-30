@@ -18,7 +18,8 @@ public final class AllSongsCursorLoader extends CursorLoader {
       MediaStore.Audio.Media.MIME_TYPE, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM,
       MediaStore.Audio.Media.IS_RINGTONE, MediaStore.Audio.Media.IS_MUSIC,
       MediaStore.Audio.Media.IS_NOTIFICATION, MediaStore.Audio.Media.SIZE,
-      MediaStore.Audio.Media._ID, MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.DATE_ADDED
+      MediaStore.Audio.Media._ID, MediaStore.Audio.Media.DURATION,
+      MediaStore.Audio.Media.DATE_ADDED, MediaStore.Audio.Media.YEAR
   };
 
   public AllSongsCursorLoader(Context context) {

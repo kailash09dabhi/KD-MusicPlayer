@@ -30,6 +30,7 @@ public final class SqlMusic
   private final long duration;
   private final int size;
   @Inject SQLiteDatabase sqliteDatabase;
+  private long year;
   private int mediaId;
   private int sqlite_id;
   private String title;
@@ -74,6 +75,7 @@ public final class SqlMusic
     duration = music.duration();
     dateAdded = music.dateAdded();
     size = music.size();
+    year = music.year();
     MusicPlayerApp.instance().component().inject(this);
   }
 
@@ -155,6 +157,10 @@ public final class SqlMusic
 
   @Override public long lastTimePlayed() {
     return lastTimePlayed;
+  }
+
+  @Override public long year() {
+    return year;
   }
 
   @Override public long save() {

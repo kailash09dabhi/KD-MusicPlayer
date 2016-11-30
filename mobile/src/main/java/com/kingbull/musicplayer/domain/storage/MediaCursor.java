@@ -73,4 +73,9 @@ public final class MediaCursor implements Music {
   @Override public long lastTimePlayed() {
     throw new NoSuchFieldError("MediaCursor does not have the column last_time_played!");
   }
+
+  @Override public long year() {
+    if (cursor.isClosed()) throw new IllegalStateException("cursor is closed!");
+    return cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR));
+  }
 }
