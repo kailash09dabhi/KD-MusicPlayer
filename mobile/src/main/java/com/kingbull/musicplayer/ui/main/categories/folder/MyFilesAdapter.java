@@ -8,8 +8,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.FileMusicMap;
+import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Milliseconds;
-import com.kingbull.musicplayer.domain.Music;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -25,6 +26,7 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
   List<File> files;
   MyFiles.Presenter presenter;
   Folder folder = new Folder();
+  FileMusicMap fileMusicMap = new FileMusicMap();
 
   public MyFilesAdapter(List<File> files, MyFiles.Presenter presenter) {
     this.files = files;
@@ -61,10 +63,10 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
     } else if (viewHolder instanceof SongFileViewHolder) {
       SongFileViewHolder holder = (SongFileViewHolder) viewHolder;
       try {
-        Music song = new SongFile(files.get(position)).song(holder.fileNameView.getContext());
-        holder.fileNameView.setText(song.media().title());
-        holder.artistView.setText(song.media().artist());
-        holder.durationView.setText(new Milliseconds(song.media().duration()).toMmSs());
+        Media media = fileMusicMap.music(files.get(position)).media();
+        holder.fileNameView.setText(media.title());
+        holder.artistView.setText(media.artist());
+        holder.durationView.setText(new Milliseconds(media.duration()).toMmSs());
       } catch (IOException e) {
       }
     }
@@ -104,8 +106,7 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override public void onClick(View view) {
       try {
-        presenter.onSongClick(
-            new SongFile(files.get(getAdapterPosition())).song(view.getContext()));
+        presenter.onSongClick(fileMusicMap.music(files.get(getAdapterPosition())));
       } catch (IOException e) {
       }
     }

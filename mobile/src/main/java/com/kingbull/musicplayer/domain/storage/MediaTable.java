@@ -11,28 +11,48 @@ import com.kingbull.musicplayer.domain.Media;
  */
 
 public final class MediaTable {
+  private final String[] projections = new String[] {
+      MediaStore.Audio.Media.DATA, // the real path
+      MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DISPLAY_NAME,
+      MediaStore.Audio.Media.MIME_TYPE, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM,
+      MediaStore.Audio.Media.IS_RINGTONE, MediaStore.Audio.Media.IS_MUSIC,
+      MediaStore.Audio.Media.IS_NOTIFICATION, MediaStore.Audio.Media.SIZE,
+      MediaStore.Audio.Media._ID, MediaStore.Audio.Media.DURATION,
+      MediaStore.Audio.Media.DATE_ADDED, MediaStore.Audio.Media.YEAR
+  };
 
   public Media mediaById(long mediaId) {
     Cursor mediaCursor = MusicPlayerApp.instance()
         .getContentResolver()
-        .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, new String[] {
-            MediaStore.Audio.Media.DATA, // the real path
-            MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DISPLAY_NAME,
-            MediaStore.Audio.Media.MIME_TYPE, MediaStore.Audio.Media.ARTIST,
-            MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.IS_RINGTONE,
-            MediaStore.Audio.Media.IS_MUSIC, MediaStore.Audio.Media.IS_NOTIFICATION,
-            MediaStore.Audio.Media.SIZE, MediaStore.Audio.Media._ID,
-            MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.DATE_ADDED,
-            MediaStore.Audio.Media.YEAR
-        }, MediaStore.Audio.Media._ID + " = ?", new String[] {
-            String.valueOf(mediaId)
-        }, "");
+        .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projections,
+            MediaStore.Audio.Media._ID + " = " + "?", new String[] {
+                String.valueOf(mediaId)
+            }, "");
     mediaCursor.moveToFirst();
     Media media = null;
     if (mediaCursor != null && mediaCursor.getCount() > 0 && mediaCursor.moveToFirst()) {
       media = new Media.Smart(mediaCursor);
     } else {
       // TODO: 12/1/2016 null object pattern or something should be here 
+      //media = new Media.Smart(mediaId);
+    }
+    mediaCursor.close();
+    return media;
+  }
+
+  public Media mediaByPath(String path) {
+    Cursor mediaCursor = MusicPlayerApp.instance()
+        .getContentResolver()
+        .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projections,
+            MediaStore.Audio.Media.DATA + " = " + "?", new String[] {
+                String.valueOf(path)
+            }, "");
+    mediaCursor.moveToFirst();
+    Media media = null;
+    if (mediaCursor != null && mediaCursor.getCount() > 0 && mediaCursor.moveToFirst()) {
+      media = new Media.Smart(mediaCursor);
+    } else {
+      // TODO: 12/1/2016 null object pattern or something should be here
       //media = new Media.Smart(mediaId);
     }
     mediaCursor.close();

@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.di;
 
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.domain.FileMusicMap;
 import com.kingbull.musicplayer.domain.MediaStat;
 import com.kingbull.musicplayer.domain.storage.LastPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.MostPlayedPlayList;
@@ -28,6 +29,8 @@ public interface AppComponent {
   void inject(CallReceiver receiver);
 
   void inject(MediaStat.Smart mediaStat);
+
+  void inject(FileMusicMap map);
 
   void inject(com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter adapter);
 

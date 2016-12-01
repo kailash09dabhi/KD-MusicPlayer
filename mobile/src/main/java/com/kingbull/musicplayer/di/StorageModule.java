@@ -19,19 +19,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.storage.MediaStatTable;
+import com.kingbull.musicplayer.domain.storage.MediaTable;
 import com.kingbull.musicplayer.domain.storage.MusicSqliteOpenHelper;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
-@Module  public final class StorageModule {
-  //@Singleton @Provides SharedPreferences provideDefaultSharedPreferences(TimestampApplication app) {
-  //  return PreferenceManager.getDefaultSharedPreferences(app);
-  //}
-  //
-  //@Singleton @Provides SettingPreferences provideSettingsPreference(TimestampApplication app) {
-  //  return new SettingPreferences(app);
-  //}
+@Module public final class StorageModule {
 
   @Provides @Singleton SQLiteOpenHelper provideOpenHelper(MusicPlayerApp app) {
     return new MusicSqliteOpenHelper(app);
@@ -41,13 +35,11 @@ import javax.inject.Singleton;
     return openHelper.getWritableDatabase();
   }
 
-  @Provides @Singleton MediaStatTable provideTimestampTable(SQLiteDatabase sqLiteDatabase) {
+  @Provides @Singleton MediaStatTable provideMediaStaTable(SQLiteDatabase sqLiteDatabase) {
     return new MediaStatTable(sqLiteDatabase);
   }
-  //@Provides @Singleton File provideStorageDirectory(TimestampApplication app) {
-  //  File storageDir =
-  //      new File(Environment.getExternalStorageDirectory(), app.getString(R.string.app_name));
-  //  storageDir.mkdirs();
-  //  return storageDir;
-  //}
+
+  @Provides @Singleton MediaTable provideMediaTable(SQLiteDatabase sqLiteDatabase) {
+    return new MediaTable();
+  }
 }

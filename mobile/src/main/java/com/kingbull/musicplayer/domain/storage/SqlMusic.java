@@ -25,6 +25,7 @@ public final class SqlMusic implements com.kingbull.musicplayer.domain.Music, Pa
 
   private final Media media;
   @Inject MediaStatTable mediaStatTable;
+  @Inject MediaTable mediaTable;
 
   private MediaStat mediaStat;
 
@@ -37,10 +38,10 @@ public final class SqlMusic implements com.kingbull.musicplayer.domain.Music, Pa
   public SqlMusic(MediaStat mediaStat) {
     MusicPlayerApp.instance().component().inject(this);
     this.mediaStat = mediaStat;
-    this.media = new MediaTable().mediaById(mediaStat.mediaId());
+    this.media = mediaTable.mediaById(mediaStat.mediaId());
   }
 
-  public SqlMusic(Media.Smart media) {
+  public SqlMusic(Media media) {
     MusicPlayerApp.instance().component().inject(this);
     this.media = media;
     this.mediaStat = mediaStatTable.mediaStatById(media.mediaId());
