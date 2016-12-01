@@ -7,13 +7,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.FileMusicMap;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
+import javax.inject.Inject;
+
 
 /**
  * @author Kailash Dabhi
@@ -26,11 +28,12 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
   List<File> files;
   MyFiles.Presenter presenter;
   Folder folder = new Folder();
-  FileMusicMap fileMusicMap = new FileMusicMap();
+  @Inject FileMusicMap fileMusicMap;
 
   public MyFilesAdapter(List<File> files, MyFiles.Presenter presenter) {
     this.files = files;
     this.presenter = presenter;
+    MusicPlayerApp.instance().component().inject(this);
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -62,13 +65,10 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
       holder.durationView.setText(folder.audioFiles(files.get(position)).size() + " song");
     } else if (viewHolder instanceof SongFileViewHolder) {
       SongFileViewHolder holder = (SongFileViewHolder) viewHolder;
-      try {
-        Media media = fileMusicMap.music(files.get(position)).media();
-        holder.fileNameView.setText(media.title());
-        holder.artistView.setText(media.artist());
-        holder.durationView.setText(new Milliseconds(media.duration()).toMmSs());
-      } catch (IOException e) {
-      }
+      Media media = fileMusicMap.music(files.get(position)).media();
+      holder.fileNameView.setText(media.title());
+      holder.artistView.setText(media.artist());
+      holder.durationView.setText(new Milliseconds(media.duration()).toMmSs());
     }
   }
 
@@ -89,7 +89,7 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override public void onClick(View view) {
-      presenter.onEitherFolderOrSongClick(files.get(getAdapterPosition()));
+      presenter.onFolderClick(files.get(getAdapterPosition()));
     }
   }
 
@@ -105,10 +105,7 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override public void onClick(View view) {
-      try {
-        presenter.onSongClick(fileMusicMap.music(files.get(getAdapterPosition())));
-      } catch (IOException e) {
-      }
+      presenter.onMusicClick(files.get(getAdapterPosition()));
     }
   }
 }

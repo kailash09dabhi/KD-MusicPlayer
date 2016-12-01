@@ -14,7 +14,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
@@ -28,7 +27,6 @@ import java.util.List;
  */
 
 public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> implements MyFiles.View {
-  MyFiles.Presenter presenter;
   @BindView(R.id.directoryPathView) TextView directoryPathView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
@@ -68,7 +66,7 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
     getActivity().onBackPressed();
   }
 
-  @Override public void showMusicPlayer(Music song) {
+  @Override public void showMusicPlayer() {
     Intent intent = new Intent(getActivity(), MusicPlayerActivity.class);
     startActivity(intent);
   }

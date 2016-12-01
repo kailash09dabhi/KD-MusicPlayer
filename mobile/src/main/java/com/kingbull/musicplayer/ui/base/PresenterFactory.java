@@ -28,10 +28,11 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
   class MyFiles implements PresenterFactory<MyFilesPresenter> {
 
     @Override public MyFilesPresenter create() {
-      return new MyFilesPresenter();
+      MyFilesPresenter presenter = new MyFilesPresenter();
+      MusicPlayerApp.instance().component().inject(presenter);
+      return presenter;
     }
   }
-
 
   class MusicPlayer
       implements PresenterFactory<com.kingbull.musicplayer.ui.music.MusicPlayer.Presenter> {
@@ -42,8 +43,6 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
       return presenter;
     }
   }
-
-
 
   class Equalizer
       implements PresenterFactory<com.kingbull.musicplayer.ui.equalizer.Equalizer.Presenter> {

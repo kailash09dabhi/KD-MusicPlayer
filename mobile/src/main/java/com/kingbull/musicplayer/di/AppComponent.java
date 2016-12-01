@@ -1,7 +1,6 @@
 package com.kingbull.musicplayer.di;
 
 import com.kingbull.musicplayer.MusicPlayerApp;
-import com.kingbull.musicplayer.domain.FileMusicMap;
 import com.kingbull.musicplayer.domain.MediaStat;
 import com.kingbull.musicplayer.domain.storage.LastPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.MostPlayedPlayList;
@@ -11,6 +10,8 @@ import com.kingbull.musicplayer.player.CallReceiver;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
+import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesAdapter;
+import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.PlayListsModel;
 import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
@@ -26,15 +27,17 @@ public interface AppComponent {
 
   void inject(MusicService service);
 
+  void inject(MyFilesPresenter presenter);
+
   void inject(CallReceiver receiver);
 
   void inject(MediaStat.Smart mediaStat);
 
-  void inject(FileMusicMap map);
-
   void inject(com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter adapter);
 
   void inject(NowPlayingAdapter adapter);
+
+  void inject(MyFilesAdapter adapter);
 
   void inject(SqlMusic music);
 

@@ -18,7 +18,7 @@ import java.util.List;
 
     void close();
 
-    void showMusicPlayer(Music song);
+    void showMusicPlayer();
   }
 
   interface Model extends Mvp.Model {
@@ -26,17 +26,18 @@ import java.util.List;
 
     List<File> filesOfCurrentFolder();
 
-
     void currentFolder(File file);
 
     boolean isReachedToTopDirectory();
+
+    List<Music> musicListFromDirectory(File directory);
   }
 
   interface Presenter extends Mvp.Presenter<MyFiles.View> {
-    void onEitherFolderOrSongClick(File file);
+    void onFolderClick(File directory);
 
     void onBackPressed();
 
-    void onSongClick(Music song);
+    void onMusicClick(File musicFile);
   }
 }

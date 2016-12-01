@@ -26,4 +26,5 @@ import javax.inject.Singleton;
   @Singleton @Provides Player provideMusicPlayer() {
     return new MusicPlayer();
   }
+
 }

@@ -1,9 +1,11 @@
 package com.kingbull.musicplayer.ui.main.categories.folder;
 
 import android.support.annotation.NonNull;
-import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.FileMusicMap;
+import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import java.io.File;
+import javax.inject.Inject;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -12,9 +14,9 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public final class MyFilesPresenter extends Presenter<MyFiles.View> implements MyFiles.Presenter {
-
-  MyFiles.Model model = new MyFilesModel();
-  private CompositeSubscription compositeSubscription;
+  @Inject Player player;
+  @Inject FileMusicMap fileMusicMap;
+  @Inject MyFilesModel model;
 
   @Override public void takeView(@NonNull MyFiles.View view) {
     super.takeView(view);
@@ -23,15 +25,10 @@ public final class MyFilesPresenter extends Presenter<MyFiles.View> implements M
     view().showFiles(model.filesOfCurrentFolder());
   }
 
-  @Override public void onEitherFolderOrSongClick(File file) {
-    if (file.isDirectory()) {
-      model.currentFolder(file);
-      view().showFiles(model.filesOfCurrentFolder());
-      view().updateFolder(file);
-    } else {
-      // TODO: 11/12/2016  go to  music fragment and play song
-
-    }
+  @Override public void onFolderClick(File file) {
+    model.currentFolder(file);
+    view().showFiles(model.filesOfCurrentFolder());
+    view().updateFolder(file);
   }
 
   @Override public void onBackPressed() {
@@ -44,7 +41,9 @@ public final class MyFilesPresenter extends Presenter<MyFiles.View> implements M
     }
   }
 
-  @Override public void onSongClick(Music song) {
-    view().showMusicPlayer(song);
+  @Override public void onMusicClick(File musicFile) {
+    player.addToNowPlaylist(model.musicListFromDirectory(musicFile.getParentFile()));
+    player.play(fileMusicMap.music(musicFile));
+    view().showMusicPlayer();
   }
 }
