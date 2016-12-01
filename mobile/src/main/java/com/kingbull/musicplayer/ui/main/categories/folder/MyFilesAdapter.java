@@ -9,13 +9,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.Directory;
 import com.kingbull.musicplayer.domain.FileMusicMap;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import java.io.File;
 import java.util.List;
 import javax.inject.Inject;
-
 
 /**
  * @author Kailash Dabhi
@@ -27,7 +27,7 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
 
   List<File> files;
   MyFiles.Presenter presenter;
-  Folder folder = new Folder();
+  Directory directory = new Directory();
   @Inject FileMusicMap fileMusicMap;
 
   public MyFilesAdapter(List<File> files, MyFiles.Presenter presenter) {
@@ -62,7 +62,7 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
     if (viewHolder instanceof FolderFileViewHolder) {
       FolderFileViewHolder holder = (FolderFileViewHolder) viewHolder;
       holder.fileNameView.setText(files.get(position).getName());
-      holder.durationView.setText(folder.audioFiles(files.get(position)).size() + " song");
+      holder.durationView.setText(directory.audioFiles(files.get(position)).size() + " song");
     } else if (viewHolder instanceof SongFileViewHolder) {
       SongFileViewHolder holder = (SongFileViewHolder) viewHolder;
       Media media = fileMusicMap.music(files.get(position)).media();
