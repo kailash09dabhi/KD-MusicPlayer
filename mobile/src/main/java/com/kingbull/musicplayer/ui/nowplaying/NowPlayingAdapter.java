@@ -39,7 +39,7 @@ public final class NowPlayingAdapter
 
   @Override public void onBindViewHolder(SongFileViewHolder holder, int position) {
     Music music = songs.get(position);
-    holder.nameView.setText(music.title());
+    holder.nameView.setText(music.media().title());
   }
 
   @Override public int getItemCount() {

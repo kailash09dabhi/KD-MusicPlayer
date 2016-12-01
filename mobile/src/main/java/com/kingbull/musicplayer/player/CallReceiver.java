@@ -9,7 +9,7 @@ import android.util.Log;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import javax.inject.Inject;
 
-public class CallReceiver extends BroadcastReceiver {
+public final class CallReceiver extends BroadcastReceiver {
   @Inject Player musicPlayer;
 
   Context context;

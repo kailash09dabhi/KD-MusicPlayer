@@ -6,6 +6,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,7 +55,7 @@ public final class RecentlyAddedPlayList implements PlayList, Parcelable {
     if (cursor != null) {
       if (cursor.getCount() > 0 && cursor.moveToFirst()) {
         do {
-          SqlMusic song = new SqlMusic(new MediaCursor(cursor));
+          SqlMusic song = new SqlMusic(new Media.Smart(cursor));
           itemList.add(song);
         } while (cursor.moveToNext());
       }
@@ -76,8 +77,8 @@ public final class RecentlyAddedPlayList implements PlayList, Parcelable {
   final class RecentlyAddedComparator implements Comparator<Music> {
 
     @Override public int compare(Music song1, Music song2) {
-      long dateAddedSong1 = song1.dateAdded();
-      long dateAddedSong2 = song2.dateAdded();
+      long dateAddedSong1 = song1.media().dateAdded();
+      long dateAddedSong2 = song2.media().dateAdded();
       if (dateAddedSong1 < dateAddedSong2) {
         return 1;
       } else if (dateAddedSong1 > dateAddedSong2) {

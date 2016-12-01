@@ -89,7 +89,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     Music currentSong = player.getPlayingSong();
     long duration = 0;
     if (currentSong != null) {
-      duration = currentSong.duration();
+      duration = currentSong.media().duration();
     }
     return duration;
   }

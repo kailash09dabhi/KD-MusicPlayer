@@ -1,12 +1,10 @@
 package com.kingbull.musicplayer.domain.storage;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.kingbull.musicplayer.MusicPlayerApp;
-import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.Media;
+import com.kingbull.musicplayer.domain.MediaStat;
 import javax.inject.Inject;
 
 /**
@@ -14,8 +12,7 @@ import javax.inject.Inject;
  * @date 11/17/2016.
  */
 
-public final class SqlMusic
-    implements com.kingbull.musicplayer.domain.Music, SqlTableRow, Parcelable {
+public final class SqlMusic implements com.kingbull.musicplayer.domain.Music, Parcelable {
   public static final Parcelable.Creator<SqlMusic> CREATOR = new Parcelable.Creator<SqlMusic>() {
     @Override public SqlMusic createFromParcel(Parcel source) {
       return new SqlMusic(source);
@@ -25,187 +22,40 @@ public final class SqlMusic
       return new SqlMusic[size];
     }
   };
-  private final long duration;
-  private final int size;
-  @Inject SQLiteDatabase sqliteDatabase;
-  private long year;
-  private int mediaId;
-  private int sqlite_id;
-  private String title;
-  private String artist;
-  private String album;
-  //@Unique
-  private String path;
-  private long dateAdded;
-  private boolean isFavorite;
-  private long lastTimePlayed;
-  private long numberOfTimesPlayed = 0;
-  private String playlistId;// array of playlist mediaId separated by ","
 
-  public SqlMusic(SqlMusicCursor sqlMusicCursor, MediaCursor mediaCursor) {
-    this((Music) mediaCursor);
-    isFavorite = sqlMusicCursor.isFavorite();
-    lastTimePlayed = sqlMusicCursor.lastTimePlayed();
-    numberOfTimesPlayed = sqlMusicCursor.numberOfTimesPlayed();
-    playlistId = sqlMusicCursor.playlistIds();
-  }
+  private final Media media;
+  @Inject MediaStatTable mediaStatTable;
 
-  public SqlMusic(MediaCursor mediaCursor) {
-    this((Music) mediaCursor);
-    SqlMusicCursor sqlMusicCursor = sqlMusicCursor(mediaId);
-    if (sqlMusicCursor != null) {
-      isFavorite = sqlMusicCursor.isFavorite();
-      lastTimePlayed = sqlMusicCursor.lastTimePlayed();
-      numberOfTimesPlayed = sqlMusicCursor.numberOfTimesPlayed();
-      playlistId = sqlMusicCursor.playlistIds();
-      sqlMusicCursor.close();
-    }
-  }
+  private MediaStat mediaStat;
 
-  public SqlMusic(Music music) {
-    mediaId = music.mediaId();
-    title = music.title();
-    artist = music.artist();
-    album = music.album();
-    path = music.path();
-    duration = music.duration();
-    dateAdded = music.dateAdded();
-    size = music.size();
-    year = music.year();
+  public SqlMusic(Media media, MediaStat mediaStat) {
     MusicPlayerApp.instance().component().inject(this);
+    this.media = media;
+    this.mediaStat = mediaStat;
+  }
+
+  public SqlMusic(MediaStat mediaStat) {
+    MusicPlayerApp.instance().component().inject(this);
+    this.mediaStat = mediaStat;
+    this.media = new MediaTable().mediaById(mediaStat.mediaId());
+  }
+
+  public SqlMusic(Media.Smart media) {
+    MusicPlayerApp.instance().component().inject(this);
+    this.media = media;
+    this.mediaStat = mediaStatTable.mediaStatById(media.mediaId());
   }
 
   public SqlMusic(Parcel in) {
-    this.mediaId = in.readInt();
-    this.title = in.readString();
-    this.artist = in.readString();
-    this.album = in.readString();
-    this.path = in.readString();
-    this.duration = in.readLong();
-    this.size = in.readInt();
-    this.isFavorite = in.readInt() == 1;
-    this.lastTimePlayed = in.readLong();
-    this.numberOfTimesPlayed = in.readLong();
     MusicPlayerApp.instance().component().inject(this);
-  }
-
-  private SqlMusicCursor sqlMusicCursor(int mediaId) {
-    Cursor cursor = sqliteDatabase.rawQuery("select "
-        + MusicTable.Columns.FAVORITE
-        + ", "
-        + MusicTable.Columns.LAST_TIME_PLAYED
-        + ", "
-        + MusicTable.Columns.NUMBER_OF_TIMES_PLAYED
-        + ", "
-        + MusicTable.Columns.PLAYLIST_IDS
-        + " from "
-        + MusicTable.NAME
-        + " where "
-        + MusicTable.Columns.MEDIA_ID
-        + " = ?", new String[] { String.valueOf(mediaId) });
-    if (cursor != null && cursor.getCount() > 0) {
-      cursor.moveToFirst();
-      return new SqlMusicCursor(cursor);
-    } else {
-      return null;
-    }
-  }
-
-  @Override public int mediaId() {
-    return mediaId;
-  }
-
-  @Override public String title() {
-    return title;
-  }
-
-  @Override public String artist() {
-    return artist;
-  }
-
-  @Override public String album() {
-    return album;
-  }
-
-  @Override public String path() {
-    return path;
-  }
-
-  @Override public long duration() {
-    return duration;
-  }
-
-  @Override public int size() {
-    return size;
-  }
-
-  @Override public long dateAdded() {
-    return dateAdded;
-  }
-
-  @Override public boolean isFavorite() {
-    return isFavorite;
-  }
-
-  @Override public long numberOfTimesPlayed() {
-    return numberOfTimesPlayed;
-  }
-
-  @Override public long lastTimePlayed() {
-    return lastTimePlayed;
-  }
-
-  @Override public long year() {
-    return year;
-  }
-
-  @Override public long save() {
-    ContentValues values = new ContentValues();
-    values.put(MusicTable.Columns.MEDIA_ID, mediaId);
-    values.put(MusicTable.Columns.PLAYLIST_IDS, playlistId);
-    values.put(MusicTable.Columns.LAST_TIME_PLAYED, new CurrentDateTime().toString());
-    values.put(MusicTable.Columns.NUMBER_OF_TIMES_PLAYED, numberOfTimesPlayed);
-    values.put(MusicTable.Columns.UPDATED_AT, new CurrentDateTime().toString());
-    return sqliteDatabase.insertWithOnConflict(MusicTable.NAME, null, values,
-        SQLiteDatabase.CONFLICT_REPLACE);
-  }
-
-  public void saveLastPlayed() {
-    ContentValues values = new ContentValues();
-    values.put(MusicTable.Columns.MEDIA_ID, mediaId);
-    values.put(MusicTable.Columns.LAST_TIME_PLAYED, new CurrentDateTime().toString());
-    values.put(MusicTable.Columns.NUMBER_OF_TIMES_PLAYED, ++numberOfTimesPlayed);
-    values.put(MusicTable.Columns.UPDATED_AT, new CurrentDateTime().toString());
-    sqliteDatabase.insertWithOnConflict(MusicTable.NAME, null, values,
-        SQLiteDatabase.CONFLICT_REPLACE);
-  }
-
-  @Override public boolean delete() {
-    return sqliteDatabase.delete(MusicTable.NAME, MusicTable.Columns.MEDIA_ID + "=" + mediaId, null)
-        > 0;
-  }
-
-  public void addToPlayList(long playlistId) {
-    this.playlistId = this.playlistId + "(" + playlistId + ")";
-    save();
+    media = in.readParcelable(Media.class.getClassLoader());
+    mediaStat = in.readParcelable(MediaStat.class.getClassLoader());
   }
 
   @Override public String toString() {
     return "SqlMusic{" +
-        "duration=" + duration +
-        ", size=" + size +
-        ", sqliteDatabase=" + sqliteDatabase +
-        ", mediaId=" + mediaId +
-        ", sqlite_id=" + sqlite_id +
-        ", title='" + title + '\'' +
-        ", artist='" + artist + '\'' +
-        ", album='" + album + '\'' +
-        ", path='" + path + '\'' +
-        ", dateAdded=" + dateAdded +
-        ", isFavorite=" + isFavorite +
-        ", lastTimePlayed=" + lastTimePlayed +
-        ", numberOfTimesPlayed=" + numberOfTimesPlayed +
-        ", playlistId='" + playlistId + '\'' +
+        "media=" + media.toString() +
+        ", mediaStat=" + mediaStat.toString() +
         '}';
   }
 
@@ -214,15 +64,15 @@ public final class SqlMusic
   }
 
   @Override public void writeToParcel(Parcel dest, int flags) {
-    dest.writeInt(this.mediaId);
-    dest.writeString(this.title);
-    dest.writeString(this.artist);
-    dest.writeString(this.album);
-    dest.writeString(this.path);
-    dest.writeLong(this.duration);
-    dest.writeInt(this.size);
-    dest.writeInt(this.isFavorite ? 1 : 0);
-    dest.writeLong(this.lastTimePlayed);
-    dest.writeLong(this.numberOfTimesPlayed);
+    dest.writeParcelable((Parcelable) media, flags);
+    dest.writeParcelable((Parcelable) mediaStat, flags);
+  }
+
+  @Override public Media media() {
+    return media;
+  }
+
+  @Override public MediaStat mediaStat() {
+    return mediaStat;
   }
 }

@@ -36,11 +36,11 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
       Music song = nowPlayingList.currentMusic();
       try {
         player.reset();
-        player.setDataSource(song.path());
+        player.setDataSource(song.media().path());
         player.prepare();
         player.start();
         notifyPlayStatusChanged(true);
-        ((SqlMusic) song).saveLastPlayed();
+        ((SqlMusic) song).mediaStat().saveLastPlayed();
       } catch (IOException e) {
         Log.e(TAG, "play: ", e);
         notifyPlayStatusChanged(false);
@@ -109,7 +109,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     if (nowPlayingList.isEmpty()) return false;
     Music currentSong = nowPlayingList.currentMusic();
     if (currentSong != null) {
-      if (currentSong.duration() <= progress) {
+      if (currentSong.media().duration() <= progress) {
         onCompletion(player);
       } else {
         player.seekTo(progress);

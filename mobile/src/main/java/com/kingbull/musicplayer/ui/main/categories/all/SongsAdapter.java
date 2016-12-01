@@ -124,9 +124,9 @@ public final class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongFi
           ContextCompat.getColor(holder.itemView.getContext(), R.color.transparent));
     }
     Music music = songs.get(position);
-    holder.fileNameView.setText(music.title());
-    holder.albumView.setText(music.album());
-    holder.durationView.setText(new Milliseconds(music.duration()).toMmSs());
+    holder.fileNameView.setText(music.media().title());
+    holder.albumView.setText(music.media().album());
+    holder.durationView.setText(new Milliseconds(music.media().duration()).toMmSs());
   }
 
   @Override public int getItemCount() {

@@ -1,8 +1,8 @@
 package com.kingbull.musicplayer.ui.songlist;
 
 import android.database.Cursor;
+import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.MediaCursor;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public final class Songs {
     if (cursor != null && cursor.getCount() > 0) {
       cursor.moveToFirst();
       do {
-        Music song = new SqlMusic(new MediaCursor(cursor));
+        Music song = new SqlMusic(new Media.Smart(cursor));
         songs.add(song);
       } while (cursor.moveToNext());
     }

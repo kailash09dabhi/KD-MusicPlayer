@@ -3,8 +3,8 @@ package com.kingbull.musicplayer.ui.main.categories.folder;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.MediaCursor;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +29,7 @@ public final class SongFile {
     if (hashMap.containsKey(songFile)) {
       song = hashMap.get(songFile);
     } else {
-   Cursor cursor =  context.getContentResolver()
+      Cursor cursor = context.getContentResolver()
           .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, new String[] {
               MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.ARTIST,
               MediaStore.Audio.Media.TRACK, MediaStore.Audio.Media.TITLE,
@@ -41,7 +41,7 @@ public final class SongFile {
               songFile.getCanonicalPath()
           }, "");
       cursor.moveToFirst();
-      song = new  SqlMusic(new MediaCursor(cursor));
+      song = new SqlMusic(new Media.Smart(cursor));
       hashMap.put(songFile, song);
     }
     return song;

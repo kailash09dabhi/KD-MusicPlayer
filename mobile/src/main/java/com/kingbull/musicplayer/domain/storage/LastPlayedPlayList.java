@@ -18,7 +18,7 @@ public final class LastPlayedPlayList implements PlayList, Parcelable {
       return new LastPlayedPlayList[size];
     }
   };
-  @Inject MusicTable musicTable;
+  @Inject MediaStatTable mediaStatTable;
 
   public LastPlayedPlayList() {
     MusicPlayerApp.instance().component().inject(this);
@@ -32,7 +32,7 @@ public final class LastPlayedPlayList implements PlayList, Parcelable {
   }
 
   @Override public List<Music> musicList() {
-    return musicTable.lastPlayedSongs();
+    return mediaStatTable.lastPlayedSongs();
   }
 
   @Override public int describeContents() {

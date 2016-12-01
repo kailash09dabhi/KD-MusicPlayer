@@ -6,27 +6,7 @@ package com.kingbull.musicplayer.domain;
  */
 
 public interface Music {
-  int mediaId();
+  Media media();
 
-  String title();
-
-  String artist();
-
-  String album();
-
-  String path();
-
-  long duration();
-
-  int size();
-
-  long dateAdded();
-
-  boolean isFavorite();
-
-  long numberOfTimesPlayed();
-
-  long lastTimePlayed();
-
-  long year();
+  MediaStat mediaStat();
 }

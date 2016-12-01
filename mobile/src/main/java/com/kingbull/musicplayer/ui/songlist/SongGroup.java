@@ -22,7 +22,7 @@ public final class SongGroup {
     HashMap<Music, List<Music>> songHashMap = new HashMap<>();
     HashMap<String, List<Music>> hashMap = new HashMap<>();
     for (Music song : songs) {
-      String albumName = song.album();
+      String albumName = song.media().album();
       if (hashMap.containsKey(albumName)) {
         hashMap.get(albumName).add(song);
       } else {

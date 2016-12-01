@@ -169,13 +169,13 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   }
 
   @Override public void onSongUpdated(Music song) {
-    nameTextView.setText(song.title());
-    textViewArtist.setText(song.artist());
+    nameTextView.setText(song.media().title());
+    textViewArtist.setText(song.media().artist());
     // Step 2: favorite
     buttonFavoriteToggle.setImageResource(
-        song.isFavorite() ? R.drawable.ic_favorite_yes : R.drawable.ic_favorite_no);
+        song.mediaStat().isFavorite() ? R.drawable.ic_favorite_yes : R.drawable.ic_favorite_no);
     // Step 3: Duration
-    durationTextView.setText(TimeUtils.formatDuration(song.duration()));
+    durationTextView.setText(TimeUtils.formatDuration(song.media().duration()));
     // Step 4: Keep these things updated
     // - Album rotation
     // - Progress(progressTextView & seekBarProgress)

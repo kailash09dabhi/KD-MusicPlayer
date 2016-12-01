@@ -250,10 +250,10 @@ public final class MusicService extends Service implements Player, Player.Callba
   }
 
   private void updateRemoteViews(RemoteViews remoteView) {
-    Music currentSong = musicPlayer.getPlayingSong();
-    if (currentSong != null) {
-      remoteView.setTextViewText(R.id.nameTextView, currentSong.title());
-      remoteView.setTextViewText(R.id.text_view_artist, currentSong.artist());
+    Music music = musicPlayer.getPlayingSong();
+    if (music != null) {
+      remoteView.setTextViewText(R.id.nameTextView, music.media().title());
+      remoteView.setTextViewText(R.id.text_view_artist, music.media().artist());
     }
     remoteView.setImageViewResource(R.id.image_view_play_toggle,
         isPlaying() ? R.drawable.ic_remote_view_pause : R.drawable.ic_remote_view_play);
@@ -265,9 +265,9 @@ public final class MusicService extends Service implements Player, Player.Callba
     }
     mediaSession.setMetadata(
         new MediaMetadataCompat.Builder().putString(MediaMetadataCompat.METADATA_KEY_ARTIST,
-            currentSong.artist())
-            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.album())
-            .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.title())
+            music.media().artist())
+            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, music.media().album())
+            .putString(MediaMetadataCompat.METADATA_KEY_TITLE, music.media().title())
             .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, 10000)
             .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, album)
             .build());

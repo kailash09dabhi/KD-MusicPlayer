@@ -25,7 +25,7 @@ public final class SqlPlayList implements PlayList, SqlTableRow, Parcelable {
     }
   };
   @Inject SQLiteDatabase sqliteDatabase;
-  @Inject MusicTable musicTable;
+  @Inject MediaStatTable mediaStatTable;
   private long createdAt;
   private long updatedAt;
   private String name;
@@ -56,7 +56,7 @@ public final class SqlPlayList implements PlayList, SqlTableRow, Parcelable {
     values.put(PlayListTable.Columns.UPDATED_AT, new CurrentDateTime().toString());
     sqliteId = sqliteDatabase.insertWithOnConflict(PlayListTable.NAME, null, values,
         SQLiteDatabase.CONFLICT_REPLACE);
-    musicTable.addToPlaylist(musicList, sqliteId);
+    mediaStatTable.addToPlaylist(musicList, sqliteId);
     return sqliteId;
   }
 
@@ -77,6 +77,6 @@ public final class SqlPlayList implements PlayList, SqlTableRow, Parcelable {
   }
 
   @Override public List<Music> musicList() {
-    return musicTable.musicsOfPlayList(sqliteId);
+    return mediaStatTable.musicsOfPlayList(sqliteId);
   }
 }

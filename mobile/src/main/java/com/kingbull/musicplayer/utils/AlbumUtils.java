@@ -25,7 +25,7 @@ public class AlbumUtils {
     private static final String TAG = "AlbumUtils";
 
     public static Bitmap parseAlbum(Music song) {
-        return parseAlbum(new File(song.path()));
+        return parseAlbum(new File(song.media().path()));
     }
 
     public static Bitmap parseAlbum(File file) {

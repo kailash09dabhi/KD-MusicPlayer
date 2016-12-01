@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public final class MusicSqliteOpenHelper extends SQLiteOpenHelper {
-  public static final String DATABASE_NAME = "MusicTable.db";
+  public static final String DATABASE_NAME = "MediaStatTable.db";
   private static final int VERSION = 1;
 
   public MusicSqliteOpenHelper(Context context) {
@@ -13,7 +13,7 @@ public final class MusicSqliteOpenHelper extends SQLiteOpenHelper {
   }
 
   @Override public void onCreate(SQLiteDatabase db) {
-    db.execSQL(MusicTable.DEFINITION);
+    db.execSQL(com.kingbull.musicplayer.domain.storage.MediaStatTable.DEFINITION);
     db.execSQL(PlayListTable.DEFINITION);
   }
 

@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.di;
 
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.domain.MediaStat;
 import com.kingbull.musicplayer.domain.storage.LastPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.MostPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
@@ -23,7 +24,10 @@ public interface AppComponent {
   // injection targets here
 
   void inject(MusicService service);
+
   void inject(CallReceiver receiver);
+
+  void inject(MediaStat.Smart mediaStat);
 
   void inject(com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter adapter);
 
