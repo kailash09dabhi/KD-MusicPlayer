@@ -1,11 +1,14 @@
 package com.kingbull.musicplayer.domain;
 
+import android.media.audiofx.Equalizer;
+import com.kingbull.musicplayer.domain.storage.SqlTableRow;
+
 /**
  * @author Kailash Dabhi
  * @date 12/2/2016.
  */
 
-public interface EqualizerPreset {
+public interface EqualizerPreset extends SqlTableRow {
 
   int y1Percentage();
 
@@ -18,4 +21,10 @@ public interface EqualizerPreset {
   int y5Percentage();
 
   String name();
+
+  void applyTo(Equalizer equalizer);
+
+  int id();
+
+
 }

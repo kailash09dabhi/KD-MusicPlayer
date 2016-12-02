@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
@@ -43,6 +44,10 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
 
   @OnItemSelected(R.id.equalizerSpinner) void onPresetSelected(int position) {
     presenter.onPresetSelected(position);
+  }
+
+  @OnClick(R.id.newPresetButton) void onNewPresetClick() {
+    presenter.onNewPresetClick();
   }
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,5 +104,13 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
         presenter.onBandValueChange(bandNumber, percentageValue);
       }
     });
+  }
+
+  @Override public void takeSelectedPreset(int position) {
+    equalizerSpinner.setSelection(position);
+  }
+
+  @Override public void saveEqualizerPreset() {
+    equalizerView.asEqualizerPreset().save();
   }
 }

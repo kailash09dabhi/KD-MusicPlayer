@@ -10,28 +10,36 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="@color/transparent_black"
-
       android:gravity="center"
       android:minHeight="?actionBarSize"
       fontPath="@string/font.julius.sans.one"
-
       tools:ignore="MissingPrefix"
       style="@style/AppTheme.TextAppearance.Title"
       />
-  <Spinner
-      android:id="@+id/equalizerSpinner"
+  <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="40dp"
-
-      android:background="@drawable/selector"
-      android:layout_alignParentLeft="true"
-      android:layout_centerVertical="true"/>
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+    <Spinner
+        android:id="@+id/equalizerSpinner"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_weight="1"
+        android:background="@drawable/selector"/>
+    <Button
+        android:id="@+id/newPresetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Preset"/>
+  </LinearLayout>
 
 
   <com.kingbull.musicplayer.ui.equalizer.EqualizerView
+      android:id="@+id/equalizerView"
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      android:id="@+id/equalizerView"
       android:layout_weight="1"
       android:background="@color/transparent_black"/>
 

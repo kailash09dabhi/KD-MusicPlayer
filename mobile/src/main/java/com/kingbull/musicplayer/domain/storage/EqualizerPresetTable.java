@@ -1,7 +1,10 @@
 package com.kingbull.musicplayer.domain.storage;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -25,6 +28,8 @@ public final class EqualizerPresetTable implements SqlTable {
       + " INTEGER,"
       + Columns.Y5
       + " INTEGER,"
+      + Columns.NAME
+      + " TEXT,"
       + Columns.CREATED_AT
       + " DATETIME DEFAULT CURRENT_TIMESTAMP,"
       + Columns.UPDATED_AT
@@ -51,6 +56,27 @@ public final class EqualizerPresetTable implements SqlTable {
     //  return new EqualizerPreset.Sql(mediaId);
     //}
     return null;
+  }
+
+  public List<EqualizerPreset> allPresets() {
+    String query = "select * from "
+        + EqualizerPresetTable.NAME
+        + "  order  by datetime("
+        + Columns.UPDATED_AT
+        + ") "
+        + "DESC";
+    Cursor cursor = sqliteDatabase.rawQuery(query, null);
+    List<EqualizerPreset> presets = new ArrayList<>();
+    if (cursor != null) {
+      if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        do {
+          SqlEqualizerPreset preset = new SqlEqualizerPreset(cursor);
+          presets.add(preset);
+        } while (cursor.moveToNext());
+      }
+      cursor.close();
+    }
+    return presets;
   }
 
   public static final class Columns {

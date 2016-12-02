@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
+import com.kingbull.musicplayer.domain.storage.SqlEqualizerPreset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,6 +157,21 @@ public final class EqualizerView extends View {
 
   private int yByPercentage(int percentage) {
     return (int) ((100 - percentage) * (maxHeight - minHeight) / 100.0 + minHeight);
+  }
+
+  public EqualizerPreset asEqualizerPreset() {
+    return new SqlEqualizerPreset(
+        100 - (int) ((equalizerPointList.get(0).y - minHeight) / ((float) (maxHeight - minHeight))
+            * 100.0),
+        100 - (int) ((equalizerPointList.get(1).y - minHeight) / ((float) (maxHeight - minHeight))
+            * 100.0),
+        100 - (int) ((equalizerPointList.get(2).y - minHeight) / ((float) (maxHeight - minHeight))
+            * 100.0),
+        100 - (int) ((equalizerPointList.get(3).y - minHeight) / ((float) (maxHeight - minHeight))
+            * 100.0),
+        100 - (int) ((equalizerPointList.get(4).y - minHeight) / ((float) (maxHeight - minHeight))
+            * 100.0),
+        "temp");
   }
 
   interface OnBandValueChangeListener {

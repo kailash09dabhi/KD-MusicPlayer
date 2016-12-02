@@ -34,11 +34,10 @@ import javax.inject.Inject;
  */
 public final class MusicService extends Service implements Player, Player.Callback {
 
+  public static final String ACTION_STOP_SERVICE = "com.kingbull.musicplayer.ACTION_STOP_SERVICE";
   private static final String ACTION_PLAY_TOGGLE = "com.kingbull.musicplayer.ACTION_PLAY_TOGGLE";
   private static final String ACTION_PLAY_LAST = "com.kingbull.musicplayer.ACTION_PLAY_LAST";
   private static final String ACTION_PLAY_NEXT = "com.kingbull.musicplayer.ACTION_PLAY_NEXT";
-  public static final String ACTION_STOP_SERVICE = "com.kingbull.musicplayer.ACTION_STOP_SERVICE";
-
   private static final int NOTIFICATION_ID = 1;
   private final Binder mBinder = new LocalBinder();
   @Inject Player musicPlayer;

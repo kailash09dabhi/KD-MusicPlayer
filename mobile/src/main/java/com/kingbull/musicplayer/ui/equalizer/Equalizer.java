@@ -14,12 +14,17 @@ public interface Equalizer {
     void updateEqualizerView(EqualizerPreset equalizerPreset);
 
     void setupPresetList(List<EqualizerPreset> presets);
+
+    void takeSelectedPreset(int position);
+
+    void saveEqualizerPreset();
   }
 
   interface Model extends Mvp.Model {
-    List<EqualizerPreset> presetList();
 
-    void updateEqualizerWithPreset(int position);
+    List<EqualizerPreset> systemPresetList();
+
+    List<EqualizerPreset> sqlPresetList();
 
     android.media.audiofx.Equalizer equalizer();
 
@@ -32,5 +37,7 @@ public interface Equalizer {
     void onPresetSelected(int position);
 
     void onBandValueChange(short bandNumber, int percentageValue);
+
+    void onNewPresetClick();
   }
 }

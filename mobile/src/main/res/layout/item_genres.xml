@@ -3,19 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:minHeight="?android:attr/listPreferredItemHeight"
     android:background="@drawable/selector"
-    android:orientation="horizontal">
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
   <!---->
   <TextView
       android:id="@+id/textview"
-      tools:text="afd"
+      android:layout_width="match_parent"
 
-      style="@style/AppTheme.TextAppearance.List.Medium"
-android:layout_height="wrap_content"
-      android:layout_width="match_parent"/>
+      android:layout_height="wrap_content"
+      tools:text="afd"
+      style="@style/AppTheme.TextAppearance.List.Medium"/>
 </LinearLayout>

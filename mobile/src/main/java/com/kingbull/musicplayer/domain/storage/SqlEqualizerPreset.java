@@ -3,8 +3,10 @@ package com.kingbull.musicplayer.domain.storage;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.audiofx.Equalizer;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
+import com.kingbull.musicplayer.domain.SettingPreferences;
 import javax.inject.Inject;
 
 public final class SqlEqualizerPreset implements EqualizerPreset, SqlTableRow {
@@ -15,8 +17,10 @@ public final class SqlEqualizerPreset implements EqualizerPreset, SqlTableRow {
   private final int y5;
   private final String name;
   @Inject SQLiteDatabase sqliteDatabase;
+  private long sqliteId;
 
   public SqlEqualizerPreset(Cursor cursor) {
+    sqliteId = cursor.getLong(cursor.getColumnIndexOrThrow(EqualizerPresetTable.Columns.SQLITE_ID));
     y1 = cursor.getInt(cursor.getColumnIndexOrThrow(EqualizerPresetTable.Columns.Y1));
     y2 = cursor.getInt(cursor.getColumnIndexOrThrow(EqualizerPresetTable.Columns.Y2));
     y3 = cursor.getInt(cursor.getColumnIndexOrThrow(EqualizerPresetTable.Columns.Y3));
@@ -27,6 +31,7 @@ public final class SqlEqualizerPreset implements EqualizerPreset, SqlTableRow {
   }
 
   public SqlEqualizerPreset(int y1, int y2, int y3, int y4, int y5, String name) {
+    this.sqliteId = 0;
     this.y1 = y1;
     this.y2 = y2;
     this.y3 = y3;
@@ -60,6 +65,26 @@ public final class SqlEqualizerPreset implements EqualizerPreset, SqlTableRow {
     return name;
   }
 
+  @Override public void applyTo(Equalizer equalizer) {
+    final short lowerEqualizerBandLevel = (short) equalizer.getBandLevelRange()[0];
+    final short upperEqualizerBandLevel = (short) equalizer.getBandLevelRange()[1];
+    final short maxBandLevel = (short) (upperEqualizerBandLevel - lowerEqualizerBandLevel);
+    equalizer.setBandLevel((short) 0,
+        (short) (maxBandLevel * y1 / 100.0 + lowerEqualizerBandLevel));
+    equalizer.setBandLevel((short) 1,
+        (short) (maxBandLevel * y2 / 100.0 + lowerEqualizerBandLevel));
+    equalizer.setBandLevel((short) 2,
+        (short) (maxBandLevel * y3 / 100.0 + lowerEqualizerBandLevel));
+    equalizer.setBandLevel((short) 3,
+        (short) (maxBandLevel * y4 / 100.0 + lowerEqualizerBandLevel));
+    equalizer.setBandLevel((short) 4,
+        (short) (maxBandLevel * y5 / 100.0 + lowerEqualizerBandLevel));
+  }
+
+  @Override public int id() {
+    return (int) sqliteId;
+  }
+
   @Override public long save() {
     ContentValues values = new ContentValues();
     values.put(EqualizerPresetTable.Columns.Y1, y1);
@@ -67,12 +92,18 @@ public final class SqlEqualizerPreset implements EqualizerPreset, SqlTableRow {
     values.put(EqualizerPresetTable.Columns.Y3, y3);
     values.put(EqualizerPresetTable.Columns.Y4, y4);
     values.put(EqualizerPresetTable.Columns.Y5, y5);
+    values.put(EqualizerPresetTable.Columns.NAME, name);
     values.put(MediaStatTable.Columns.UPDATED_AT, new CurrentDateTime().toString());
-    return sqliteDatabase.insertWithOnConflict(MediaStatTable.NAME, null, values,
+    sqliteId = sqliteDatabase.insertWithOnConflict(EqualizerPresetTable.NAME, null, values,
         SQLiteDatabase.CONFLICT_REPLACE);
+    new SettingPreferences().saveLastChosenPresetIsOfSytem(false);
+    new SettingPreferences().saveLastChosenPresetId((int) sqliteId);
+    return sqliteId;
   }
 
   @Override public boolean delete() {
-    return false;
+    return sqliteDatabase.delete(EqualizerPresetTable.NAME,
+        EqualizerPresetTable.Columns.SQLITE_ID + "=" +
+            sqliteId, null) > 0;
   }
 }

@@ -46,17 +46,26 @@ public final class SettingPreferences {
     settingsPrefs.edit().putBoolean(Key.IS_FULL_SCREEN, isFullScreen).apply();
   }
 
-  public int equalizerPreset() {
-    return settingsPrefs.getInt(Key.EQUALIZER_PRESET_NAME, -1);
+  public int lastChosenPresetId() {
+    return settingsPrefs.getInt(Key.LAST_CHOSEN_PRESET_ID, 0);
   }
 
-  public void saveEqualizerPreset(int equalizerPreset) {
-    settingsPrefs.edit().putInt(Key.EQUALIZER_PRESET_NAME, equalizerPreset).apply();
+  public void saveLastChosenPresetId(int equalizerPreset) {
+    settingsPrefs.edit().putInt(Key.LAST_CHOSEN_PRESET_ID, equalizerPreset).apply();
+  }
+
+  public boolean lastChosenPresetIsOfSystem() {
+    return settingsPrefs.getBoolean(Key.LAST_CHOSEN_PRESET_IS_OF_SYSTEM, true);
+  }
+
+  public void saveLastChosenPresetIsOfSytem(boolean isOfSystem) {
+    settingsPrefs.edit().putBoolean(Key.LAST_CHOSEN_PRESET_IS_OF_SYSTEM, isOfSystem).apply();
   }
 
   public final static class Key {
     public final static String MUSIC_MODE = "music_mode";
     public final static String IS_FULL_SCREEN = "full_screen";
-    public final static String EQUALIZER_PRESET_NAME = "equalizer_preset_name";
+    public final static String LAST_CHOSEN_PRESET_IS_OF_SYSTEM = "last_chosen_preset_is_of_system";
+    public final static String LAST_CHOSEN_PRESET_ID = "last_chosen_preset_id";
   }
 }
