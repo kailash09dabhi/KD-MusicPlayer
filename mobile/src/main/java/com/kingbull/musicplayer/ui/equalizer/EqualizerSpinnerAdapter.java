@@ -6,24 +6,25 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.EqualizerPreset;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class EqualizerSpinnerAdapter extends BaseAdapter {
-  private List<String> mItems = new ArrayList<>();
+  private List<EqualizerPreset> equalizerPresets = new ArrayList<>();
   private Activity ctx;
 
-  public EqualizerSpinnerAdapter(Activity ctx, List<String> mItems) {
-    this.mItems = mItems;
+  public EqualizerSpinnerAdapter(Activity ctx, List<EqualizerPreset> equalizerPresets) {
+    this.equalizerPresets = equalizerPresets;
     this.ctx = ctx;
   }
 
   @Override public int getCount() {
-    return mItems.size();
+    return equalizerPresets.size();
   }
 
   @Override public Object getItem(int position) {
-    return mItems.get(position);
+    return equalizerPresets.get(position);
   }
 
   @Override public long getItemId(int position) {
@@ -36,7 +37,7 @@ public final class EqualizerSpinnerAdapter extends BaseAdapter {
       view.setTag("DROPDOWN");
     }
     TextView textView = (TextView) view.findViewById(android.R.id.text1);
-    textView.setText(getTitle(position));
+    textView.setText(equalizerPresets.get(position).name());
     return view;
   }
 
@@ -47,11 +48,7 @@ public final class EqualizerSpinnerAdapter extends BaseAdapter {
       view.setTag("NON_DROPDOWN");
     }
     TextView textView = (TextView) view.findViewById(android.R.id.text1);
-    textView.setText(getTitle(position));
+    textView.setText(equalizerPresets.get(position).name());
     return view;
-  }
-
-  private String getTitle(int position) {
-    return position >= 0 && position < mItems.size() ? mItems.get(position) : "";
   }
 }

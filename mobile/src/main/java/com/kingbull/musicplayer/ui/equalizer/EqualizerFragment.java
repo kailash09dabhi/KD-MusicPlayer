@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.EqualizerPreset;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import java.util.List;
@@ -52,7 +53,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_equalizer, null);
     ButterKnife.bind(this, view);
-    titleView.setText("Equalizer".toUpperCase());
+    titleView.setText("Equalizer Preset".toUpperCase());
     setupRoundKnobButton();
     return view;
   }
@@ -86,11 +87,11 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     return new PresenterFactory.Equalizer();
   }
 
-  @Override public void updateEqualizer(android.media.audiofx.Equalizer equalizer) {
-    equalizerView.adjustToSelectedPreset(equalizer);
+  @Override public void updateEqualizerView(EqualizerPreset equalizerPreset) {
+    equalizerView.adjustToSelectedPreset(equalizerPreset);
   }
 
-  @Override public void setupPresetList(List<String> equalizerPresetNames) {
+  @Override public void setupPresetList(List<EqualizerPreset> equalizerPresetNames) {
     adapter = new EqualizerSpinnerAdapter(getActivity(), equalizerPresetNames);
     equalizerSpinner.setAdapter(adapter);
     equalizerView.addOnBandValueChangeListener(new EqualizerView.OnBandValueChangeListener() {

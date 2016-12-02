@@ -46,8 +46,17 @@ public final class SettingPreferences {
     settingsPrefs.edit().putBoolean(Key.IS_FULL_SCREEN, isFullScreen).apply();
   }
 
+  public int equalizerPreset() {
+    return settingsPrefs.getInt(Key.EQUALIZER_PRESET_NAME, -1);
+  }
+
+  public void saveEqualizerPreset(int equalizerPreset) {
+    settingsPrefs.edit().putInt(Key.EQUALIZER_PRESET_NAME, equalizerPreset).apply();
+  }
+
   public final static class Key {
     public final static String MUSIC_MODE = "music_mode";
     public final static String IS_FULL_SCREEN = "full_screen";
+    public final static String EQUALIZER_PRESET_NAME = "equalizer_preset_name";
   }
 }

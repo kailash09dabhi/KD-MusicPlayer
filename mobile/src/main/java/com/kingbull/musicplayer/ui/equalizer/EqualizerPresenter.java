@@ -1,6 +1,8 @@
 package com.kingbull.musicplayer.ui.equalizer;
 
+import com.kingbull.musicplayer.domain.EqualizerPreset;
 import com.kingbull.musicplayer.ui.base.Presenter;
+import java.util.List;
 
 /**
  * @author Kailash Dabhi
@@ -10,15 +12,17 @@ import com.kingbull.musicplayer.ui.base.Presenter;
 public final class EqualizerPresenter extends Presenter<Equalizer.View>
     implements Equalizer.Presenter {
   Equalizer.Model model;
+  List<EqualizerPreset> presetList;
 
   @Override public void onTakeAudioSessionId(int audioSessionId) {
     model = new EqualizerModel(audioSessionId);
-    view().setupPresetList(model.presetList());
+    presetList = model.presetList();
+    view().setupPresetList(presetList);
   }
 
   @Override public void onPresetSelected(int position) {
     model.updateEqualizerWithPreset(position);
-    view().updateEqualizer(model.equalizer());
+    view().updateEqualizerView(presetList.get(position));
   }
 
   @Override public void onBandValueChange(short bandNumber, int percentageValue) {

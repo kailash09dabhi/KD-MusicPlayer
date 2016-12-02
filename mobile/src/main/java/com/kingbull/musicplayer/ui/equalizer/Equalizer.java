@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.ui.equalizer;
 
+import com.kingbull.musicplayer.domain.EqualizerPreset;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.util.List;
 
@@ -10,13 +11,13 @@ import java.util.List;
 
 public interface Equalizer {
   interface View extends Mvp.View {
-    void updateEqualizer(android.media.audiofx.Equalizer equalizer);
+    void updateEqualizerView(EqualizerPreset equalizerPreset);
 
-    void setupPresetList(List<String> presets);
+    void setupPresetList(List<EqualizerPreset> presets);
   }
 
   interface Model extends Mvp.Model {
-    List<String> presetList();
+    List<EqualizerPreset> presetList();
 
     void updateEqualizerWithPreset(int position);
 

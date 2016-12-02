@@ -8,13 +8,12 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RadialGradient;
 import android.graphics.Shader;
-import android.media.audiofx.Equalizer;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.EqualizerPreset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,24 +145,17 @@ public final class EqualizerView extends View {
     this.onBandValueChangeListener = onBandValueChangeListener;
   }
 
-  public void adjustToSelectedPreset(Equalizer equalizer) {
-    short numberFrequencyBands = equalizer.getNumberOfBands();
-    final short lowerEqualizerBandLevel = equalizer.getBandLevelRange()[0];
-    final short upperEqualizerBandLevel = equalizer.getBandLevelRange()[1];
-    for (short i = 0; i < numberFrequencyBands; i++) {
-      short equalizerBandIndex = i;
-      Log.e("equalizer preset value",
-          String.valueOf(equalizer.getBandLevel(equalizerBandIndex) - lowerEqualizerBandLevel));
-      Log.e("upperEqualizerBandLevel", String.valueOf(upperEqualizerBandLevel));
-      Log.e("lowerEqualizerBandLevel", String.valueOf(lowerEqualizerBandLevel));
-      Log.e("max value", String.valueOf(upperEqualizerBandLevel - lowerEqualizerBandLevel));
-      float maxValue = upperEqualizerBandLevel - lowerEqualizerBandLevel;
-      int selectedValue = equalizer.getBandLevel(equalizerBandIndex) - lowerEqualizerBandLevel;
-      float percentageHeight = selectedValue / maxValue * 100;
-      equalizerPointList.get(i).y =
-          (int) ((100 - percentageHeight) * (maxHeight - minHeight) / 100.0 + minHeight);
-    }
+  public void adjustToSelectedPreset(EqualizerPreset equalizerPreset) {
+    equalizerPointList.get(0).y = yByPercentage(equalizerPreset.y1Percentage());
+    equalizerPointList.get(1).y = yByPercentage(equalizerPreset.y2Percentage());
+    equalizerPointList.get(2).y = yByPercentage(equalizerPreset.y3Percentage());
+    equalizerPointList.get(3).y = yByPercentage(equalizerPreset.y4Percentage());
+    equalizerPointList.get(4).y = yByPercentage(equalizerPreset.y5Percentage());
     invalidate();
+  }
+
+  private int yByPercentage(int percentage) {
+    return (int) ((100 - percentage) * (maxHeight - minHeight) / 100.0 + minHeight);
   }
 
   interface OnBandValueChangeListener {

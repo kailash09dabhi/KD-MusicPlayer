@@ -1,8 +1,12 @@
 package com.kingbull.musicplayer.ui.equalizer;
 
 import android.util.Log;
+import com.kingbull.musicplayer.domain.EqualizerPreset;
+import com.kingbull.musicplayer.domain.SettingPreferences;
+import com.kingbull.musicplayer.domain.storage.EqualizerPresetTable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * @author Kailash Dabhi
@@ -10,22 +14,28 @@ import java.util.List;
  */
 public final class EqualizerModel implements Equalizer.Model {
   private final android.media.audiofx.Equalizer equalizer;
+  @Inject EqualizerPresetTable equalizerPresetTable;
 
   public EqualizerModel(int audioSessionId) {
     this.equalizer = new android.media.audiofx.Equalizer(5, audioSessionId);
     this.equalizer.setEnabled(true);
   }
 
-  @Override public List<String> presetList() {
-    ArrayList<String> equalizerPresetNames = new ArrayList<>();
+  @Override public List<EqualizerPreset> presetList() {
+    ArrayList<EqualizerPreset> equalizerPresets = new ArrayList<>();
     for (short i = 0; i < equalizer.getNumberOfPresets(); i++) {
-      equalizerPresetNames.add(equalizer.getPresetName(i));
+      equalizerPresets.add(new AudioFxEqualizerPreset(equalizer, i));
     }
-    return equalizerPresetNames;
+    return equalizerPresets;
   }
 
   @Override public void updateEqualizerWithPreset(int position) {
     equalizer.usePreset((short) position);
+    if (position <= presetList().size() - 1) {
+      new SettingPreferences().saveEqualizerPreset(position);
+    } else {
+      equalizerPresetTable.presetWith(position);
+    }
   }
 
   @Override public android.media.audiofx.Equalizer equalizer() {

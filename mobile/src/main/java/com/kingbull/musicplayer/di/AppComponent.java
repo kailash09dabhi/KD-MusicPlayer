@@ -4,6 +4,7 @@ import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.MediaStat;
 import com.kingbull.musicplayer.domain.storage.LastPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.MostPlayedPlayList;
+import com.kingbull.musicplayer.domain.storage.SqlEqualizerPreset;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import com.kingbull.musicplayer.domain.storage.SqlPlayList;
 import com.kingbull.musicplayer.player.CallReceiver;
@@ -26,6 +27,8 @@ public interface AppComponent {
   // injection targets here
 
   void inject(MusicService service);
+
+  void inject(SqlEqualizerPreset preset);
 
   void inject(MyFilesPresenter presenter);
 
