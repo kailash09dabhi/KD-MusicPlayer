@@ -17,7 +17,7 @@ public final class SqlEqualizerPreset implements EqualizerPreset, SqlTableRow {
   private final int y5;
   private final String name;
   @Inject SQLiteDatabase sqliteDatabase;
-  private long sqliteId;
+  private long sqliteId = -1;
 
   public SqlEqualizerPreset(Cursor cursor) {
     sqliteId = cursor.getLong(cursor.getColumnIndexOrThrow(EqualizerPresetTable.Columns.SQLITE_ID));
@@ -31,7 +31,6 @@ public final class SqlEqualizerPreset implements EqualizerPreset, SqlTableRow {
   }
 
   public SqlEqualizerPreset(int y1, int y2, int y3, int y4, int y5, String name) {
-    this.sqliteId = 0;
     this.y1 = y1;
     this.y2 = y2;
     this.y3 = y3;
@@ -87,6 +86,7 @@ public final class SqlEqualizerPreset implements EqualizerPreset, SqlTableRow {
 
   @Override public long save() {
     ContentValues values = new ContentValues();
+    if (sqliteId != -1) values.put(EqualizerPresetTable.Columns.SQLITE_ID, sqliteId);
     values.put(EqualizerPresetTable.Columns.Y1, y1);
     values.put(EqualizerPresetTable.Columns.Y2, y2);
     values.put(EqualizerPresetTable.Columns.Y3, y3);

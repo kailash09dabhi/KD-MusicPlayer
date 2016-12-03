@@ -23,6 +23,7 @@ public final class EqualizerPresenter extends Presenter<Equalizer.View>
   @Override public void onPresetSelected(EqualizerPreset equalizerPreset) {
     equalizerPreset.applyTo(model.equalizer());
     view().takeChosenPreset(equalizerPreset);
+    equalizerPreset.save();
   }
 
   @Override public void onBandValueChange(short bandNumber, int percentageValue) {
