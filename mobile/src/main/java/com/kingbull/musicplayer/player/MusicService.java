@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
+import android.media.audiofx.Equalizer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -142,12 +143,12 @@ public final class MusicService extends Service implements Player, Player.Callba
     return musicPlayer.getProgress();
   }
 
-  @Override public int audioSessionId() {
-    return musicPlayer.audioSessionId();
-  }
-
   @Override public Music getPlayingSong() {
     return musicPlayer.getPlayingSong();
+  }
+
+  @Override public Equalizer equalizer() {
+    return musicPlayer.equalizer();
   }
 
   @Override public boolean seekTo(int progress) {

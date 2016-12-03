@@ -11,6 +11,7 @@ import com.kingbull.musicplayer.player.CallReceiver;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerModel;
+import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesAdapter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
@@ -32,6 +33,8 @@ public interface AppComponent {
   void inject(SqlEqualizerPreset preset);
 
   void inject(EqualizerModel model);
+
+  void inject(PresetDialogFragment fragment);
 
   void inject(MyFilesPresenter presenter);
 

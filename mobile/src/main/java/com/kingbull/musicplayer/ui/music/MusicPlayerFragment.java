@@ -152,9 +152,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.startProgresssAnimation();
   }
 
-  @Override public void showEqualizerScreen(int audioSessionId) {
+  @Override public void showEqualizerScreen() {
     Intent intent = new Intent(getActivity(), EqualizerActivity.class);
-    intent.putExtra("audio_session_id", audioSessionId);
     startActivity(intent);
   }
 

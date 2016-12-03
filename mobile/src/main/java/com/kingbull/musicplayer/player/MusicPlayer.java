@@ -16,11 +16,13 @@ import javax.inject.Inject;
 public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListener {
   private static final String TAG = MusicPlayer.class.getSimpleName();
   SettingPreferences settingPrefs = new SettingPreferences();
+  boolean isAudioSessionIdUpdated = false;
   private MediaPlayer player;
   private NowPlayingList nowPlayingList;
   // Default size 2: for service and UI
   private List<Callback> mCallbacks = new ArrayList<>(2);
   private boolean isPaused;
+  private android.media.audiofx.Equalizer equalizer;
 
   @Inject public MusicPlayer() {
     player = new MediaPlayer();
@@ -39,6 +41,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
         player.setDataSource(song.media().path());
         player.prepare();
         player.start();
+        isAudioSessionIdUpdated = true;
         notifyPlayStatusChanged(true);
         ((SqlMusic) song).mediaStat().saveLastPlayed();
       } catch (IOException e) {
@@ -103,6 +106,14 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
 
   @Nullable @Override public Music getPlayingSong() {
     return nowPlayingList.currentMusic();
+  }
+
+  @Override public android.media.audiofx.Equalizer equalizer() {
+    if (isAudioSessionIdUpdated || equalizer == null) {
+      equalizer = new android.media.audiofx.Equalizer(5, player.getAudioSessionId());
+      equalizer.setEnabled(true);
+    }
+    return equalizer;
   }
 
   @Override public boolean seekTo(int progress) {
@@ -192,9 +203,5 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     for (Callback callback : mCallbacks) {
       callback.onComplete(song);
     }
-  }
-
-  public int audioSessionId() {
-    return player.getAudioSessionId();
   }
 }

@@ -20,14 +20,16 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:minHeight="?listPreferredItemHeight"
-        android:text="Add to Playlist"
+        android:paddingLeft="?listPreferredItemPaddingLeft"
+        android:text="Presets"
         style="@style/AppTheme.TextAppearance.Title"/>
     <TextView
         android:id="@+id/createNewView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?listPreferredItemHeight"
-        android:text="Create New Playlist"
+        android:text="Create New Preset"
+        android:paddingLeft="?listPreferredItemPaddingLeft"
         style="@style/AppTheme.TextAppearance.List.Medium"/>
     <ListView
         android:id="@+id/listView"
@@ -48,7 +50,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:minHeight="?listPreferredItemHeight"
-        android:text="Save Playlist as"
+        android:text="Save Preset as"
         style="@style/AppTheme.TextAppearance.Title"/>
     <EditText
         android:id="@+id/playlistNameView"

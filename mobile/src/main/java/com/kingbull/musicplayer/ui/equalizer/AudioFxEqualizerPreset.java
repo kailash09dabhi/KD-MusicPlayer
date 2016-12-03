@@ -13,7 +13,7 @@ public final class AudioFxEqualizerPreset implements EqualizerPreset {
   private final android.media.audiofx.Equalizer equalizer;
   private final short preset;
 
-  AudioFxEqualizerPreset(Equalizer equalizer, short preset) {
+  public AudioFxEqualizerPreset(Equalizer equalizer, short preset) {
     this.equalizer = equalizer;
     this.preset = preset;
   }

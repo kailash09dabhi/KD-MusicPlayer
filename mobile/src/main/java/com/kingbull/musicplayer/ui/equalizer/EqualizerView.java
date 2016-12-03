@@ -159,7 +159,7 @@ public final class EqualizerView extends View {
     return (int) ((100 - percentage) * (maxHeight - minHeight) / 100.0 + minHeight);
   }
 
-  public EqualizerPreset asEqualizerPreset() {
+  public EqualizerPreset asEqualizerPreset(String presetName) {
     return new SqlEqualizerPreset(
         100 - (int) ((equalizerPointList.get(0).y - minHeight) / ((float) (maxHeight - minHeight))
             * 100.0),
@@ -170,8 +170,7 @@ public final class EqualizerView extends View {
         100 - (int) ((equalizerPointList.get(3).y - minHeight) / ((float) (maxHeight - minHeight))
             * 100.0),
         100 - (int) ((equalizerPointList.get(4).y - minHeight) / ((float) (maxHeight - minHeight))
-            * 100.0),
-        "temp");
+            * 100.0), presetName);
   }
 
   interface OnBandValueChangeListener {

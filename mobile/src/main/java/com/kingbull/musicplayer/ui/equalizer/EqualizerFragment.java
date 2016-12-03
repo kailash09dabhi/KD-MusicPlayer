@@ -7,51 +7,44 @@ package com.kingbull.musicplayer.ui.equalizer;
 
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemSelected;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
+import com.kingbull.musicplayer.event.Preset;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import java.util.List;
+import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
 
 public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     implements Equalizer.View {
   @BindView(R.id.titleView) TextView titleView;
-  @BindView(R.id.equalizerSpinner) Spinner equalizerSpinner;
+  @BindView(R.id.newPresetButton) Button presetButton;
   @BindView(R.id.equalizerView) EqualizerView equalizerView;
   @BindView(R.id.verticalRoundKnobLayout) RelativeLayout verticalRoundKnobLayout;
   @BindView(R.id.bassBoostLayout) RelativeLayout bassBoostRoundKnobLayout;
   @BindView(R.id.volumeLayout) RelativeLayout volumeRoundKnobLayout;
-  private EqualizerSpinnerAdapter adapter;
+  CompositeSubscription compositeSubscription = new CompositeSubscription();
 
-  public static EqualizerFragment instance(int audioSessionId) {
+  public static EqualizerFragment instance() {
     EqualizerFragment equalizerFragment = new EqualizerFragment();
-    Bundle args = new Bundle();
-    args.putInt("audio_session_id", audioSessionId);
-    equalizerFragment.setArguments(args);
     return equalizerFragment;
   }
 
-  @OnItemSelected(R.id.equalizerSpinner) void onPresetSelected(int position) {
-    presenter.onPresetSelected(position);
-  }
-
   @OnClick(R.id.newPresetButton) void onNewPresetClick() {
-    presenter.onNewPresetClick();
-  }
-
-  @Override public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    PresetDialogFragment.newInstance()
+        .show(getActivity().getSupportFragmentManager(), PresetDialogFragment.class.getName());
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +53,31 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     ButterKnife.bind(this, view);
     titleView.setText("Equalizer Preset".toUpperCase());
     setupRoundKnobButton();
+    compositeSubscription.add(RxBus.getInstance()
+        .toObservable()
+        .ofType(Preset.class)
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnNext(new Action1<Preset>() {
+          @Override public void call(Preset preset) {
+            switch (preset.event()) {
+              case Preset.Event.CLICK:
+                presenter.onPresetSelected(preset.equalizerPreset());
+                break;
+              case Preset.Event.NEW:
+                presenter.onNewPresetEvent(preset.presetName());
+                break;
+            }
+          }
+        })
+        .subscribe(RxBus.defaultSubscriber()));
     return view;
+  }
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    if (compositeSubscription != null) {
+      compositeSubscription.clear();
+    }
   }
 
   private void setupRoundKnobButton() {
@@ -83,22 +100,8 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     button3.setRotorPercentage(100);
   }
 
-  @Override protected void onPresenterPrepared(Equalizer.Presenter presenter) {
+  @Override protected void onPresenterPrepared(final Equalizer.Presenter presenter) {
     presenter.takeView(this);
-    presenter.onTakeAudioSessionId(getArguments().getInt("audio_session_id"));
-  }
-
-  @Override protected PresenterFactory<Equalizer.Presenter> presenterFactory() {
-    return new PresenterFactory.Equalizer();
-  }
-
-  @Override public void updateEqualizerView(EqualizerPreset equalizerPreset) {
-    equalizerView.adjustToSelectedPreset(equalizerPreset);
-  }
-
-  @Override public void setupPresetList(List<EqualizerPreset> equalizerPresetNames) {
-    adapter = new EqualizerSpinnerAdapter(getActivity(), equalizerPresetNames);
-    equalizerSpinner.setAdapter(adapter);
     equalizerView.addOnBandValueChangeListener(new EqualizerView.OnBandValueChangeListener() {
       @Override public void onBandValueChange(short bandNumber, int percentageValue) {
         presenter.onBandValueChange(bandNumber, percentageValue);
@@ -106,11 +109,21 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     });
   }
 
-  @Override public void takeSelectedPreset(int position) {
-    equalizerSpinner.setSelection(position);
+  @Override protected PresenterFactory<Equalizer.Presenter> presenterFactory() {
+    return new PresenterFactory.Equalizer();
   }
 
-  @Override public void saveEqualizerPreset() {
-    equalizerView.asEqualizerPreset().save();
+  @Override public void takeChosenPreset(final EqualizerPreset equalizerPreset) {
+    //equalizerSpinner.setSelection(position);
+    presetButton.setText(equalizerPreset.name());
+    equalizerView.post(new Runnable() {
+      @Override public void run() {
+        equalizerView.adjustToSelectedPreset(equalizerPreset);
+      }
+    });
+  }
+
+  @Override public void saveEqualizerPreset(String presetName) {
+    equalizerView.asEqualizerPreset(presetName).save();
   }
 }

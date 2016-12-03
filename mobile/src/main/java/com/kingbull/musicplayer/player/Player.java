@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.player;
 
+import android.media.audiofx.Equalizer;
 import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.domain.Music;
 import java.util.List;
@@ -27,9 +28,9 @@ public interface Player {
 
   int getProgress();
 
-  int audioSessionId();
-
   Music getPlayingSong();
+
+  Equalizer equalizer();
 
   boolean seekTo(int progress);
 

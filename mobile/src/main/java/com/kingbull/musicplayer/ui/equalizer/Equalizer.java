@@ -11,13 +11,10 @@ import java.util.List;
 
 public interface Equalizer {
   interface View extends Mvp.View {
-    void updateEqualizerView(EqualizerPreset equalizerPreset);
 
-    void setupPresetList(List<EqualizerPreset> presets);
+    void takeChosenPreset(EqualizerPreset equalizerPreset);
 
-    void takeSelectedPreset(int position);
-
-    void saveEqualizerPreset();
+    void saveEqualizerPreset(String name);
   }
 
   interface Model extends Mvp.Model {
@@ -29,15 +26,16 @@ public interface Equalizer {
     android.media.audiofx.Equalizer equalizer();
 
     void updateBand(short bandNumber, int percentageValue);
+
+    EqualizerPreset lastChosenPreset();
   }
 
   interface Presenter extends Mvp.Presenter<Equalizer.View> {
-    void onTakeAudioSessionId(int audioSessionId);
 
-    void onPresetSelected(int position);
+    void onPresetSelected(EqualizerPreset equalizerPreset);
 
     void onBandValueChange(short bandNumber, int percentageValue);
 
-    void onNewPresetClick();
+    void onNewPresetEvent(String presetName);
   }
 }

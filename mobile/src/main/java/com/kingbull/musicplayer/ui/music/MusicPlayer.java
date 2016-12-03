@@ -30,7 +30,7 @@ public interface MusicPlayer {
 
     void stopSeekbarProgress();
 
-    void showEqualizerScreen(int audioSessionId);
+    void showEqualizerScreen();
 
     void pause();
 

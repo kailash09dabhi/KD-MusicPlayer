@@ -77,7 +77,8 @@ public class RayLayout extends ViewGroup {
 
   private static Animation createExpandAnimation(float fromXDelta, float toXDelta, float fromYDelta,
       float toYDelta, long startOffset, long duration, Interpolator interpolator) {
-    Animation animation = new TranslateAnimation(0, toXDelta, 0, toYDelta);
+    Animation animation = new
+        TranslateAnimation(0, toXDelta, 0, toYDelta);
     animation.setStartOffset(100);
     animation.setDuration(1500);
     animation.setInterpolator(interpolator);

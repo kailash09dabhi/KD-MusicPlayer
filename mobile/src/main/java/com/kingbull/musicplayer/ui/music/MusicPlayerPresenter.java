@@ -82,7 +82,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
   }
 
   @Override public void onEqualizerClick() {
-    view().showEqualizerScreen(player.audioSessionId());
+    view().showEqualizerScreen();
   }
 
   public long getCurrentSongDuration() {
