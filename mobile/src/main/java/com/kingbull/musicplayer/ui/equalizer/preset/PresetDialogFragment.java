@@ -138,7 +138,7 @@ public final class PresetDialogFragment extends DialogFragment implements Preset
     viewFlipper.setInAnimation(getActivity(), R.anim.slide_in_right);
     viewFlipper.setOutAnimation(getActivity(), R.anim.slide_out_left);
     viewFlipper.showNext();
-    setDialogHeight(400);
+    setDialogHeight(createNewPresetView.getMeasuredHeight());
   }
 
   void setDialogHeight(int height) {

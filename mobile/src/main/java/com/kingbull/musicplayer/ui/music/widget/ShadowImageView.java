@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.widget;
+package com.kingbull.musicplayer.ui.music.widget;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;

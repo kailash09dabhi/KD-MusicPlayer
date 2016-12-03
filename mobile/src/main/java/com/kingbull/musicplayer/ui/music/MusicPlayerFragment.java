@@ -24,7 +24,7 @@ import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
-import com.kingbull.musicplayer.ui.widget.ShadowImageView;
+import com.kingbull.musicplayer.ui.music.widget.ShadowImageView;
 import com.kingbull.musicplayer.utils.AlbumUtils;
 import com.kingbull.musicplayer.utils.TimeUtils;
 import rx.Subscription;

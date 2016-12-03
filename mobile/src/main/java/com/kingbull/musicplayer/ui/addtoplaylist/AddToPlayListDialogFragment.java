@@ -1,12 +1,14 @@
 package com.kingbull.musicplayer.ui.addtoplaylist;
 
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.storage.MediaStatTable;
 import com.kingbull.musicplayer.domain.storage.PlayList;
 import com.kingbull.musicplayer.domain.storage.PlayListTable;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
@@ -43,6 +46,7 @@ public final class AddToPlayListDialogFragment extends DialogFragment
   @BindView(R.id.listView) ListView listView;
   @BindView(R.id.viewFlipper) ViewFlipper viewFlipper;
   @Inject PlayListTable playListTable;
+  @Inject MediaStatTable mediaStatTable;
   List<SqlMusic> musics;
   List<PlayList> playLists;
 
@@ -88,21 +92,40 @@ public final class AddToPlayListDialogFragment extends DialogFragment
     listView.setAdapter(new PlayListAdapter(getActivity(), playListTable.playlists()));
     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        new SqlPlayList(playLists.get(position).name(), musics).save();
+        mediaStatTable.addToPlaylist(musics, ((SqlPlayList) (playLists.get(position))).id());
         dismiss();
       }
     });
+  }
+
+  @Override public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    Display display = getDialog().getOwnerActivity().getWindowManager().getDefaultDisplay();
+    Point size = new Point();
+    display.getSize(size);
+    setDialogHeight(size.y * 70 / 100);
   }
 
   private void showPlaylistsScreen() {
     viewFlipper.setInAnimation(getActivity(), R.anim.slide_in_left);
     viewFlipper.setOutAnimation(getActivity(), R.anim.slide_out_right);
     viewFlipper.showPrevious();
+    Display display = getDialog().getOwnerActivity().getWindowManager().getDefaultDisplay();
+    Point size = new Point();
+    display.getSize(size);
+    setDialogHeight(size.y * 70 / 100);
   }
 
   @Override public void showCreatePlaylistScreen() {
     viewFlipper.setInAnimation(getActivity(), R.anim.slide_in_right);
     viewFlipper.setOutAnimation(getActivity(), R.anim.slide_out_left);
     viewFlipper.showNext();
+    setDialogHeight(createNewPlaylistView.getMeasuredHeight());
+  }
+
+  void setDialogHeight(int height) {
+    ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
+    layoutParams.height = height;
+    getView().setLayoutParams(layoutParams);
   }
 }

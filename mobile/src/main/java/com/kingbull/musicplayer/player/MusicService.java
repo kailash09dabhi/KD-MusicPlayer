@@ -59,7 +59,7 @@ public final class MusicService extends Service implements Player, Player.Callba
     lockScreenMediaSessionSetup();
   }
 
-  private void lockScreenMediaSessionSetup(){
+  private void lockScreenMediaSessionSetup() {
     ComponentName receiver = new ComponentName(getPackageName(), RemoteReceiver.class.getName());
     mediaSession = new MediaSessionCompat(this, "PlayerService", receiver, null);
     mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
@@ -76,6 +76,7 @@ public final class MusicService extends Service implements Player, Player.Callba
     }, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
     mediaSession.setActive(true);
   }
+
   @Override public int onStartCommand(Intent intent, int flags, int startId) {
     if (intent != null) {
       String action = intent.getAction();

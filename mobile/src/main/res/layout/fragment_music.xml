@@ -19,7 +19,7 @@
       android:layout_weight="1"
       >
 
-    <com.kingbull.musicplayer.ui.widget.ShadowImageView
+    <com.kingbull.musicplayer.ui.music.widget.ShadowImageView
         android:id="@+id/albumImageView"
         android:layout_width="@dimen/mp.music.album.size"
         android:layout_height="@dimen/mp.music.album.size"
