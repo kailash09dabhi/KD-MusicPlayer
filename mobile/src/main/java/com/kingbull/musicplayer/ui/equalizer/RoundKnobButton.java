@@ -83,7 +83,7 @@ public final class RoundKnobButton extends RelativeLayout implements OnGestureLi
     ivRotor.setImageResource(rotoron);
   }
 
-  public void SetListener(RoundKnobButtonListener l) {
+  public void addRotationListener(RoundKnobButtonListener l) {
     m_listener = l;
   }
 

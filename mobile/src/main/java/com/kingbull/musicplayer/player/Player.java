@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.player;
 
+import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.domain.Music;
@@ -36,6 +37,8 @@ public interface Player {
   boolean seekTo(int progress);
 
   void useEffect(Reverb reverb);
+
+  BassBoost bassBoost();
 
   void registerCallback(Callback callback);
 

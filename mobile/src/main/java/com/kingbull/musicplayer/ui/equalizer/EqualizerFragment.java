@@ -6,6 +6,7 @@
 package com.kingbull.musicplayer.ui.equalizer;
 
 import android.graphics.Point;
+import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +17,17 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
 import com.kingbull.musicplayer.event.Preset;
+import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.PresetReverbDialogFragment;
+import javax.inject.Inject;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
@@ -38,6 +42,8 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
   @BindView(R.id.bassBoostLayout) RelativeLayout bassBoostRoundKnobLayout;
   @BindView(R.id.volumeLayout) RelativeLayout volumeRoundKnobLayout;
   CompositeSubscription compositeSubscription = new CompositeSubscription();
+  @Inject Player player;
+  private BassBoost bassBoost;
 
   public static EqualizerFragment instance() {
     EqualizerFragment equalizerFragment = new EqualizerFragment();
@@ -59,6 +65,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_equalizer, null);
     ButterKnife.bind(this, view);
+    MusicPlayerApp.instance().component().inject(this);
     titleView.setText("Equalizer Preset".toUpperCase());
     setupRoundKnobButton();
     compositeSubscription.add(RxBus.getInstance()
@@ -105,6 +112,17 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     button.setRotorPercentage(100);
     final RoundKnobButton button2 = new RoundKnobButton(getActivity());
     bassBoostRoundKnobLayout.addView(button2);
+    bassBoost = player.bassBoost();
+    button2.addRotationListener(new RoundKnobButton.RoundKnobButtonListener() {
+      @Override public void onStateChange(boolean newstate) {
+      }
+
+      @Override public void onRotate(int percentage) {
+        if (bassBoost.getStrengthSupported()) {
+          bassBoost.setStrength((short) (percentage*10));
+        }
+      }
+    });
     button2.setRotorPercentage(100);
     final RoundKnobButton button3 = new RoundKnobButton(getActivity());
     volumeRoundKnobLayout.addView(button3);

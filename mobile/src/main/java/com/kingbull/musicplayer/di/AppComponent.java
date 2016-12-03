@@ -10,6 +10,7 @@ import com.kingbull.musicplayer.domain.storage.SqlPlayList;
 import com.kingbull.musicplayer.player.CallReceiver;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
+import com.kingbull.musicplayer.ui.equalizer.EqualizerFragment;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerModel;
 import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.PresetReverbDialogFragment;
@@ -33,6 +34,7 @@ public interface AppComponent {
 
   void inject(SqlEqualizerPreset preset);
   void inject(PresetReverbDialogFragment fragment);
+  void inject(EqualizerFragment fragment);
 
   void inject(EqualizerModel model);
 

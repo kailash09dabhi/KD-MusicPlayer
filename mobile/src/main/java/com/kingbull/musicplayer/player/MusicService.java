@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
+import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.os.Binder;
 import android.os.IBinder;
@@ -159,6 +160,10 @@ public final class MusicService extends Service implements Player, Player.Callba
 
   @Override public void useEffect(Reverb reverb) {
     musicPlayer.useEffect(reverb);
+  }
+
+  @Override public BassBoost bassBoost() {
+    return musicPlayer.bassBoost();
   }
 
   @Override public void registerCallback(Callback callback) {

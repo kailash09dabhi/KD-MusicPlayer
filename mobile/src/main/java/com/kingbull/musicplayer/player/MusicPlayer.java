@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.player;
 
 import android.media.MediaPlayer;
+import android.media.audiofx.BassBoost;
 import android.media.audiofx.PresetReverb;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -137,6 +138,15 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     mReverb.setPreset(reverb.id());
     mReverb.setEnabled(true);
     player.setAuxEffectSendLevel(1.0f);
+  }
+  BassBoost bassBoost;
+
+  @Override public BassBoost bassBoost() {
+    if (isAudioSessionIdUpdated || equalizer == null) {
+      bassBoost = new android.media.audiofx.BassBoost(5, player.getAudioSessionId());
+      bassBoost.setEnabled(true);
+    }
+    return bassBoost;
   }
 
   @Override public void onCompletion(MediaPlayer mp) {
