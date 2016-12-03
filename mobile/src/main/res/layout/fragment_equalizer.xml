@@ -16,17 +16,34 @@
       tools:ignore="MissingPrefix"
       style="@style/AppTheme.TextAppearance.Title"
       />
-
-  <Button
-      android:id="@+id/newPresetButton"
-      android:layout_width="wrap_content"
+  <LinearLayout
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="@drawable/selector"
-      android:gravity="center"
-      android:minHeight="?listPreferredItemHeightSmall"
-      android:minWidth="100dp"
-      android:text="Preset"
-      style="@style/AppTheme.TextAppearance.List.Medium"/>
+      android:orientation="horizontal">
+    <Button
+        android:id="@+id/newPresetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:minHeight="?listPreferredItemHeightSmall"
+        android:minWidth="100dp"
+        android:text="Preset"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+
+    <Button
+        android:id="@+id/effectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector"
+        android:gravity="center"
+        android:minHeight="?listPreferredItemHeightSmall"
+        android:minWidth="100dp"
+        android:layout_weight="1"
+        android:text="Effect"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+  </LinearLayout>
 
 
   <com.kingbull.musicplayer.ui.equalizer.EqualizerView

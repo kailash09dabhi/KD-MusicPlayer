@@ -21,6 +21,7 @@ import android.widget.RemoteViews;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import com.kingbull.musicplayer.ui.main.MainActivity;
 import com.kingbull.musicplayer.utils.AlbumUtils;
 import java.util.List;
@@ -154,6 +155,10 @@ public final class MusicService extends Service implements Player, Player.Callba
 
   @Override public boolean seekTo(int progress) {
     return musicPlayer.seekTo(progress);
+  }
+
+  @Override public void useEffect(Reverb reverb) {
+    musicPlayer.useEffect(reverb);
   }
 
   @Override public void registerCallback(Callback callback) {

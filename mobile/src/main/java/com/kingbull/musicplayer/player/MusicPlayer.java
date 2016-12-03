@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.player;
 
 import android.media.MediaPlayer;
+import android.media.audiofx.PresetReverb;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import com.kingbull.musicplayer.RxBus;
@@ -8,6 +9,7 @@ import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.SettingPreferences;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import com.kingbull.musicplayer.event.MusicEvent;
+import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +130,13 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
       return true;
     }
     return false;
+  }
+
+  @Override public void useEffect(Reverb reverb) {
+    PresetReverb mReverb = new PresetReverb(0, player.getAudioSessionId());//<<<<<<<<<<<<<
+    mReverb.setPreset(reverb.id());
+    mReverb.setEnabled(true);
+    player.setAuxEffectSendLevel(1.0f);
   }
 
   @Override public void onCompletion(MediaPlayer mp) {

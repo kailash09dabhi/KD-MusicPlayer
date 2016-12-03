@@ -23,6 +23,7 @@ import com.kingbull.musicplayer.event.Preset;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
+import com.kingbull.musicplayer.ui.equalizer.reverb.PresetReverbDialogFragment;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
@@ -32,6 +33,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.newPresetButton) Button presetButton;
   @BindView(R.id.equalizerView) EqualizerView equalizerView;
+  @BindView(R.id.effectButton) Button effectButton;
   @BindView(R.id.verticalRoundKnobLayout) RelativeLayout verticalRoundKnobLayout;
   @BindView(R.id.bassBoostLayout) RelativeLayout bassBoostRoundKnobLayout;
   @BindView(R.id.volumeLayout) RelativeLayout volumeRoundKnobLayout;
@@ -45,6 +47,12 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
   @OnClick(R.id.newPresetButton) void onNewPresetClick() {
     PresetDialogFragment.newInstance()
         .show(getActivity().getSupportFragmentManager(), PresetDialogFragment.class.getName());
+  }
+
+  @OnClick(R.id.effectButton) void onEffectClick() {
+    PresetReverbDialogFragment.newInstance()
+        .show(getActivity().getSupportFragmentManager(),
+            PresetReverbDialogFragment.class.getName());
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,6 +73,9 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
                 break;
               case Preset.Event.NEW:
                 presenter.onNewPresetEvent(preset.presetName());
+                break;
+              case Preset.Event.REVERB:
+                effectButton.setText(preset.reverb().name());
                 break;
             }
           }

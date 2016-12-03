@@ -3,6 +3,7 @@ package com.kingbull.musicplayer.player;
 import android.media.audiofx.Equalizer;
 import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import java.util.List;
 
 /**
@@ -33,6 +34,8 @@ public interface Player {
   Equalizer equalizer();
 
   boolean seekTo(int progress);
+
+  void useEffect(Reverb reverb);
 
   void registerCallback(Callback callback);
 
