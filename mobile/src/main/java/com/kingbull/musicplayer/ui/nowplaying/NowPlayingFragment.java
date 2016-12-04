@@ -8,6 +8,7 @@ package com.kingbull.musicplayer.ui.nowplaying;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import github.nisrulz.recyclerviewhelper.RVHItemTouchHelperCallback;
 import java.util.List;
 
 public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
@@ -47,7 +49,12 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
   }
 
   @Override public void showNowPlayingList(List<Music> musicList, int position) {
-    recyclerView.setAdapter(new NowPlayingAdapter(musicList));
+    NowPlayingAdapter adapter = new NowPlayingAdapter(musicList);
+    recyclerView.setAdapter(adapter);
     recyclerView.scrollToPosition(position);
+    // Setup onItemTouchHandler
+    ItemTouchHelper.Callback callback = new RVHItemTouchHelperCallback(adapter, true, true, true);
+    ItemTouchHelper helper = new ItemTouchHelper(callback);
+    helper.attachToRecyclerView(recyclerView);
   }
 }

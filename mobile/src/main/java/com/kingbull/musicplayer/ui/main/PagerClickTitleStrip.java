@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewParent;
 import android.widget.TextView;
 
-public class PagerClickTitleStrip extends PagerTitleStrip {
+public final class PagerClickTitleStrip extends PagerTitleStrip {
   private TextView textPrev, textNext;
   private ViewPager pager;
 
