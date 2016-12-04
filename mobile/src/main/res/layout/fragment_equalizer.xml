@@ -24,9 +24,9 @@
         android:id="@+id/newPresetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:background="@drawable/selector"
         android:gravity="center"
-        android:layout_weight="1"
         android:minHeight="?listPreferredItemHeightSmall"
         android:minWidth="100dp"
         android:text="Preset"
@@ -36,11 +36,11 @@
         android:id="@+id/effectButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:background="@drawable/selector"
         android:gravity="center"
         android:minHeight="?listPreferredItemHeightSmall"
         android:minWidth="100dp"
-        android:layout_weight="1"
         android:text="Effect"
         style="@style/AppTheme.TextAppearance.List.Medium"/>
   </LinearLayout>
@@ -63,7 +63,7 @@
       android:paddingBottom="10dp"
       >
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -81,12 +81,11 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
-          android:layout_marginTop="-10dp"
           android:text="Bass"
           android:textColor="@android:color/white"/>
 
-    </LinearLayout>
-    <LinearLayout
+    </FrameLayout>
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -104,19 +103,18 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
-          android:layout_marginTop="-10dp"
-          android:text="Bass"
+          android:text="Volume"
           android:textColor="@android:color/white"/>
 
-    </LinearLayout>
-    <LinearLayout
+    </FrameLayout>
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
 
       <RelativeLayout
-          android:id="@+id/verticalRoundKnobLayout"
+          android:id="@+id/virtualizerRoundKnobLayout"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:padding="16dp"/>
@@ -126,11 +124,10 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
-          android:layout_marginTop="-10dp"
-          android:text="3D Effect"
+          android:text="Virtualizer"
           android:textColor="@android:color/white"/>
 
-    </LinearLayout>
+    </FrameLayout>
 
   </LinearLayout>
 

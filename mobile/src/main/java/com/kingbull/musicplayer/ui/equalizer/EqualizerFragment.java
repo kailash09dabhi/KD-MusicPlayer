@@ -5,9 +5,13 @@
  */
 package com.kingbull.musicplayer.ui.equalizer;
 
+import android.content.Context;
 import android.graphics.Point;
+import android.media.AudioManager;
 import android.media.audiofx.BassBoost;
+import android.media.audiofx.Virtualizer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,12 +42,14 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
   @BindView(R.id.newPresetButton) Button presetButton;
   @BindView(R.id.equalizerView) EqualizerView equalizerView;
   @BindView(R.id.effectButton) Button effectButton;
-  @BindView(R.id.verticalRoundKnobLayout) RelativeLayout verticalRoundKnobLayout;
+  @BindView(R.id.virtualizerRoundKnobLayout) RelativeLayout virtualizerRoundKnobLayout;
   @BindView(R.id.bassBoostLayout) RelativeLayout bassBoostRoundKnobLayout;
   @BindView(R.id.volumeLayout) RelativeLayout volumeRoundKnobLayout;
   CompositeSubscription compositeSubscription = new CompositeSubscription();
   @Inject Player player;
+  AudioManager audioManager;
   private BassBoost bassBoost;
+  private Virtualizer virtualizer;
 
   public static EqualizerFragment instance() {
     EqualizerFragment equalizerFragment = new EqualizerFragment();
@@ -66,6 +72,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     View view = inflater.inflate(R.layout.fragment_equalizer, null);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
+    audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
     titleView.setText("Equalizer Preset".toUpperCase());
     setupRoundKnobButton();
     compositeSubscription.add(RxBus.getInstance()
@@ -101,32 +108,54 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
   private void setupRoundKnobButton() {
     Point localPoint = new Point();
     getActivity().getWindowManager().getDefaultDisplay().getSize(localPoint);
-    verticalRoundKnobLayout.getLayoutParams().width = localPoint.x / 3;
-    verticalRoundKnobLayout.getLayoutParams().height = localPoint.x / 3;
+    virtualizerRoundKnobLayout.getLayoutParams().width = localPoint.x / 3;
+    virtualizerRoundKnobLayout.getLayoutParams().height = localPoint.x / 3;
     bassBoostRoundKnobLayout.getLayoutParams().width = localPoint.x / 3;
     bassBoostRoundKnobLayout.getLayoutParams().height = localPoint.x / 3;
     volumeRoundKnobLayout.getLayoutParams().width = localPoint.x / 3;
     volumeRoundKnobLayout.getLayoutParams().height = localPoint.x / 3;
-    final RoundKnobButton button = new RoundKnobButton(getActivity());
-    verticalRoundKnobLayout.addView(button);
-    button.setRotorPercentage(100);
-    final RoundKnobButton button2 = new RoundKnobButton(getActivity());
-    bassBoostRoundKnobLayout.addView(button2);
-    bassBoost = player.bassBoost();
-    button2.addRotationListener(new RoundKnobButton.RoundKnobButtonListener() {
+    final RoundKnobButton bassBoostButton = new RoundKnobButton(getActivity());
+    bassBoostRoundKnobLayout.addView(bassBoostButton);
+    bassBoostButton.setRotorPercentage(100);
+    bassBoostButton.addRotationListener(new RoundKnobButton.RoundKnobButtonListener() {
       @Override public void onStateChange(boolean newstate) {
       }
 
       @Override public void onRotate(int percentage) {
         if (bassBoost.getStrengthSupported()) {
-          bassBoost.setStrength((short) (percentage*10));
+          bassBoost.setStrength((short) (percentage * 10));
         }
       }
     });
-    button2.setRotorPercentage(100);
-    final RoundKnobButton button3 = new RoundKnobButton(getActivity());
-    volumeRoundKnobLayout.addView(button3);
-    button3.setRotorPercentage(100);
+    final RoundKnobButton volumeButton = new RoundKnobButton(getActivity());
+    volumeRoundKnobLayout.addView(volumeButton);
+    bassBoost = player.bassBoost();
+    virtualizer = player.virtualizer();
+    final int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+    volumeButton.addRotationListener(new RoundKnobButton.RoundKnobButtonListener() {
+      @Override public void onStateChange(boolean newstate) {
+      }
+
+      @Override public void onRotate(int percentage) {
+        int volume = (int) (maxVolume * percentage / 100.0);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
+        Log.e("percentage", String.valueOf(percentage));
+      }
+    });
+    volumeButton.setRotorPercentage(100);
+    final RoundKnobButton virtualizerButton = new RoundKnobButton(getActivity());
+    virtualizerRoundKnobLayout.addView(virtualizerButton);
+    virtualizerButton.setRotorPercentage(100);
+    virtualizerButton.addRotationListener(new RoundKnobButton.RoundKnobButtonListener() {
+      @Override public void onStateChange(boolean newstate) {
+      }
+
+      @Override public void onRotate(int percentage) {
+        if (virtualizer.getStrengthSupported()) {
+          virtualizer.setStrength((short) (percentage * 10));
+        }
+      }
+    });
   }
 
   @Override protected void onPresenterPrepared(final Equalizer.Presenter presenter) {

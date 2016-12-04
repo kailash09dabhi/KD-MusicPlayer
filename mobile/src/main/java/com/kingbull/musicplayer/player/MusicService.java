@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
+import android.media.audiofx.Virtualizer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -164,6 +165,10 @@ public final class MusicService extends Service implements Player, Player.Callba
 
   @Override public BassBoost bassBoost() {
     return musicPlayer.bassBoost();
+  }
+
+  @Override public Virtualizer virtualizer() {
+    return null;
   }
 
   @Override public void registerCallback(Callback callback) {

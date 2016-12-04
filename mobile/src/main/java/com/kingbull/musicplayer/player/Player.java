@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.player;
 
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
+import android.media.audiofx.Virtualizer;
 import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
@@ -39,6 +40,7 @@ public interface Player {
   void useEffect(Reverb reverb);
 
   BassBoost bassBoost();
+  Virtualizer virtualizer();
 
   void registerCallback(Callback callback);
 

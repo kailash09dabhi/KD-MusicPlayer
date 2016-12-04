@@ -3,6 +3,7 @@ package com.kingbull.musicplayer.player;
 import android.media.MediaPlayer;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.PresetReverb;
+import android.media.audiofx.Virtualizer;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import com.kingbull.musicplayer.RxBus;
@@ -20,6 +21,8 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   private static final String TAG = MusicPlayer.class.getSimpleName();
   SettingPreferences settingPrefs = new SettingPreferences();
   boolean isAudioSessionIdUpdated = false;
+  BassBoost bassBoost;
+  Virtualizer virtualizer;
   private MediaPlayer player;
   private NowPlayingList nowPlayingList;
   // Default size 2: for service and UI
@@ -139,14 +142,21 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     mReverb.setEnabled(true);
     player.setAuxEffectSendLevel(1.0f);
   }
-  BassBoost bassBoost;
 
   @Override public BassBoost bassBoost() {
-    if (isAudioSessionIdUpdated || equalizer == null) {
+    if (isAudioSessionIdUpdated || bassBoost == null) {
       bassBoost = new android.media.audiofx.BassBoost(5, player.getAudioSessionId());
       bassBoost.setEnabled(true);
     }
     return bassBoost;
+  }
+
+  @Override public Virtualizer virtualizer() {
+    if (isAudioSessionIdUpdated || virtualizer == null) {
+      virtualizer = new android.media.audiofx.Virtualizer(5, player.getAudioSessionId());
+      virtualizer.setEnabled(true);
+    }
+    return virtualizer;
   }
 
   @Override public void onCompletion(MediaPlayer mp) {
