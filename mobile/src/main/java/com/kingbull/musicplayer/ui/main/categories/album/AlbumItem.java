@@ -9,12 +9,15 @@ import android.provider.MediaStore;
  */
 
 public final class AlbumItem {
-  private int _id;
-  private String name;
+  private final int _id;
+  private final String name;
+  private final String albumArt;
 
   AlbumItem(Cursor cursor) {
-    this._id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
-    this.name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
+    this._id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums._ID));
+    this.name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM));
+    this.albumArt =
+        cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM_ART));
   }
 
   public int id() {
@@ -23,5 +26,9 @@ public final class AlbumItem {
 
   public String name() {
     return name;
+  }
+
+  public String albumArt() {
+    return albumArt;
   }
 }

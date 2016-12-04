@@ -1,10 +1,13 @@
 package com.kingbull.musicplayer.ui.main.categories.album;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,11 +30,15 @@ public final class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHo
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     return new ViewHolder(
-        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genres, parent, false));
+        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_album, parent, false));
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    holder.textView.setText(albumItems.get(position).name());
+    holder.labelView.setText(albumItems.get(position).name());
+    if (!TextUtils.isEmpty(albumItems.get(position).albumArt())) {
+      holder.imageView.setImageBitmap(
+          BitmapFactory.decodeFile(albumItems.get(position).albumArt()));
+    }
   }
 
   @Override public int getItemCount() {
@@ -39,7 +46,8 @@ public final class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHo
   }
 
   class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    @BindView(R.id.textview) TextView textView;
+    @BindView(R.id.imageView) ImageView imageView;
+    @BindView(R.id.label) TextView labelView;
 
     public ViewHolder(View itemView) {
       super(itemView);

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.kingbull.musicplayer.ui.main.categories.album.SquareFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/mp.padding.small"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:background="@color/transparent_black"
+    android:clickable="true"
+    android:orientation="vertical">
+
+  <ImageView
+      android:id="@+id/imageView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:adjustViewBounds="true"
+      android:scaleType="centerCrop"
+      tools:src="@drawable/artistbg"/>
+
+  <TextView
+      android:id="@+id/label"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|center_horizontal"
+      android:background="@color/transparent_strong_black"
+      android:gravity="center"
+      android:padding="@dimen/mp.padding.small"
+      tools:text="Title"
+      style="@style/AppTheme.TextAppearance.List.Small"/>
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@drawable/selector"
+      android:clickable="false"
+      android:duplicateParentState="true"
+      />
+</com.kingbull.musicplayer.ui.main.categories.album.SquareFrameLayout>

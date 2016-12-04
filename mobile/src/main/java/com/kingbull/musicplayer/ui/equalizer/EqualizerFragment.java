@@ -11,7 +11,6 @@ import android.media.AudioManager;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Virtualizer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,7 +138,6 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
       @Override public void onRotate(int percentage) {
         int volume = (int) (maxVolume * percentage / 100.0);
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
-        Log.e("percentage", String.valueOf(percentage));
       }
     });
     volumeButton.setRotorPercentage(100);

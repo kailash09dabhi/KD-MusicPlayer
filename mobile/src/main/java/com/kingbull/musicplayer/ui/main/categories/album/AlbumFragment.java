@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +33,7 @@ public final class AlbumFragment extends Fragment
 
   private void setupView(View v) {
     recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
-    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     getLoaderManager().initLoader(0, null, this);
   }
 
