@@ -12,8 +12,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import com.kingbull.musicplayer.domain.SettingPreferences;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -26,7 +26,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public abstract class BaseActivity<P extends Presenter> extends AppCompatActivity {
 
   private static final int LOADER_ID = 9;
-  private CompositeSubscription mSubscriptions;
+  private CompositeDisposable compositeDisposable;
   private Presenter presenter;
 
   @Override protected void attachBaseContext(Context newBase) {
@@ -35,8 +35,8 @@ public abstract class BaseActivity<P extends Presenter> extends AppCompatActivit
 
   @Override protected void onDestroy() {
     super.onDestroy();
-    if (mSubscriptions != null) {
-      mSubscriptions.clear();
+    if (compositeDisposable != null) {
+      compositeDisposable.clear();
     }
   }
 
@@ -65,12 +65,12 @@ public abstract class BaseActivity<P extends Presenter> extends AppCompatActivit
     return actionBar;
   }
 
-  protected void addSubscription(Subscription subscription) {
-    if (subscription == null) return;
-    if (mSubscriptions == null) {
-      mSubscriptions = new CompositeSubscription();
+  protected void addDisposable(Disposable disposable) {
+    if (disposable == null) return;
+    if (compositeDisposable == null) {
+      compositeDisposable = new CompositeDisposable();
     }
-    mSubscriptions.add(subscription);
+    compositeDisposable.add(disposable);
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +94,7 @@ public abstract class BaseActivity<P extends Presenter> extends AppCompatActivit
         //onPresenterDestroyed();
       }
     });
-    addSubscription(subscribeEvents());
+    addDisposable(subscribeEvents());
   }
 
   protected abstract void onPresenterPrepared(P presenter);
@@ -106,7 +106,7 @@ public abstract class BaseActivity<P extends Presenter> extends AppCompatActivit
    */
   @NonNull protected abstract PresenterFactory<P> presenterFactory();
 
-  protected Subscription subscribeEvents() {
+  protected Disposable subscribeEvents() {
     return null;
   }
 

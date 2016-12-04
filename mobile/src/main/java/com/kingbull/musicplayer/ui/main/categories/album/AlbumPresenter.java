@@ -4,18 +4,17 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.kingbull.musicplayer.ui.base.Presenter;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.ResourceSubscriber;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 import static android.content.ContentValues.TAG;
 
@@ -26,18 +25,18 @@ import static android.content.ContentValues.TAG;
 
 public final class AlbumPresenter extends Presenter<Album.View> implements Album.Presenter {
 
-  private CompositeSubscription compositeSubscription;
+  private CompositeDisposable compositeDisposable;
 
   @Override public void takeView(@NonNull Album.View view) {
     super.takeView(view);
-    compositeSubscription = new CompositeSubscription();
+    compositeDisposable = new CompositeDisposable();
   }
 
   @Override public void onAlbumCursorLoadFinished(Cursor cursor) {
-    Subscription subscription =
-        Observable.just(cursor)
-            .flatMap(new Func1<Cursor, Observable<List<AlbumItem>>>() {
-              @Override public Observable<List<AlbumItem>> call(Cursor cursor) {
+    compositeDisposable.add(
+        Flowable.just(cursor)
+            .flatMap(new Function<Cursor, Flowable<List<AlbumItem>>>() {
+              @Override public Flowable<List<AlbumItem>> apply(Cursor cursor) {
                 List<AlbumItem> albumItems = new ArrayList<>();
                 if (cursor != null && cursor.getCount() > 0) {
                   cursor.moveToFirst();
@@ -46,11 +45,11 @@ public final class AlbumPresenter extends Presenter<Album.View> implements Album
                     albumItems.add(albumItem);
                   } while (cursor.moveToNext());
                 }
-                return Observable.just(albumItems);
+                return Flowable.just(albumItems);
               }
             })
-            .doOnNext(new Action1<List<AlbumItem>>() {
-              @Override public void call(List<AlbumItem> songs) {
+            .doOnNext(new Consumer<List<AlbumItem>>() {
+              @Override public void accept(List<AlbumItem> songs) {
                 Log.d(TAG, "onLoadFinished: " + songs.size());
                 Collections.sort(songs, new Comparator<AlbumItem>() {
                   @Override public int compare(AlbumItem left, AlbumItem right) {
@@ -61,18 +60,14 @@ public final class AlbumPresenter extends Presenter<Album.View> implements Album
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Subscriber<List<AlbumItem>>() {
-              @Override public void onStart() {
-                //mView.showProgress();
-              }
-
-              @Override public void onCompleted() {
-                //mView.hideProgress();
-              }
+            .subscribeWith(new ResourceSubscriber<List<AlbumItem>>() {
 
               @Override public void onError(Throwable throwable) {
                 //mView.hideProgress();
                 Log.e(TAG, "onError: ", throwable);
+              }
+
+              @Override public void onComplete() {
               }
 
               @Override public void onNext(List<AlbumItem> songs) {
@@ -80,7 +75,6 @@ public final class AlbumPresenter extends Presenter<Album.View> implements Album
                 //mView.emptyView(genres.isEmpty());
                 view().showAlbums(songs);
               }
-            });
-    compositeSubscription.add(subscription);
+            }));
   }
 }

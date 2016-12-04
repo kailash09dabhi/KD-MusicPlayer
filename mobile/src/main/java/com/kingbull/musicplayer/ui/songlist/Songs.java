@@ -4,9 +4,9 @@ import android.database.Cursor;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.SqlMusic;
+import io.reactivex.Flowable;
 import java.util.ArrayList;
 import java.util.List;
-import rx.Observable;
 
 /**
  * @author Kailash Dabhi
@@ -20,7 +20,7 @@ public final class Songs {
     this.cursor = cursor;
   }
 
-  Observable<List<Music>> toObservable() {
+  Flowable<List<Music>> toFlowable() {
     List<Music> songs = new ArrayList<>();
     if (cursor != null && cursor.getCount() > 0) {
       cursor.moveToFirst();
@@ -29,6 +29,6 @@ public final class Songs {
         songs.add(song);
       } while (cursor.moveToNext());
     }
-    return Observable.just(songs);
+    return Flowable.just(songs);
   }
 }

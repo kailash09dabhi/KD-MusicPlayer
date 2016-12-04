@@ -1,9 +1,11 @@
 package com.kingbull.musicplayer;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
-import rx.Observable;
-import rx.Subscriber;
-import rx.subjects.PublishSubject;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subscribers.DisposableSubscriber;
+import org.reactivestreams.Subscriber;
 
 /**
  * Created with Android Studio.
@@ -19,62 +21,62 @@ import rx.subjects.PublishSubject;
 
 public final class RxBus {
 
-    private static final String TAG = "RxBus";
+  private static final String TAG = "RxBus";
 
-    private static volatile RxBus sInstance;
+  private static volatile RxBus sInstance;
 
-    public static RxBus getInstance() {
+  private final PublishSubject<Object> bus = PublishSubject.create();
+
+  public static RxBus getInstance() {
+    if (sInstance == null) {
+      synchronized (RxBus.class) {
         if (sInstance == null) {
-            synchronized (RxBus.class) {
-                if (sInstance == null) {
-                    sInstance = new RxBus();
-                }
-            }
+          sInstance = new RxBus();
         }
-        return sInstance;
+      }
     }
+    return sInstance;
+  }
 
-    /**
-     * PublishSubject<Object> subject = PublishSubject.create();
-     * // observer1 will receive all onNext and onCompleted events
-     * subject.subscribe(observer1);
-     * subject.onNext("one");
-     * subject.onNext("two");
-     * // observer2 will only receive "three" and onCompleted
-     * subject.subscribe(observer2);
-     * subject.onNext("three");
-     * subject.onCompleted();
-     */
-    private PublishSubject<Object> mEventBus = PublishSubject.create();
+  /**
+   * A simple logger for RxBus which can also prevent
+   * potential crash(OnErrorNotImplementedException) caused by error in the workflow.
+   */
+  public static <T> Subscriber<T> defaultSubscriber(Class<T> type) {
+    return new DisposableSubscriber<T>() {
+      @Override public void onError(Throwable e) {
+        Log.e(TAG, "What is this? Please solve this as soon as possible!", e);
+      }
 
-    public void post(Object event) {
-        mEventBus.onNext(event);
-    }
+      @Override public void onComplete() {
+      }
 
-    public Observable<Object> toObservable() {
-        return mEventBus;
-    }
+      @Override public void onNext(T o) {
+        Log.d(TAG, "New event received: " + o);
+      }
+    };
+  }
 
-    /**
-     * A simple logger for RxBus which can also prevent
-     * potential crash(OnErrorNotImplementedException) caused by error in the workflow.
-     */
-    public static Subscriber<Object> defaultSubscriber() {
-        return new Subscriber<Object>() {
-            @Override
-            public void onCompleted() {
-                Log.d(TAG, "Duty off!!!");
-            }
+  @NonNull public static <T> DisposableObserver<T> defaultSubscriber() {
+    return new DisposableObserver<T>() {
+      @Override public void onNext(T value) {
+        Log.d(TAG, "New event received: " + value);
+      }
 
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "What is this? Please solve this as soon as possible!", e);
-            }
+      @Override public void onError(Throwable e) {
+        Log.e(TAG, "What is this? Please solve this as soon as possible!", e);
+      }
 
-            @Override
-            public void onNext(Object o) {
-                Log.d(TAG, "New event received: " + o);
-            }
-        };
-    }
+      @Override public void onComplete() {
+      }
+    };
+  }
+
+  public void post(Object event) {
+    bus.onNext(event);
+  }
+
+  public io.reactivex.Observable<Object> toObservable() {
+    return bus;
+  }
 }

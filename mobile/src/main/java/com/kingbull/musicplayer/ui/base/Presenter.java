@@ -1,15 +1,15 @@
 package com.kingbull.musicplayer.ui.base;
 
 import android.support.annotation.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
 import java.lang.ref.WeakReference;
-import rx.subscriptions.CompositeSubscription;
 
 public abstract class Presenter<V> implements Mvp.Presenter<V> {
-  protected CompositeSubscription compositeSubscription;
+  protected CompositeDisposable compositeDisposable;
   private WeakReference<V> view;
 
   public Presenter() {
-    compositeSubscription = new CompositeSubscription();
+    compositeDisposable = new CompositeDisposable();
   }
 
   @Override public void takeView(@NonNull V view) {

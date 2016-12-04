@@ -4,18 +4,16 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.kingbull.musicplayer.ui.base.Presenter;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.ResourceSubscriber;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 import static android.content.ContentValues.TAG;
 
@@ -26,18 +24,15 @@ import static android.content.ContentValues.TAG;
 
 public final class ArtistPresenter extends Presenter<Artist.View> implements Artist.Presenter {
 
-  private CompositeSubscription compositeSubscription;
-
   @Override public void takeView(@NonNull Artist.View view) {
     super.takeView(view);
-    compositeSubscription = new CompositeSubscription();
   }
 
   @Override public void onArtistCursorLoadFinished(Cursor cursor) {
-    Subscription subscription =
-        Observable.just(cursor)
-            .flatMap(new Func1<Cursor, Observable<List<ArtistItem>>>() {
-              @Override public Observable<List<ArtistItem>> call(Cursor cursor) {
+    compositeDisposable.add(
+        Flowable.just(cursor)
+            .flatMap(new Function<Cursor, Flowable<List<ArtistItem>>>() {
+              @Override public Flowable<List<ArtistItem>> apply(Cursor cursor) {
                 List<ArtistItem> artistItems = new ArrayList<>();
                 if (cursor != null && cursor.getCount() > 0) {
                   cursor.moveToFirst();
@@ -46,11 +41,11 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
                     artistItems.add(artistItem);
                   } while (cursor.moveToNext());
                 }
-                return Observable.just(artistItems);
+                return Flowable.just(artistItems);
               }
             })
-            .doOnNext(new Action1<List<ArtistItem>>() {
-              @Override public void call(List<ArtistItem> songs) {
+            .doOnNext(new Consumer<List<ArtistItem>>() {
+              @Override public void accept(List<ArtistItem> songs) {
                 Log.d(TAG, "onLoadFinished: " + songs.size());
                 Collections.sort(songs, new Comparator<ArtistItem>() {
                   @Override public int compare(ArtistItem left, ArtistItem right) {
@@ -61,18 +56,14 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Subscriber<List<ArtistItem>>() {
-              @Override public void onStart() {
-                //mView.showProgress();
-              }
-
-              @Override public void onCompleted() {
-                //mView.hideProgress();
-              }
+            .subscribeWith(new ResourceSubscriber<List<ArtistItem>>() {
 
               @Override public void onError(Throwable throwable) {
                 //mView.hideProgress();
                 Log.e(TAG, "onError: ", throwable);
+              }
+
+              @Override public void onComplete() {
               }
 
               @Override public void onNext(List<ArtistItem> songs) {
@@ -80,7 +71,6 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
                 //mView.emptyView(genres.isEmpty());
                 view().showAlbums(songs);
               }
-            });
-    compositeSubscription.add(subscription);
+            }));
   }
 }

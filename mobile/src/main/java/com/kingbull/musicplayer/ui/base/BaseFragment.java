@@ -7,8 +7,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created with Android Studio.
@@ -21,7 +21,7 @@ public abstract class BaseFragment<P extends Mvp.Presenter> extends Fragment {
 
   private static final int LOADER_ID = 101;
   protected P presenter;
-  private CompositeSubscription mSubscriptions;
+  private CompositeDisposable compositeDisposable;
 
   @Override public void onAttach(Context context) {
     super.onAttach(context);
@@ -34,21 +34,21 @@ public abstract class BaseFragment<P extends Mvp.Presenter> extends Fragment {
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    if (mSubscriptions != null) {
-      mSubscriptions.clear();
+    if (compositeDisposable != null) {
+      compositeDisposable.clear();
     }
   }
 
-  protected Subscription subscribeEvents() {
+  protected Disposable subscribeEvents() {
     return null;
   }
 
-  protected void addSubscription(Subscription subscription) {
+  protected void addSubscription(Disposable subscription) {
     if (subscription == null) return;
-    if (mSubscriptions == null) {
-      mSubscriptions = new CompositeSubscription();
+    if (compositeDisposable == null) {
+      compositeDisposable = new CompositeDisposable();
     }
-    mSubscriptions.add(subscription);
+    compositeDisposable.add(subscription);
   }
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {

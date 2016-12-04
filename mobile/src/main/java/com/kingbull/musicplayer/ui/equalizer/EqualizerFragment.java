@@ -11,6 +11,7 @@ import android.media.AudioManager;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Virtualizer;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +31,11 @@ import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.PresetReverbDialogFragment;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableObserver;
 import javax.inject.Inject;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.subscriptions.CompositeSubscription;
 
 public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     implements Equalizer.View {
@@ -44,7 +46,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
   @BindView(R.id.virtualizerRoundKnobLayout) RelativeLayout virtualizerRoundKnobLayout;
   @BindView(R.id.bassBoostLayout) RelativeLayout bassBoostRoundKnobLayout;
   @BindView(R.id.volumeLayout) RelativeLayout volumeRoundKnobLayout;
-  CompositeSubscription compositeSubscription = new CompositeSubscription();
+  CompositeDisposable compositeSubscription = new CompositeDisposable();
   @Inject Player player;
   AudioManager audioManager;
   private BassBoost bassBoost;
@@ -78,8 +80,8 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
         .toObservable()
         .ofType(Preset.class)
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnNext(new Action1<Preset>() {
-          @Override public void call(Preset preset) {
+        .doOnNext(new Consumer<Preset>() {
+          @Override public void accept(Preset preset) {
             switch (preset.event()) {
               case Preset.Event.CLICK:
                 presenter.onPresetSelected(preset.equalizerPreset());
@@ -93,8 +95,21 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
             }
           }
         })
-        .subscribe(RxBus.defaultSubscriber()));
+        .subscribeWith(RxBus.defaultSubscriber()));
     return view;
+  }
+
+  @NonNull private <T> DisposableObserver<T> observer() {
+    return new DisposableObserver<T>() {
+      @Override public void onNext(T value) {
+      }
+
+      @Override public void onError(Throwable e) {
+      }
+
+      @Override public void onComplete() {
+      }
+    };
   }
 
   @Override public void onDestroyView() {

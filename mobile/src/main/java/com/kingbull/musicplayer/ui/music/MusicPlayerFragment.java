@@ -23,14 +23,14 @@ import com.kingbull.musicplayer.player.MusicPlayerEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
-import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
 import com.kingbull.musicplayer.ui.music.widget.ShadowImageView;
+import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
 import com.kingbull.musicplayer.utils.AlbumUtils;
 import com.kingbull.musicplayer.utils.TimeUtils;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 import static com.kingbull.musicplayer.R.id.text_view_artist;
 
@@ -46,7 +46,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @BindView(R.id.button_play_mode_toggle) PlayModeToggleView playModeToggleView;
   @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
   @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
-  CompositeSubscription compositeSubscription = new CompositeSubscription();
+  CompositeDisposable compositeDisposable = new CompositeDisposable();
 
   public static MusicPlayerFragment instance() {
     MusicPlayerFragment fragment = new MusicPlayerFragment();
@@ -72,12 +72,12 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    compositeSubscription.add(RxBus.getInstance()
+    compositeDisposable.add(RxBus.getInstance()
         .toObservable()
         .ofType(MusicEvent.class)
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnNext(new Action1<MusicEvent>() {
-          @Override public void call(MusicEvent musicEvent) {
+        .doOnNext(new Consumer<MusicEvent>() {
+          @Override public void accept(MusicEvent musicEvent) {
             onSongUpdated(musicEvent.music());
             if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.PLAY
                 || musicEvent.musicPlayerEvent() == MusicPlayerEvent.PAUSE) {
@@ -94,13 +94,13 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
             }
           }
         })
-        .subscribe(RxBus.defaultSubscriber()));
+        .subscribeWith(RxBus.defaultSubscriber()));
   }
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    if (compositeSubscription != null) {
-      compositeSubscription.clear();
+    if (compositeDisposable != null) {
+      compositeDisposable.clear();
     }
   }
 
@@ -129,7 +129,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     presenter.onFavoriteToggleClick();
   }
 
-  @Override protected Subscription subscribeEvents() {
+  @Override protected Disposable subscribeEvents() {
     return null;
   }
 

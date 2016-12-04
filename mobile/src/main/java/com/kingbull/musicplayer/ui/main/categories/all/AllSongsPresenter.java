@@ -8,19 +8,20 @@ import com.kingbull.musicplayer.domain.storage.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.observers.ResourceSingleObserver;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.ResourceSubscriber;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
-import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 import static android.content.ContentValues.TAG;
 
@@ -32,13 +33,15 @@ import static android.content.ContentValues.TAG;
 public final class AllSongsPresenter extends Presenter<AllSongs.View>
     implements AllSongs.Presenter {
   @Inject Player musicPlayer;
+  CompositeDisposable compositeDisposable = new CompositeDisposable();
   private List<Music> songs;
 
   @Override public void onAllSongsCursorLoadFinished(Cursor cursor) {
-    Subscription subscription =
-        Observable.just(cursor)
-            .flatMap(new Func1<Cursor, Observable<List<Music>>>() {
-              @Override public Observable<List<Music>> call(Cursor cursor) {
+    //Subscription subscription =
+    compositeDisposable.add(
+        Flowable.just(cursor)
+            .flatMap(new Function<Cursor, Flowable<List<Music>>>() {
+              @Override public Flowable<List<Music>> apply(Cursor cursor) {
                 List<Music> songs = new ArrayList<>();
                 if (cursor != null && cursor.getCount() > 0) {
                   cursor.moveToFirst();
@@ -47,11 +50,11 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                     songs.add(song);
                   } while (cursor.moveToNext());
                 }
-                return Observable.just(songs);
+                return Flowable.just(songs);
               }
             })
-            .doOnNext(new Action1<List<Music>>() {
-              @Override public void call(List<Music> songs) {
+            .doOnNext(new Consumer<List<Music>>() {
+              @Override public void accept(List<Music> songs) {
                 Log.d(TAG, "onLoadFinished: " + songs.size());
                 Collections.sort(songs, new Comparator<Music>() {
                   @Override public int compare(Music left, Music right) {
@@ -62,18 +65,13 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Subscriber<List<Music>>() {
-              @Override public void onStart() {
-                //mView.showProgress();
-              }
-
-              @Override public void onCompleted() {
-                //mView.hideProgress();
-              }
+            .subscribeWith(new ResourceSubscriber<List<Music>>() {
 
               @Override public void onError(Throwable throwable) {
-                //mView.hideProgress();
                 Log.e(TAG, "onError: ", throwable);
+              }
+
+              @Override public void onComplete() {
               }
 
               @Override public void onNext(List<Music> songs) {
@@ -83,32 +81,27 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                 musicPlayer.addToNowPlaylist(songs);
                 view().showAllSongs(songs);
               }
-            });
-    compositeSubscription.add(subscription);
+            }));
   }
 
   @Override public void onSearchTextChanged(final String text) {
-    Subscription subscription = Observable.from(songs)
-        .filter(new Func1<Music, Boolean>() {
-          @Override public Boolean call(Music music) {
+    compositeDisposable.add(Flowable.fromIterable(songs)
+        .filter(new Predicate<Music>() {
+          @Override public boolean test(Music music) {
             return music.media().title().toLowerCase().contains(text.toLowerCase());
           }
         })
         .toList()
         .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Observer<List<Music>>() {
-          @Override public void onCompleted() {
+        .subscribeWith(new ResourceSingleObserver<List<Music>>() {
+          @Override public void onSuccess(List<Music> musicList) {
+            view().showAllSongs(musicList);
           }
 
           @Override public void onError(Throwable e) {
           }
-
-          @Override public void onNext(List<Music> musicList) {
-            view().showAllSongs(musicList);
-          }
-        });
-    compositeSubscription.add(subscription);
+        }));
   }
 
   @Override public void onExitSearchClick() {
