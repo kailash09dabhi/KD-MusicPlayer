@@ -142,12 +142,11 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
         .toObservable()
         .ofType(SortEvent.class)
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnNext(new Consumer<SortEvent>() {
+        .subscribe(new Consumer<SortEvent>() {
           @Override public void accept(SortEvent sortEvent) {
             presenter.onSortEvent(sortEvent);
           }
-        })
-        .subscribeWith(RxBus.defaultSubscriber()));
+        }));
   }
 
   @Override public void onDestroyView() {

@@ -76,7 +76,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         .toObservable()
         .ofType(MusicEvent.class)
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnNext(new Consumer<MusicEvent>() {
+        .subscribe(new Consumer<MusicEvent>() {
           @Override public void accept(MusicEvent musicEvent) {
             onSongUpdated(musicEvent.music());
             if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.PLAY
@@ -93,8 +93,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
               }
             }
           }
-        })
-        .subscribeWith(RxBus.defaultSubscriber()));
+        }));
   }
 
   @Override public void onDestroyView() {

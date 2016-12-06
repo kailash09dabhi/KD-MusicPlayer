@@ -52,6 +52,7 @@ dependencies {
   compile 'com.facebook.stetho:stetho:1.4.1'
 
   compile 'com.github.nisrulz:recyclerviewhelper:25.0.1'
+  compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
   androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
     exclude group: 'com.android.support', module: 'support-annotations'
     exclude group: 'com.android.support', module: 'support-v4'

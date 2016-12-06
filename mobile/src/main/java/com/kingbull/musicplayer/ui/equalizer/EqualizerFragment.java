@@ -80,7 +80,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
         .toObservable()
         .ofType(Preset.class)
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnNext(new Consumer<Preset>() {
+        .subscribe(new Consumer<Preset>() {
           @Override public void accept(Preset preset) {
             switch (preset.event()) {
               case Preset.Event.CLICK:
@@ -94,8 +94,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
                 break;
             }
           }
-        })
-        .subscribeWith(RxBus.defaultSubscriber()));
+        }));
     return view;
   }
 

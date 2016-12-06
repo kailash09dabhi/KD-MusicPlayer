@@ -77,8 +77,7 @@ public class RayLayout extends ViewGroup {
 
   private static Animation createExpandAnimation(float fromXDelta, float toXDelta, float fromYDelta,
       float toYDelta, long startOffset, long duration, Interpolator interpolator) {
-    Animation animation = new
-        TranslateAnimation(0, toXDelta, 0, toYDelta);
+    Animation animation = new TranslateAnimation(0, toXDelta, 0, toYDelta);
     animation.setStartOffset(100);
     animation.setDuration(1500);
     animation.setInterpolator(interpolator);
@@ -137,8 +136,10 @@ public class RayLayout extends ViewGroup {
     final int toXDelta = frame.left - child.getLeft();
     final int toYDelta = frame.top - child.getTop();
     Interpolator interpolator = null;
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
-      interpolator = mExpanded ? new AccelerateInterpolator() : new OvershootInterpolator(1.5f);
+    if (mExpanded) {
+      interpolator = new AccelerateInterpolator();
+    } else {
+      interpolator = new OvershootInterpolator(1.5f);
     }
     final long startOffset =
         computeStartOffset(childCount, mExpanded, index, 0.1f, duration, interpolator);

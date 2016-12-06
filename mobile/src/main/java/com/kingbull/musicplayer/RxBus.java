@@ -1,11 +1,8 @@
 package com.kingbull.musicplayer;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subscribers.DisposableSubscriber;
-import org.reactivestreams.Subscriber;
+import com.jakewharton.rxrelay2.PublishRelay;
+import com.jakewharton.rxrelay2.Relay;
+import io.reactivex.Observable;
 
 /**
  * Created with Android Studio.
@@ -25,7 +22,7 @@ public final class RxBus {
 
   private static volatile RxBus sInstance;
 
-  private final PublishSubject<Object> bus = PublishSubject.create();
+  private final Relay<Object> bus = PublishRelay.create().toSerialized();
 
   public static RxBus getInstance() {
     if (sInstance == null) {
@@ -38,45 +35,11 @@ public final class RxBus {
     return sInstance;
   }
 
-  /**
-   * A simple logger for RxBus which can also prevent
-   * potential crash(OnErrorNotImplementedException) caused by error in the workflow.
-   */
-  public static <T> Subscriber<T> defaultSubscriber(Class<T> type) {
-    return new DisposableSubscriber<T>() {
-      @Override public void onError(Throwable e) {
-        Log.e(TAG, "What is this? Please solve this as soon as possible!", e);
-      }
-
-      @Override public void onComplete() {
-      }
-
-      @Override public void onNext(T o) {
-        Log.d(TAG, "New event received: " + o);
-      }
-    };
-  }
-
-  @NonNull public static <T> DisposableObserver<T> defaultSubscriber() {
-    return new DisposableObserver<T>() {
-      @Override public void onNext(T value) {
-        Log.d(TAG, "New event received: " + value);
-      }
-
-      @Override public void onError(Throwable e) {
-        Log.e(TAG, "What is this? Please solve this as soon as possible!", e);
-      }
-
-      @Override public void onComplete() {
-      }
-    };
-  }
-
   public void post(Object event) {
-    bus.onNext(event);
+    bus.accept(event);
   }
 
-  public io.reactivex.Observable<Object> toObservable() {
+  public Observable<Object> toObservable() {
     return bus;
   }
 }
