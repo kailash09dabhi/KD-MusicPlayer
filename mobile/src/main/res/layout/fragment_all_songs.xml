@@ -37,6 +37,9 @@
       android:clipToPadding="false"
       android:fadeScrollbars="true"
       android:fadingEdgeLength="34dp"
+      android:scrollbarSize="3dp"
+      android:scrollbarTrackVertical="@drawable/transparent_white"
+      android:scrollbarThumbVertical="@drawable/scroll_thumb"
       android:overScrollMode="never"
       android:requiresFadingEdge="vertical"
       android:scrollbars="vertical"/>

@@ -2,5 +2,6 @@
 <resources>
   <drawable name="transparent_black">#33000000</drawable>
   <drawable name="transparent_strong_black">#66000000</drawable>
+  <drawable name="transparent_white">#33ffffff</drawable>
 
 </resources>

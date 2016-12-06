@@ -40,7 +40,9 @@
       android:id="@+id/recyclerView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginTop="1px"
+      android:layout_marginTop="1px" android:scrollbarSize="3dp"
+      android:scrollbarTrackVertical="@drawable/transparent_white"
+      android:scrollbarThumbVertical="@drawable/scroll_thumb"
       android:background="@color/transparent_black"
       android:clipToPadding="false"
       android:fadingEdge="none"/>

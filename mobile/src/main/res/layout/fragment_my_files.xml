@@ -39,5 +39,7 @@
       android:clipToPadding="false"
       android:overScrollMode="never"
       android:paddingLeft="10dp"
-      android:paddingRight="10dp"/>
+      android:paddingRight="10dp"
+      android:scrollbarSize="3dp"
+      android:scrollbarThumbVertical="@drawable/transparent_white"/>
 </LinearLayout>
