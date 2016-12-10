@@ -13,6 +13,44 @@ import java.io.File;
 
 public interface Media {
 
+  Media NONE = new Media() {
+    @Override public long mediaId() {
+      return 0;
+    }
+
+    @Override public String title() {
+      return "";
+    }
+
+    @Override public String artist() {
+      return "";
+    }
+
+    @Override public String album() {
+      return "";
+    }
+
+    @Override public String path() {
+      return "";
+    }
+
+    @Override public long duration() {
+      return 0;
+    }
+
+    @Override public int size() {
+      return 0;
+    }
+
+    @Override public long dateAdded() {
+      return 0;
+    }
+
+    @Override public long year() {
+      return 0;
+    }
+  };
+
   long mediaId();
 
   String title();
@@ -31,8 +69,17 @@ public interface Media {
 
   long year();
 
-  class Smart implements Media ,Parcelable{
+  class Smart implements Media, Parcelable {
 
+    public static final Creator<Smart> CREATOR = new Creator<Smart>() {
+      @Override public Smart createFromParcel(Parcel in) {
+        return new Smart(in);
+      }
+
+      @Override public Smart[] newArray(int size) {
+        return new Smart[size];
+      }
+    };
     private final long duration;
     private final int size;
     private final String title;
@@ -66,16 +113,6 @@ public interface Media {
       path = in.readString();
       dateAdded = in.readLong();
     }
-
-    public static final Creator<Smart> CREATOR = new Creator<Smart>() {
-      @Override public Smart createFromParcel(Parcel in) {
-        return new Smart(in);
-      }
-
-      @Override public Smart[] newArray(int size) {
-        return new Smart[size];
-      }
-    };
 
     @Override public long mediaId() {
       return mediaId;

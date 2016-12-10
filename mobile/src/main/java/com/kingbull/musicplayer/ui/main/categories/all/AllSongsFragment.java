@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -94,7 +95,8 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   private void setupView() {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     getLoaderManager().initLoader(0, null, this);
-    songsAdapter = new com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter(musicList);
+    songsAdapter = new com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter(musicList,
+        (AppCompatActivity) getActivity());
     recyclerView.setAdapter(songsAdapter);
     songMenu.post(new Runnable() {
       @Override public void run() {

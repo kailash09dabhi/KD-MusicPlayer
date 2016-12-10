@@ -6,6 +6,7 @@
     android:background="#55000000"
     android:orientation="vertical"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingRight="?android:attr/listPreferredItemPaddingLeft"
     android:paddingTop="?android:attr/listPreferredItemPaddingLeft">
 
   <TextView

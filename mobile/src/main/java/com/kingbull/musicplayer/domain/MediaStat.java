@@ -16,7 +16,7 @@ import javax.inject.Inject;
  * @date 12/1/2016.
  */
 
-public interface MediaStat {
+public interface MediaStat extends SqlTableRow {
 
   boolean isFavorite();
 

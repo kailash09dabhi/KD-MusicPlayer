@@ -33,8 +33,7 @@ public final class MediaTable {
     if (mediaCursor != null && mediaCursor.getCount() > 0 && mediaCursor.moveToFirst()) {
       media = new Media.Smart(mediaCursor);
     } else {
-      // TODO: 12/1/2016 null object pattern or something should be here 
-      //media = new Media.Smart(mediaId);
+      media = Media.NONE;
     }
     mediaCursor.close();
     return media;

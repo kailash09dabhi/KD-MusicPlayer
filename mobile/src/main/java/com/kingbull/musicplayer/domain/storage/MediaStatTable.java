@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.domain.storage;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.MediaStat;
 import com.kingbull.musicplayer.domain.Music;
 import java.util.ArrayList;
@@ -57,7 +58,11 @@ public final class MediaStatTable implements SqlTable {
       if (cursor.getCount() > 0 && cursor.moveToFirst()) {
         do {
           SqlMusic song = new SqlMusic(new MediaStat.Smart(cursor));
-          itemList.add(song);
+          if (song.media() == Media.NONE) {
+            song.mediaStat().delete();
+          } else {
+            itemList.add(song);
+          }
         } while (cursor.moveToNext());
       }
       cursor.close();
@@ -85,7 +90,11 @@ public final class MediaStatTable implements SqlTable {
       if (cursor.getCount() > 0 && cursor.moveToFirst()) {
         do {
           SqlMusic song = new SqlMusic(new MediaStat.Smart(cursor));
-          itemList.add(song);
+          if (song.media() == Media.NONE) {
+            song.mediaStat().delete();
+          } else {
+            itemList.add(song);
+          }
         } while (cursor.moveToNext());
       }
       cursor.close();
