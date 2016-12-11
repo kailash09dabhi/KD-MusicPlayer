@@ -5,14 +5,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.ui.main.categories.all.raymenu.RayMenu;
 
 /**
  * @author Kailash Dabhi
  * @date 11/24/2016.
  */
 
-public final class SongMenu extends RayMenu {
+public final class AllRayMenu extends com.kingbull.musicplayer.ui.raymenu.RayMenu {
   private static final int[] MENUS = {
       R.drawable.composer_button_queue, R.drawable.composer_button_sort,
       R.drawable.composer_button_shuffle, R.drawable.composer_icn_search,
@@ -20,12 +19,12 @@ public final class SongMenu extends RayMenu {
   };
   private OnMenuClickListener onMenuClickListener;
 
-  public SongMenu(Context context) {
+  public AllRayMenu(Context context) {
     super(context);
     init();
   }
 
-  public SongMenu(Context context, AttributeSet attrs) {
+  public AllRayMenu(Context context, AttributeSet attrs) {
     super(context, attrs);
     init();
   }
@@ -63,7 +62,7 @@ public final class SongMenu extends RayMenu {
     this.onMenuClickListener = onMenuClickListener;
   }
 
-  interface OnMenuClickListener {
+ public interface OnMenuClickListener {
     void onSearchMenuClick();
 
     void onShuffleMenuClick();

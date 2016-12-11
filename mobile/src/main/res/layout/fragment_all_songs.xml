@@ -37,11 +37,11 @@
       android:clipToPadding="false"
       android:fadeScrollbars="true"
       android:fadingEdgeLength="34dp"
-      android:scrollbarSize="3dp"
-      android:scrollbarTrackVertical="@drawable/transparent_white"
-      android:scrollbarThumbVertical="@drawable/scroll_thumb"
       android:overScrollMode="never"
       android:requiresFadingEdge="vertical"
+      android:scrollbarSize="3dp"
+      android:scrollbarThumbVertical="@drawable/scroll_thumb"
+      android:scrollbarTrackVertical="@drawable/transparent_white"
       android:scrollbars="vertical"/>
   <LinearLayout
       android:layout_width="match_parent"
@@ -49,8 +49,8 @@
       android:background="@color/transparent_strong_black"
       android:orientation="horizontal">
 
-    <com.kingbull.musicplayer.ui.main.categories.all.SongMenu
-        android:id="@+id/songMenu"
+    <com.kingbull.musicplayer.ui.main.categories.all.AllRayMenu
+        android:id="@+id/allRayMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="5dp"

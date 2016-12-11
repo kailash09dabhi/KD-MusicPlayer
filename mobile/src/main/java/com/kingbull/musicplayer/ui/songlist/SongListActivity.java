@@ -32,31 +32,27 @@ import static com.kingbull.musicplayer.R.id.pager;
 public final class SongListActivity extends BaseActivity
     implements LoaderManager.LoaderCallbacks<Cursor>, SongList.View {
 
-  public static final String GENRE_ID = "genre_id";
   public static final int INT_GENRE_ID = 1;
   public static final int INT_ARTIST_ID = 2;
   public static final int INT_ALBUM_ID = 3;
+  public static final String GENRE_ID = "genre_id";
   public static final String ARTIST_ID = "artist_id";
   public static final String ALBUM_ID = "album_id";
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.pager_container) PagerContainer pagerContainer;
+  @BindView(pager) ViewPager viewPager;
+  @BindView(R.id.songMenu) SongListRayMenu songListRayMenu;
   SongList.Presenter songListPresenter = new SongListPresenter();
   SongsAdapter adapter;
   List<Music> songList = new ArrayList<>();
-  @BindView(pager) ViewPager viewPager;
-
-  PagerAdapter pagerAdapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_song_list);
     ButterKnife.bind(this);
-    //viewPager.setPageTransformer(true, new CustPagerTransformer(this));
     viewPager.setOffscreenPageLimit(3);
-    //viewPager.setClipChildren(false);
-    //viewPager.setCurrentItem(0);
-    //mCoverFlow.setAdapter(mAdapter);
+    viewPager.setClipChildren(true);
     viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
       @Override
       public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -82,7 +78,7 @@ public final class SongListActivity extends BaseActivity
       getSupportLoaderManager().initLoader(INT_GENRE_ID, null, this);
     } else if (getIntent().hasExtra(ARTIST_ID)) {
       getSupportLoaderManager().initLoader(INT_ARTIST_ID, null, this);
-    }else if (getIntent().hasExtra(ALBUM_ID)){
+    } else if (getIntent().hasExtra(ALBUM_ID)) {
       getSupportLoaderManager().initLoader(INT_ALBUM_ID, null, this);
     }
     titleView.setText(getIntent().getStringExtra("title"));
@@ -90,6 +86,20 @@ public final class SongListActivity extends BaseActivity
     titleView.setSingleLine(true);
     titleView.setMarqueeRepeatLimit(-1);
     titleView.setSelected(true);
+    songListRayMenu.addOnMenuClickListener(new SongListRayMenu.OnMenuClickListener() {
+
+      @Override public void onShuffleMenuClick() {
+        //presenter.onShuffleMenuClick();
+      }
+
+      @Override public void onAddToPlaylistMenuClick() {
+        //presenter.onAddToPlayListMenuClick();
+      }
+
+      @Override public void onSortMenuClick() {
+        //presenter.onSortMenuClick();
+      }
+    });
   }
 
   @Override protected void onPresenterPrepared(Presenter presenter) {

@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.main.categories.all.raymenu;
+package com.kingbull.musicplayer.ui.raymenu;
 
 import android.content.Context;
 import android.content.res.TypedArray;

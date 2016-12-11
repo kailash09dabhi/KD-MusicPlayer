@@ -46,7 +46,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   private final List<Music> musicList = new ArrayList<>();
   @BindView(R.id.totalSongCountView) TextView totalSongCountView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
-  @BindView(R.id.songMenu) SongMenu songMenu;
+  @BindView(R.id.allRayMenu) AllRayMenu allRayMenu;
   @BindView(R.id.searchView) EditText searchView;
   CompositeDisposable compositeDisposable = new CompositeDisposable();
   private com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter songsAdapter;
@@ -62,7 +62,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
       }
 
       @Override public void onAnimationEnd(Animation animation) {
-        songMenu.setVisibility(View.VISIBLE);
+        allRayMenu.setVisibility(View.VISIBLE);
         Animation animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
         animation1.setDuration(300);
         animation1.setInterpolator(new OvershootInterpolator(1.5f));
@@ -71,13 +71,13 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
           }
 
           @Override public void onAnimationEnd(Animation animation) {
-            songMenu.expand(true);
+            allRayMenu.expand(true);
           }
 
           @Override public void onAnimationRepeat(Animation animation) {
           }
         });
-        songMenu.startAnimation(animation1);
+        allRayMenu.startAnimation(animation1);
       }
 
       @Override public void onAnimationRepeat(Animation animation) {
@@ -98,12 +98,12 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     songsAdapter = new com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter(musicList,
         (AppCompatActivity) getActivity());
     recyclerView.setAdapter(songsAdapter);
-    songMenu.post(new Runnable() {
+    allRayMenu.post(new Runnable() {
       @Override public void run() {
-        searchView.getLayoutParams().height = songMenu.getHeight();
+        searchView.getLayoutParams().height = allRayMenu.getHeight();
       }
     });
-    songMenu.addOnMenuClickListener(new SongMenu.OnMenuClickListener() {
+    allRayMenu.addOnMenuClickListener(new AllRayMenu.OnMenuClickListener() {
       @Override public void onSearchMenuClick() {
         Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_right);
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -111,7 +111,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
           }
 
           @Override public void onAnimationEnd(Animation animation) {
-            songMenu.setVisibility(View.GONE);
+            allRayMenu.setVisibility(View.GONE);
             searchView.startAnimation(
                 AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_in_left));
           }
@@ -120,7 +120,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
           }
         });
         animation.setInterpolator(new OvershootInterpolator(1.5f));
-        songMenu.startAnimation(animation);
+        allRayMenu.startAnimation(animation);
         //searchView.startAnimation(animation);
       }
 

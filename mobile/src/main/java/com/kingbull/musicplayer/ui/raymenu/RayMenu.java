@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.main.categories.all.raymenu;
+package com.kingbull.musicplayer.ui.raymenu;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 import com.kingbull.musicplayer.R;
 
 public class RayMenu extends RelativeLayout {
-  private RayLayout mRayLayout;
+  private com.kingbull.musicplayer.ui.raymenu.RayLayout mRayLayout;
 
   private ImageView mHintView;
 
@@ -61,7 +61,7 @@ public class RayMenu extends RelativeLayout {
     setClipChildren(false);
     LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     li.inflate(R.layout.ray_menu, this);
-    mRayLayout = (RayLayout) findViewById(R.id.item_layout);
+    mRayLayout = (com.kingbull.musicplayer.ui.raymenu.RayLayout) findViewById(R.id.item_layout);
     final ViewGroup controlLayout = (ViewGroup) findViewById(R.id.control_layout);
     controlLayout.setClickable(true);
     controlLayout.setOnTouchListener(new OnTouchListener() {

@@ -15,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.TimePicker;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
@@ -30,6 +32,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     implements Settings.View {
 
   SettingPreferences settingPreferences = new SettingPreferences();
+  @BindView(R.id.fullScreenCheckbox) CheckBox fullScreenCheckbox;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   }
 
   private void setupView(View v) {
+    fullScreenCheckbox.setChecked(settingPreferences.isFullScreen());
   }
 
   @Override protected void onPresenterPrepared(Settings.Presenter presenter) {

@@ -39,11 +39,21 @@
   <android.support.v7.widget.RecyclerView
       android:id="@+id/recyclerView"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_marginTop="1px" android:scrollbarSize="3dp"
-      android:scrollbarTrackVertical="@drawable/transparent_white"
-      android:scrollbarThumbVertical="@drawable/scroll_thumb"
+      android:layout_height="0dp"
+      android:layout_marginTop="1px"
+      android:layout_weight="1"
       android:background="@color/transparent_black"
       android:clipToPadding="false"
-      android:fadingEdge="none"/>
+      android:fadingEdge="none"
+      android:scrollbarSize="3dp"
+      android:scrollbarThumbVertical="@drawable/scroll_thumb"
+      android:scrollbarTrackVertical="@drawable/transparent_white"/>
+
+  <com.kingbull.musicplayer.ui.songlist.SongListRayMenu
+      android:id="@+id/songMenu"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/transparent_black"
+      android:paddingLeft="5dp"
+      android:paddingRight="?android:attr/listPreferredItemPaddingLeft"/>
 </LinearLayout>
