@@ -14,6 +14,7 @@ import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
+import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
@@ -67,7 +68,7 @@ public final class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdap
     notifyItemMoved(firstPosition, secondPosition);
   }
 
-  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener , RVHViewHolder{
     @BindView(R.id.nameView) TextView nameView;
 
     public ViewHolder(View itemView) {
@@ -79,6 +80,14 @@ public final class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdap
     @Override public void onClick(View view) {
       player.play(songs.get(getAdapterPosition()));
       view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
+    }
+
+    @Override public void onItemSelected(int actionstate) {
+      itemView.setBackgroundResource(R.drawable.ic_shadow);
+    }
+
+    @Override public void onItemClear() {
+      itemView.setBackgroundResource(0);
     }
   }
 }

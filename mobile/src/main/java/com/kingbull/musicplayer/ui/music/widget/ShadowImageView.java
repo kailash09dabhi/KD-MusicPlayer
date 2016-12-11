@@ -23,7 +23,7 @@ import android.widget.ImageView;
  * Date: 9/8/16
  * Time: 4:23 PM
  * Desc: ShadowImageView
- * Stole from {@link android.support.v4.widget.SwipeRefreshLayout}'s implementation to display beautiful shadow
+ * Stole from {@link android.support.v4.widget.SwipeRefreshLayout}'s implementation to display beautiful ic_shadow
  * for circle ImageView.
  */
 public final class ShadowImageView extends ImageView {
@@ -82,7 +82,7 @@ public final class ShadowImageView extends ImageView {
             ViewCompat.setLayerType(this, ViewCompat.LAYER_TYPE_SOFTWARE, circle.getPaint());
             circle.getPaint().setShadowLayer(mShadowRadius, shadowXOffset, shadowYOffset, KEY_SHADOW_COLOR);
             final int padding = mShadowRadius;
-            // set padding so the inner image sits correctly within the shadow.
+            // set padding so the inner image sits correctly within the ic_shadow.
             setPadding(padding, padding, padding, padding);
         }
         circle.getPaint().setAntiAlias(true);
@@ -140,7 +140,7 @@ public final class ShadowImageView extends ImageView {
     }
 
     /**
-     * Draw oval shadow below ImageView under lollipop.
+     * Draw oval ic_shadow below ImageView under lollipop.
      */
     private class OvalShadow extends OvalShape {
         private RadialGradient mRadialGradient;
