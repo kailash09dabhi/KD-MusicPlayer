@@ -1,7 +1,10 @@
 package com.kingbull.musicplayer.ui.nowplaying;
 
+import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +71,7 @@ public final class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdap
     notifyItemMoved(firstPosition, secondPosition);
   }
 
-  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener , RVHViewHolder{
+  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, RVHViewHolder {
     @BindView(R.id.nameView) TextView nameView;
 
     public ViewHolder(View itemView) {
@@ -88,6 +91,22 @@ public final class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdap
 
     @Override public void onItemClear() {
       itemView.setBackgroundResource(0);
+      TypedValue value = new TypedValue();
+      itemView.getContext()
+          .getTheme()
+          .resolveAttribute(android.R.attr.listPreferredItemHeight, value, true);
+      android.util.DisplayMetrics metrics = new android.util.DisplayMetrics();
+      ((Activity) itemView.getContext()).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+      float ret = value.getDimension(metrics);
+      ValueAnimator valueAnimator = ValueAnimator.ofInt(itemView.getHeight(), (int) ret);
+      valueAnimator.setDuration(400);
+      valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        @Override public void onAnimationUpdate(ValueAnimator animation) {
+          Integer value = (Integer) animation.getAnimatedValue();
+          itemView.getLayoutParams().height = value.intValue();
+          itemView.requestLayout();
+        }
+      });
     }
   }
 }
