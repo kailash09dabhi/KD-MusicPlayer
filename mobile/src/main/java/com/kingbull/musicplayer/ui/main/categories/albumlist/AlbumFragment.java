@@ -3,7 +3,7 @@
  * You should have received a copy of the license in this archive (see LICENSE).
  * Copyright @Dibakar_Mistry, 2015.
  */
-package com.kingbull.musicplayer.ui.main.categories.album;
+package com.kingbull.musicplayer.ui.main.categories.albumlist;
 
 import android.database.Cursor;
 import android.os.Bundle;

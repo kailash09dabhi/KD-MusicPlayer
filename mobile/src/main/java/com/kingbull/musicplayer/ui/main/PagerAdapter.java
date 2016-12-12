@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import com.kingbull.musicplayer.ui.main.categories.album.AlbumFragment;
+import com.kingbull.musicplayer.ui.main.categories.albumlist.AlbumFragment;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsFragment;
 import com.kingbull.musicplayer.ui.main.categories.artists.ArtistFragment;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesFragment;

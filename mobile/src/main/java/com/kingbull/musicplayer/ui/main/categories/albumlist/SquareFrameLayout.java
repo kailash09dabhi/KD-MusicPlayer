@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kingbull.musicplayer.ui.main.categories.album;
+package com.kingbull.musicplayer.ui.main.categories.albumlist;
 
 import android.content.Context;
 import android.util.AttributeSet;

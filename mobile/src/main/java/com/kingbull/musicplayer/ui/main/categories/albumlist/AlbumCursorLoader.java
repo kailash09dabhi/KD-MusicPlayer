@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.main.categories.album;
+package com.kingbull.musicplayer.ui.main.categories.albumlist;
 
 import android.content.Context;
 import android.net.Uri;
