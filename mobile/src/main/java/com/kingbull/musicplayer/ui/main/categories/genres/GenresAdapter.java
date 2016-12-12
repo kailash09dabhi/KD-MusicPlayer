@@ -44,7 +44,6 @@ public final class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.View
     public ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
-      textView.setTransformationMethod(null);
       itemView.setOnClickListener(this);
     }
 
