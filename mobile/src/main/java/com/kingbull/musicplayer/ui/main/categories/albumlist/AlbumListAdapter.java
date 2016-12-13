@@ -1,9 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.albumlist;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.bumptech.glide.Glide;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumActivity;
 import java.util.List;
@@ -35,10 +34,12 @@ public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapte
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
     holder.labelView.setText(albumItems.get(position).name());
-    if (!TextUtils.isEmpty(albumItems.get(position).albumArt())) {
-      holder.imageView.setImageBitmap(
-          BitmapFactory.decodeFile(albumItems.get(position).albumArt()));
-    }
+    Glide.with(holder.itemView.getContext())
+        .load(albumItems.get(position).albumArt())
+        .placeholder(R.drawable.a10)
+        .error(R.drawable.a1)
+        .crossFade()
+        .into(holder.imageView);
   }
 
   @Override public int getItemCount() {

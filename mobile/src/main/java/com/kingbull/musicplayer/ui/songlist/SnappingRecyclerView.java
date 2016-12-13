@@ -18,9 +18,7 @@ package com.kingbull.musicplayer.ui.songlist;
 
 import android.content.Context;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -332,24 +330,6 @@ public final class SnappingRecyclerView extends RecyclerView {
   @Override protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
     mHandler.removeCallbacksAndMessages(null);
-  }
-
-  @Override protected Parcelable onSaveInstanceState() {
-    Parcelable parcelable = super.onSaveInstanceState();
-    Bundle bundle = new Bundle();
-    bundle.putParcelable("savedState", parcelable);
-    bundle.putInt("position", _selectedPosition);
-    return bundle;
-  }
-
-  @Override protected void onRestoreInstanceState(Parcelable state) {
-    if (state instanceof Bundle) {
-      Bundle bundle = (Bundle) state;
-      this._selectedPosition = bundle.getInt("position");
-      // ... load everything
-      state = bundle.getParcelable("savedState");
-    }
-    super.onRestoreInstanceState(state);
   }
 
   public enum Orientation {
