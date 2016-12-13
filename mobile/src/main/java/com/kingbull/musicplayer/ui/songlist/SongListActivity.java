@@ -54,9 +54,11 @@ public final class SongListActivity extends BaseActivity
         songListPresenter.onAlbumSelected(position);
       }
     });
+    coverRecyclerView.setHasFixedSize(true);
     adapter = new SongsAdapter(songList);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(adapter);
+    recyclerView.setHasFixedSize(true);
     if (getIntent().hasExtra(GENRE_ID)) {
       getSupportLoaderManager().initLoader(INT_GENRE_ID, null, this);
     } else if (getIntent().hasExtra(ARTIST_ID)) {

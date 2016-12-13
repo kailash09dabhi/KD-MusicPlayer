@@ -8,17 +8,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.Virtualizer;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.NotificationCompat;
+import android.support.v7.widget.AppCompatDrawableManager;
 import android.widget.RemoteViews;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
@@ -195,11 +201,11 @@ public final class MusicService extends Service implements Player, Player.Callba
   @Override public NowPlayingList nowPlayingMusicList() {
     return musicPlayer.nowPlayingMusicList();
   }
+  // Playback Callbacks
 
   @Override public void onSwitchLast(@Nullable Music last) {
     showNotification();
   }
-  // Playback Callbacks
 
   @Override public void onSwitchNext(@Nullable Music next) {
     showNotification();
@@ -212,6 +218,7 @@ public final class MusicService extends Service implements Player, Player.Callba
   @Override public void onPlayStatusChanged(boolean isPlaying) {
     showNotification();
   }
+  // Notification
 
   /**
    * Show a notification while this service is running.
@@ -233,7 +240,6 @@ public final class MusicService extends Service implements Player, Player.Callba
     // Send the notification.
     startForeground(NOTIFICATION_ID, notification);
   }
-  // Notification
 
   private RemoteViews getSmallContentView() {
     if (mContentViewSmall == null) {
@@ -255,14 +261,29 @@ public final class MusicService extends Service implements Player, Player.Callba
   }
 
   private void setUpRemoteView(RemoteViews remoteView) {
-    remoteView.setImageViewResource(R.id.image_view_close, R.drawable.ic_remote_view_close);
-    remoteView.setImageViewResource(R.id.image_view_play_last, R.drawable.ic_remote_view_play_last);
-    remoteView.setImageViewResource(R.id.image_view_play_next, R.drawable.ic_remote_view_play_next);
+    setVectorDrawable(remoteView, R.id.image_view_close, R.drawable.ic_remote_view_close);
+    setVectorDrawable(remoteView, R.id.image_view_play_last, R.drawable.ic_remote_view_play_last);
+    setVectorDrawable(remoteView, R.id.image_view_play_next, R.drawable.ic_remote_view_play_next);
     remoteView.setOnClickPendingIntent(R.id.button_close, getPendingIntent(ACTION_STOP_SERVICE));
     remoteView.setOnClickPendingIntent(R.id.button_play_last, getPendingIntent(ACTION_PLAY_LAST));
     remoteView.setOnClickPendingIntent(R.id.button_play_next, getPendingIntent(ACTION_PLAY_NEXT));
     remoteView.setOnClickPendingIntent(R.id.button_play_toggle,
         getPendingIntent(ACTION_PLAY_TOGGLE));
+  }
+
+  private void setVectorDrawable(RemoteViews remoteViews, @IdRes int resId,
+      @DrawableRes int drawableId) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      remoteViews.setImageViewResource(resId, drawableId);
+    } else {
+      Drawable d = AppCompatDrawableManager.get().getDrawable(this, drawableId);
+      Bitmap b = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(),
+          Bitmap.Config.ARGB_8888);
+      Canvas c = new Canvas(b);
+      d.setBounds(0, 0, c.getWidth(), c.getHeight());
+      d.draw(c);
+      remoteViews.setImageViewBitmap(resId, b);
+    }
   }
 
   private void updateRemoteViews(RemoteViews remoteView) {
@@ -271,7 +292,7 @@ public final class MusicService extends Service implements Player, Player.Callba
       remoteView.setTextViewText(R.id.nameTextView, music.media().title());
       remoteView.setTextViewText(R.id.text_view_artist, music.media().artist());
     }
-    remoteView.setImageViewResource(R.id.image_view_play_toggle,
+    setVectorDrawable(remoteView, R.id.image_view_play_toggle,
         isPlaying() ? R.drawable.ic_remote_view_pause : R.drawable.ic_remote_view_play);
     Bitmap album = AlbumUtils.parseAlbum(getPlayingSong());
     if (album == null) {

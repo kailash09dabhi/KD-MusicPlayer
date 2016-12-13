@@ -26,6 +26,9 @@
     <activity android:name=".ui.settings.SettingsActivity"/>
     <activity android:name=".ui.main.categories.albumlist.album.AlbumActivity"/>
 
+    <meta-data
+        android:name="com.kingbull.musicplayer.image.AlbumArtModule"
+        android:value="GlideModule"/>
     <receiver android:name=".player.CallReceiver">
       <intent-filter>
         <action android:name="android.intent.action.PHONE_STATE"/>

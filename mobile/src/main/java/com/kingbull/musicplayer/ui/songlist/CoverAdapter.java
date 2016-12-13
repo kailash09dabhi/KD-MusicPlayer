@@ -1,6 +1,5 @@
 package com.kingbull.musicplayer.ui.songlist;
 
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.bumptech.glide.Glide;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.utils.AlbumUtils;
+import com.kingbull.musicplayer.image.AlbumArt;
 import java.util.List;
 
 /**
@@ -21,7 +21,7 @@ import java.util.List;
 
 public final class CoverAdapter extends RecyclerView.Adapter<CoverAdapter.SongFileViewHolder> {
 
-  List<Music> songs;
+  private List<Music> songs;
 
   public CoverAdapter(List<Music> songs) {
     this.songs = songs;
@@ -33,12 +33,12 @@ public final class CoverAdapter extends RecyclerView.Adapter<CoverAdapter.SongFi
   }
 
   @Override public void onBindViewHolder(SongFileViewHolder holder, int position) {
-    Bitmap bitmap = AlbumUtils.parseAlbum(songs.get(position));
-    if (bitmap == null) {
-      holder.imageView.setImageResource(R.drawable.default_record_album);
-    } else {
-      holder.imageView.setImageBitmap(bitmap);
-    }
+    Glide.with(holder.itemView.getContext())
+        .load(new AlbumArt(songs.get(position).media().path()))
+        .placeholder(R.drawable.a10)
+        .error(R.drawable.a1)
+        .crossFade()
+        .into(holder.imageView);
     holder.labelView.setText(songs.get(position).media().album());
   }
 

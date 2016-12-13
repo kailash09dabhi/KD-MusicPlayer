@@ -2,6 +2,7 @@ package com.kingbull.musicplayer;
 
 import android.app.Application;
 import android.content.Intent;
+import android.support.v7.app.AppCompatDelegate;
 import com.facebook.stetho.Stetho;
 import com.kingbull.musicplayer.di.AppComponent;
 import com.kingbull.musicplayer.di.AppModule;
@@ -38,6 +39,7 @@ public final class MusicPlayerApp extends Application {
     injectDependencies();
     startService(new Intent(this, MusicService.class));
     Stetho.initializeWithDefaults(this);
+    AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
   }
 
   private void injectDependencies() {

@@ -13,7 +13,11 @@ android {
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
+    vectorDrawables {
+      useSupportLibrary = true
+    }
   }
+
   buildTypes {
     debug {
       minifyEnabled false
@@ -53,6 +57,9 @@ dependencies {
 
   compile 'com.github.nisrulz:recyclerviewhelper:25.0.1'
   compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+  
+  compile 'com.github.bumptech.glide:glide:3.7.0'
+
 
 
 
