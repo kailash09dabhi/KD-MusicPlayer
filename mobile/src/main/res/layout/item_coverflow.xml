@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/cover_width"
-    android:layout_height="@dimen/cover_height"
-    android:background="@drawable/ic_coverflow"
-    android:clickable="true"
-    android:orientation="vertical"
-    android:padding="@dimen/mp.padding.small">
-
-  <ImageView
-      android:id="@+id/image"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_centerHorizontal="true"
-      android:layout_centerVertical="true"
-      android:layout_weight="1"
-      android:adjustViewBounds="true"
-      android:scaleType="centerCrop"
-      tools:src="@drawable/artistbg"/>
-
-  <TextView
-      android:id="@+id/label"
-      android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:background="@color/transparent_black"
+      android:clickable="true"
+      android:clipChildren="false"
       android:gravity="center"
-      android:textAppearance="?android:attr/textAppearanceSmallInverse"
-      tools:text="Title"/>
-</LinearLayout>
+      android:orientation="vertical"
+      android:padding="@dimen/mp.padding.small">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="@dimen/cover_width"
+        android:layout_height="@dimen/cover_width"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:adjustViewBounds="true"
+        tools:src="@drawable/default_record_album"/>
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingTop="@dimen/mp.padding.small"
+        android:singleLine="true"
+        tools:text="Title"
+        style="@style/AppTheme.TextAppearance.List.Small"/>
+
+  </LinearLayout>
+</FrameLayout>

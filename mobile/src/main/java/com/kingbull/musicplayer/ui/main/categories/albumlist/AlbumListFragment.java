@@ -18,9 +18,9 @@ import android.view.ViewGroup;
 import com.kingbull.musicplayer.R;
 import java.util.List;
 
-public final class AlbumFragment extends Fragment
-    implements LoaderManager.LoaderCallbacks<Cursor>, Album.View {
-  Album.Presenter presenter = new AlbumPresenter();
+public final class AlbumListFragment extends Fragment
+    implements LoaderManager.LoaderCallbacks<Cursor>, AlbumList.View {
+  AlbumList.Presenter presenter = new AlbumListPresenter();
   private RecyclerView recyclerView;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,7 +38,7 @@ public final class AlbumFragment extends Fragment
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    return new AlbumCursorLoader(getContext());
+    return new AlbumListCursorLoader(getContext());
   }
 
   @Override public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
@@ -50,6 +50,6 @@ public final class AlbumFragment extends Fragment
   }
 
   @Override public void showAlbums(List<AlbumItem> songs) {
-    recyclerView.setAdapter(new AlbumAdapter(songs));
+    recyclerView.setAdapter(new AlbumListAdapter(songs));
   }
 }

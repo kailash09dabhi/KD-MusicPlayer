@@ -1,6 +1,7 @@
-package com.kingbull.musicplayer.ui.songlist;
+package com.kingbull.musicplayer.ui.main.categories.albumlist.album;
 
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
@@ -9,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,7 +20,6 @@ import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,44 +27,30 @@ import java.util.List;
  * @date 11/8/2016.
  */
 
-public final class SongListActivity extends BaseActivity
-    implements LoaderManager.LoaderCallbacks<Cursor>, SongList.View {
+public final class AlbumActivity extends BaseActivity
+    implements LoaderManager.LoaderCallbacks<Cursor>, Album.View {
 
-  public static final int INT_GENRE_ID = 1;
-  public static final int INT_ARTIST_ID = 2;
   public static final int INT_ALBUM_ID = 3;
-  public static final String GENRE_ID = "genre_id";
-  public static final String ARTIST_ID = "artist_id";
   public static final String ALBUM_ID = "album_id";
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
-  @BindView(R.id.coverRecyclerView) SnappingRecyclerView coverRecyclerView;
   @BindView(R.id.songMenu) SongListRayMenu songListRayMenu;
-  SongList.Presenter songListPresenter = new SongListPresenter();
+  @BindView(R.id.albumart) ImageView albumArtView;
+  @BindView(R.id.totaltime) TextView totalTimeView;
+  @BindView(R.id.totaltracks) TextView totalTracks;
+  @BindView(R.id.rootView) View rootView;
+  Album.Presenter songListPresenter = new SongListPresenter();
   SongsAdapter adapter;
   List<Music> songList = new ArrayList<>();
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_song_list);
+    setContentView(R.layout.fragment_album);
     ButterKnife.bind(this);
-    coverRecyclerView.setLayoutManager(
-        new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-    coverRecyclerView.setOnViewSelectedListener(new SnappingRecyclerView.OnViewSelectedListener() {
-      @Override public void onSelected(View view, int position) {
-        songListPresenter.onAlbumSelected(position);
-      }
-    });
     adapter = new SongsAdapter(songList);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(adapter);
-    if (getIntent().hasExtra(GENRE_ID)) {
-      getSupportLoaderManager().initLoader(INT_GENRE_ID, null, this);
-    } else if (getIntent().hasExtra(ARTIST_ID)) {
-      getSupportLoaderManager().initLoader(INT_ARTIST_ID, null, this);
-    } else if (getIntent().hasExtra(ALBUM_ID)) {
-      getSupportLoaderManager().initLoader(INT_ALBUM_ID, null, this);
-    }
+    getSupportLoaderManager().initLoader(INT_ALBUM_ID, null, this);
     titleView.setText(getIntent().getStringExtra("title"));
     titleView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
     titleView.setSingleLine(true);
@@ -83,6 +70,10 @@ public final class SongListActivity extends BaseActivity
         //presenter.onSortMenuClick();
       }
     });
+    ImagePath imagePath = new ImagePath(getIntent().getStringExtra("albumart"));
+    Bitmap bitmap = imagePath.toBitmap(getResources());
+    albumArtView.setImageBitmap(bitmap);
+    rootView.setBackground(imagePath.toBlurredBitmap(bitmap, getResources()));
   }
 
   @Override protected void onPresenterPrepared(Presenter presenter) {
@@ -94,11 +85,6 @@ public final class SongListActivity extends BaseActivity
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    if (INT_GENRE_ID == id) {
-      return SongListCursorLoader.instance(this, getIntent().getIntExtra(GENRE_ID, 0), GENRE_ID);
-    } else if (id == INT_ARTIST_ID) {
-      return SongListCursorLoader.instance(this, getIntent().getIntExtra(ARTIST_ID, 0), ARTIST_ID);
-    }
     return SongListCursorLoader.instance(this, getIntent().getIntExtra(ALBUM_ID, 0), ALBUM_ID);
   }
 
@@ -113,9 +99,10 @@ public final class SongListActivity extends BaseActivity
     songList.clear();
     songList.addAll(songs);
     adapter.notifyDataSetChanged();
+    totalTracks.setText(String.format("Total Tracks: %d",songs.size()));
   }
 
-  @Override public void setAlbumPager(Music[] songs) {
-    coverRecyclerView.setAdapter(new CoverAdapter(Arrays.asList(songs)));
+  @Override public void showTotalDuration(String duration) {
+    totalTimeView.setText(String.format("Total Time: %s", duration));
   }
 }

@@ -27,6 +27,10 @@ final class PagerAdapter extends FragmentPagerAdapter {
     return fragment;
   }
 
+  //@Override public float getPageWidth(int position) {
+  //  return 0.44f;
+  //}
+
   @Override public int getCount() {
     return tabs.length;
   }

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.ui.songlist.SongListActivity;
+import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumActivity;
 import java.util.List;
 
 /**
@@ -20,11 +20,11 @@ import java.util.List;
  * @date 11/8/2016.
  */
 
-public final class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> {
+public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {
 
   List<AlbumItem> albumItems;
 
-  public AlbumAdapter(List<AlbumItem> albumItems) {
+  public AlbumListAdapter(List<AlbumItem> albumItems) {
     this.albumItems = albumItems;
   }
 
@@ -56,9 +56,10 @@ public final class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHo
     }
 
     @Override public void onClick(View view) {
-      Intent intent = new Intent(view.getContext(), SongListActivity.class);
+      Intent intent = new Intent(view.getContext(), AlbumActivity.class);
       intent.putExtra("album_id", albumItems.get(getAdapterPosition()).id());
       intent.putExtra("title", albumItems.get(getAdapterPosition()).name());
+      intent.putExtra("albumart", albumItems.get(getAdapterPosition()).albumArt());
       view.getContext().startActivity(intent);
     }
   }

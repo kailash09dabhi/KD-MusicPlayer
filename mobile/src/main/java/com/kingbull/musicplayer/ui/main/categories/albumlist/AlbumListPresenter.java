@@ -23,11 +23,11 @@ import static android.content.ContentValues.TAG;
  * @date 11/10/2016.
  */
 
-public final class AlbumPresenter extends Presenter<Album.View> implements Album.Presenter {
+public final class AlbumListPresenter extends Presenter<AlbumList.View> implements AlbumList.Presenter {
 
   private CompositeDisposable compositeDisposable;
 
-  @Override public void takeView(@NonNull Album.View view) {
+  @Override public void takeView(@NonNull AlbumList.View view) {
     super.takeView(view);
     compositeDisposable = new CompositeDisposable();
   }

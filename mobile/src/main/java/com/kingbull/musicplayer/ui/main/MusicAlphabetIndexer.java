@@ -11,7 +11,7 @@ import android.provider.MediaStore;
 import android.widget.AlphabetIndexer;
 
 /**
- * Handles comparisons in a different way because the Album, Genre and Artist
+ * Handles comparisons in a different way because the AlbumList, Genre and Artist
  * name are stripped of some prefixes such as "a", "an", "the" and some symbols.
  */
 public final class MusicAlphabetIndexer extends AlphabetIndexer {

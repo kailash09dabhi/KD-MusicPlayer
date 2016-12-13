@@ -24,6 +24,7 @@
     <activity android:name=".ui.music.MusicPlayerActivity"/>
     <activity android:name=".ui.equalizer.EqualizerActivity"/>
     <activity android:name=".ui.settings.SettingsActivity"/>
+    <activity android:name=".ui.main.categories.albumlist.album.AlbumActivity"/>
 
     <receiver android:name=".player.CallReceiver">
       <intent-filter>

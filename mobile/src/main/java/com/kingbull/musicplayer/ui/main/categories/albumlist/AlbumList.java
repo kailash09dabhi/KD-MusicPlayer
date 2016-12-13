@@ -9,7 +9,7 @@ import java.util.List;
  * @date 11/10/2016.
  */
 
-public interface Album {
+public interface AlbumList {
   interface View extends Mvp.View {
     void showAlbums(List<AlbumItem> songs);
   }
@@ -17,7 +17,7 @@ public interface Album {
   interface Model extends Mvp.Model {
   }
 
-  interface Presenter extends Mvp.Presenter<Album.View> {
+  interface Presenter extends Mvp.Presenter<AlbumList.View> {
     void onAlbumCursorLoadFinished(Cursor cursor);
   }
 }

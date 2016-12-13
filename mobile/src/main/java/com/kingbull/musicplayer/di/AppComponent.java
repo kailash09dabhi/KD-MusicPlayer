@@ -35,6 +35,7 @@ public interface AppComponent {
   void inject(SqlEqualizerPreset preset);
   void inject(PresetReverbDialogFragment fragment);
   void inject(EqualizerFragment fragment);
+  void inject(com.kingbull.musicplayer.ui.main.categories.albumlist.album.SongsAdapter adapter);
 
   void inject(EqualizerModel model);
 
