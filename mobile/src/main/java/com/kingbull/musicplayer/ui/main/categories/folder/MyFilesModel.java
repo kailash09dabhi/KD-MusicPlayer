@@ -1,7 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.folder;
 
 import android.os.Environment;
-import com.kingbull.musicplayer.domain.Directory;
 import com.kingbull.musicplayer.domain.FileMusicMap;
 import com.kingbull.musicplayer.domain.Music;
 import java.io.File;
@@ -16,7 +15,6 @@ import javax.inject.Inject;
 
 public final class MyFilesModel implements MyFiles.Model {
   private final File topFolder = Environment.getExternalStorageDirectory();
-  Directory directory = new Directory();
   @Inject FileMusicMap fileMusicMap;
   private File currentFolder = topFolder;
 
@@ -28,7 +26,10 @@ public final class MyFilesModel implements MyFiles.Model {
   }
 
   @Override public List<File> filesOfCurrentFolder() {
-    return directory.audioFiles(currentFolder);
+    Directory directory = new Directory(currentFolder);
+    List<File> files = directory.directoriesAsFiles();
+    files.addAll(directory.files());
+    return files;
   }
 
   @Override public void currentFolder(File file) {

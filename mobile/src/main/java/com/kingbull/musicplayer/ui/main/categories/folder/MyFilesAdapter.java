@@ -61,8 +61,10 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
   @Override public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
     if (viewHolder instanceof FolderFileViewHolder) {
       FolderFileViewHolder holder = (FolderFileViewHolder) viewHolder;
-      holder.fileNameView.setText(files.get(position).getName());
-      holder.durationView.setText(directory.audioFiles(files.get(position)).size() + " song");
+      holder.folderNameView.setText(files.get(position).getName());
+      holder.totalFilesView.setText(
+          new com.kingbull.musicplayer.ui.main.categories.folder.Directory(
+              files.get(position)).totalFiles().size() + " " + "song");
     } else if (viewHolder instanceof SongFileViewHolder) {
       SongFileViewHolder holder = (SongFileViewHolder) viewHolder;
       Media media = fileMusicMap.music(files.get(position)).media();
@@ -77,8 +79,8 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
   }
 
   class FolderFileViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    @BindView(R.id.fileName) TextView fileNameView;
-    @BindView(R.id.durationView) TextView durationView;
+    @BindView(R.id.fileName) TextView folderNameView;
+    @BindView(R.id.durationView) TextView totalFilesView;
     @BindView(R.id.artistView) TextView artistView;
 
     public FolderFileViewHolder(View itemView) {
