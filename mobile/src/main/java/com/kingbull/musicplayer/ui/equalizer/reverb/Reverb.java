@@ -6,12 +6,7 @@ package com.kingbull.musicplayer.ui.equalizer.reverb;
  */
 
 public interface Reverb {
-  short id();
-
-  String name();
-
-  class LargeHall implements Reverb {
-
+  Reverb LARGE_HALL = new Reverb() {
     @Override public short id() {
       return android.media.audiofx.PresetReverb.PRESET_LARGEHALL;
     }
@@ -19,10 +14,8 @@ public interface Reverb {
     @Override public String name() {
       return "Large Hall";
     }
-  }
-
-  class LargeRoom implements Reverb {
-
+  };
+  Reverb LARGE_ROOM = new Reverb() {
     @Override public short id() {
       return android.media.audiofx.PresetReverb.PRESET_LARGEROOM;
     }
@@ -30,10 +23,8 @@ public interface Reverb {
     @Override public String name() {
       return "Large Room";
     }
-  }
-
-  class MediumHall implements Reverb {
-
+  };
+  Reverb MEDIUM_HALL = new Reverb() {
     @Override public short id() {
       return android.media.audiofx.PresetReverb.PRESET_MEDIUMHALL;
     }
@@ -41,10 +32,8 @@ public interface Reverb {
     @Override public String name() {
       return "Medium Hall";
     }
-  }
-
-  class MediumRoom implements Reverb {
-
+  };
+  Reverb MEDIUM_ROOM = new Reverb() {
     @Override public short id() {
       return android.media.audiofx.PresetReverb.PRESET_MEDIUMROOM;
     }
@@ -52,10 +41,8 @@ public interface Reverb {
     @Override public String name() {
       return "Medium Room";
     }
-  }
-
-  class SmallRoom implements Reverb {
-
+  };
+  Reverb SMALL_ROOM = new Reverb() {
     @Override public short id() {
       return android.media.audiofx.PresetReverb.PRESET_SMALLROOM;
     }
@@ -63,10 +50,8 @@ public interface Reverb {
     @Override public String name() {
       return "Small Room";
     }
-  }
-
-  class None implements Reverb {
-
+  };
+  Reverb NONE = new Reverb() {
     @Override public short id() {
       return android.media.audiofx.PresetReverb.PRESET_NONE;
     }
@@ -74,10 +59,8 @@ public interface Reverb {
     @Override public String name() {
       return "None";
     }
-  }
-
-  class Plate implements Reverb {
-
+  };
+  Reverb PLATE = new Reverb() {
     @Override public short id() {
       return android.media.audiofx.PresetReverb.PRESET_PLATE;
     }
@@ -85,5 +68,9 @@ public interface Reverb {
     @Override public String name() {
       return "Plate";
     }
-  }
+  };
+
+  short id();
+
+  String name();
 }

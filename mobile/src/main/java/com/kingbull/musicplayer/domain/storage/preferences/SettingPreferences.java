@@ -17,9 +17,11 @@
 package com.kingbull.musicplayer.domain.storage.preferences;
 
 import android.content.SharedPreferences;
+import android.media.audiofx.PresetReverb;
 import android.preference.PreferenceManager;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.player.MusicMode;
+import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 
 public final class SettingPreferences {
 
@@ -62,10 +64,34 @@ public final class SettingPreferences {
     settingsPrefs.edit().putBoolean(Key.LAST_CHOSEN_PRESET_IS_OF_SYSTEM, isOfSystem).apply();
   }
 
+  public void saveReverb(Reverb reverb) {
+    settingsPrefs.edit().putInt(Key.REVERB_ID, reverb.id()).apply();
+  }
+
+  public Reverb reverb() {
+    int reverbId = settingsPrefs.getInt(Key.REVERB_ID, PresetReverb.PRESET_NONE);
+    if (reverbId == Reverb.LARGE_HALL.id()) {
+      return Reverb.LARGE_HALL;
+    } else if (reverbId == Reverb.LARGE_ROOM.id()) {
+      return Reverb.LARGE_ROOM;
+    } else if (reverbId == Reverb.MEDIUM_HALL.id()) {
+      return Reverb.MEDIUM_HALL;
+    } else if (reverbId == Reverb.MEDIUM_ROOM.id()) {
+      return Reverb.MEDIUM_ROOM;
+    } else if (reverbId == Reverb.SMALL_ROOM.id()) {
+      return Reverb.SMALL_ROOM;
+    } else if (reverbId == Reverb.PLATE.id()) {
+      return Reverb.PLATE;
+    } else {
+      return Reverb.NONE;
+    }
+  }
+
   public final static class Key {
     public final static String MUSIC_MODE = "music_mode";
     public final static String IS_FULL_SCREEN = "full_screen";
     public final static String LAST_CHOSEN_PRESET_IS_OF_SYSTEM = "last_chosen_preset_is_of_system";
     public final static String LAST_CHOSEN_PRESET_ID = "last_chosen_preset_id";
+    public final static String REVERB_ID = "reverb_id";
   }
 }

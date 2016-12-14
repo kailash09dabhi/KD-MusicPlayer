@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.Preset;
 import com.kingbull.musicplayer.player.Player;
 import java.util.Arrays;
@@ -35,8 +36,8 @@ public final class PresetReverbDialogFragment extends DialogFragment implements 
   @BindView(R.id.listView) ListView listView;
   @Inject Player player;
   Reverb[] reverbs = {
-      new Reverb.LargeHall(), new Reverb.LargeRoom(), new Reverb.MediumHall(),
-      new Reverb.MediumRoom(), new Reverb.SmallRoom(), new Reverb.Plate(), new Reverb.None(),
+      Reverb.LARGE_HALL, Reverb.LARGE_ROOM, Reverb.MEDIUM_HALL, Reverb.MEDIUM_ROOM,
+      Reverb.SMALL_ROOM, Reverb.PLATE, Reverb.NONE,
   };
 
   public static PresetReverbDialogFragment newInstance() {
@@ -68,6 +69,7 @@ public final class PresetReverbDialogFragment extends DialogFragment implements 
       @Override
       public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
         player.useEffect(reverbs.get(position));
+        new SettingPreferences().saveReverb(reverbs.get(position));
         RxBus.getInstance().post(new Preset(Preset.Event.REVERB, reverbs.get(position)));
         dismiss();
       }

@@ -11,7 +11,6 @@ import android.media.AudioManager;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Virtualizer;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,16 +24,17 @@ import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.Preset;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.PresetReverbDialogFragment;
+import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.observers.DisposableObserver;
 import javax.inject.Inject;
 
 public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
@@ -98,19 +98,6 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     return view;
   }
 
-  @NonNull private <T> DisposableObserver<T> observer() {
-    return new DisposableObserver<T>() {
-      @Override public void onNext(T value) {
-      }
-
-      @Override public void onError(Throwable e) {
-      }
-
-      @Override public void onComplete() {
-      }
-    };
-  }
-
   @Override public void onDestroyView() {
     super.onDestroyView();
     if (compositeSubscription != null) {
@@ -168,6 +155,9 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
         }
       }
     });
+    Reverb reverb = new SettingPreferences().reverb();
+    effectButton.setText(reverb.name());
+
   }
 
   @Override protected void onPresenterPrepared(final Equalizer.Presenter presenter) {
