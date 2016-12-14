@@ -7,8 +7,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.storage.sqlite.CurrentDateTime;
-import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlTableRow;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 import javax.inject.Inject;
 
 /**
@@ -22,15 +22,11 @@ public interface MediaStat extends SqlTableRow {
 
   long mediaId();
 
-  long numberOfTimesPlayed();
-
-  long lastTimePlayed();
-
-  String playlistIds();
-
   void addToPlaylist(long playListId);
 
   void saveLastPlayed();
+
+  void toggleFavourite();
 
   class Smart implements MediaStat, Parcelable, SqlTableRow {
     public static final Creator<Smart> CREATOR = new Creator<Smart>() {
@@ -42,23 +38,23 @@ public interface MediaStat extends SqlTableRow {
         return new Smart[size];
       }
     };
-    private final boolean isFavourite;
     private final long lastTimePlayed;
     private final long mediaId;
     @Inject SQLiteDatabase sqliteDatabase;
+    private boolean isFavourite;
     private long numberOfTimesPlayed;
     private String playlistIds;
 
     public Smart(Cursor cursor) {
       mediaId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStatTable.Columns.MEDIA_ID));
-      isFavourite = cursor.getInt(cursor.getColumnIndexOrThrow(
-          MediaStatTable.Columns.FAVORITE)) == 1;
-      numberOfTimesPlayed = cursor.getLong(cursor.getColumnIndexOrThrow(
-          MediaStatTable.Columns.NUMBER_OF_TIMES_PLAYED));
+      isFavourite =
+          cursor.getInt(cursor.getColumnIndexOrThrow(MediaStatTable.Columns.FAVORITE)) == 1;
+      numberOfTimesPlayed = cursor.getLong(
+          cursor.getColumnIndexOrThrow(MediaStatTable.Columns.NUMBER_OF_TIMES_PLAYED));
       playlistIds =
           cursor.getString(cursor.getColumnIndexOrThrow(MediaStatTable.Columns.PLAYLIST_IDS));
-      lastTimePlayed = cursor.getLong(cursor.getColumnIndexOrThrow(
-          MediaStatTable.Columns.LAST_TIME_PLAYED));
+      lastTimePlayed =
+          cursor.getLong(cursor.getColumnIndexOrThrow(MediaStatTable.Columns.LAST_TIME_PLAYED));
       MusicPlayerApp.instance().component().inject(this);
     }
 
@@ -88,31 +84,19 @@ public interface MediaStat extends SqlTableRow {
       return mediaId;
     }
 
-    @Override public long numberOfTimesPlayed() {
-      return numberOfTimesPlayed;
-    }
-
-    @Override public long lastTimePlayed() {
-      return lastTimePlayed;
-    }
-
-    @Override public String playlistIds() {
-      return playlistIds;
-    }
-
     @Override public void addToPlaylist(long playlistId) {
       this.playlistIds = this.playlistIds + "(" + playlistId + ")";
       save();
     }
 
     @Override public void saveLastPlayed() {
-      ContentValues values = new ContentValues();
-      values.put(MediaStatTable.Columns.MEDIA_ID, mediaId);
-      values.put(MediaStatTable.Columns.LAST_TIME_PLAYED, new CurrentDateTime().toString());
-      values.put(MediaStatTable.Columns.NUMBER_OF_TIMES_PLAYED, ++numberOfTimesPlayed);
-      values.put(MediaStatTable.Columns.UPDATED_AT, new CurrentDateTime().toString());
-      sqliteDatabase.insertWithOnConflict(MediaStatTable.NAME, null, values,
-          SQLiteDatabase.CONFLICT_REPLACE);
+      numberOfTimesPlayed++;
+      save();
+    }
+
+    @Override public void toggleFavourite() {
+      this.isFavourite = !isFavourite;
+      save();
     }
 
     @Override public int describeContents() {
@@ -130,6 +114,7 @@ public interface MediaStat extends SqlTableRow {
     @Override public long save() {
       ContentValues values = new ContentValues();
       values.put(MediaStatTable.Columns.MEDIA_ID, mediaId);
+      values.put(MediaStatTable.Columns.FAVORITE, isFavourite ? 1 : 0);
       values.put(MediaStatTable.Columns.PLAYLIST_IDS, playlistIds);
       values.put(MediaStatTable.Columns.LAST_TIME_PLAYED, new CurrentDateTime().toString());
       values.put(MediaStatTable.Columns.NUMBER_OF_TIMES_PLAYED, numberOfTimesPlayed);

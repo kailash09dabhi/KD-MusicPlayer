@@ -22,6 +22,8 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     if (player == null) return;
     Music currentSong = player.getPlayingSong();
     if (currentSong != null) {
+      currentSong.mediaStat().toggleFavourite();
+      view().updateFavoriteToggle(currentSong.mediaStat().isFavorite());
     }
   }
 

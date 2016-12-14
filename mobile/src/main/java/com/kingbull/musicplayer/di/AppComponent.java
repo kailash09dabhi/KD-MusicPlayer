@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.di;
 
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.MediaStat;
+import com.kingbull.musicplayer.domain.storage.sqlite.FavouritesPlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.LastPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.MostPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlEqualizerPreset;
@@ -38,6 +39,7 @@ public interface AppComponent {
   void inject(com.kingbull.musicplayer.ui.main.categories.albumlist.album.SongsAdapter adapter);
 
   void inject(EqualizerModel model);
+  void inject(FavouritesPlayList playList);
 
   void inject(PresetDialogFragment fragment);
 

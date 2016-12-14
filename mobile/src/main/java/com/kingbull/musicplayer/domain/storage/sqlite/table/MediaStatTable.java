@@ -149,6 +149,35 @@ public final class MediaStatTable implements SqlTable {
     }
   }
 
+  public List<Music> favourites() {
+    String query = "select * from "
+        + MediaStatTable.NAME
+        + " where "
+        + Columns.FAVORITE
+        + " = 1"
+        + "  order  by datetime("
+        + Columns.UPDATED_AT
+        + ") "
+        + "DESC";
+    ;
+    Cursor cursor = sqliteDatabase.rawQuery(query, null);
+    List<Music> itemList = new ArrayList<>();
+    if (cursor != null) {
+      if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        do {
+          SqlMusic song = new SqlMusic(new MediaStat.Smart(cursor));
+          if (song.media() == Media.NONE) {
+            song.mediaStat().delete();
+          } else {
+            itemList.add(song);
+          }
+        } while (cursor.moveToNext());
+      }
+      cursor.close();
+    }
+    return itemList;
+  }
+
   public static final class Columns {
     public static final String SQLITE_ID = "_id";
     public static final String MEDIA_ID = "media_id";
