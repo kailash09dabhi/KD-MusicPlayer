@@ -9,7 +9,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.domain.Directory;
 import com.kingbull.musicplayer.domain.FileMusicMap;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Milliseconds;
@@ -27,7 +26,6 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
 
   List<File> files;
   MyFiles.Presenter presenter;
-  Directory directory = new Directory();
   @Inject FileMusicMap fileMusicMap;
 
   public MyFilesAdapter(List<File> files, MyFiles.Presenter presenter) {
@@ -63,8 +61,9 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
       FolderFileViewHolder holder = (FolderFileViewHolder) viewHolder;
       holder.folderNameView.setText(files.get(position).getName());
       holder.totalFilesView.setText(
-          new com.kingbull.musicplayer.ui.main.categories.folder.Directory(
-              files.get(position)).totalFiles().size() + " " + "song");
+          new Folder.Cached(Folder.Smart.from(files.get(position))).allMusics().size()
+              + " "
+              + "song");
     } else if (viewHolder instanceof SongFileViewHolder) {
       SongFileViewHolder holder = (SongFileViewHolder) viewHolder;
       Media media = fileMusicMap.music(files.get(position)).media();

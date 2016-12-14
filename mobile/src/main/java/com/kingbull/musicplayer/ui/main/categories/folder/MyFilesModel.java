@@ -26,9 +26,9 @@ public final class MyFilesModel implements MyFiles.Model {
   }
 
   @Override public List<File> filesOfCurrentFolder() {
-    Directory directory = new Directory(currentFolder);
-    List<File> files = directory.directoriesAsFiles();
-    files.addAll(directory.files());
+    Folder folder = new Folder.Cached(Folder.Smart.from(currentFolder));
+    List<File> files = new ArrayList<>(folder.musicFoldersAsFiles());
+    files.addAll(folder.musics());
     return files;
   }
 
