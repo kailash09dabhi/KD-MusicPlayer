@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.domain.storage;
+package com.kingbull.musicplayer.domain.storage.sqlite;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -8,7 +8,7 @@ import android.provider.MediaStore;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
+import com.kingbull.musicplayer.domain.PlayList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

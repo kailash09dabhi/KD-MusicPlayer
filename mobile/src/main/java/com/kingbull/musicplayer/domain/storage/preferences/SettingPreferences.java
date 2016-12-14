@@ -14,7 +14,7 @@
  *
  */
 
-package com.kingbull.musicplayer.domain;
+package com.kingbull.musicplayer.domain.storage.preferences;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;

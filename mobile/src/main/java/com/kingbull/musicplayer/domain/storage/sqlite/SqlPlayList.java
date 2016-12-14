@@ -7,7 +7,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.PlayList;
+import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
 import java.util.List;

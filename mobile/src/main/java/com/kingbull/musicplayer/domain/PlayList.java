@@ -1,6 +1,5 @@
-package com.kingbull.musicplayer.domain.storage;
+package com.kingbull.musicplayer.domain;
 
-import com.kingbull.musicplayer.domain.Music;
 import java.util.List;
 
 /**

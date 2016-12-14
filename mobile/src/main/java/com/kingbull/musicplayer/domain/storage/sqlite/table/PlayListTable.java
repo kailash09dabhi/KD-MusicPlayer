@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.domain.storage.sqlite.table;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import com.kingbull.musicplayer.domain.storage.PlayList;
+import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlPlayList;
 import java.util.ArrayList;
 import java.util.List;

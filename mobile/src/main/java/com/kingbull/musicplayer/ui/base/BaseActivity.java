@@ -11,7 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import com.kingbull.musicplayer.domain.SettingPreferences;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;

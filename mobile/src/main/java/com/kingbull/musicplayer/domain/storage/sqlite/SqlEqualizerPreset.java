@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.media.audiofx.Equalizer;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
-import com.kingbull.musicplayer.domain.SettingPreferences;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.EqualizerPresetTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 import javax.inject.Inject;

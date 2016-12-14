@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.ui.music;
 
 import android.support.annotation.NonNull;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.SettingPreferences;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;

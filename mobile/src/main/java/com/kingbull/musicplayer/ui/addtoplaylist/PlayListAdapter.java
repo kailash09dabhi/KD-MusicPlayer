@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.domain.storage.PlayList;
+import com.kingbull.musicplayer.domain.PlayList;
 import java.util.List;
 
 /**

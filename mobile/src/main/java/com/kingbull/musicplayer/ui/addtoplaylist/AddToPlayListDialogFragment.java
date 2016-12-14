@@ -24,7 +24,7 @@ import butterknife.OnClick;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
-import com.kingbull.musicplayer.domain.storage.PlayList;
+import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlPlayList;

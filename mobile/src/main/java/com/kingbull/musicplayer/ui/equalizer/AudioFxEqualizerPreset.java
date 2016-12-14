@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.ui.equalizer;
 
 import android.media.audiofx.Equalizer;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
-import com.kingbull.musicplayer.domain.SettingPreferences;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 
 /**
  * @author Kailash Dabhi
