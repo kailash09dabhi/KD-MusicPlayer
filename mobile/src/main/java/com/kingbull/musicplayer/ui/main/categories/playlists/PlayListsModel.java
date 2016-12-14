@@ -1,10 +1,10 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists;
 
 import com.kingbull.musicplayer.MusicPlayerApp;
-import com.kingbull.musicplayer.domain.storage.LastPlayedPlayList;
-import com.kingbull.musicplayer.domain.storage.MostPlayedPlayList;
+import com.kingbull.musicplayer.domain.storage.sqlite.LastPlayedPlayList;
+import com.kingbull.musicplayer.domain.storage.sqlite.MostPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.PlayList;
-import com.kingbull.musicplayer.domain.storage.PlayListTable;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
 import com.kingbull.musicplayer.domain.storage.RecentlyAddedPlayList;
 import java.util.List;
 import javax.inject.Inject;

@@ -4,7 +4,7 @@ import android.util.Log;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
 import com.kingbull.musicplayer.domain.SettingPreferences;
-import com.kingbull.musicplayer.domain.storage.EqualizerPresetTable;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.EqualizerPresetTable;
 import com.kingbull.musicplayer.player.Player;
 import java.util.ArrayList;
 import java.util.List;

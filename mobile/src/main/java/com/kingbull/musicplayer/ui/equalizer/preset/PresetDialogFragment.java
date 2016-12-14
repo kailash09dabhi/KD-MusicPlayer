@@ -26,7 +26,7 @@ import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
-import com.kingbull.musicplayer.domain.storage.EqualizerPresetTable;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.EqualizerPresetTable;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.equalizer.AudioFxEqualizerPreset;
 import java.util.ArrayList;

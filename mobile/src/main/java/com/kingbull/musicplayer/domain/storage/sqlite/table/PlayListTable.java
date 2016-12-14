@@ -1,7 +1,9 @@
-package com.kingbull.musicplayer.domain.storage;
+package com.kingbull.musicplayer.domain.storage.sqlite.table;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import com.kingbull.musicplayer.domain.storage.PlayList;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlPlayList;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -41,7 +43,7 @@ public final class PlayListTable implements SqlTable {
     if (cursor != null) {
       if (cursor.getCount() > 0 && cursor.moveToFirst()) {
         do {
-          PlayList item = new SqlPlayList(new SqlPlaylistCursor(cursor));
+          PlayList item = new SqlPlayList(cursor);
           itemList.add(item);
         } while (cursor.moveToNext());
       }

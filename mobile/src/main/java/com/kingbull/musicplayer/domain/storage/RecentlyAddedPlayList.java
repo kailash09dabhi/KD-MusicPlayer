@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.domain.storage;
+package com.kingbull.musicplayer.domain.storage.sqlite.table;
 
 import android.database.Cursor;
 import android.provider.MediaStore;

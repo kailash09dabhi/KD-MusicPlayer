@@ -9,7 +9,7 @@ import android.util.Log;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.SettingPreferences;
-import com.kingbull.musicplayer.domain.storage.SqlMusic;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import java.io.IOException;

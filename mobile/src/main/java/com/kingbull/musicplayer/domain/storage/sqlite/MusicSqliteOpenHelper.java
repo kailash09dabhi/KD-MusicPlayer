@@ -1,8 +1,11 @@
-package com.kingbull.musicplayer.domain.storage;
+package com.kingbull.musicplayer.domain.storage.sqlite;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.EqualizerPresetTable;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
 
 public final class MusicSqliteOpenHelper extends SQLiteOpenHelper {
   public static final String DATABASE_NAME = "Music.db";
@@ -13,7 +16,7 @@ public final class MusicSqliteOpenHelper extends SQLiteOpenHelper {
   }
 
   @Override public void onCreate(SQLiteDatabase db) {
-    db.execSQL(com.kingbull.musicplayer.domain.storage.MediaStatTable.DEFINITION);
+    db.execSQL(MediaStatTable.DEFINITION);
     db.execSQL(PlayListTable.DEFINITION);
     db.execSQL(EqualizerPresetTable.DEFINITION);
   }

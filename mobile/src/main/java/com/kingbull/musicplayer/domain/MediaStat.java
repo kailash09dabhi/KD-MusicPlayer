@@ -6,9 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.kingbull.musicplayer.MusicPlayerApp;
-import com.kingbull.musicplayer.domain.storage.CurrentDateTime;
-import com.kingbull.musicplayer.domain.storage.MediaStatTable;
-import com.kingbull.musicplayer.domain.storage.SqlTableRow;
+import com.kingbull.musicplayer.domain.storage.sqlite.CurrentDateTime;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlTableRow;
 import javax.inject.Inject;
 
 /**
@@ -52,13 +52,13 @@ public interface MediaStat extends SqlTableRow {
     public Smart(Cursor cursor) {
       mediaId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStatTable.Columns.MEDIA_ID));
       isFavourite = cursor.getInt(cursor.getColumnIndexOrThrow(
-          com.kingbull.musicplayer.domain.storage.MediaStatTable.Columns.FAVORITE)) == 1;
+          MediaStatTable.Columns.FAVORITE)) == 1;
       numberOfTimesPlayed = cursor.getLong(cursor.getColumnIndexOrThrow(
-          com.kingbull.musicplayer.domain.storage.MediaStatTable.Columns.NUMBER_OF_TIMES_PLAYED));
+          MediaStatTable.Columns.NUMBER_OF_TIMES_PLAYED));
       playlistIds =
           cursor.getString(cursor.getColumnIndexOrThrow(MediaStatTable.Columns.PLAYLIST_IDS));
       lastTimePlayed = cursor.getLong(cursor.getColumnIndexOrThrow(
-          com.kingbull.musicplayer.domain.storage.MediaStatTable.Columns.LAST_TIME_PLAYED));
+          MediaStatTable.Columns.LAST_TIME_PLAYED));
       MusicPlayerApp.instance().component().inject(this);
     }
 

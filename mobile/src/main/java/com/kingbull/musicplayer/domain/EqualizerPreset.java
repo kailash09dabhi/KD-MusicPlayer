@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.domain;
 
 import android.media.audiofx.Equalizer;
-import com.kingbull.musicplayer.domain.storage.SqlTableRow;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlTableRow;
 
 /**
  * @author Kailash Dabhi

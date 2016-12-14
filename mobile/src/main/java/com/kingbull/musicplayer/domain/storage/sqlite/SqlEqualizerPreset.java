@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.domain.storage;
+package com.kingbull.musicplayer.domain.storage.sqlite;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -7,6 +7,8 @@ import android.media.audiofx.Equalizer;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
 import com.kingbull.musicplayer.domain.SettingPreferences;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.EqualizerPresetTable;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 import javax.inject.Inject;
 
 public final class SqlEqualizerPreset implements EqualizerPreset, SqlTableRow {

@@ -3,7 +3,7 @@ package com.kingbull.musicplayer.ui.songlist;
 import android.database.Cursor;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.SqlMusic;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import io.reactivex.Flowable;
 import java.util.ArrayList;
 import java.util.List;

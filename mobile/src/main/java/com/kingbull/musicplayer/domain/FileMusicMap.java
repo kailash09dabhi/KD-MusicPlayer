@@ -1,8 +1,8 @@
 package com.kingbull.musicplayer.domain;
 
 import android.util.Log;
-import com.kingbull.musicplayer.domain.storage.MediaTable;
-import com.kingbull.musicplayer.domain.storage.SqlMusic;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaTable;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import java.io.File;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;

@@ -1,10 +1,11 @@
-package com.kingbull.musicplayer.domain.storage;
+package com.kingbull.musicplayer.domain.storage.sqlite.table;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.MediaStat;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -43,7 +44,7 @@ public final class MediaStatTable implements SqlTable {
 
   public List<Music> lastPlayedSongs() {
     String query = "select * from "
-        + com.kingbull.musicplayer.domain.storage.MediaStatTable.NAME
+        + MediaStatTable.NAME
         + " where "
         + Columns.NUMBER_OF_TIMES_PLAYED
         + " > 0"
@@ -71,12 +72,12 @@ public final class MediaStatTable implements SqlTable {
   }
 
   @Override public void clear() {
-    sqliteDatabase.delete(com.kingbull.musicplayer.domain.storage.MediaStatTable.NAME, null, null);
+    sqliteDatabase.delete(MediaStatTable.NAME, null, null);
   }
 
   public List<Music> mostPlayedSongs() {
     String query = "select * from "
-        + com.kingbull.musicplayer.domain.storage.MediaStatTable.NAME
+        + MediaStatTable.NAME
         + " where "
         + Columns.NUMBER_OF_TIMES_PLAYED
         + " > 0"
@@ -104,7 +105,7 @@ public final class MediaStatTable implements SqlTable {
 
   public List<Music> musicsOfPlayList(long playlistId) {
     String query = "select * from "
-        + com.kingbull.musicplayer.domain.storage.MediaStatTable.NAME
+        + MediaStatTable.NAME
         + "  where "
         + Columns.PLAYLIST_IDS
         + " like "
@@ -112,7 +113,7 @@ public final class MediaStatTable implements SqlTable {
         + playlistId
         + ")%'"
         + " order by ("
-        + com.kingbull.musicplayer.domain.storage.MediaStatTable.Columns.UPDATED_AT
+        + MediaStatTable.Columns.UPDATED_AT
         + ") "
         + "DESC";
     Cursor cursor = sqliteDatabase.rawQuery(query, null);

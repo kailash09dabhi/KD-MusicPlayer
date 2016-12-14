@@ -1,9 +1,11 @@
-package com.kingbull.musicplayer.domain.storage;
+package com.kingbull.musicplayer.domain.storage.sqlite;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.PlayList;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 import java.util.List;
 import javax.inject.Inject;
 

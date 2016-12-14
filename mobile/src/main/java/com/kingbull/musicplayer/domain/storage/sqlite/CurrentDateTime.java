@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.domain.storage;
+package com.kingbull.musicplayer.domain.storage.sqlite;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
-import com.kingbull.musicplayer.domain.storage.SqlEqualizerPreset;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlEqualizerPreset;
 import java.util.ArrayList;
 import java.util.List;
 

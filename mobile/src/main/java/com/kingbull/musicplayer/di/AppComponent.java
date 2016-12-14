@@ -2,11 +2,11 @@ package com.kingbull.musicplayer.di;
 
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.MediaStat;
-import com.kingbull.musicplayer.domain.storage.LastPlayedPlayList;
-import com.kingbull.musicplayer.domain.storage.MostPlayedPlayList;
-import com.kingbull.musicplayer.domain.storage.SqlEqualizerPreset;
-import com.kingbull.musicplayer.domain.storage.SqlMusic;
-import com.kingbull.musicplayer.domain.storage.SqlPlayList;
+import com.kingbull.musicplayer.domain.storage.sqlite.LastPlayedPlayList;
+import com.kingbull.musicplayer.domain.storage.sqlite.MostPlayedPlayList;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlEqualizerPreset;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlPlayList;
 import com.kingbull.musicplayer.player.CallReceiver;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;

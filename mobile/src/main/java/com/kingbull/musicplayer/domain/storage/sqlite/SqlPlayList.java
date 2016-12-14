@@ -1,11 +1,15 @@
-package com.kingbull.musicplayer.domain.storage;
+package com.kingbull.musicplayer.domain.storage.sqlite;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.PlayList;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -38,9 +42,9 @@ public final class SqlPlayList implements PlayList, SqlTableRow, Parcelable {
     MusicPlayerApp.instance().component().inject(this);
   }
 
-  public SqlPlayList(SqlPlaylistCursor cursor) {
-    this.sqliteId = cursor.id();
-    this.name = cursor.name();
+  public SqlPlayList(Cursor cursor) {
+    this.sqliteId =cursor.getInt(cursor.getColumnIndexOrThrow(PlayListTable.Columns.SQLITE_ID));
+    this.name = cursor.getString(cursor.getColumnIndexOrThrow(PlayListTable.Columns.NAME));
     MusicPlayerApp.instance().component().inject(this);
   }
 

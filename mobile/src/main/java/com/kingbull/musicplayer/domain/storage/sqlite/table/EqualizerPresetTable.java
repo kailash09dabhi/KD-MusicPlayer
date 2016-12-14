@@ -1,8 +1,9 @@
-package com.kingbull.musicplayer.domain.storage;
+package com.kingbull.musicplayer.domain.storage.sqlite.table;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlEqualizerPreset;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
