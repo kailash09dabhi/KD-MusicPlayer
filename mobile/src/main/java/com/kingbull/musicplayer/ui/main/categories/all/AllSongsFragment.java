@@ -31,6 +31,7 @@ import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
+import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.settings.SettingsActivity;
@@ -49,7 +50,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   @BindView(R.id.allRayMenu) AllRayMenu allRayMenu;
   @BindView(R.id.searchView) EditText searchView;
   CompositeDisposable compositeDisposable = new CompositeDisposable();
-  private com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter songsAdapter;
+  private MusicRecyclerViewAdapter musicRecyclerViewAdapter;
 
   @OnTextChanged(R.id.searchView) void onSearchTextChanged(CharSequence text) {
     presenter.onSearchTextChanged(text.toString());
@@ -95,9 +96,9 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   private void setupView() {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     getLoaderManager().initLoader(0, null, this);
-    songsAdapter = new com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter(musicList,
+    musicRecyclerViewAdapter = new MusicRecyclerViewAdapter(musicList,
         (AppCompatActivity) getActivity());
-    recyclerView.setAdapter(songsAdapter);
+    recyclerView.setAdapter(musicRecyclerViewAdapter);
     allRayMenu.post(new Runnable() {
       @Override public void run() {
         searchView.getLayoutParams().height = allRayMenu.getHeight();
@@ -173,7 +174,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     totalSongCountView.setText(String.valueOf(songs.size()));
     musicList.clear();
     musicList.addAll(songs);
-    songsAdapter.notifyDataSetChanged();
+    musicRecyclerViewAdapter.notifyDataSetChanged();
   }
 
   @Override public void showMusicScreen() {
@@ -185,10 +186,10 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override public void showAddToPlayListDialog() {
-    AddToPlayListDialogFragment.newInstance(songsAdapter.getSelectedMusics())
+    AddToPlayListDialogFragment.newInstance(musicRecyclerViewAdapter.getSelectedMusics())
         .show(getActivity().getSupportFragmentManager(),
             AddToPlayListDialogFragment.class.getName());
-    songsAdapter.clearSelection();
+    musicRecyclerViewAdapter.clearSelection();
   }
 
   @Override public void showSortMusicScreen() {

@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
+import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public final class SongListActivity extends BaseActivity
   @BindView(R.id.coverRecyclerView) SnappingRecyclerView coverRecyclerView;
   @BindView(R.id.songMenu) SongListRayMenu songListRayMenu;
   SongList.Presenter songListPresenter = new SongListPresenter();
-  SongsAdapter adapter;
+  MusicRecyclerViewAdapter adapter;
   List<Music> songList = new ArrayList<>();
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public final class SongListActivity extends BaseActivity
       }
     });
     coverRecyclerView.setHasFixedSize(true);
-    adapter = new SongsAdapter(songList);
+    adapter = new MusicRecyclerViewAdapter(songList,this);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(adapter);
     recyclerView.setHasFixedSize(true);

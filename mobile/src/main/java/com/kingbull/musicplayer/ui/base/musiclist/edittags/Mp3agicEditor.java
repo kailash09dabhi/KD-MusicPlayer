@@ -1,8 +1,5 @@
-package com.kingbull.musicplayer.ui.main.categories.all.edittags;
+package com.kingbull.musicplayer.ui.base.musiclist.edittags;
 
-import android.content.Intent;
-import android.net.Uri;
-import com.kingbull.musicplayer.MusicPlayerApp;
 import com.mpatric.mp3agic.ID3v1;
 import com.mpatric.mp3agic.ID3v1Tag;
 import com.mpatric.mp3agic.ID3v2;

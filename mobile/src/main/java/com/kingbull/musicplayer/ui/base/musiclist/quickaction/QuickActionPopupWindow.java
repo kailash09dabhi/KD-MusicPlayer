@@ -1,10 +1,11 @@
-package com.kingbull.musicplayer.ui.main.categories.all.quickaction;
+package com.kingbull.musicplayer.ui.base.musiclist.quickaction;
 
 import android.app.Activity;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Toast;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.ui.base.musiclist.QuickActionListener;
 
 /**
  * @author Kailash Dabhi

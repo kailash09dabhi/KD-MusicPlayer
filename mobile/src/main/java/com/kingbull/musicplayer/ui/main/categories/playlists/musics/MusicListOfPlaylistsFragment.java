@@ -8,6 +8,7 @@ package com.kingbull.musicplayer.ui.main.categories.playlists.musics;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,8 +21,8 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
+import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.songlist.SongsAdapter;
 import java.util.List;
 
 public final class MusicListOfPlaylistsFragment extends BaseFragment<MusicListOfPlaylist.Presenter>
@@ -62,6 +63,6 @@ public final class MusicListOfPlaylistsFragment extends BaseFragment<MusicListOf
   }
 
   @Override public void showMusicListOfPlaylist(List<Music> songs) {
-    recyclerView.setAdapter(new SongsAdapter(songs));
+    recyclerView.setAdapter(new MusicRecyclerViewAdapter(songs, (AppCompatActivity) getActivity()));
   }
 }

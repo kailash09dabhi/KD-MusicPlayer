@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
+import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import java.util.ArrayList;
@@ -40,14 +41,14 @@ public final class AlbumActivity extends BaseActivity
   @BindView(R.id.totaltracks) TextView totalTracks;
   @BindView(R.id.rootView) View rootView;
   Album.Presenter songListPresenter = new SongListPresenter();
-  SongsAdapter adapter;
+  MusicRecyclerViewAdapter adapter;
   List<Music> songList = new ArrayList<>();
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.fragment_album);
     ButterKnife.bind(this);
-    adapter = new SongsAdapter(songList);
+    adapter = new MusicRecyclerViewAdapter(songList,this);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(adapter);
     getSupportLoaderManager().initLoader(INT_ALBUM_ID, null, this);

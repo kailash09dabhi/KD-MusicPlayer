@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.main.categories.all.edittags;
+package com.kingbull.musicplayer.ui.base.musiclist.edittags;
 
 import android.content.Intent;
 import android.graphics.Color;

@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.main.categories.all.quickaction;
+package com.kingbull.musicplayer.ui.base.musiclist;
 
 /**
  * @author Kailash Dabhi

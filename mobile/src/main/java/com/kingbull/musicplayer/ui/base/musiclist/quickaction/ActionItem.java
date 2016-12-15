@@ -1,9 +1,9 @@
-package com.kingbull.musicplayer.ui.main.categories.all.quickaction;
+package com.kingbull.musicplayer.ui.base.musiclist.quickaction;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
-class ActionItem {
+ final class ActionItem {
   private Drawable icon;
   private Bitmap thumb;
   private String title;

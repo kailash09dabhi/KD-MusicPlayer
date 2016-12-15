@@ -11,6 +11,7 @@ import com.kingbull.musicplayer.domain.storage.sqlite.SqlPlayList;
 import com.kingbull.musicplayer.player.CallReceiver;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
+import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerFragment;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerModel;
 import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
@@ -23,33 +24,33 @@ import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingAdapter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
-import com.kingbull.musicplayer.ui.songlist.SongsAdapter;
 import dagger.Component;
 import javax.inject.Singleton;
 
 @Singleton @Component(modules = { AppModule.class, StorageModule.class })
 public interface AppComponent {
-  // injection targets here
 
   void inject(MusicService service);
 
   void inject(SqlEqualizerPreset preset);
+
   void inject(PresetReverbDialogFragment fragment);
+
   void inject(EqualizerFragment fragment);
-  void inject(com.kingbull.musicplayer.ui.main.categories.albumlist.album.SongsAdapter adapter);
 
   void inject(EqualizerModel model);
+
   void inject(FavouritesPlayList playList);
 
   void inject(PresetDialogFragment fragment);
 
   void inject(MyFilesPresenter presenter);
 
+  void inject(MusicRecyclerViewAdapter adapter);
+
   void inject(CallReceiver receiver);
 
   void inject(MediaStat.Smart mediaStat);
-
-  void inject(com.kingbull.musicplayer.ui.main.categories.all.SongsAdapter adapter);
 
   void inject(NowPlayingAdapter adapter);
 
@@ -74,8 +75,6 @@ public interface AppComponent {
   void inject(MusicPlayerFragment fragment);
 
   void inject(MusicPlayerPresenter presenter);
-
-  void inject(SongsAdapter adapter);
 
   MusicPlayerApp app();
 }

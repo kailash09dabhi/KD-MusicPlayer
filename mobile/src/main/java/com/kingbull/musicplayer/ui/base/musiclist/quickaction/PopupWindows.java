@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.main.categories.all.quickaction;
+package com.kingbull.musicplayer.ui.base.musiclist.quickaction;
 
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,7 +15,7 @@ import android.widget.PopupWindow;
  *
  * @author Lorensius W. L. T <lorenz@londatiga.net>
  */
- class PopupWindows {
+  class PopupWindows {
   protected Context mContext;
   protected PopupWindow mWindow;
   protected View mRootView;

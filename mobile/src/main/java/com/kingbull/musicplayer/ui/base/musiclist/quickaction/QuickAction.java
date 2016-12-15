@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.main.categories.all.quickaction;
+package com.kingbull.musicplayer.ui.base.musiclist.quickaction;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -19,7 +19,7 @@ import com.kingbull.musicplayer.R;
 import java.util.ArrayList;
 import java.util.List;
 
-class QuickAction extends PopupWindows implements OnDismissListener {
+final class QuickAction extends PopupWindows implements OnDismissListener {
   public static final int ANIM_GROW_FROM_LEFT = 1;
   public static final int ANIM_GROW_FROM_RIGHT = 2;
   public static final int ANIM_GROW_FROM_CENTER = 3;

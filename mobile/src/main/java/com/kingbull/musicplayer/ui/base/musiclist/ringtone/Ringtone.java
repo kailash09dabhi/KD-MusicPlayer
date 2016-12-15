@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.main.categories.all.ringtone;
+package com.kingbull.musicplayer.ui.base.musiclist.ringtone;
 
 import android.content.ContentValues;
 import android.content.Context;

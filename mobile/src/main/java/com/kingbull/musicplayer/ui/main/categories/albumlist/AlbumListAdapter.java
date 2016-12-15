@@ -36,8 +36,8 @@ public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapte
     holder.labelView.setText(albumItems.get(position).name());
     Glide.with(holder.itemView.getContext())
         .load(albumItems.get(position).albumArt())
-        .placeholder(R.drawable.a10)
-        .error(R.drawable.a1)
+        .placeholder(R.drawable.a1)
+        .error(R.drawable.default_art)
         .crossFade()
         .into(holder.imageView);
   }

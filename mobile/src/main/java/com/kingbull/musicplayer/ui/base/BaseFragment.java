@@ -10,13 +10,6 @@ import android.view.View;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
-/**
- * Created with Android Studio.
- * User: ryan.hoo.j@gmail.com
- * Date: 3/16/16
- * Time: 12:14 AM
- * Desc: BaseFragment
- */
 public abstract class BaseFragment<P extends Mvp.Presenter> extends Fragment {
 
   private static final int LOADER_ID = 101;

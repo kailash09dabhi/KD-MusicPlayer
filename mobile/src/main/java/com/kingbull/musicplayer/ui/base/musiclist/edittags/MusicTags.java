@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.main.categories.all.edittags;
+package com.kingbull.musicplayer.ui.base.musiclist.edittags;
 
 import com.mpatric.mp3agic.NotSupportedException;
 import java.io.IOException;
