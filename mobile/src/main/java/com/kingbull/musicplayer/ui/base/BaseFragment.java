@@ -36,7 +36,7 @@ public abstract class BaseFragment<P extends Mvp.Presenter> extends Fragment {
     return null;
   }
 
-  protected void addSubscription(Disposable subscription) {
+  private void addSubscription(Disposable subscription) {
     if (subscription == null) return;
     if (compositeDisposable == null) {
       compositeDisposable = new CompositeDisposable();

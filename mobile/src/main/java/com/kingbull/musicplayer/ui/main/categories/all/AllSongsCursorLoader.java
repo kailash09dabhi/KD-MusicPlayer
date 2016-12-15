@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 
 /**
  * @author Kailash Dabhi
@@ -23,6 +24,8 @@ public final class AllSongsCursorLoader extends CursorLoader {
   };
 
   public AllSongsCursorLoader(Context context) {
-    super(context, MEDIA_URI, PROJECTIONS, null, null, null);
+    super(context, MEDIA_URI, PROJECTIONS, MediaStore.Audio.Media.DURATION + " >= ?",
+        new String[] { String.valueOf(new SettingPreferences().filterDurationInSeconds() * 1000) },
+        null);
   }
 }

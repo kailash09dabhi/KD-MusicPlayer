@@ -52,6 +52,14 @@ public final class SettingPreferences {
     return settingsPrefs.getInt(Key.LAST_CHOSEN_PRESET_ID, 0);
   }
 
+  public void saveFilterDurationInSeconds(int filterDurationInSeconds) {
+    settingsPrefs.edit().putInt(Key.FILTER_DURATION_IN_SECONDS, filterDurationInSeconds).apply();
+  }
+
+  public int filterDurationInSeconds() {
+    return settingsPrefs.getInt(Key.FILTER_DURATION_IN_SECONDS, 0);
+  }
+
   public void saveLastChosenPresetId(int equalizerPreset) {
     settingsPrefs.edit().putInt(Key.LAST_CHOSEN_PRESET_ID, equalizerPreset).apply();
   }
@@ -93,5 +101,6 @@ public final class SettingPreferences {
     public final static String LAST_CHOSEN_PRESET_IS_OF_SYSTEM = "last_chosen_preset_is_of_system";
     public final static String LAST_CHOSEN_PRESET_ID = "last_chosen_preset_id";
     public final static String REVERB_ID = "reverb_id";
+    public final static String FILTER_DURATION_IN_SECONDS = "filter_duration_in_seconds";
   }
 }

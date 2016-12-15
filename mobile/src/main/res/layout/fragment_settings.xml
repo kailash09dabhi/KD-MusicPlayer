@@ -87,11 +87,55 @@
           android:layout_height="wrap_content"
           android:fontFamily="sans-serif"
           android:lines="1"
+          android:maxLines="1"
           android:minHeight="?listPreferredItemHeight"
           android:singleLine="true"
           android:text="Remove Ads"
           tools:text="afd"
           style="@style/AppTheme.TextAppearance.List.Medium"/>
+      <LinearLayout
+          android:id="@+id/hideSmallClips"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/mp.padding.small"
+            android:orientation="horizontal">
+          <TextView
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:fontFamily="sans-serif"
+              android:lines="1"
+              android:maxLines="1"
+              android:singleLine="true"
+              android:text="Hide Small Clips"
+              tools:text="afd"
+              style="@style/AppTheme.TextAppearance.List.Medium"/>
+          <TextView
+              android:id="@+id/durationSecondsView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:lines="1"
+              android:maxLines="1"
+              android:singleLine="true"
+              android:text="10 sec"
+              tools:text="afd"
+              style="@style/AppTheme.TextAppearance.List.Small"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="Filter out small audio clips. Set a threshold duration below which the files will not be displayed."
+            tools:text="afd"
+            style="@style/AppTheme.TextAppearance.List.Small"/>
+      </LinearLayout>
+
     </LinearLayout>
+
   </ScrollView>
 </LinearLayout>

@@ -28,16 +28,17 @@ import butterknife.OnTextChanged;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
-import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.settings.SettingsActivity;
 import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.allRayMenu) AllRayMenu allRayMenu;
   @BindView(R.id.searchView) EditText searchView;
-  CompositeDisposable compositeDisposable = new CompositeDisposable();
   private MusicRecyclerViewAdapter musicRecyclerViewAdapter;
 
   @OnTextChanged(R.id.searchView) void onSearchTextChanged(CharSequence text) {
@@ -96,8 +96,8 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   private void setupView() {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     getLoaderManager().initLoader(0, null, this);
-    musicRecyclerViewAdapter = new MusicRecyclerViewAdapter(musicList,
-        (AppCompatActivity) getActivity());
+    musicRecyclerViewAdapter =
+        new MusicRecyclerViewAdapter(musicList, (AppCompatActivity) getActivity());
     recyclerView.setAdapter(musicRecyclerViewAdapter);
     allRayMenu.post(new Runnable() {
       @Override public void run() {
@@ -141,22 +141,21 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
         presenter.onSortMenuClick();
       }
     });
-    compositeDisposable.add(RxBus.getInstance()
-        .toObservable()
-        .ofType(SortEvent.class)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<SortEvent>() {
-          @Override public void accept(SortEvent sortEvent) {
-            presenter.onSortEvent(sortEvent);
-          }
-        }));
   }
 
-  @Override public void onDestroyView() {
-    super.onDestroyView();
-    if (compositeDisposable != null) {
-      compositeDisposable.clear();
-    }
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
+          @Override public void accept(Object o) throws Exception {
+            if (o instanceof SortEvent) {
+              presenter.onSortEvent((SortEvent) o);
+            } else if (o instanceof DurationFilterEvent) {
+              getLoaderManager().restartLoader(0,null,AllSongsFragment.this);
+            }
+          }
+        });
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

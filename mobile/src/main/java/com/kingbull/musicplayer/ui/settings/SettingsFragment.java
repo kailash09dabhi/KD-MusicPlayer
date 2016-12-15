@@ -16,16 +16,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
+import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import java.util.Calendar;
 
 public final class SettingsFragment extends BaseFragment<Settings.Presenter>
@@ -33,6 +39,12 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
 
   SettingPreferences settingPreferences = new SettingPreferences();
   @BindView(R.id.fullScreenCheckbox) CheckBox fullScreenCheckbox;
+  @BindView(R.id.durationSecondsView) TextView durationSecondsView;
+
+  @OnClick(R.id.hideSmallClips) void onClickHideSmallClips() {
+    new DurationFilterDialogFragment().show(getActivity().getSupportFragmentManager(),
+        DurationFilterDialogFragment.class.getName());
+  }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -44,6 +56,20 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
 
   private void setupView(View v) {
     fullScreenCheckbox.setChecked(settingPreferences.isFullScreen());
+    durationSecondsView.setText(new SettingPreferences().filterDurationInSeconds() + " sec");
+  }
+
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .ofType(DurationFilterEvent.class)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<DurationFilterEvent>() {
+          @Override public void accept(DurationFilterEvent sortEvent) {
+            durationSecondsView.setText(
+                new SettingPreferences().filterDurationInSeconds() + " sec");
+          }
+        });
   }
 
   @Override protected void onPresenterPrepared(Settings.Presenter presenter) {
