@@ -58,7 +58,6 @@
           android:layout_weight="1"
           android:lines="1"
           android:singleLine="true"
-          android:textColor="@color/wallet_dim_foreground_inverse_disabled_holo_dark"
           tools:text="afd"
           style="@style/AppTheme.TextAppearance.List.Small"/>
       <TextView
@@ -67,7 +66,6 @@
           android:layout_height="wrap_content"
           android:lines="1"
           android:singleLine="true"
-          android:textColor="@color/wallet_dim_foreground_inverse_disabled_holo_dark"
           fontPath="@string/font.semplicita.light"
           tools:ignore="MissingPrefix"
           tools:text="afd"

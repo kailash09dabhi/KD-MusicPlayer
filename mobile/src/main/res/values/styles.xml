@@ -35,6 +35,7 @@
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
+
   <style name="AppTheme.TextAppearance.Title.Album" parent="@android:style/Widget.Holo.Light.TextView">
     <item name="fontPath">@string/font.julius.sans.one</item>
     <item name="android:textColor">@android:color/white</item>
@@ -42,14 +43,20 @@
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
+
   <style name="AppTheme.TextAppearance.List">
     <item name="android:textColor">@android:color/white</item>
     <item name="android:textSize">22sp</item>
   </style>
 
   <style name="AppTheme.TextAppearance.List.Small">
-    <item name="android:textColor">@android:color/white</item>
+    <item name="android:textColor">#ffaaaaaa</item>
     <item name="android:textSize">13sp</item>
+  </style>
+
+  <style name="AppTheme.TextAppearance.Small">
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:textSize">14sp</item>
   </style>
 
   <style name="AppTheme.TextAppearance.List.Medium">

@@ -27,7 +27,7 @@
       android:gravity="center"
       android:padding="@dimen/mp.padding.small"
       tools:text="Title"
-      style="@style/AppTheme.TextAppearance.List.Small"/>
+      style="@style/AppTheme.TextAppearance.Small"/>
 
   <View
       android:layout_width="match_parent"
