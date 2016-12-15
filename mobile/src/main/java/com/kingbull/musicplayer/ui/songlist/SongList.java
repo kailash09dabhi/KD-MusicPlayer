@@ -15,6 +15,10 @@ public interface SongList {
     void showSongs(List<Music> songs);
 
     void setAlbumPager(Music[] songs);
+
+    void showEmptyView();
+
+    void showEmptyDueToDurationFilterMessage();
   }
 
   interface Model extends Mvp.Model {

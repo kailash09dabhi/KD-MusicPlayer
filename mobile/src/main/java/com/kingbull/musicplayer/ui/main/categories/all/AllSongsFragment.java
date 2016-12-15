@@ -152,7 +152,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
             if (o instanceof SortEvent) {
               presenter.onSortEvent((SortEvent) o);
             } else if (o instanceof DurationFilterEvent) {
-              getLoaderManager().restartLoader(0,null,AllSongsFragment.this);
+              getLoaderManager().restartLoader(0, null, AllSongsFragment.this);
             }
           }
         });

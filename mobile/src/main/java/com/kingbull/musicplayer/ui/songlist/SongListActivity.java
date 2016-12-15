@@ -14,10 +14,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
+import com.kingbull.musicplayer.ui.Snackbar;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
-import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,7 +58,7 @@ public final class SongListActivity extends BaseActivity
       }
     });
     coverRecyclerView.setHasFixedSize(true);
-    adapter = new MusicRecyclerViewAdapter(songList,this);
+    adapter = new MusicRecyclerViewAdapter(songList, this);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(adapter);
     recyclerView.setHasFixedSize(true);
@@ -120,5 +122,16 @@ public final class SongListActivity extends BaseActivity
 
   @Override public void setAlbumPager(Music[] songs) {
     coverRecyclerView.setAdapter(new CoverAdapter(Arrays.asList(songs)));
+  }
+
+  @Override public void showEmptyView() {
+    new Snackbar(findViewById(android.R.id.content)).show(
+        getString(R.string.error_message_couldnt_fetch_music));
+  }
+
+  @Override public void showEmptyDueToDurationFilterMessage() {
+    new Snackbar(findViewById(android.R.id.content)).show(
+        String.format(getString(R.string.message_empty_due_to_duration_filter),
+            new SettingPreferences().filterDurationInSeconds()));
   }
 }

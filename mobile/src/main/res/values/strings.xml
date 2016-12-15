@@ -39,5 +39,8 @@
   <!-- MediaStatTable -->
 
   <string name="mp.music.default_duration">00:00</string>
+  <string name="message_empty_due_to_duration_filter">As you have set the duration filter of %d
+    seconds so no music below the duration threshold is visible!</string>
+  <string name="error_message_couldnt_fetch_music">We are sorry! But we couldnt fetch the music!</string>
 
 </resources>

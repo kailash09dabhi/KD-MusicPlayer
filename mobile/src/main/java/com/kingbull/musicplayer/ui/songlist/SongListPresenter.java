@@ -55,14 +55,19 @@ public final class SongListPresenter extends Presenter<SongList.View>
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(new ResourceSubscriber<List<Music>>() {
               @Override public void onNext(List<Music> musicList) {
-                songListHashMap = new SongGroup(musicList).ofAlbum();
-                albums =
-                    songListHashMap.keySet().toArray(new Music[songListHashMap.keySet().size()]);
-                view().setAlbumPager(albums);
-                view().showSongs(songListHashMap.get(albums[0]));
+                if (musicList.size() > 0) {
+                  songListHashMap = new SongGroup(musicList).ofAlbum();
+                  albums =
+                      songListHashMap.keySet().toArray(new Music[songListHashMap.keySet().size()]);
+                  view().setAlbumPager(albums);
+                  view().showSongs(songListHashMap.get(albums[0]));
+                } else {
+                  view().showEmptyDueToDurationFilterMessage();
+                }
               }
 
               @Override public void onError(Throwable e) {
+                view().showEmptyView();
               }
 
               @Override public void onComplete() {

@@ -86,7 +86,7 @@ public final class AlbumActivity extends BaseActivity
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    return SongListCursorLoader.instance(this, getIntent().getIntExtra(ALBUM_ID, 0), ALBUM_ID);
+    return SongListCursorLoader.instance(this, getIntent().getIntExtra(ALBUM_ID, 0));
   }
 
   @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {

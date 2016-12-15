@@ -31,6 +31,7 @@
       android:layout_height="wrap_content"
       android:background="?attr/colorPrimary"
       android:clipChildren="false"
+      android:minHeight="@dimen/cover_size"
       android:clipToPadding="false"
       android:fadingEdge="none"/>
   <android.support.v7.widget.RecyclerView
