@@ -8,16 +8,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.kingbull.musicplayer.ui.main.categories.albumlist.AlbumListFragment;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsFragment;
 import com.kingbull.musicplayer.ui.main.categories.artists.ArtistFragment;
-import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesFragment;
 import com.kingbull.musicplayer.ui.main.categories.genres.GenresFragment;
-import com.kingbull.musicplayer.ui.main.categories.playlists.PlayListsFragment;
 
-final class PagerAdapter extends FragmentPagerAdapter {
+final class MusicCategoryPagerAdapter extends FragmentPagerAdapter {
 
   Context mContext;
   private String[] tabs;
 
-  public PagerAdapter(FragmentManager fm, Context context, String[] tabs) {
+  public MusicCategoryPagerAdapter(FragmentManager fm, Context context, String[] tabs) {
     super(fm);
     mContext = context;
     this.tabs = tabs;
@@ -27,16 +25,12 @@ final class PagerAdapter extends FragmentPagerAdapter {
     Fragment fragment;
     if (position == 0) {
       fragment = new GenresFragment();
-    } else if (position == 1) {
-      fragment = new PlayListsFragment();
-    } else if (position == 2) {
+    }  else if (position == 1) {
       fragment = new AllSongsFragment();
-    } else if (position == 3) {
+    } else if (position == 2) {
       fragment = new ArtistFragment();
-    } else if (position == 4) {
+    } else if (position == 3) {
       fragment = new AlbumListFragment();
-    } else if (position == 5) {
-      fragment = new MyFilesFragment();
     } else {
       fragment = new ArtistFragment();
     }

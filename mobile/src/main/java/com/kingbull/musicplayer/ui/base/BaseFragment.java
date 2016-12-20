@@ -1,6 +1,5 @@
 package com.kingbull.musicplayer.ui.base;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -15,10 +14,6 @@ public abstract class BaseFragment<P extends Mvp.Presenter> extends Fragment {
   private static final int LOADER_ID = 101;
   protected P presenter;
   private CompositeDisposable compositeDisposable;
-
-  @Override public void onAttach(Context context) {
-    super.onAttach(context);
-  }
 
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);

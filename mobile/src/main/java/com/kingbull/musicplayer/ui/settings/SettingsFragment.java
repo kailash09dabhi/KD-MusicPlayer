@@ -27,6 +27,7 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.player.MusicService;
+import com.kingbull.musicplayer.ui.Snackbar;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -108,8 +109,8 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
               WindowManager.LayoutParams.FLAG_FULLSCREEN);
     } else {
       settingPreferences.saveFullScreen(false);
-      getActivity().finish();
-      startActivity(new Intent(getActivity(), SettingsActivity.class));
+      new Snackbar(getActivity().findViewById(android.R.id.content)).show(
+          "Restart your app to see " + "the effect!");
     }
   }
 

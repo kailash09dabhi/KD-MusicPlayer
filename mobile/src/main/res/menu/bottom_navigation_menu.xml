@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+  <item
+      android:id="@+id/action_music_categories"
+      android:enabled="true"
+      android:icon="@drawable/composer_icn_search"
+      android:title="Music Categories"
+      app:showAsAction="ifRoom"/>
+  <item
+      android:id="@+id/action_equalizer"
+      android:enabled="true"
+      android:icon="@drawable/composer_button_shuffle"
+      android:title="Equalizer"
+      app:showAsAction="ifRoom"/>
+  <item
+      android:id="@+id/action_my_files"
+      android:enabled="true"
+      android:icon="@drawable/composer_button_back"
+      android:title="My Files"
+      app:showAsAction="ifRoom"/>
+  <item
+      android:id="@+id/action_settings"
+      android:enabled="true"
+      android:icon="@drawable/composer_icn_settings"
+      android:title="Settings"
+      app:showAsAction="ifRoom"/>
+
+</menu>

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="true"
-    android:background="@drawable/artistbg"
-    android:fitsSystemWindows="true">
-
-
-  <com.kingbull.musicplayer.ui.main.ViewPagerParallax
-      android:id="@+id/pager"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+  <com.kingbull.musicplayer.ui.main.LockableViewPager
+      android:id="@+id/viewPager"
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
-    <com.kingbull.musicplayer.ui.main.PagerClickTitleStrip
-        android:id="@+id/tabTitleStrip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:background="@color/transparent_black"
-        android:paddingBottom="4dp"
-        android:paddingTop="16dp"
-        android:textAppearance="@style/AppTheme.TextAppearance.Title.Pager">
-    </com.kingbull.musicplayer.ui.main.PagerClickTitleStrip>
-  </com.kingbull.musicplayer.ui.main.ViewPagerParallax>
-</FrameLayout>
+      android:layout_height="0dp"
+      android:layout_weight="1">
+  </com.kingbull.musicplayer.ui.main.LockableViewPager>
+
+  <android.support.design.widget.BottomNavigationView
+      android:id="@+id/bottom_navigation"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_below="@id/viewPager"
+      app:itemIconTint="@color/white"
+      app:itemTextColor="@color/white"
+      app:menu="@menu/bottom_navigation_menu"/>
+</LinearLayout>
