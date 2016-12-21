@@ -19,7 +19,7 @@ public final class Snackbar {
     android.support.design.widget.Snackbar snackbar =
         android.support.design.widget.Snackbar.make(view, message,
             android.support.design.widget.Snackbar.LENGTH_LONG);
-    snackbar.getView().setBackgroundColor(Color.parseColor("#99000000"));
+    snackbar.getView().setBackgroundColor(Color.parseColor("#bb000000"));
     snackbar.show();
   }
 }

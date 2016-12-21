@@ -1,7 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.albumlist.album;
 
 import android.content.Context;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
@@ -24,20 +23,17 @@ public final class AlbumSongsCursorLoader extends CursorLoader {
       MediaStore.Audio.Media.DATE_ADDED, MediaStore.Audio.Media.YEAR
   };
 
-  private AlbumSongsCursorLoader(Context context, Uri uri, String where) {
-    super(context, uri, PROJECTIONS, where, null, ORDER_BY);
-  }
-
-  public static AlbumSongsCursorLoader instance(Context context, int id) {
-    String where = MediaStore.Audio.Media.ALBUM_ID
-        + "="
-        + id
-        + " AND "
-        + MediaStore.Audio.Media.IS_MUSIC
-        + "=1 AND "
-        + MediaStore.Audio.Media.DURATION
-        + " >= "
-        + TimeUnit.SECONDS.toMillis(new SettingPreferences().filterDurationInSeconds());
-    return new AlbumSongsCursorLoader(context, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, where);
+  public AlbumSongsCursorLoader(Context context,long id) {
+    super(context, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, PROJECTIONS,
+        MediaStore.Audio.Media.ALBUM_ID
+            + "="
+            + id
+            + " AND "
+            + MediaStore.Audio.Media.IS_MUSIC
+            + "=1 AND "
+            + MediaStore.Audio.Media.DURATION
+            + " >= "
+            + TimeUnit.SECONDS.toMillis(new SettingPreferences().filterDurationInSeconds()), null,
+        ORDER_BY);
   }
 }

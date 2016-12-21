@@ -30,8 +30,6 @@ import java.util.List;
 public final class AlbumActivity extends BaseActivity<Album.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Album.View {
 
-  public static final int INT_ALBUM_ID = 3;
-  public static final String ALBUM_ID = "album_id";
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.songMenu) SongListRayMenu songListRayMenu;
@@ -41,16 +39,18 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   @BindView(R.id.rootView) View rootView;
   MusicRecyclerViewAdapter adapter;
   List<Music> songList = new ArrayList<>();
+  private com.kingbull.musicplayer.domain.Album album;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.fragment_album);
     ButterKnife.bind(this);
-    adapter = new MusicRecyclerViewAdapter(songList,this);
+    album = getIntent().getParcelableExtra("album");
+    adapter = new MusicRecyclerViewAdapter(songList, this);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(adapter);
-    getSupportLoaderManager().initLoader(INT_ALBUM_ID, null, this);
-    titleView.setText(getIntent().getStringExtra("title"));
+    getSupportLoaderManager().initLoader(0, null, this);
+    titleView.setText(album.name());
     titleView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
     titleView.setSingleLine(true);
     titleView.setMarqueeRepeatLimit(-1);
@@ -69,7 +69,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
         //presenter.onSortMenuClick();
       }
     });
-    ImagePath imagePath = new ImagePath(getIntent().getStringExtra("albumart"));
+    ImagePath imagePath = new ImagePath(album.albumArt());
     Bitmap bitmap = imagePath.toBitmap(getResources());
     albumArtView.setImageBitmap(bitmap);
     rootView.setBackground(imagePath.toBlurredBitmap(bitmap, getResources()));
@@ -84,7 +84,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    return AlbumSongsCursorLoader.instance(this, getIntent().getIntExtra(ALBUM_ID, 0));
+    return new AlbumSongsCursorLoader(this, album.albumId());
   }
 
   @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -98,7 +98,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     songList.clear();
     songList.addAll(songs);
     adapter.notifyDataSetChanged();
-    totalTracks.setText(String.format("Total Tracks: %d",songs.size()));
+    totalTracks.setText(String.format("Total Tracks: %d", songs.size()));
   }
 
   @Override public void showTotalDuration(String duration) {

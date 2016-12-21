@@ -26,6 +26,6 @@ public final class MusicPlayerActivity extends BaseActivity<MusicPlayer.Presente
   }
 
   @NonNull @Override protected PresenterFactory presenterFactory() {
-    return new PresenterFactory.SongList();
+    return new PresenterFactory.MusicPlayer();
   }
 }

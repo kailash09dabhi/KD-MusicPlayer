@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.albumlist;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,9 +60,7 @@ public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapte
 
     @Override public void onClick(View view) {
       Intent intent = new Intent(view.getContext(), AlbumActivity.class);
-      intent.putExtra("album_id", albumItems.get(getAdapterPosition()).albumId());
-      intent.putExtra("title", albumItems.get(getAdapterPosition()).name());
-      intent.putExtra("albumart", albumItems.get(getAdapterPosition()).albumArt());
+      intent.putExtra("album", (Parcelable) albumItems.get(getAdapterPosition()));
       view.getContext().startActivity(intent);
     }
   }
