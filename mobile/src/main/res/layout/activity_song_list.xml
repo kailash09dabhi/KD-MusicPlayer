@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/artistbg"
     android:fitsSystemWindows="true"
-    android:clipChildren="false"
     android:orientation="vertical">
   <TextView
       android:id="@+id/titleView"
@@ -25,12 +24,11 @@
       android:text="shimmer adfsfdasdadf skkkk"
       style="@style/AppTheme.TextAppearance.Title"/>
 
-  <com.kingbull.musicplayer.ui.songlist.SnappingRecyclerView
+  <com.kingbull.musicplayer.ui.base.view.SnappingRecyclerView
       android:id="@+id/coverRecyclerView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="?attr/colorPrimary"
-      android:clipChildren="false"
       android:minHeight="@dimen/cover_size"
       android:clipToPadding="false"
       android:fadingEdge="none"/>
@@ -47,7 +45,7 @@
       android:scrollbarThumbVertical="@drawable/scroll_thumb"
       android:scrollbarTrackVertical="@drawable/transparent_white"/>
 
-  <com.kingbull.musicplayer.ui.songlist.SongListRayMenu
+  <com.kingbull.musicplayer.ui.main.categories.genreslist.genre.SongListRayMenu
       android:id="@+id/songMenu"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

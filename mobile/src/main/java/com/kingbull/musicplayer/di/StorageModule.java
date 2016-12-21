@@ -18,9 +18,10 @@ package com.kingbull.musicplayer.di;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.domain.storage.sqlite.MusicSqliteOpenHelper;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaTable;
-import com.kingbull.musicplayer.domain.storage.sqlite.MusicSqliteOpenHelper;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -39,7 +40,11 @@ import javax.inject.Singleton;
     return new MediaStatTable(sqLiteDatabase);
   }
 
-  @Provides @Singleton MediaTable provideMediaTable(SQLiteDatabase sqLiteDatabase) {
+  @Provides @Singleton MediaTable provideMediaTable() {
     return new MediaTable();
+  }
+
+  @Provides @Singleton AlbumTable provideAlbumTable() {
+    return new AlbumTable();
   }
 }

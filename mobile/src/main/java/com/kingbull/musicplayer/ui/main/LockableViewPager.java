@@ -5,7 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-public class LockableViewPager extends ViewPager {
+public final class LockableViewPager extends ViewPager {
   private boolean isPagingEnabled = true;
 
   public LockableViewPager(Context paramContext, AttributeSet paramAttributeSet) {

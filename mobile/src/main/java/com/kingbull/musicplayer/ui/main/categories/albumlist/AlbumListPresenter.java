@@ -3,6 +3,7 @@ package com.kingbull.musicplayer.ui.main.categories.albumlist;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -35,24 +36,24 @@ public final class AlbumListPresenter extends Presenter<AlbumList.View> implemen
   @Override public void onAlbumCursorLoadFinished(Cursor cursor) {
     compositeDisposable.add(
         Flowable.just(cursor)
-            .flatMap(new Function<Cursor, Flowable<List<AlbumItem>>>() {
-              @Override public Flowable<List<AlbumItem>> apply(Cursor cursor) {
-                List<AlbumItem> albumItems = new ArrayList<>();
+            .flatMap(new Function<Cursor, Flowable<List<Album>>>() {
+              @Override public Flowable<List<Album>> apply(Cursor cursor) {
+                List<Album> albumItems = new ArrayList<>();
                 if (cursor != null && cursor.getCount() > 0) {
                   cursor.moveToFirst();
                   do {
-                    AlbumItem albumItem = new AlbumItem(cursor);
-                    albumItems.add(albumItem);
+                    Album album = new Album.Smart(cursor);
+                    albumItems.add(album);
                   } while (cursor.moveToNext());
                 }
                 return Flowable.just(albumItems);
               }
             })
-            .doOnNext(new Consumer<List<AlbumItem>>() {
-              @Override public void accept(List<AlbumItem> songs) {
+            .doOnNext(new Consumer<List<Album>>() {
+              @Override public void accept(List<Album> songs) {
                 Log.d(TAG, "onLoadFinished: " + songs.size());
-                Collections.sort(songs, new Comparator<AlbumItem>() {
-                  @Override public int compare(AlbumItem left, AlbumItem right) {
+                Collections.sort(songs, new Comparator<Album>() {
+                  @Override public int compare(Album left, Album right) {
                     return left.name().compareTo(right.name());
                   }
                 });
@@ -60,7 +61,7 @@ public final class AlbumListPresenter extends Presenter<AlbumList.View> implemen
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(new ResourceSubscriber<List<AlbumItem>>() {
+            .subscribeWith(new ResourceSubscriber<List<Album>>() {
 
               @Override public void onError(Throwable throwable) {
                 //mView.hideProgress();
@@ -70,7 +71,7 @@ public final class AlbumListPresenter extends Presenter<AlbumList.View> implemen
               @Override public void onComplete() {
               }
 
-              @Override public void onNext(List<AlbumItem> songs) {
+              @Override public void onNext(List<Album> songs) {
                 //mView.onLocalMusicLoaded(genres);
                 //mView.emptyView(genres.isEmpty());
                 view().showAlbums(songs);

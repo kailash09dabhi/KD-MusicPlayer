@@ -1,32 +1,31 @@
 package com.kingbull.musicplayer.ui.main;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import com.kingbull.musicplayer.ui.main.categories.all.AllSongsFragment;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesFragment;
 import com.kingbull.musicplayer.ui.main.categories.playlists.PlayListsFragment;
 import com.kingbull.musicplayer.ui.settings.SettingsFragment;
 
 final class MainPagerAdapter extends FragmentPagerAdapter {
 
-  Context mContext;
-
-  public MainPagerAdapter(FragmentManager fm, Context context) {
+  public MainPagerAdapter(FragmentManager fm) {
     super(fm);
-    mContext = context;
   }
 
   @Override public Fragment getItem(int position) {
     Fragment fragment = null;
     if (position == 0) {
-      fragment = new MusicCategoryFragment();
+      fragment = new AllSongsFragment();
     } else if (position == 1) {
-      fragment = new PlayListsFragment();
+      fragment = new MusicCategoryFragment();
     } else if (position == 2) {
-      fragment = new MyFilesFragment();
+      fragment = new PlayListsFragment();
     } else if (position == 3) {
+      fragment = new MyFilesFragment();
+    } else if (position == 4) {
       fragment = new SettingsFragment();
     }
     Bundle args = new Bundle();
@@ -36,6 +35,6 @@ final class MainPagerAdapter extends FragmentPagerAdapter {
   }
 
   @Override public int getCount() {
-    return 4;
+    return 5;
   }
 }

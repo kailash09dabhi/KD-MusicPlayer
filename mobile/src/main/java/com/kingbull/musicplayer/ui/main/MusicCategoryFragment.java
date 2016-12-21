@@ -43,19 +43,15 @@ public class MusicCategoryFragment extends BaseFragment<MusicListOfPlaylist.Pres
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    view.postDelayed(new Runnable() {
-      @Override public void run() {
-        musicCategoryPagerAdapter = new MusicCategoryPagerAdapter(getFragmentManager(), getActivity(), tabs);
-        viewPager.setAdapter(musicCategoryPagerAdapter);
-        int i2 = new Random().nextInt(18);
-        viewPager.setBackgroundAsset(arrayBg[i2], getActivity().getWindow());
-        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-        viewPager.setOffscreenPageLimit(3);
-        viewPager.setCurrentItem(2);
-        setupPagerTitleStrip();
-      }
-    },1000);
-
+    musicCategoryPagerAdapter =
+        new MusicCategoryPagerAdapter(getChildFragmentManager(), getActivity(), tabs);
+    viewPager.setAdapter(musicCategoryPagerAdapter);
+    int i2 = new Random().nextInt(18);
+    viewPager.setBackgroundAsset(arrayBg[i2], getActivity().getWindow());
+    viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+    viewPager.setOffscreenPageLimit(3);
+    viewPager.setCurrentItem(2);
+    setupPagerTitleStrip();
   }
 
   @Override protected void onPresenterPrepared(MusicListOfPlaylist.Presenter presenter) {

@@ -32,6 +32,7 @@ public interface AppComponent {
 
   void inject(MusicService service);
 
+
   void inject(SqlEqualizerPreset preset);
 
   void inject(PresetReverbDialogFragment fragment);

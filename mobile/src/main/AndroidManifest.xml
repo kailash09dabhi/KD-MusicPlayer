@@ -20,11 +20,12 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".ui.songlist.SongListActivity"/>
+    <activity android:name=".ui.main.categories.genreslist.genre.GenreActivity"/>
     <activity android:name=".ui.music.MusicPlayerActivity"/>
     <activity android:name=".ui.equalizer.EqualizerActivity"/>
     <activity android:name=".ui.settings.SettingsActivity"/>
     <activity android:name=".ui.main.categories.albumlist.album.AlbumActivity"/>
+    <activity android:name=".ui.main.categories.artistlist.artist.ArtistActivity"/>
 
     <meta-data
         android:name="com.kingbull.musicplayer.image.AlbumArtModule"

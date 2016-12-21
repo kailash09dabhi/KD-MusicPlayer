@@ -2,7 +2,6 @@
 <resources>
   <string-array name="tabs">
     <item>@string/tab_Genres</item>
-    <item>@string/tab_Songs</item>
     <item>@string/tab_Artists</item>
     <item>@string/tab_Albums</item>
   </string-array>

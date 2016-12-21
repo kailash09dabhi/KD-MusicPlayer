@@ -30,6 +30,10 @@ public interface Media {
       return "";
     }
 
+    @Override public long albumId() {
+      return 0;
+    }
+
     @Override public String path() {
       return "";
     }
@@ -58,6 +62,8 @@ public interface Media {
   String artist();
 
   String album();
+
+  long albumId();
 
   String path();
 
@@ -89,6 +95,7 @@ public interface Media {
     private final String album;
     private final String path;
     private final long dateAdded;
+    private final long albumId;
 
     public Smart(Cursor cursor) {
       mediaId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
@@ -100,6 +107,7 @@ public interface Media {
       size = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE));
       dateAdded = new File(path()).lastModified();
       year = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR));
+      albumId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
     }
 
     protected Smart(Parcel in) {
@@ -112,6 +120,7 @@ public interface Media {
       album = in.readString();
       path = in.readString();
       dateAdded = in.readLong();
+      albumId = in.readLong();
     }
 
     @Override public long mediaId() {
@@ -128,6 +137,10 @@ public interface Media {
 
     @Override public String album() {
       return album;
+    }
+
+    @Override public long albumId() {
+      return albumId;
     }
 
     @Override public String path() {
@@ -164,6 +177,7 @@ public interface Media {
       dest.writeString(album);
       dest.writeString(path);
       dest.writeLong(dateAdded);
+      dest.writeLong(albumId);
     }
   }
 }

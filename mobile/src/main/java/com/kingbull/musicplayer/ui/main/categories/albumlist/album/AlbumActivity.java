@@ -17,9 +17,8 @@ import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
-import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
-import com.kingbull.musicplayer.ui.base.Presenter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ import java.util.List;
  * @date 11/8/2016.
  */
 
-public final class AlbumActivity extends BaseActivity
+public final class AlbumActivity extends BaseActivity<Album.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Album.View {
 
   public static final int INT_ALBUM_ID = 3;
@@ -40,7 +39,6 @@ public final class AlbumActivity extends BaseActivity
   @BindView(R.id.totaltime) TextView totalTimeView;
   @BindView(R.id.totaltracks) TextView totalTracks;
   @BindView(R.id.rootView) View rootView;
-  Album.Presenter songListPresenter = new SongListPresenter();
   MusicRecyclerViewAdapter adapter;
   List<Music> songList = new ArrayList<>();
 
@@ -77,20 +75,20 @@ public final class AlbumActivity extends BaseActivity
     rootView.setBackground(imagePath.toBlurredBitmap(bitmap, getResources()));
   }
 
-  @Override protected void onPresenterPrepared(Presenter presenter) {
-    songListPresenter.takeView(this);
+  @Override protected void onPresenterPrepared(Album.Presenter presenter) {
+    presenter.takeView(this);
   }
 
   @NonNull @Override protected PresenterFactory presenterFactory() {
-    return new PresenterFactory.SongList();
+    return new PresenterFactory.Album();
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    return SongListCursorLoader.instance(this, getIntent().getIntExtra(ALBUM_ID, 0));
+    return AlbumSongsCursorLoader.instance(this, getIntent().getIntExtra(ALBUM_ID, 0));
   }
 
   @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-    songListPresenter.onSongCursorLoadFinished(data);
+    presenter.onSongCursorLoadFinished(data);
   }
 
   @Override public void onLoaderReset(Loader<Cursor> loader) {

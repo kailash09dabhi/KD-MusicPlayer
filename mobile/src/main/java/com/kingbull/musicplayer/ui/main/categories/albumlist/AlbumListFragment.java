@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.Album;
 import java.util.List;
 
 public final class AlbumListFragment extends Fragment
@@ -49,7 +50,7 @@ public final class AlbumListFragment extends Fragment
     // Empty
   }
 
-  @Override public void showAlbums(List<AlbumItem> songs) {
+  @Override public void showAlbums(List<Album> songs) {
     recyclerView.setAdapter(new AlbumListAdapter(songs));
   }
 }

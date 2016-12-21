@@ -2,28 +2,34 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
   <item
-      android:id="@+id/action_music_categories"
+      android:id="@+id/action_all_songs"
       android:enabled="true"
       android:icon="@drawable/composer_icn_search"
-      android:title="Music Categories"
-      app:showAsAction="ifRoom"/>
+      android:title="All albums"
+      app:showAsAction="always"/>
   <item
-      android:id="@+id/action_equalizer"
+      android:id="@+id/action_categories"
       android:enabled="true"
       android:icon="@drawable/composer_button_shuffle"
-      android:title="Equalizer"
-      app:showAsAction="ifRoom"/>
+      android:title="Categories"
+      app:showAsAction="always"/>
+  <item
+      android:id="@+id/action_playlists"
+      android:enabled="true"
+      android:icon="@drawable/composer_button_shuffle"
+      android:title="Playlists"
+      app:showAsAction="always"/>
   <item
       android:id="@+id/action_my_files"
       android:enabled="true"
       android:icon="@drawable/composer_button_back"
       android:title="My Files"
-      app:showAsAction="ifRoom"/>
+      app:showAsAction="always"/>
   <item
       android:id="@+id/action_settings"
       android:enabled="true"
       android:icon="@drawable/composer_icn_settings"
       android:title="Settings"
-      app:showAsAction="ifRoom"/>
+      app:showAsAction="always"/>
 
 </menu>

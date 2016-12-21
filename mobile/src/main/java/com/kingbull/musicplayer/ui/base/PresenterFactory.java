@@ -2,13 +2,15 @@ package com.kingbull.musicplayer.ui.base;
 
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerPresenter;
+import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumPresenter;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
+import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.ArtistPresenter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.musics.MusicListOfPlaylistsPresenter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
 import com.kingbull.musicplayer.ui.settings.SettingsPresenter;
-import com.kingbull.musicplayer.ui.songlist.SongListPresenter;
+import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenresPresenter;
 
 /**
  * Creates a Presenter object.
@@ -18,10 +20,26 @@ import com.kingbull.musicplayer.ui.songlist.SongListPresenter;
 public interface PresenterFactory<T extends Mvp.Presenter> {
   T create();
 
-  class SongList implements PresenterFactory<SongListPresenter> {
+  class SongList implements PresenterFactory<GenresPresenter> {
 
-    @Override public SongListPresenter create() {
-      return new SongListPresenter();
+    @Override public GenresPresenter create() {
+      return new GenresPresenter();
+    }
+  }
+  class Album implements PresenterFactory<com.kingbull.musicplayer.ui.main.categories.albumlist.album.Album.Presenter> {
+
+    @Override
+    public com.kingbull.musicplayer.ui.main.categories.albumlist.album.Album.Presenter create() {
+      return new AlbumPresenter();
+    }
+  }
+
+  class Artist implements
+      PresenterFactory<com.kingbull.musicplayer.ui.main.categories.artistlist.artist.Artist.Presenter> {
+
+    @Override
+    public com.kingbull.musicplayer.ui.main.categories.artistlist.artist.Artist.Presenter create() {
+      return new ArtistPresenter();
     }
   }
 

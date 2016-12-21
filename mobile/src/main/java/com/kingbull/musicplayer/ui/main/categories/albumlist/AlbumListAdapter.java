@@ -11,6 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumActivity;
 import java.util.List;
 
@@ -21,9 +22,9 @@ import java.util.List;
 
 public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {
 
-  List<AlbumItem> albumItems;
+  List<Album> albumItems;
 
-  public AlbumListAdapter(List<AlbumItem> albumItems) {
+  public AlbumListAdapter(List<Album> albumItems) {
     this.albumItems = albumItems;
   }
 
@@ -58,7 +59,7 @@ public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapte
 
     @Override public void onClick(View view) {
       Intent intent = new Intent(view.getContext(), AlbumActivity.class);
-      intent.putExtra("album_id", albumItems.get(getAdapterPosition()).id());
+      intent.putExtra("album_id", albumItems.get(getAdapterPosition()).albumId());
       intent.putExtra("title", albumItems.get(getAdapterPosition()).name());
       intent.putExtra("albumart", albumItems.get(getAdapterPosition()).albumArt());
       view.getContext().startActivity(intent);

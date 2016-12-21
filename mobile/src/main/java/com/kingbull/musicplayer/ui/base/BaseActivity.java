@@ -16,11 +16,11 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public abstract class BaseActivity<P extends Presenter> extends AppCompatActivity {
+public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatActivity {
 
   private static final int LOADER_ID = 9;
+  protected P presenter;
   private CompositeDisposable compositeDisposable;
-  private Presenter presenter;
 
   @Override protected void attachBaseContext(Context newBase) {
     super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));

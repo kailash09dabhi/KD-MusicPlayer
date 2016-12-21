@@ -27,7 +27,7 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.player.MusicService;
-import com.kingbull.musicplayer.ui.Snackbar;
+import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import io.reactivex.android.schedulers.AndroidSchedulers;

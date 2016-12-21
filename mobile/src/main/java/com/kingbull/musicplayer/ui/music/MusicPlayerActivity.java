@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
-import com.kingbull.musicplayer.ui.base.Presenter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 
 /**
@@ -12,7 +11,7 @@ import com.kingbull.musicplayer.ui.base.PresenterFactory;
  * @date 11/12/2016.
  */
 
-public final class MusicPlayerActivity extends BaseActivity {
+public final class MusicPlayerActivity extends BaseActivity<MusicPlayer.Presenter> {
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (savedInstanceState == null) {
@@ -23,7 +22,7 @@ public final class MusicPlayerActivity extends BaseActivity {
     }
   }
 
-  @Override protected void onPresenterPrepared(Presenter presenter) {
+  @Override protected void onPresenterPrepared(MusicPlayer.Presenter presenter) {
   }
 
   @NonNull @Override protected PresenterFactory presenterFactory() {
