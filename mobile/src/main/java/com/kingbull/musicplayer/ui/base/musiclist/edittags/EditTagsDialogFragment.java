@@ -1,17 +1,13 @@
 package com.kingbull.musicplayer.ui.base.musiclist.edittags;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.EditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,6 +15,7 @@ import butterknife.OnClick;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.NotSupportedException;
 import com.mpatric.mp3agic.UnsupportedTagException;
@@ -30,7 +27,7 @@ import java.io.IOException;
  * @date 11/27/2016.
  */
 
-public final class EditTagsDialogFragment extends DialogFragment {
+public final class EditTagsDialogFragment extends BaseDialogFragment {
   @BindView(R.id.titleView) EditText titleView;
   @BindView(R.id.artistView) EditText artistView;
   @BindView(R.id.albumView) EditText albumView;
@@ -86,8 +83,6 @@ public final class EditTagsDialogFragment extends DialogFragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     Music music = getArguments().getParcelable("music");
     try {
       MusicTags musicTags = new Mp3agic(new File(music.media().path()));

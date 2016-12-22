@@ -1,19 +1,15 @@
 package com.kingbull.musicplayer.ui.equalizer.preset;
 
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
 import android.media.audiofx.Equalizer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -28,6 +24,7 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.EqualizerPresetTable;
 import com.kingbull.musicplayer.player.Player;
+import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.AudioFxEqualizerPreset;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +35,7 @@ import javax.inject.Inject;
  * @date 11/27/2016.
  */
 
-public final class PresetDialogFragment extends DialogFragment implements Preset.View {
+public final class PresetDialogFragment extends BaseDialogFragment implements Preset.View {
   Preset.Presenter presenter = new PresetPresenter();
   @BindView(R.id.createNewPlayListView) LinearLayout createNewPresetView;
   @BindView(R.id.playlistsView) LinearLayout presetsView;
@@ -86,8 +83,6 @@ public final class PresetDialogFragment extends DialogFragment implements Preset
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
-    getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     final List<EqualizerPreset> presetList = new ArrayList<>();
     presetList.addAll(equalizerPresetTable.allPresets());
     presetList.addAll(systemPresets());

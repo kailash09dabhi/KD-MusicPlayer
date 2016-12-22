@@ -1,14 +1,10 @@
 package com.kingbull.musicplayer.ui.sorted;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import butterknife.BindView;
@@ -17,13 +13,14 @@ import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.SortEvent;
+import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
 
 /**
  * @author Kailash Dabhi
  * @date 11/27/2016.
  */
 
-public final class SortDialogFragment extends DialogFragment {
+public final class SortDialogFragment extends BaseDialogFragment {
   @BindView(R.id.titleRadioButton) RadioButton titleRadioButton;
   @BindView(R.id.artistRadioButton) RadioButton artistRadioButton;
   @BindView(R.id.albumRadioButton) RadioButton albumRadioButton;
@@ -66,7 +63,5 @@ public final class SortDialogFragment extends DialogFragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
   }
 }

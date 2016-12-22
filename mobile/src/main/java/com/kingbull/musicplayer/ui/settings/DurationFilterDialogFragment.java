@@ -1,15 +1,11 @@
 package com.kingbull.musicplayer.ui.settings;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.EditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,13 +14,14 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
+import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
 
 /**
  * @author Kailash Dabhi
  * @date 11/27/2016.
  */
 
-public final class DurationFilterDialogFragment extends DialogFragment {
+public final class DurationFilterDialogFragment extends BaseDialogFragment {
   @BindView(R.id.durationSecondsView) EditText durationSecondsView;
 
   @OnClick(R.id.doneButton) void onDoneClick() {
@@ -51,8 +48,6 @@ public final class DurationFilterDialogFragment extends DialogFragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     durationSecondsView.setText(String.valueOf(new SettingPreferences().filterDurationInSeconds()));
   }
 }

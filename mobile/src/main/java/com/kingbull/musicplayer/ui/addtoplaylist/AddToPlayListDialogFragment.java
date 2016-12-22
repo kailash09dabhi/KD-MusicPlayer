@@ -1,18 +1,14 @@
 package com.kingbull.musicplayer.ui.addtoplaylist;
 
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,11 +19,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 import com.kingbull.musicplayer.domain.PlayList;
-import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlPlayList;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
+import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -37,7 +34,7 @@ import javax.inject.Inject;
  * @date 11/27/2016.
  */
 
-public final class AddToPlayListDialogFragment extends DialogFragment
+public final class AddToPlayListDialogFragment extends BaseDialogFragment
     implements AddToPlayList.View {
   AddToPlayList.Presenter presenter = new AddToPlayListPresenter();
   @BindView(R.id.createNewPlayListView) LinearLayout createNewPlaylistView;
@@ -84,8 +81,6 @@ public final class AddToPlayListDialogFragment extends DialogFragment
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
-    getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     musics = getArguments().getParcelableArrayList("music_list");
     playLists = playListTable.playlists();
     presenter.takeView(this);

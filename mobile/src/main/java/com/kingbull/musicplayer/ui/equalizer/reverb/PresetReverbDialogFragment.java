@@ -1,16 +1,12 @@
 package com.kingbull.musicplayer.ui.equalizer.reverb;
 
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import butterknife.BindView;
@@ -21,6 +17,7 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.Preset;
 import com.kingbull.musicplayer.player.Player;
+import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
@@ -30,7 +27,8 @@ import javax.inject.Inject;
  * @date 11/27/2016.
  */
 
-public final class PresetReverbDialogFragment extends DialogFragment implements PresetReverb.View {
+public final class PresetReverbDialogFragment extends BaseDialogFragment
+    implements PresetReverb.View {
   PresetReverb.Presenter presenter = new PresetReverbPresenter();
 
   @BindView(R.id.listView) ListView listView;
@@ -59,9 +57,6 @@ public final class PresetReverbDialogFragment extends DialogFragment implements 
   @Override public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    MusicPlayerApp.instance().component().inject(this);
-    getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     presenter.takeView(this);
     final List<Reverb> reverbs = Arrays.asList(this.reverbs);
     listView.setAdapter(new PresetReverbAdapter(getActivity(), reverbs));
