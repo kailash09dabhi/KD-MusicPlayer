@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.domain.storage.sqlite.table;
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.MediaStore;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Media;
@@ -20,21 +21,21 @@ public final class MediaTable {
       MediaStore.Audio.Media.SIZE, MediaStore.Audio.Media._ID, MediaStore.Audio.Media.DURATION,
       MediaStore.Audio.Media.DATE_ADDED, MediaStore.Audio.Media.YEAR
   };
+  public final static Uri URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
-  public static final String[] projections() {
-    //// Potential security hole! so lets fix it by clone it as per the Effective Java 2(Item 13)
+  public final static String[] projections() {
+    // Potential security hole! so lets fix it by clone it as per the Effective Java 2(Item 13)
     return PROJECTIONS.clone();
   }
 
   public Media mediaById(long mediaId) {
     Cursor mediaCursor = MusicPlayerApp.instance()
         .getContentResolver()
-        .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, PROJECTIONS,
-            MediaStore.Audio.Media._ID + " = " + "?", new String[] {
-                String.valueOf(mediaId)
-            }, "");
+        .query(URI, PROJECTIONS, MediaStore.Audio.Media._ID + " = " + "?", new String[] {
+            String.valueOf(mediaId)
+        }, "");
     mediaCursor.moveToFirst();
-    Media media = null;
+    Media media;
     if (mediaCursor != null && mediaCursor.getCount() > 0 && mediaCursor.moveToFirst()) {
       media = new Media.Smart(mediaCursor);
     } else {
@@ -47,12 +48,11 @@ public final class MediaTable {
   public Media mediaByPath(String path) {
     Cursor mediaCursor = MusicPlayerApp.instance()
         .getContentResolver()
-        .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, PROJECTIONS,
-            MediaStore.Audio.Media.DATA + " = " + "?", new String[] {
-                String.valueOf(path)
-            }, "");
+        .query(URI, PROJECTIONS, MediaStore.Audio.Media.DATA + " = " + "?", new String[] {
+            String.valueOf(path)
+        }, "");
     mediaCursor.moveToFirst();
-    Media media = null;
+    Media media;
     if (mediaCursor != null && mediaCursor.getCount() > 0 && mediaCursor.moveToFirst()) {
       media = new Media.Smart(mediaCursor);
     } else {

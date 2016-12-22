@@ -16,7 +16,7 @@ public final class AlbumSongsCursorLoader extends CursorLoader {
   private static final String ORDER_BY = MediaStore.Audio.Media.DISPLAY_NAME + " ASC";
 
   public AlbumSongsCursorLoader(Context context, long id) {
-    super(context, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaTable.projections(),
+    super(context, MediaTable.URI, MediaTable.projections(),
         MediaStore.Audio.Media.ALBUM_ID
             + "="
             + id
