@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kingbull.musicplayer.ui.raymenu;
+package com.kingbull.musicplayer.ui.base.view.raymenu;
 
 import android.view.animation.Animation;
 import android.view.animation.Transformation;

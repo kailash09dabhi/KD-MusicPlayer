@@ -11,7 +11,7 @@ import com.kingbull.musicplayer.domain.Media;
  */
 
 public final class MediaTable {
-  private final String[] projections = new String[] {
+  private final static String[] PROJECTIONS = new String[] {
       MediaStore.Audio.Media.DATA, // the real path
       MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DISPLAY_NAME,
       MediaStore.Audio.Media.MIME_TYPE, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM,
@@ -21,10 +21,15 @@ public final class MediaTable {
       MediaStore.Audio.Media.DATE_ADDED, MediaStore.Audio.Media.YEAR
   };
 
+  public static final String[] projections() {
+    //// Potential security hole! so lets fix it by clone it as per the Effective Java 2(Item 13)
+    return PROJECTIONS.clone();
+  }
+
   public Media mediaById(long mediaId) {
     Cursor mediaCursor = MusicPlayerApp.instance()
         .getContentResolver()
-        .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projections,
+        .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, PROJECTIONS,
             MediaStore.Audio.Media._ID + " = " + "?", new String[] {
                 String.valueOf(mediaId)
             }, "");
@@ -42,7 +47,7 @@ public final class MediaTable {
   public Media mediaByPath(String path) {
     Cursor mediaCursor = MusicPlayerApp.instance()
         .getContentResolver()
-        .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projections,
+        .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, PROJECTIONS,
             MediaStore.Audio.Media.DATA + " = " + "?", new String[] {
                 String.valueOf(path)
             }, "");

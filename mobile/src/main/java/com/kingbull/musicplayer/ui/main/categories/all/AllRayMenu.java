@@ -11,7 +11,7 @@ import com.kingbull.musicplayer.R;
  * @date 11/24/2016.
  */
 
-public final class AllRayMenu extends com.kingbull.musicplayer.ui.raymenu.RayMenu {
+public final class AllRayMenu extends com.kingbull.musicplayer.ui.base.view.raymenu.RayMenu {
   private static final int[] MENUS = {
       R.drawable.composer_button_queue, R.drawable.composer_button_sort,
       R.drawable.composer_button_shuffle, R.drawable.composer_icn_search,
