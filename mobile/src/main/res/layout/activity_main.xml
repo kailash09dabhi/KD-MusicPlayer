@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.kingbull.musicplayer.ui.main.MainLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
-  <com.kingbull.musicplayer.ui.main.LockableViewPager
+  <com.kingbull.musicplayer.ui.main.ViewPagerParallax
       android:id="@+id/viewPager"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1">
-  </com.kingbull.musicplayer.ui.main.LockableViewPager>
+  </com.kingbull.musicplayer.ui.main.ViewPagerParallax>
 
-  <android.support.design.widget.BottomNavigationView
+  <com.kingbull.musicplayer.ui.main.RichBottomNavigationView
       android:id="@+id/bottom_navigation"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -22,4 +22,4 @@
       app:itemIconTint="@color/white"
       app:itemTextColor="@color/white"
       app:menu="@menu/bottom_navigation_menu"/>
-</LinearLayout>
+</com.kingbull.musicplayer.ui.main.MainLayout>

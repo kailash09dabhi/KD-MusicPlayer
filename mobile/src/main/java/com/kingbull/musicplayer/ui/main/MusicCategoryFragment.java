@@ -15,7 +15,6 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.Members;
-import java.util.Random;
 
 /**
  * @author Kailash Dabhi
@@ -23,13 +22,7 @@ import java.util.Random;
  */
 
 public class MusicCategoryFragment extends BaseFragment<Members.Presenter> {
-  private final int arrayBg[] = {
-      R.drawable.a1, R.drawable.a2, R.drawable.a3, R.drawable.a4, R.drawable.a5, R.drawable.a6,
-      R.drawable.a7, R.drawable.a8, R.drawable.a9, R.drawable.a10, R.drawable.a11, R.drawable.a12,
-      R.drawable.a13, R.drawable.a14, R.drawable.a15, R.drawable.a16, R.drawable.a17,
-      R.drawable.a18,
-  };
-  @BindView(R.id.pager) com.kingbull.musicplayer.ui.main.ViewPagerParallax viewPager;
+  @BindView(R.id.pager) ViewPagerParallax viewPager;
   @BindView(R.id.tabTitleStrip) PagerTitleStrip pagerTitleStrip;
   @BindArray(R.array.tabs) String[] tabs;
   private MusicCategoryPagerAdapter musicCategoryPagerAdapter;
@@ -46,8 +39,6 @@ public class MusicCategoryFragment extends BaseFragment<Members.Presenter> {
     musicCategoryPagerAdapter =
         new MusicCategoryPagerAdapter(getChildFragmentManager(), getActivity(), tabs);
     viewPager.setAdapter(musicCategoryPagerAdapter);
-    int i2 = new Random().nextInt(18);
-    viewPager.setBackgroundAsset(arrayBg[i2], getActivity().getWindow());
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.setOffscreenPageLimit(3);
     viewPager.setCurrentItem(2);

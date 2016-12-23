@@ -4,7 +4,7 @@ apply plugin: 'android-apt'
 
 android {
   compileSdkVersion 25
-  buildToolsVersion "25.0.0"
+  buildToolsVersion "25.0.2"
   defaultConfig {
     applicationId "com.kingbull.musicplayer"
     minSdkVersion 16
@@ -31,7 +31,7 @@ android {
   compileOptions.incremental = false
 }
 
-def supportLibraryVersion = "25.0.0";
+def supportLibraryVersion = "25.1.0";
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

@@ -17,6 +17,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Window;
 import com.commit451.nativestackblur.NativeStackBlur;
+import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
+import com.kingbull.musicplayer.event.ThemeChangedEvent;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -25,6 +30,7 @@ public final class ViewPagerParallax extends ViewPager {
   int current_position = -1;
   float current_offset = 0.0f;
   Window window;
+  boolean isFlatTheme = false;
   private int background_id = -1;
   private int background_saved_id = -1;
   private int saved_width = -1;
@@ -44,10 +50,25 @@ public final class ViewPagerParallax extends ViewPager {
 
   public ViewPagerParallax(Context context) {
     super(context);
+    init();
   }
 
   public ViewPagerParallax(Context context, AttributeSet attrs) {
     super(context, attrs);
+    init();
+  }
+
+  private void init() {
+    RxBus.getInstance()
+        .toObservable()
+        .ofType(ThemeChangedEvent.class)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<ThemeChangedEvent>() {
+          @Override public void accept(ThemeChangedEvent themeChangedEvent) throws Exception {
+            isFlatTheme = new SettingPreferences().isFlatTheme();
+            invalidate();
+          }
+        });
   }
 
   @SuppressLint("NewApi") private int sizeOf(Bitmap data) {
@@ -142,7 +163,11 @@ public final class ViewPagerParallax extends ViewPager {
 
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
-    if (!insufficientMemory && parallaxEnabled && saved_bitmap != null && canvas != null) {
+    if (!insufficientMemory
+        && parallaxEnabled
+        && saved_bitmap != null
+        && canvas != null
+        && !isFlatTheme) {
       if (current_position == -1) current_position = getCurrentItem();
       // maybe we could get the current position from the getScrollX instead?
       src.set((int) (overlap_level * (current_position + current_offset)), 0,

@@ -100,8 +100,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/mp.padding.small"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/mp.padding.small">
           <TextView
               android:layout_width="0dp"
               android:layout_height="wrap_content"
@@ -132,6 +132,30 @@
             android:text="Filter out small audio clips. Set a threshold duration below which the files will not be displayed."
             tools:text="afd"
             style="@style/AppTheme.TextAppearance.List.Small"/>
+      </LinearLayout>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:minHeight="?listPreferredItemHeight"
+          android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:lines="1"
+            android:singleLine="true"
+            android:text="Flat Theme"
+            tools:text="afd"
+            style="@style/AppTheme.TextAppearance.List.Medium"/>
+        <CheckBox
+            android:id="@+id/flatThemeCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            />
       </LinearLayout>
 
     </LinearLayout>

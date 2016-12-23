@@ -26,10 +26,11 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
+import com.kingbull.musicplayer.event.ThemeChangedEvent;
 import com.kingbull.musicplayer.player.MusicService;
-import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -112,6 +113,18 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
       new Snackbar(getActivity().findViewById(android.R.id.content)).show(
           "Restart your app to see " + "the effect!");
     }
+  }
+
+  @OnCheckedChanged(R.id.flatThemeCheckbox) void onThemeCheckedChange(boolean isChecked) {
+    if (isChecked) {
+      settingPreferences.saveFlatTheme(true);
+      getActivity().getWindow()
+          .setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+              WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    } else {
+      settingPreferences.saveFlatTheme(false);
+    }
+    RxBus.getInstance().post(new ThemeChangedEvent());
   }
 
   private void setAlarmToStopApp(long scheduleAt) {

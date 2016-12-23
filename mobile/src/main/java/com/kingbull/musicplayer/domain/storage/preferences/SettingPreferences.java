@@ -44,6 +44,14 @@ public final class SettingPreferences {
     return settingsPrefs.getBoolean(Key.IS_FULL_SCREEN, false);
   }
 
+  public void saveFlatTheme(boolean isFlatTheme) {
+    settingsPrefs.edit().putBoolean(Key.IS_FLAT_THEME, isFlatTheme).apply();
+  }
+
+  public boolean isFlatTheme() {
+    return settingsPrefs.getBoolean(Key.IS_FLAT_THEME, false);
+  }
+
   public void saveFullScreen(boolean isFullScreen) {
     settingsPrefs.edit().putBoolean(Key.IS_FULL_SCREEN, isFullScreen).apply();
   }
@@ -98,6 +106,7 @@ public final class SettingPreferences {
   public final static class Key {
     public final static String MUSIC_MODE = "music_mode";
     public final static String IS_FULL_SCREEN = "full_screen";
+    public final static String IS_FLAT_THEME = "flat_theme";
     public final static String LAST_CHOSEN_PRESET_IS_OF_SYSTEM = "last_chosen_preset_is_of_system";
     public final static String LAST_CHOSEN_PRESET_ID = "last_chosen_preset_id";
     public final static String REVERB_ID = "reverb_id";
