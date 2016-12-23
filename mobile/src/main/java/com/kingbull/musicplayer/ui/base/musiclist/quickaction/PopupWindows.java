@@ -15,7 +15,7 @@ import android.widget.PopupWindow;
  *
  * @author Lorensius W. L. T <lorenz@londatiga.net>
  */
-  class PopupWindows {
+ public class PopupWindows {
   protected Context mContext;
   protected PopupWindow mWindow;
   protected View mRootView;

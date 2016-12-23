@@ -5,14 +5,14 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Toast;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.ui.base.musiclist.QuickActionListener;
+import com.kingbull.musicplayer.ui.base.musiclist.MusicQuickActionListener;
 
 /**
  * @author Kailash Dabhi
  * @date 12/8/2016.
  */
 
-public class QuickActionPopupWindow {
+public final class MusicQuickAction {
 
   private final int ID_PLAY = 1;
   private final int ID_PLAYLIST = 2;
@@ -23,9 +23,9 @@ public class QuickActionPopupWindow {
 
   private Activity activity;
   private QuickAction quickAction;
-  private QuickActionListener quickActionListener;
+  private MusicQuickActionListener musicQuickActionListener;
 
-  public QuickActionPopupWindow(final Activity activity) {
+  public MusicQuickAction(final Activity activity) {
     this.activity = activity;
     final ActionItem playItem = new ActionItem(ID_PLAY, "Play",
         ContextCompat.getDrawable(activity, R.drawable.composer_button_play));
@@ -46,17 +46,17 @@ public class QuickActionPopupWindow {
       @Override public void onItemClick(QuickAction quickAction, int pos, int actionId) {
         ActionItem actionItem = quickAction.getActionItem(pos);
         if (actionId == ID_PLAY) {
-          quickActionListener.play();
+          musicQuickActionListener.play();
         } else if (actionId == ID_PLAYLIST) {
-          quickActionListener.playlist();
+          musicQuickActionListener.playlist();
         } else if (actionId == ID_EDIT_TAGS) {
-          quickActionListener.editTags();
+          musicQuickActionListener.editTags();
         } else if (actionId == ID_RINGTONE) {
-          quickActionListener.ringtone();
+          musicQuickActionListener.ringtone();
         } else if (actionId == ID_DELETE) {
-          quickActionListener.delete();
+          musicQuickActionListener.delete();
         } else if (actionId == ID_SEND) {
-          quickActionListener.send();
+          musicQuickActionListener.send();
         }
       }
     });
@@ -73,14 +73,14 @@ public class QuickActionPopupWindow {
     quickAction.addActionItem(sendItem);
   }
 
-  public void show(View view, QuickActionListener quickActionListener) {
-    this.quickActionListener = quickActionListener;
+  public void show(View view, MusicQuickActionListener musicQuickActionListener) {
+    this.musicQuickActionListener = musicQuickActionListener;
     quickAction.show(view);
   }
 
   public void release() {
     this.activity = null;
     this.quickAction = null;
-    this.quickActionListener = null;
+    this.musicQuickActionListener = null;
   }
 }

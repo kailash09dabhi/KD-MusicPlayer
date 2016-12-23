@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.main.categories.playlists.musics;
+package com.kingbull.musicplayer.ui.main.categories.playlists.members;
 
 import android.support.annotation.NonNull;
 import com.kingbull.musicplayer.player.Player;
@@ -10,12 +10,12 @@ import javax.inject.Inject;
  * @date 11/10/2016.
  */
 
-public final class MusicListOfPlaylistsPresenter extends Presenter<MusicListOfPlaylist.View>
-    implements MusicListOfPlaylist.Presenter {
+public final class MembersPresenter extends Presenter<Members.View>
+    implements Members.Presenter {
 
   @Inject Player musicPlayer;
 
-  @Override public void takeView(@NonNull MusicListOfPlaylist.View view) {
+  @Override public void takeView(@NonNull Members.View view) {
     super.takeView(view);
   }
 }

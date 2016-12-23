@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.main.categories.playlists.musics.MusicListOfPlaylist;
+import com.kingbull.musicplayer.ui.main.categories.playlists.members.Members;
 import java.util.Random;
 
 /**
@@ -22,7 +22,7 @@ import java.util.Random;
  * @date 12/20/2016.
  */
 
-public class MusicCategoryFragment extends BaseFragment<MusicListOfPlaylist.Presenter> {
+public class MusicCategoryFragment extends BaseFragment<Members.Presenter> {
   private final int arrayBg[] = {
       R.drawable.a1, R.drawable.a2, R.drawable.a3, R.drawable.a4, R.drawable.a5, R.drawable.a6,
       R.drawable.a7, R.drawable.a8, R.drawable.a9, R.drawable.a10, R.drawable.a11, R.drawable.a12,
@@ -54,10 +54,10 @@ public class MusicCategoryFragment extends BaseFragment<MusicListOfPlaylist.Pres
     setupPagerTitleStrip();
   }
 
-  @Override protected void onPresenterPrepared(MusicListOfPlaylist.Presenter presenter) {
+  @Override protected void onPresenterPrepared(Members.Presenter presenter) {
   }
 
-  @Override protected PresenterFactory<MusicListOfPlaylist.Presenter> presenterFactory() {
+  @Override protected PresenterFactory<Members.Presenter> presenterFactory() {
     return new PresenterFactory.MusicListOfPlaylist();
   }
 

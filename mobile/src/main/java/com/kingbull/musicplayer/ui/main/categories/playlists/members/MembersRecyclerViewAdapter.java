@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.base.musiclist;
+package com.kingbull.musicplayer.ui.main.categories.playlists.members;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -17,11 +17,10 @@ import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.player.Player;
-import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.musiclist.edittags.EditTagsDialogFragment;
-import com.kingbull.musicplayer.ui.base.musiclist.quickaction.MusicQuickAction;
 import com.kingbull.musicplayer.ui.base.musiclist.ringtone.Ringtone;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import java.io.File;
@@ -34,19 +33,23 @@ import javax.inject.Inject;
  * @date 11/8/2016.
  */
 
-public final class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRecyclerViewAdapter.MusicViewHolder> {
-  List<Music> songs;
+public final class MembersRecyclerViewAdapter
+    extends RecyclerView.Adapter<MembersRecyclerViewAdapter.ViewHolder> {
   @Inject Player player;
-  android.support.v4.app.FragmentManager fragmentManager;
-  AppCompatActivity activity;
-  MusicQuickAction musicQuickAction;
+  private List<Music> songs;
+  private android.support.v4.app.FragmentManager fragmentManager;
+  private AppCompatActivity activity;
+  private MemberQuickAction memberQuickAction;
   private SparseBooleanArray selectedItems = new SparseBooleanArray();
+  private PlayList playList;
 
-  public MusicRecyclerViewAdapter(List<Music> songs, AppCompatActivity activity) {
+  public MembersRecyclerViewAdapter(PlayList playList, List<Music> songs,
+      AppCompatActivity activity) {
+    this.playList = playList;
     this.songs = songs;
     this.activity = activity;
     this.fragmentManager = activity.getSupportFragmentManager();
-    this.musicQuickAction = new MusicQuickAction(activity);
+    this.memberQuickAction = new MemberQuickAction(activity);
     MusicPlayerApp.instance().component().inject(this);
   }
 
@@ -100,12 +103,12 @@ public final class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRe
     return items;
   }
 
-  @Override public MusicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    return new MusicViewHolder(
+  @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    return new ViewHolder(
         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_all_music, parent, false));
   }
 
-  @Override public void onBindViewHolder(MusicViewHolder holder, final int position) {
+  @Override public void onBindViewHolder(ViewHolder holder, final int position) {
     if (isSelected(position)) {
       holder.itemView.setBackgroundColor(
           ContextCompat.getColor(holder.itemView.getContext(), R.color.transparent_strong_black));
@@ -119,19 +122,18 @@ public final class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRe
     holder.durationView.setText(new Milliseconds(music.media().duration()).toMmSs());
     holder.moreActionsView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(final View v) {
-        musicQuickAction.show(v, new MusicQuickActionListener() {
+        memberQuickAction.show(v, new MemberQuickActionListener() {
           @Override public void play() {
             player.addToNowPlaylist(songs);
             player.play(songs.get(position));
             activity.startActivity(new Intent(activity, MusicPlayerActivity.class));
           }
 
-          @Override public void playlist() {
-            List<SqlMusic> musicList = new ArrayList<SqlMusic>();
-            musicList.add((SqlMusic) songs.get(position));
-            AddToPlayListDialogFragment.newInstance(musicList)
-                .show(activity.getSupportFragmentManager(),
-                    AddToPlayListDialogFragment.class.getName());
+          @Override public void moveTo() {
+            if (playList instanceof PlayList.Smart) {
+              MoveToDialogFragment.newInstance(playList, songs.get(position), position)
+                  .show(fragmentManager, MoveToDialogFragment.class.getName());
+            }
           }
 
           @Override public void editTags() {
@@ -144,9 +146,11 @@ public final class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRe
           }
 
           @Override public void delete() {
-            new File(songs.get(position).media().path()).delete();
-            activity.sendBroadcast(new Intent(Intent.ACTION_DELETE,
-                Uri.fromFile(new File(songs.get(position).media().path()))));
+            if (playList instanceof PlayList.Smart) {
+              ((PlayList.Smart) playList).remove(songs.get(position));
+              songs.remove(position);
+              notifyItemRemoved(position);
+            }
           }
 
           @Override public void send() {
@@ -165,14 +169,14 @@ public final class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRe
     return songs.size();
   }
 
-  class MusicViewHolder extends RecyclerView.ViewHolder
+  class ViewHolder extends RecyclerView.ViewHolder
       implements View.OnClickListener, View.OnLongClickListener {
     @BindView(R.id.fileName) TextView fileNameView;
     @BindView(R.id.durationView) TextView durationView;
     @BindView(R.id.artistView) TextView albumView;
     @BindView(R.id.moreActionsView) ImageView moreActionsView;
 
-    public MusicViewHolder(View itemView) {
+    public ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
       itemView.setOnClickListener(this);

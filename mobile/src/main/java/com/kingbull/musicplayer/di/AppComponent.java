@@ -20,6 +20,7 @@ import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesAdapter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.PlayListsModel;
+import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingAdapter;
@@ -32,8 +33,9 @@ public interface AppComponent {
 
   void inject(MusicService service);
 
-
   void inject(SqlEqualizerPreset preset);
+
+  void inject(MembersRecyclerViewAdapter adapter);
 
   void inject(PresetReverbDialogFragment fragment);
 

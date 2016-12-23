@@ -10,7 +10,7 @@ import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
-import com.kingbull.musicplayer.ui.main.categories.playlists.musics.MusicListOfPlaylistsFragment;
+import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersFragment;
 import java.util.List;
 
 /**
@@ -53,9 +53,9 @@ public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapte
       ((BaseActivity) view.getContext()).getSupportFragmentManager()
           .beginTransaction()
           .add(android.R.id.content,
-              MusicListOfPlaylistsFragment.newInstance(playLists.get(getAdapterPosition())),
-              MusicListOfPlaylistsFragment.class.getSimpleName())
-          .addToBackStack(MusicListOfPlaylistsFragment.class.getSimpleName())
+              MembersFragment.newInstance(playLists.get(getAdapterPosition())),
+              MembersFragment.class.getSimpleName())
+          .addToBackStack(MembersFragment.class.getSimpleName())
           .commit();
     }
   }

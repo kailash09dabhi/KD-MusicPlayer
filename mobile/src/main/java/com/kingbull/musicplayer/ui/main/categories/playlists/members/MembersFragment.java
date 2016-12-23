@@ -3,7 +3,7 @@
  * You should have received a copy of the license in this archive (see LICENSE).
  * Copyright @Dibakar_Mistry, 2015.
  */
-package com.kingbull.musicplayer.ui.main.categories.playlists.musics;
+package com.kingbull.musicplayer.ui.main.categories.playlists.members;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -18,21 +18,26 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PlayList;
+import com.kingbull.musicplayer.event.MovedToPlaylistEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
-import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.view.Snackbar;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import java.util.List;
 
-public final class MusicListOfPlaylistsFragment extends BaseFragment<MusicListOfPlaylist.Presenter>
-    implements MusicListOfPlaylist.View {
+public final class MembersFragment extends BaseFragment<Members.Presenter> implements Members.View {
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   PlayList playList;
+  List<Music> musicList;
 
-  public static MusicListOfPlaylistsFragment newInstance(PlayList playList) {
-    MusicListOfPlaylistsFragment fragment = new MusicListOfPlaylistsFragment();
+  public static MembersFragment newInstance(PlayList playList) {
+    MembersFragment fragment = new MembersFragment();
     Bundle bundle = new Bundle();
     bundle.putParcelable("playlist", (Parcelable) playList);
     fragment.setArguments(bundle);
@@ -47,22 +52,39 @@ public final class MusicListOfPlaylistsFragment extends BaseFragment<MusicListOf
     return view;
   }
 
-  @Override protected void onPresenterPrepared(MusicListOfPlaylist.Presenter presenter) {
+  @Override protected void onPresenterPrepared(Members.Presenter presenter) {
     presenter.takeView(this);
     setupView(getView());
   }
 
-  @NonNull @Override protected PresenterFactory<MusicListOfPlaylist.Presenter> presenterFactory() {
+  @NonNull @Override protected PresenterFactory<Members.Presenter> presenterFactory() {
     return new PresenterFactory.MusicListOfPlaylist();
+  }
+
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .ofType(MovedToPlaylistEvent.class)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<MovedToPlaylistEvent>() {
+          @Override public void accept(MovedToPlaylistEvent movedToPlaylistEvent) throws Exception {
+            new Snackbar(recyclerView).show(
+                "Song has benn moved to " + movedToPlaylistEvent.destinationPlaylistName());
+            musicList.remove(movedToPlaylistEvent.position());
+            recyclerView.getAdapter().notifyItemRemoved(movedToPlaylistEvent.position());
+          }
+        });
   }
 
   private void setupView(View v) {
     titleView.setText(playList.name().toUpperCase());
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    showMusicListOfPlaylist(playList.musicList());
+    musicList = playList.musicList();
+    showPlaylistMembers(musicList);
   }
 
-  @Override public void showMusicListOfPlaylist(List<Music> songs) {
-    recyclerView.setAdapter(new MusicRecyclerViewAdapter(songs, (AppCompatActivity) getActivity()));
+  @Override public void showPlaylistMembers(List<Music> songs) {
+    recyclerView.setAdapter(
+        new MembersRecyclerViewAdapter(playList, songs, (AppCompatActivity) getActivity()));
   }
 }

@@ -5,7 +5,7 @@
       android:id="@+id/action_all_songs"
       android:enabled="true"
       android:icon="@drawable/composer_icn_search"
-      android:title="All albums"
+      android:title="All songs"
       app:showAsAction="always"/>
   <item
       android:id="@+id/action_categories"

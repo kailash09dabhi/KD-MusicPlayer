@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:minHeight="?listPreferredItemHeight"
         android:text="Create New Playlist"
+        android:paddingLeft="?listPreferredItemPaddingLeft"
         style="@style/AppTheme.TextAppearance.List.Medium"/>
     <ListView
         android:id="@+id/listView"

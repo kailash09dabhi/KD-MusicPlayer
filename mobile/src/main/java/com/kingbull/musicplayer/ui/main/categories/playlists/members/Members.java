@@ -1,4 +1,4 @@
-package com.kingbull.musicplayer.ui.main.categories.playlists.musics;
+package com.kingbull.musicplayer.ui.main.categories.playlists.members;
 
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.Mvp;
@@ -9,14 +9,14 @@ import java.util.List;
  * @date 11/10/2016.
  */
 
-public interface MusicListOfPlaylist {
+public interface Members {
   interface View extends Mvp.View {
-    void showMusicListOfPlaylist(List<Music> musicList);
+    void showPlaylistMembers(List<Music> musicList);
   }
 
   interface Model extends Mvp.Model {
   }
 
-  interface Presenter extends Mvp.Presenter<MusicListOfPlaylist.View> {
+  interface Presenter extends Mvp.Presenter<Members.View> {
   }
 }

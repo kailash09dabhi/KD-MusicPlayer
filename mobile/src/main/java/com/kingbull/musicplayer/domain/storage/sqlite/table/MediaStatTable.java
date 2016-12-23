@@ -11,8 +11,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * MusicListOfPlaylist by Kailash Dabhi on 04-09-2016.
- * Copyright (c) 2016 Kingbull Technology. All rights reserved.
+ * @author Kailash Dabhi
+ * @date 12/23/2016.
  */
 public final class MediaStatTable implements SqlTable {
   public static final String NAME = "MediaStatTable";

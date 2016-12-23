@@ -3,7 +3,7 @@ package com.kingbull.musicplayer.ui.base.musiclist.quickaction;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
- final class ActionItem {
+public final class ActionItem {
   private Drawable icon;
   private Bitmap thumb;
   private String title;
@@ -11,7 +11,7 @@ import android.graphics.drawable.Drawable;
   private boolean selected;
   private boolean sticky;
 
-  ActionItem(int actionId, String title, Drawable icon) {
+  public ActionItem(int actionId, String title, Drawable icon) {
     this.title = title;
     this.icon = icon;
     this.actionId = actionId;

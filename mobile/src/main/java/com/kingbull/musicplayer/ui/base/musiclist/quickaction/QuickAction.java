@@ -19,7 +19,7 @@ import com.kingbull.musicplayer.R;
 import java.util.ArrayList;
 import java.util.List;
 
-final class QuickAction extends PopupWindows implements OnDismissListener {
+public final class QuickAction extends PopupWindows implements OnDismissListener {
   public static final int ANIM_GROW_FROM_LEFT = 1;
   public static final int ANIM_GROW_FROM_RIGHT = 2;
   public static final int ANIM_GROW_FROM_CENTER = 3;
@@ -37,12 +37,7 @@ final class QuickAction extends PopupWindows implements OnDismissListener {
   private int mChildPos;
   private int mAnimStyle;
 
-  /**
-   * Constructor.
-   *
-   * @param context Context
-   */
-  QuickAction(Context context) {
+  public QuickAction(Context context) {
     super(context);
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     mTrackAnim = AnimationUtils.loadAnimation(context, R.anim.rail);

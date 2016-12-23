@@ -22,6 +22,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlPlayList;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.AndroidPlayListTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
 import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
@@ -82,12 +83,12 @@ public final class AddToPlayListDialogFragment extends BaseDialogFragment
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
     musics = getArguments().getParcelableArrayList("music_list");
-    playLists = playListTable.playlists();
+    playLists = new AndroidPlayListTable().allPlaylists();
     presenter.takeView(this);
-    listView.setAdapter(new PlayListAdapter(getActivity(), playListTable.playlists()));
+    listView.setAdapter(new PlayListAdapter(getActivity(), playLists));
     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mediaStatTable.addToPlaylist(musics, ((SqlPlayList) (playLists.get(position))).id());
+        ((PlayList.Smart) playLists.get(position)).addAll(musics);
         dismiss();
       }
     });
