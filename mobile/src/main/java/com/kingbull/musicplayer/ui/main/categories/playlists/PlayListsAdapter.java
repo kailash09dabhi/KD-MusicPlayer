@@ -4,12 +4,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
+import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersFragment;
 import java.util.List;
 
@@ -28,7 +30,7 @@ public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapte
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     return new ViewHolder(
-        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genres, parent, false));
+        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_playlists, parent, false));
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
@@ -40,12 +42,17 @@ public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapte
   }
 
   class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    @BindView(R.id.textview) TextView textView;
+    @BindView(R.id.nameView) TextView textView;
+    @BindView(R.id.moreActionsView) ImageView imageview;
 
     public ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
-      textView.setTransformationMethod(null);
+      imageview.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          new Snackbar(v).show("tapped!" + playLists.get(getAdapterPosition()));
+        }
+      });
       itemView.setOnClickListener(this);
     }
 

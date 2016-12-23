@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -28,22 +29,23 @@
           android:id="@+id/fileName"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_gravity="bottom"
           android:layout_weight="1"
           android:fontFamily="sans-serif"
-          android:lines="1"
-          android:layout_gravity="bottom"
-          android:singleLine="true"
           android:gravity="bottom"
+          android:lines="1"
+          android:singleLine="true"
           style="@style/AppTheme.TextAppearance.List.Medium"/>
 
 
       <ImageView
           android:id="@+id/moreActionsView"
-          android:layout_width="36dp"
-          android:padding="4dp"
-          android:layout_height="36dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
           android:adjustViewBounds="true"
-          android:src="@drawable/composer_icn_plus_normal"/>
+          android:background="@drawable/selector"
+          android:padding="8dp"
+          app:srcCompat="@drawable/ic_more_horiz"/>
     </LinearLayout>
 
     <LinearLayout

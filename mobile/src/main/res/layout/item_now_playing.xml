@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:minHeight="?listPreferredItemHeight"
+    android:orientation="vertical">
+
+  <TextView
+      android:id="@+id/nameView"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:fontFamily="sans-serif"
+      android:lines="1"
+      android:paddingLeft="16dp"
+      android:singleLine="true"
+      tools:text="afd"
+      style="@style/AppTheme.TextAppearance.List.Medium"/>
+</LinearLayout>
