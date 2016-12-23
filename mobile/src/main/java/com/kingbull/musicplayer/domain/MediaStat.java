@@ -22,8 +22,6 @@ public interface MediaStat extends SqlTableRow {
 
   long mediaId();
 
-  void addToPlaylist(long playListId);
-
   void saveLastPlayed();
 
   void toggleFavourite();
@@ -43,7 +41,6 @@ public interface MediaStat extends SqlTableRow {
     @Inject SQLiteDatabase sqliteDatabase;
     private boolean isFavourite;
     private long numberOfTimesPlayed;
-    private String playlistIds;
 
     public Smart(Cursor cursor) {
       mediaId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStatTable.Columns.MEDIA_ID));
@@ -51,8 +48,6 @@ public interface MediaStat extends SqlTableRow {
           cursor.getInt(cursor.getColumnIndexOrThrow(MediaStatTable.Columns.FAVORITE)) == 1;
       numberOfTimesPlayed = cursor.getLong(
           cursor.getColumnIndexOrThrow(MediaStatTable.Columns.NUMBER_OF_TIMES_PLAYED));
-      playlistIds =
-          cursor.getString(cursor.getColumnIndexOrThrow(MediaStatTable.Columns.PLAYLIST_IDS));
       lastTimePlayed =
           cursor.getLong(cursor.getColumnIndexOrThrow(MediaStatTable.Columns.LAST_TIME_PLAYED));
       MusicPlayerApp.instance().component().inject(this);
@@ -61,7 +56,6 @@ public interface MediaStat extends SqlTableRow {
     protected Smart(Parcel in) {
       isFavourite = in.readByte() != 0;
       numberOfTimesPlayed = in.readLong();
-      playlistIds = in.readString();
       lastTimePlayed = in.readLong();
       mediaId = in.readLong();
       MusicPlayerApp.instance().component().inject(this);
@@ -70,7 +64,6 @@ public interface MediaStat extends SqlTableRow {
     public Smart(long mediaId) {
       this.mediaId = mediaId;
       this.isFavourite = false;
-      this.playlistIds = "";
       this.numberOfTimesPlayed = 0;
       this.lastTimePlayed = 0;
       MusicPlayerApp.instance().component().inject(this);
@@ -82,11 +75,6 @@ public interface MediaStat extends SqlTableRow {
 
     @Override public long mediaId() {
       return mediaId;
-    }
-
-    @Override public void addToPlaylist(long playlistId) {
-      this.playlistIds = this.playlistIds + "(" + playlistId + ")";
-      save();
     }
 
     @Override public void saveLastPlayed() {
@@ -106,7 +94,6 @@ public interface MediaStat extends SqlTableRow {
     @Override public void writeToParcel(Parcel dest, int flags) {
       dest.writeByte((byte) (isFavourite ? 1 : 0));
       dest.writeLong(numberOfTimesPlayed);
-      dest.writeString(playlistIds);
       dest.writeLong(lastTimePlayed);
       dest.writeLong(mediaId);
     }
@@ -115,7 +102,6 @@ public interface MediaStat extends SqlTableRow {
       ContentValues values = new ContentValues();
       values.put(MediaStatTable.Columns.MEDIA_ID, mediaId);
       values.put(MediaStatTable.Columns.FAVORITE, isFavourite ? 1 : 0);
-      values.put(MediaStatTable.Columns.PLAYLIST_IDS, playlistIds);
       values.put(MediaStatTable.Columns.LAST_TIME_PLAYED, new CurrentDateTime().toString());
       values.put(MediaStatTable.Columns.NUMBER_OF_TIMES_PLAYED, numberOfTimesPlayed);
       values.put(MediaStatTable.Columns.UPDATED_AT, new CurrentDateTime().toString());

@@ -6,10 +6,8 @@ import com.kingbull.musicplayer.domain.storage.sqlite.FavouritesPlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.LastPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.MostPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.RecentlyAddedPlayList;
-import com.kingbull.musicplayer.domain.storage.sqlite.table.AndroidPlayListTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
 import java.util.List;
-import javax.inject.Inject;
 
 /**
  * @author Kailash Dabhi
@@ -17,7 +15,6 @@ import javax.inject.Inject;
  */
 
 public final class PlayListsModel implements PlayLists.Model {
-  @Inject PlayListTable playListTable;
 
   PlayListsModel() {
     MusicPlayerApp.instance().component().inject(this);
@@ -28,7 +25,7 @@ public final class PlayListsModel implements PlayLists.Model {
     PlayList playList2 = new LastPlayedPlayList();
     PlayList playList3 = new MostPlayedPlayList();
     PlayList playList4 = new FavouritesPlayList();
-    AndroidPlayListTable playListTable = new AndroidPlayListTable();
+    PlayListTable playListTable = new PlayListTable();
     List<PlayList> playLists = playListTable.allPlaylists();
     playLists.add(0, playList1);
     playLists.add(1, playList2);

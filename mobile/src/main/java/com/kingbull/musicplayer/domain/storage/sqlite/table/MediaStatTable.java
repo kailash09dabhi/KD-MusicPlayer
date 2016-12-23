@@ -23,8 +23,6 @@ public final class MediaStatTable implements SqlTable {
       + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
       + Columns.MEDIA_ID
       + " INTEGER UNIQUE,"
-      + Columns.PLAYLIST_IDS
-      + " TEXT,"
       + Columns.FAVORITE
       + " TEXT,"
       + Columns.NUMBER_OF_TIMES_PLAYED
@@ -103,38 +101,6 @@ public final class MediaStatTable implements SqlTable {
     return itemList;
   }
 
-  public List<Music> musicsOfPlayList(long playlistId) {
-    String query = "select * from "
-        + MediaStatTable.NAME
-        + "  where "
-        + Columns.PLAYLIST_IDS
-        + " like "
-        + "'%("
-        + playlistId
-        + ")%'"
-        + " order by ("
-        + MediaStatTable.Columns.UPDATED_AT
-        + ") "
-        + "DESC";
-    Cursor cursor = sqliteDatabase.rawQuery(query, null);
-    List<Music> itemList = new ArrayList<>();
-    if (cursor != null) {
-      if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-        do {
-          SqlMusic song = new SqlMusic(new MediaStat.Smart(cursor));
-          itemList.add(song);
-        } while (cursor.moveToNext());
-      }
-      cursor.close();
-    }
-    return itemList;
-  }
-
-  public void addToPlaylist(List<SqlMusic> musicList, long playlistId) {
-    for (SqlMusic music : musicList)
-      music.mediaStat().addToPlaylist(playlistId);
-  }
-
   public MediaStat mediaStatById(long mediaId) {
     Cursor cursor = sqliteDatabase.rawQuery("select * from "
         + MediaStatTable.NAME
@@ -181,9 +147,7 @@ public final class MediaStatTable implements SqlTable {
   public static final class Columns {
     public static final String SQLITE_ID = "_id";
     public static final String MEDIA_ID = "media_id";
-
     public static final String FAVORITE = "favorite";
-    public static final String PLAYLIST_IDS = "playlist_ids";// each song is appeneded with
     // playlist mediaId and playlist mediaId differentiated by "()"
     public static final String LAST_TIME_PLAYED = "last_time_played";
     public static final String NUMBER_OF_TIMES_PLAYED = "number_of_times_played";

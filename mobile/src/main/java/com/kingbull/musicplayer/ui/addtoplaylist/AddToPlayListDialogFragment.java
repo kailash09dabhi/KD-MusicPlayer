@@ -22,9 +22,8 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
-import com.kingbull.musicplayer.domain.storage.sqlite.table.AndroidPlayListTable;
-import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 import com.kingbull.musicplayer.event.PlaylistCreatedEvent;
 import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
 import java.util.ArrayList;
@@ -44,7 +43,6 @@ public final class AddToPlayListDialogFragment extends BaseDialogFragment
   @BindView(R.id.playlistNameView) EditText playlistNameView;
   @BindView(R.id.listView) ListView listView;
   @BindView(R.id.viewFlipper) ViewFlipper viewFlipper;
-  @Inject PlayListTable playListTable;
   @Inject MediaStatTable mediaStatTable;
   List<SqlMusic> musics;
   List<PlayList> playLists;
@@ -68,7 +66,7 @@ public final class AddToPlayListDialogFragment extends BaseDialogFragment
   @OnClick(R.id.doneView) void onDoneClick() {
     if (!TextUtils.isEmpty(playlistNameView.getText())) {
       List<SqlMusic> musics = getArguments().getParcelableArrayList("music_list");
-      PlayList.Smart playList = (PlayList.Smart) new AndroidPlayListTable().addNewPlaylist(
+      PlayList.Smart playList = (PlayList.Smart) new PlayListTable().addNewPlaylist(
           playlistNameView.getText().toString());
       playList.addAll(musics);
       RxBus.getInstance().post(new PlaylistCreatedEvent(playList));
@@ -87,7 +85,7 @@ public final class AddToPlayListDialogFragment extends BaseDialogFragment
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
     musics = getArguments().getParcelableArrayList("music_list");
-    playLists = new AndroidPlayListTable().allPlaylists();
+    playLists = new PlayListTable().allPlaylists();
     presenter.takeView(this);
     listView.setAdapter(new PlayListAdapter(getActivity(), playLists));
     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

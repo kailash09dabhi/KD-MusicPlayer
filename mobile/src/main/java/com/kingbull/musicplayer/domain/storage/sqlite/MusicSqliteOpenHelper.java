@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.EqualizerPresetTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
-import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
 
 public final class MusicSqliteOpenHelper extends SQLiteOpenHelper {
   public static final String DATABASE_NAME = "Music.db";
@@ -17,7 +16,6 @@ public final class MusicSqliteOpenHelper extends SQLiteOpenHelper {
 
   @Override public void onCreate(SQLiteDatabase db) {
     db.execSQL(MediaStatTable.DEFINITION);
-    db.execSQL(PlayListTable.DEFINITION);
     db.execSQL(EqualizerPresetTable.DEFINITION);
   }
 

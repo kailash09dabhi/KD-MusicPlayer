@@ -17,7 +17,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PlayList;
-import com.kingbull.musicplayer.domain.storage.sqlite.table.AndroidPlayListTable;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
 import com.kingbull.musicplayer.event.MovedToPlaylistEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.PlayListAdapter;
 import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
@@ -54,7 +54,7 @@ public final class MoveToDialogFragment extends BaseDialogFragment {
     ButterKnife.bind(this, view);
     titleView.setText("Move to");
     final PlayList.Smart sourcePlayList = getArguments().getParcelable("playlist");
-    final List<PlayList> allPlayLists = new AndroidPlayListTable().allPlaylists();
+    final List<PlayList> allPlayLists = new PlayListTable().allPlaylists();
     allPlayLists.remove(sourcePlayList);
     listView.setAdapter(new PlayListAdapter(getActivity(), allPlayLists));
     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

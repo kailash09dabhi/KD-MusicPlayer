@@ -7,7 +7,6 @@ import com.kingbull.musicplayer.domain.storage.sqlite.LastPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.MostPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlEqualizerPreset;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
-import com.kingbull.musicplayer.domain.storage.sqlite.SqlPlayList;
 import com.kingbull.musicplayer.player.CallReceiver;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
@@ -60,8 +59,6 @@ public interface AppComponent {
   void inject(MyFilesAdapter adapter);
 
   void inject(SqlMusic music);
-
-  void inject(SqlPlayList playList);
 
   void inject(AddToPlayListDialogFragment fragment);
 
