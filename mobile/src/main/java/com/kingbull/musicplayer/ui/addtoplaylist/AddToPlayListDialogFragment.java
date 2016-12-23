@@ -19,12 +19,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
-import com.kingbull.musicplayer.domain.storage.sqlite.SqlPlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AndroidPlayListTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
+import com.kingbull.musicplayer.event.PlaylistCreatedEvent;
 import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +68,10 @@ public final class AddToPlayListDialogFragment extends BaseDialogFragment
   @OnClick(R.id.doneView) void onDoneClick() {
     if (!TextUtils.isEmpty(playlistNameView.getText())) {
       List<SqlMusic> musics = getArguments().getParcelableArrayList("music_list");
-      new SqlPlayList(playlistNameView.getText().toString(), musics).save();
+      PlayList.Smart playList = (PlayList.Smart) new AndroidPlayListTable().addNewPlaylist(
+          playlistNameView.getText().toString());
+      playList.addAll(musics);
+      RxBus.getInstance().post(new PlaylistCreatedEvent(playList));
       dismiss();
     }
   }

@@ -6,12 +6,14 @@ import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumPresente
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
 import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.ArtistPresenter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
+import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenresPresenter;
+import com.kingbull.musicplayer.ui.main.categories.playlists.PlayLists;
+import com.kingbull.musicplayer.ui.main.categories.playlists.PlayListsPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.Members;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersPresenter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
 import com.kingbull.musicplayer.ui.settings.SettingsPresenter;
-import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenresPresenter;
 
 /**
  * Creates a Presenter object.
@@ -27,7 +29,9 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
       return new GenresPresenter();
     }
   }
-  class Album implements PresenterFactory<com.kingbull.musicplayer.ui.main.categories.albumlist.album.Album.Presenter> {
+
+  class Album implements
+      PresenterFactory<com.kingbull.musicplayer.ui.main.categories.albumlist.album.Album.Presenter> {
 
     @Override
     public com.kingbull.musicplayer.ui.main.categories.albumlist.album.Album.Presenter create() {
@@ -71,6 +75,13 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
     }
   }
 
+  class Playlists implements PresenterFactory<PlayLists.Presenter> {
+
+    @Override public PlayLists.Presenter create() {
+      return new PlayListsPresenter();
+    }
+  }
+
   class NowPlaying
       implements PresenterFactory<com.kingbull.musicplayer.ui.nowplaying.NowPlaying.Presenter> {
 
@@ -89,11 +100,9 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
     }
   }
 
-  class MusicListOfPlaylist implements
-      PresenterFactory<Members.Presenter> {
+  class MusicListOfPlaylist implements PresenterFactory<Members.Presenter> {
 
-    @Override
-    public Members.Presenter create() {
+    @Override public Members.Presenter create() {
       return new MembersPresenter();
     }
   }

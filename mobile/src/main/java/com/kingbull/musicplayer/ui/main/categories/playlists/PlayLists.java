@@ -13,6 +13,8 @@ import java.util.List;
 public interface PlayLists {
   interface View extends Mvp.View {
     void showAllPlaylist(List<PlayList> playLists);
+
+    void refreshListOfPlaylist(PlayList playlist);
   }
 
   interface Model extends Mvp.Model {
@@ -21,5 +23,7 @@ public interface PlayLists {
 
   interface Presenter extends Mvp.Presenter<PlayLists.View> {
     void onAllSongsCursorLoadFinished(Cursor cursor);
+
+    void onPlaylistCreated(PlayList playlist);
   }
 }

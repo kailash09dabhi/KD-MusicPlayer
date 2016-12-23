@@ -5,7 +5,7 @@ package com.kingbull.musicplayer.event;
  * @date 12/23/2016.
  */
 
-public class MovedToPlaylistEvent {
+public final class MovedToPlaylistEvent {
   private final String destinationPlaylistName;
   private final int sourcePosition;
 

@@ -7,7 +7,6 @@ package com.kingbull.musicplayer.ui.main.categories.playlists;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,20 +15,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.PlayList;
+import com.kingbull.musicplayer.event.PlaylistCreatedEvent;
+import com.kingbull.musicplayer.ui.base.BaseFragment;
+import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsCursorLoader;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import java.util.List;
 
-public final class PlayListsFragment extends Fragment
+public final class PlayListsFragment extends BaseFragment<PlayLists.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, PlayLists.View {
-  PlayLists.Presenter presenter = new PlayListsPresenter();
   private RecyclerView recyclerView;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_genres, null);
     setupView(view);
-    presenter.takeView(this);
     return view;
   }
 
@@ -37,6 +42,26 @@ public final class PlayListsFragment extends Fragment
     recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     getLoaderManager().initLoader(0, null, this);
+  }
+
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .ofType(PlaylistCreatedEvent.class)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<PlaylistCreatedEvent>() {
+          @Override public void accept(PlaylistCreatedEvent playlistCreatedEvent) {
+            presenter.onPlaylistCreated(playlistCreatedEvent.playList());
+          }
+        });
+  }
+
+  @Override protected void onPresenterPrepared(PlayLists.Presenter presenter) {
+    presenter.takeView(this);
+  }
+
+  @Override protected PresenterFactory<PlayLists.Presenter> presenterFactory() {
+    return new PresenterFactory.Playlists();
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -53,5 +78,11 @@ public final class PlayListsFragment extends Fragment
 
   @Override public void showAllPlaylist(List<PlayList> playLists) {
     recyclerView.setAdapter(new PlayListsAdapter(playLists));
+  }
+
+  @Override public void refreshListOfPlaylist(PlayList playlist) {
+    new Snackbar(recyclerView).show(
+        String.format("Playlist created with name \" %s \"", playlist.name()));
+    recyclerView.getAdapter().notifyDataSetChanged();
   }
 }
