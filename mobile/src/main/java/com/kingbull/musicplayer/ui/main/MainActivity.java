@@ -16,29 +16,27 @@ import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.Artist;
 import java.util.Random;
 
 public final class MainActivity extends BaseActivity<Artist.Presenter> {
-  @BindView(R.id.bottom_navigation) RichBottomNavigationView bottomNavigationView;
-  @BindView(R.id.viewPager) ViewPagerParallax viewPager;
   private final int arrayBg[] = {
       R.drawable.a1, R.drawable.a2, R.drawable.a3, R.drawable.a4, R.drawable.a5, R.drawable.a6,
       R.drawable.a7, R.drawable.a8, R.drawable.a9, R.drawable.a10, R.drawable.a11, R.drawable.a12,
       R.drawable.a13, R.drawable.a14, R.drawable.a15, R.drawable.a16, R.drawable.a17,
       R.drawable.a18,
   };
+  @BindView(R.id.bottom_navigation) RichBottomNavigationView bottomNavigationView;
+  @BindView(R.id.viewPager) ViewPagerParallax viewPager;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
-    final MainLayout mainLayout = (MainLayout) bottomNavigationView.getParent();
     viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
     viewPager.setOffscreenPageLimit(4);
     viewPager.setCurrentItem(0);
-    viewPager.setBackgroundAsset(arrayBg[new Random().nextInt(18)], getWindow());
+    viewPager.setBackgroundAsset(arrayBg[new Random().nextInt(18)], getWindow(),bottomNavigationView);
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
       @Override
       public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        mainLayout.drawParallax(position, positionOffset);
       }
 
       @Override public void onPageSelected(int position) {
