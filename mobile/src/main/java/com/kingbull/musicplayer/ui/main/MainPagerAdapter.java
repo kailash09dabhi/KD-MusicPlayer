@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.ui.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,9 +11,13 @@ import com.kingbull.musicplayer.ui.main.categories.playlists.PlayListsFragment;
 import com.kingbull.musicplayer.ui.settings.SettingsFragment;
 
 final class MainPagerAdapter extends FragmentPagerAdapter {
+  Context mContext;
+  private String[] tabs;
 
-  public MainPagerAdapter(FragmentManager fm) {
+  public MainPagerAdapter(FragmentManager fm, Context context, String[] tabs) {
     super(fm);
+    mContext = context;
+    this.tabs = tabs;
   }
 
   @Override public Fragment getItem(int position) {
@@ -35,6 +40,10 @@ final class MainPagerAdapter extends FragmentPagerAdapter {
   }
 
   @Override public int getCount() {
-    return 5;
+    return tabs.length;
+  }
+
+  @Override public CharSequence getPageTitle(int position) {
+    return tabs[position];
   }
 }

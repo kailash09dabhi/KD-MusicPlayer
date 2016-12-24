@@ -6,22 +6,25 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
+
   <com.kingbull.musicplayer.ui.main.ViewPagerParallax
       android:id="@+id/viewPager"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1">
+    <android.support.design.widget.TabLayout
+        android:id="@+id/sliding_tabs"
+        android:layout_width="wrap_content"
+        app:tabGravity="center"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:background="@color/transparent_black"
+        android:fadingEdgeLength="34dp"
+        android:requiresFadingEdge="horizontal"
+        app:tabIndicatorHeight="1dp"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@android:color/white"
+        app:tabTextColor="@color/white"/>
   </com.kingbull.musicplayer.ui.main.ViewPagerParallax>
-  <com.kingbull.musicplayer.ui.main.RichBottomNavigationView
-      android:id="@+id/bottom_navigation"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
-      android:layout_below="@id/viewPager"
-      android:foreground="@color/transparent_black"
-      app:itemIconTint="@color/white"
-      app:itemTextColor="@color/white"
-      app:menu="@menu/bottom_navigation_menu"/>
-
 
 </LinearLayout>

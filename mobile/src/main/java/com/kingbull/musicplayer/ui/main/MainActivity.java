@@ -1,12 +1,16 @@
 package com.kingbull.musicplayer.ui.main;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
@@ -22,17 +26,19 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
       R.drawable.a13, R.drawable.a14, R.drawable.a15, R.drawable.a16, R.drawable.a17,
       R.drawable.a18,
   };
-  @BindView(R.id.bottom_navigation) RichBottomNavigationView bottomNavigationView;
   @BindView(R.id.viewPager) ViewPagerParallax viewPager;
+  @BindArray(R.array.main_tabs) String[] tabs;
+  @BindView(R.id.sliding_tabs) TabLayout tabLayout;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
-    viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+    MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager(), this, tabs);
+    viewPager.setAdapter(adapter);
     viewPager.setOffscreenPageLimit(4);
     viewPager.setCurrentItem(0);
-    viewPager.setBackgroundAsset(arrayBg[new Random().nextInt(18)], getWindow(),bottomNavigationView);
+    viewPager.setBackgroundAsset(arrayBg[new Random().nextInt(18)], getWindow());
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
       @Override
@@ -40,35 +46,13 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
       }
 
       @Override public void onPageSelected(int position) {
-        bottomNavigationView.setSelectedItem(position);
       }
 
       @Override public void onPageScrollStateChanged(int state) {
       }
     });
-    bottomNavigationView.setOnNavigationItemSelectedListener(
-        new BottomNavigationView.OnNavigationItemSelectedListener() {
-          @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-              case R.id.action_all_songs:
-                if (viewPager.getCurrentItem() != 0) viewPager.setCurrentItem(0);
-                break;
-              case R.id.action_categories:
-                if (viewPager.getCurrentItem() != 1) viewPager.setCurrentItem(1);
-                break;
-              case R.id.action_playlists:
-                if (viewPager.getCurrentItem() != 2) viewPager.setCurrentItem(2);
-                break;
-              case R.id.action_my_files:
-                if (viewPager.getCurrentItem() != 3) viewPager.setCurrentItem(3);
-                break;
-              case R.id.action_settings:
-                if (viewPager.getCurrentItem() != 4) viewPager.setCurrentItem(4);
-                break;
-            }
-            return false;
-          }
-        });
+    tabLayout.setupWithViewPager(viewPager);
+    setupTabLayout();
     getSupportFragmentManager().addOnBackStackChangedListener(
         new FragmentManager.OnBackStackChangedListener() {
           public void onBackStackChanged() {
@@ -79,6 +63,23 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
             }
           }
         });
+  }
+
+  private void setupTabLayout() {
+    ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
+    int tabsCount = viewGroup.getChildCount();
+    for (int j = 0; j < tabsCount; j++) {
+      ViewGroup tabViewGroup = (ViewGroup) viewGroup.getChildAt(j);
+      int tabChildsCount = tabViewGroup.getChildCount();
+      for (int i = 0; i < tabChildsCount; i++) {
+        View tabViewChild = tabViewGroup.getChildAt(i);
+        if (tabViewChild instanceof TextView) {
+          ((TextView) tabViewChild).setTypeface(
+              Typeface.createFromAsset(getAssets(), getString(R.string.font_julius_sans_one)),
+              Typeface.BOLD);
+        }
+      }
+    }
   }
 
   @Override protected void onPresenterPrepared(Artist.Presenter presenter) {

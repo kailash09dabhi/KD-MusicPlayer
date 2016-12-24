@@ -5,5 +5,11 @@
     <item>@string/tab_Artists</item>
     <item>@string/tab_Albums</item>
   </string-array>
-
+  <string-array name="main_tabs">
+    <item>All songs</item>
+    <item>Categories</item>
+    <item>Playlists</item>
+    <item>My Files</item>
+    <item>Settings</item>
+  </string-array>
 </resources>

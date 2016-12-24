@@ -7,11 +7,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Debug;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.graphics.Palette;
 import android.util.AttributeSet;
@@ -33,7 +31,6 @@ public final class ViewPagerParallax extends ViewPager {
   float current_offset = 0.0f;
   Window window;
   boolean isFlatTheme = false;
-  BottomNavigationView bottomNavigationView;
   private int background_id = -1;
   private int background_saved_id = -1;
   private int saved_width = -1;
@@ -69,18 +66,6 @@ public final class ViewPagerParallax extends ViewPager {
         .subscribe(new Consumer<ThemeChangedEvent>() {
           @Override public void accept(ThemeChangedEvent themeChangedEvent) throws Exception {
             isFlatTheme = new SettingPreferences().isFlatTheme();
-            if (isFlatTheme) {
-              bottomNavigationView.setBackground(null);
-            } else {
-              int width =
-                  saved_bitmap.getWidth() > getWidth() ? getWidth() : saved_bitmap.getWidth();
-              Bitmap bitmap = Bitmap.createBitmap(saved_bitmap, 0,
-                  saved_bitmap.getHeight() - bottomNavigationView.getHeight(), width,
-                  bottomNavigationView.getHeight());
-              Bitmap bitmapBlurred = NativeStackBlur.process(bitmap, 68);
-              bitmap.recycle();
-              bottomNavigationView.setBackground(new BitmapDrawable(bitmapBlurred));
-            }
             invalidate();
           }
         });
@@ -140,17 +125,6 @@ public final class ViewPagerParallax extends ViewPager {
       is.reset();
       saved_bitmap = BitmapFactory.decodeStream(is, null, options);
       saved_bitmap = NativeStackBlur.process(saved_bitmap, 45);
-      bottomNavigationView.post(new Runnable() {
-        @Override public void run() {
-          int width = saved_bitmap.getWidth() > getWidth() ? getWidth() : saved_bitmap.getWidth();
-          Bitmap bitmap = Bitmap.createBitmap(saved_bitmap, 0,
-              saved_bitmap.getHeight() - bottomNavigationView.getHeight(), width,
-              bottomNavigationView.getHeight());
-          Bitmap bitmapBlurred = NativeStackBlur.process(bitmap, 68);
-          bitmap.recycle();
-          bottomNavigationView.setBackground(new BitmapDrawable(bitmapBlurred));
-        }
-      });
       if (window != null) {
         Palette.from(saved_bitmap).generate(new Palette.PaletteAsyncListener() {
           public void onGenerated(Palette palette) {
@@ -210,11 +184,9 @@ public final class ViewPagerParallax extends ViewPager {
     set_new_background();
   }
 
-  public void setBackgroundAsset(int res_id, Window window,
-      RichBottomNavigationView bottomNavigationView) {
+  public void setBackgroundAsset(int res_id, Window window) {
     background_id = res_id;
     this.window = window;
-    this.bottomNavigationView = bottomNavigationView;
     set_new_background();
   }
 
