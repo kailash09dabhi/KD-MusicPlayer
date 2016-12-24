@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.ui.base.musiclist.quickaction;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -24,6 +25,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
   public static final int ANIM_GROW_FROM_RIGHT = 2;
   public static final int ANIM_GROW_FROM_CENTER = 3;
   public static final int ANIM_AUTO = 4;
+  Activity activity;
   //private ImageView mArrowUp;
   //private ImageView mArrowDown;
   private Animation mTrackAnim;
@@ -37,8 +39,9 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
   private int mChildPos;
   private int mAnimStyle;
 
-  public QuickAction(Context context) {
+  public QuickAction(Activity context) {
     super(context);
+    this.activity = context;
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     mTrackAnim = AnimationUtils.loadAnimation(context, R.anim.rail);
     mTrackAnim.setInterpolator(new Interpolator() {
@@ -156,6 +159,8 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
    * Show popup mWindow
    */
   public void show(View anchor) {
+    mRootView.findViewById(R.id.scroll)
+        .setBackground(activity.getWindow().getDecorView().getBackground());
     preShow();
     int[] location = new int[2];
     mDidAction = false;

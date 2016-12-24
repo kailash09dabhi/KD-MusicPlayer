@@ -34,7 +34,13 @@ public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapte
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
+    PlayList playList = playLists.get(position);
     holder.textView.setText(playLists.get(position).name());
+    if (playList instanceof PlayList.Smart) {
+      holder.imageview.setVisibility(View.VISIBLE);
+    } else {
+      holder.imageview.setVisibility(View.GONE);
+    }
   }
 
   @Override public int getItemCount() {

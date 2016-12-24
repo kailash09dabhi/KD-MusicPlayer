@@ -36,6 +36,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   @BindView(R.id.albumart) ImageView albumArtView;
   @BindView(R.id.totaltime) TextView totalTimeView;
   @BindView(R.id.totaltracks) TextView totalTracks;
+  @BindView(R.id.artistname) TextView artistNameView;
   @BindView(R.id.rootView) View rootView;
   MusicRecyclerViewAdapter adapter;
   List<Music> songList = new ArrayList<>();
@@ -98,6 +99,9 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     songList.clear();
     songList.addAll(songs);
     adapter.notifyDataSetChanged();
+    if (!songs.isEmpty()) {
+      artistNameView.setText(String.format("By: %s", songs.get(0).media().artist()));
+    }
     totalTracks.setText(String.format("Total Tracks: %d", songs.size()));
   }
 
