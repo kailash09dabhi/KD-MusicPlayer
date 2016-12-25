@@ -2,7 +2,10 @@ package com.kingbull.musicplayer.ui.coverarts;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,9 +17,19 @@ import android.widget.LinearLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.view.Snackbar;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +46,13 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
   @BindView(R.id.noResultFound) LinearLayout noResultFoundView;
   private CoverArtsAdapter coverArtsAdapter;
   private List<String> coverArtUrls = new ArrayList<>();
+  private Album album;
 
-  public static final CoverArtsFragment newInstanceOfAlbumCovers(String albumName) {
+  public static final CoverArtsFragment newInstanceOfAlbumCovers(Album album) {
     CoverArtsFragment coverArtsFragment = new CoverArtsFragment();
     Bundle bundle = new Bundle();
     bundle.putBoolean("isAlbum", true);
-    bundle.putString("album_name", albumName);
+    bundle.putParcelable("album", (Parcelable) album);
     coverArtsFragment.setArguments(bundle);
     return coverArtsFragment;
   }
@@ -78,9 +92,10 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
     recyclerView.setAdapter(coverArtsAdapter);
     showProgress();
     Bundle bundle = getArguments();
+    album = bundle.getParcelable("album");
     if (bundle.getBoolean("isAlbum")) {
       searchView.setHint("Album Name");
-      searchView.setText(bundle.getString("album_name", ""));
+      searchView.setText(album.name());
     } else {
       searchView.setHint("Artist Name");
       searchView.setText(bundle.getString("artist_name", ""));
@@ -89,9 +104,10 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
 
   @Override protected void onPresenterPrepared(CoverArts.Presenter presenter) {
     presenter.takeView(this);
+    coverArtsAdapter.takePresenter(presenter);
     Bundle bundle = getArguments();
     if (bundle.getBoolean("isAlbum")) {
-      presenter.onAlbumSearch(bundle.getString("album_name", ""));
+      presenter.onAlbumSearch(album.name());
     } else {
       presenter.onArtistSearch(bundle.getString("artist_name", ""));
     }
@@ -131,5 +147,41 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
 
   @Override public void showNoResultFoundMessage() {
     noResultFoundView.setVisibility(View.VISIBLE);
+  }
+
+  @Override public void saveCoverArt(String coverArtUrl) {
+    final File file = new File(getCoverArtStorageDir("Cover Art"), album.name()+".jpg");
+    Glide.with(this).load(coverArtUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
+      @Override
+      public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+        try {
+          FileOutputStream out  = new FileOutputStream(file);
+          bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+          out.flush();
+          out.close();
+          album.saveCoverArt(file.getPath());
+          new Snackbar(recyclerView).show("Cover art saved successfully!");
+          getFragmentManager().popBackStack();
+        } catch (FileNotFoundException e) {
+          new Snackbar(recyclerView).show("Sorry but cover art not saved:(");
+        } catch (IOException e) {
+          new Snackbar(recyclerView).show("Sorry but cover art not saved:(");
+        }
+      }
+    });
+  }
+
+  private File getCoverArtStorageDir(String folderName) {
+    // Get the directory for the user's public pictures directory.
+    File file = new File(Environment.getExternalStorageDirectory(),
+        MusicPlayerApp.instance().getString(R.string.app_name));
+    if (!file.mkdirs()) {
+      // Log.e("SignaturePad", "Directory not created");
+    }
+    file = new File(file, folderName);
+    if (!file.mkdirs()) {
+      // Log.e("SignaturePad", "Directory not created");
+    }
+    return file;
   }
 }

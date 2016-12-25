@@ -26,15 +26,26 @@
       android:background="@color/transparent_strong_black"
       android:gravity="center"
       android:padding="@dimen/mp.padding.small"
+      android:visibility="gone"
       tools:text="Title"
       style="@style/AppTheme.TextAppearance.Small"/>
-
-  <View
-      android:id="@+id/foregroundView"
+  <FrameLayout
+      android:id="@+id/hoverView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:background="@drawable/selector"
-      android:clickable="false"
-      android:duplicateParentState="true"
-      />
+      android:background="@color/transparent_strong_black">
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/selector"
+        android:drawablePadding="8dp"
+        android:drawableRight="@android:drawable/checkbox_on_background"
+        android:text="save"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        style="@style/Widget.AppCompat.Button.Borderless"/>
+  </FrameLayout>
+
 </com.kingbull.musicplayer.ui.base.view.SquareFrameLayout>

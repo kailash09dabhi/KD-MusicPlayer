@@ -17,6 +17,8 @@ public interface CoverArts extends Mvp {
     void showProgress();
 
     void showNoResultFoundMessage();
+
+    void saveCoverArt(String coverArtUrl);
   }
 
   interface Model extends Mvp.Model {
@@ -27,6 +29,6 @@ public interface CoverArts extends Mvp {
 
     void onArtistSearch(String artist);
 
-    void onCoverSelection();
+    void onSaveCoverArtClick(String s);
   }
 }

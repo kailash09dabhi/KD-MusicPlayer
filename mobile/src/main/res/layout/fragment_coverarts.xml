@@ -14,6 +14,7 @@
       android:text="Album Cover"
       android:textAllCaps="true"
       style="@style/AppTheme.TextAppearance.Title.Pager"/>
+
   <FrameLayout
       android:layout_width="match_parent"
       android:layout_height="0dp"
@@ -56,9 +57,9 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
-          android:layout_marginTop="20dp"
           android:layout_marginLeft="20dp"
           android:layout_marginRight="20dp"
+          android:layout_marginTop="20dp"
           android:gravity="center"
           android:text="Sorry, no cover art found! \nPlease try another keyword to search."
           style="@style/AppTheme.TextAppearance.Title"/>

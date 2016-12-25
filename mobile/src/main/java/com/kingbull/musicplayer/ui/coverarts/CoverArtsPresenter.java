@@ -58,7 +58,8 @@ public final class CoverArtsPresenter extends Presenter<CoverArts.View>
         });
   }
 
-  @Override public void onCoverSelection() {
-    // TODO: 12/25/2016 save the albumart in Mediastore and refresh
+  @Override public void onSaveCoverArtClick(String coverArtUrl) {
+    view().showProgress();
+    view().saveCoverArt(coverArtUrl);
   }
 }

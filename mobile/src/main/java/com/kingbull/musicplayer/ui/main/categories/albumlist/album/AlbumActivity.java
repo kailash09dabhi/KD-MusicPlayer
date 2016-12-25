@@ -15,6 +15,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
@@ -46,7 +49,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
 
   @OnClick(R.id.albumart) void onCoverArtClick() {
     getSupportFragmentManager().beginTransaction()
-        .add(android.R.id.content, CoverArtsFragment.newInstanceOfAlbumCovers(album.name()),
+        .add(android.R.id.content, CoverArtsFragment.newInstanceOfAlbumCovers(album),
             CoverArtsFragment.class.getSimpleName())
         .addToBackStack(CoverArtsFragment.class.getSimpleName())
         .commit();
@@ -80,10 +83,23 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
         //presenter.onSortMenuClick();
       }
     });
-    ImagePath imagePath = new ImagePath(album.albumArt());
-    Bitmap bitmap = imagePath.toBitmap(getResources());
-    albumArtView.setImageBitmap(bitmap);
-    rootView.setBackground(imagePath.toBlurredBitmap(bitmap, getResources()));
+    if (TextUtils.isEmpty(album.albumArt())) {
+      Glide.with(this).load(R.drawable.a11).asBitmap().into(new SimpleTarget<Bitmap>() {
+        @Override
+        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+          albumArtView.setImageBitmap(bitmap);
+          rootView.setBackground(new ImagePath("").toBlurredBitmap(bitmap, getResources()));
+        }
+      });
+    } else {
+      Glide.with(this).load(album.albumArt()).asBitmap().into(new SimpleTarget<Bitmap>() {
+        @Override
+        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+          albumArtView.setImageBitmap(bitmap);
+          rootView.setBackground(new ImagePath("").toBlurredBitmap(bitmap, getResources()));
+        }
+      });
+    }
   }
 
   @Override protected void onPresenterPrepared(Album.Presenter presenter) {

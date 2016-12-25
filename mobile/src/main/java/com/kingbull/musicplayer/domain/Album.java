@@ -1,9 +1,13 @@
 package com.kingbull.musicplayer.domain;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import com.kingbull.musicplayer.MusicPlayerApp;
 
 /**
  * @author Kailash Dabhi
@@ -22,6 +26,9 @@ public interface Album {
       return "Album";
     }
 
+    @Override public void saveCoverArt(String filePath) {
+    }
+
     @Override public String albumArt() {
       return "";
     }
@@ -30,6 +37,8 @@ public interface Album {
   long albumId();
 
   String name();
+
+  void saveCoverArt(String filePath);
 
   String albumArt();
 
@@ -83,6 +92,17 @@ public interface Album {
 
     @Override public String name() {
       return name;
+    }
+
+    @Override public void saveCoverArt(String filePath) {
+      Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+      int deleted = MusicPlayerApp.instance()
+          .getContentResolver()
+          .delete(ContentUris.withAppendedId(sArtworkUri, _id), null, null);
+      ContentValues values = new ContentValues();
+      values.put("album_id", _id);
+      values.put("_data", filePath);
+      Uri num_updates = MusicPlayerApp.instance().getContentResolver().insert(sArtworkUri, values);
     }
 
     @Override public String albumArt() {
