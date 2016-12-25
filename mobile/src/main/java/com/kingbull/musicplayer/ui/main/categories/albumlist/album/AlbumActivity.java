@@ -14,11 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.coverarts.CoverArtsFragment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,14 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   MusicRecyclerViewAdapter adapter;
   List<Music> songList = new ArrayList<>();
   private com.kingbull.musicplayer.domain.Album album;
+
+  @OnClick(R.id.albumart) void onCoverArtClick() {
+    getSupportFragmentManager().beginTransaction()
+        .add(android.R.id.content, CoverArtsFragment.newInstanceOfAlbumCovers(album.name()),
+            CoverArtsFragment.class.getSimpleName())
+        .addToBackStack(CoverArtsFragment.class.getSimpleName())
+        .commit();
+  }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

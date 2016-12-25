@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/artistbg"
+    android:orientation="vertical">
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingBottom="12dp"
+      android:paddingTop="16dp"
+      android:text="Album Cover"
+      android:textAllCaps="true"
+      style="@style/AppTheme.TextAppearance.Title.Pager"/>
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1">
+    <com.kingbull.musicplayer.ui.coverarts.ProgressOverlayLayout
+        android:id="@+id/progress_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:visibility="gone"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="1px"
+        android:layout_marginTop="1px"
+        android:layout_weight="1"
+        android:background="@color/transparent_black"
+        android:clipToPadding="false"
+        android:fadeScrollbars="true"
+        android:fadingEdgeLength="34dp"
+        android:overScrollMode="never"
+        android:requiresFadingEdge="vertical"
+        android:scrollbarSize="3dp"
+        android:scrollbarThumbVertical="@drawable/transparent_white"
+        android:scrollbars="vertical"/>
+    <LinearLayout
+        android:id="@+id/noResultFound"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+      <ImageView
+          android:layout_width="150dp"
+          android:layout_height="150dp"
+          app:srcCompat="@drawable/ic_error_outline"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:layout_marginTop="20dp"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
+          android:gravity="center"
+          android:text="Sorry, no cover art found! \nPlease try another keyword to search."
+          style="@style/AppTheme.TextAppearance.Title"/>
+
+    </LinearLayout>
+  </FrameLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:paddingLeft="?android:listPreferredItemPaddingLeft"
+      android:paddingRight="@dimen/mp.padding.small"
+      android:paddingTop="@dimen/mp.padding.small">
+    <android.support.design.widget.TextInputLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+      <EditText
+          android:id="@+id/searchView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="album name"
+          android:paddingTop="?android:attr/listPreferredItemPaddingLeft"
+          android:textColor="@android:color/white"
+          android:textColorHint="@android:color/white"
+          style="@style/AppTheme.TextAppearance.List.Medium"/>
+
+    </android.support.design.widget.TextInputLayout>
+    <ImageView
+        android:id="@+id/searchImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/mp.padding.normal"
+        android:src="@android:drawable/ic_menu_search"/>
+  </LinearLayout>
+</LinearLayout>

@@ -1,6 +1,8 @@
 package com.kingbull.musicplayer.ui.base;
 
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.ui.coverarts.CoverArtsPresenter;
+import com.kingbull.musicplayer.ui.coverarts.CoverArts;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerPresenter;
 import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumPresenter;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
@@ -45,6 +47,14 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
     @Override
     public com.kingbull.musicplayer.ui.main.categories.artistlist.artist.Artist.Presenter create() {
       return new ArtistPresenter();
+    }
+  }
+
+  class CoverArt
+      implements PresenterFactory<CoverArts.Presenter> {
+
+    @Override public CoverArts.Presenter create() {
+      return new CoverArtsPresenter();
     }
   }
 
