@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcelable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,15 +19,18 @@ import butterknife.OnClick;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.di.StorageModule;
 import com.kingbull.musicplayer.domain.Album;
+import com.kingbull.musicplayer.domain.storage.ImageFile;
+import com.kingbull.musicplayer.domain.storage.StorageDirectory;
+import com.kingbull.musicplayer.event.CoverArtDownloadedEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,7 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.progress_overlay) ProgressOverlayLayout progressOverlay;
   @BindView(R.id.noResultFound) LinearLayout noResultFoundView;
+  StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
   private CoverArtsAdapter coverArtsAdapter;
   private List<String> coverArtUrls = new ArrayList<>();
   private Album album;
@@ -150,16 +153,14 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
   }
 
   @Override public void saveCoverArt(String coverArtUrl) {
-    final File file = new File(getCoverArtStorageDir("Cover Art"), album.name()+".jpg");
+    final File file = new File(coverArtDir.asFile(), album.name() + ".jpg");
     Glide.with(this).load(coverArtUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
       @Override
       public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
         try {
-          FileOutputStream out  = new FileOutputStream(file);
-          bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-          out.flush();
-          out.close();
-          album.saveCoverArt(file.getPath());
+          new ImageFile(file).save(bitmap);
+          album = album.saveCoverArt(file.getPath());
+          RxBus.getInstance().post(new CoverArtDownloadedEvent());
           new Snackbar(recyclerView).show("Cover art saved successfully!");
           getFragmentManager().popBackStack();
         } catch (FileNotFoundException e) {
@@ -169,19 +170,5 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
         }
       }
     });
-  }
-
-  private File getCoverArtStorageDir(String folderName) {
-    // Get the directory for the user's public pictures directory.
-    File file = new File(Environment.getExternalStorageDirectory(),
-        MusicPlayerApp.instance().getString(R.string.app_name));
-    if (!file.mkdirs()) {
-      // Log.e("SignaturePad", "Directory not created");
-    }
-    file = new File(file, folderName);
-    if (!file.mkdirs()) {
-      // Log.e("SignaturePad", "Directory not created");
-    }
-    return file;
   }
 }

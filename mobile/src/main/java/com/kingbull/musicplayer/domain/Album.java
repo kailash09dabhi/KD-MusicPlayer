@@ -26,7 +26,8 @@ public interface Album {
       return "Album";
     }
 
-    @Override public void saveCoverArt(String filePath) {
+    @Override public Album saveCoverArt(String filePath) {
+      return Album.NONE;
     }
 
     @Override public String albumArt() {
@@ -38,7 +39,7 @@ public interface Album {
 
   String name();
 
-  void saveCoverArt(String filePath);
+  Album saveCoverArt(String filePath);
 
   String albumArt();
 
@@ -70,6 +71,12 @@ public interface Album {
       this.albumArt = "";
     }
 
+    public Smart(int albumId, String name, String albumArtPath) {
+      this._id = albumId;
+      this.name = name;
+      this.albumArt = albumArtPath;
+    }
+
     protected Smart(Parcel in) {
       _id = in.readInt();
       name = in.readString();
@@ -94,7 +101,7 @@ public interface Album {
       return name;
     }
 
-    @Override public void saveCoverArt(String filePath) {
+    @Override public Album saveCoverArt(String filePath) {
       Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
       int deleted = MusicPlayerApp.instance()
           .getContentResolver()
@@ -103,6 +110,7 @@ public interface Album {
       values.put("album_id", _id);
       values.put("_data", filePath);
       Uri num_updates = MusicPlayerApp.instance().getContentResolver().insert(sArtworkUri, values);
+      return new Album.Smart(_id, name, filePath);
     }
 
     @Override public String albumArt() {

@@ -15,6 +15,12 @@ public interface Album {
     void showSongs(List<Music> songs);
 
     void showTotalDuration(String value);
+
+    void showPickOptions();
+
+    void gotoGalleryScreen();
+
+    void gotoInternetCoverArtsScreen();
   }
 
   interface Model extends Mvp.Model {
@@ -22,5 +28,11 @@ public interface Album {
 
   interface Presenter extends Mvp.Presenter<Album.View> {
     void onSongCursorLoadFinished(Cursor cursor);
+
+    void onCoverArtClick();
+
+    void onPickFromInternetClick();
+
+    void onPickFromGalleryClick();
   }
 }

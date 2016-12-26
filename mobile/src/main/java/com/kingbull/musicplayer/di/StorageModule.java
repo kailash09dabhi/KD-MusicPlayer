@@ -18,15 +18,18 @@ package com.kingbull.musicplayer.di;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.domain.storage.StorageDirectory;
 import com.kingbull.musicplayer.domain.storage.sqlite.MusicSqliteOpenHelper;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaTable;
 import dagger.Module;
 import dagger.Provides;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Module public final class StorageModule {
+  public static final String COVER_ART_DIR = "Cover Art";
 
   @Provides @Singleton SQLiteOpenHelper provideOpenHelper(MusicPlayerApp app) {
     return new MusicSqliteOpenHelper(app);
@@ -46,5 +49,9 @@ import javax.inject.Singleton;
 
   @Provides @Singleton AlbumTable provideAlbumTable() {
     return new AlbumTable();
+  }
+
+  @Named(COVER_ART_DIR) @Provides @Singleton StorageDirectory provideStorageDirectory() {
+    return new StorageDirectory(COVER_ART_DIR);
   }
 }

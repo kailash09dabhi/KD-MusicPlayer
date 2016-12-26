@@ -1,7 +1,13 @@
 package com.kingbull.musicplayer.ui.main.categories.albumlist.album;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
@@ -18,12 +24,29 @@ import butterknife.OnClick;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.signature.StringSignature;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.di.StorageModule;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.ImageFile;
+import com.kingbull.musicplayer.domain.storage.StorageDirectory;
+import com.kingbull.musicplayer.event.CoverArtDownloadedEvent;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.coverarts.CoverArtsFragment;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +58,7 @@ import java.util.List;
 public final class AlbumActivity extends BaseActivity<Album.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Album.View {
 
+  private final int PICK_COVER_ART_GALLERY = 9;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.songMenu) SongListRayMenu songListRayMenu;
@@ -45,14 +69,38 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   @BindView(R.id.rootView) View rootView;
   MusicRecyclerViewAdapter adapter;
   List<Music> songList = new ArrayList<>();
+  StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
   private com.kingbull.musicplayer.domain.Album album;
 
   @OnClick(R.id.albumart) void onCoverArtClick() {
-    getSupportFragmentManager().beginTransaction()
-        .add(android.R.id.content, CoverArtsFragment.newInstanceOfAlbumCovers(album),
-            CoverArtsFragment.class.getSimpleName())
-        .addToBackStack(CoverArtsFragment.class.getSimpleName())
-        .commit();
+    presenter.onCoverArtClick();
+  }
+
+  @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == PICK_COVER_ART_GALLERY && resultCode == Activity.RESULT_OK) {
+      if (data == null) {
+        //Display an error
+        new Snackbar(recyclerView).show("Sorry to say but we couldnt fetch the album art!");
+        return;
+      }
+      Glide.with(this).load(data.getData()).asBitmap().into(new SimpleTarget<Bitmap>(300, 300) {
+        @Override
+        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+          try {
+            final File file = new File(coverArtDir.asFile(), album.name() + ".jpg");
+            new ImageFile(file).save(bitmap);
+            album = album.saveCoverArt(file.getPath());
+            new Snackbar(recyclerView).show("Cover art saved successfully!");
+            showAlbumArt();
+          } catch (FileNotFoundException e) {
+            new Snackbar(recyclerView).show("Sorry but cover art not saved:(");
+          } catch (IOException e) {
+            new Snackbar(recyclerView).show("Sorry but cover art not saved:(");
+          }
+        }
+      });
+    }
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -83,23 +131,81 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
         //presenter.onSortMenuClick();
       }
     });
-    if (TextUtils.isEmpty(album.albumArt())) {
-      Glide.with(this).load(R.drawable.a11).asBitmap().into(new SimpleTarget<Bitmap>() {
-        @Override
-        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-          albumArtView.setImageBitmap(bitmap);
-          rootView.setBackground(new ImagePath("").toBlurredBitmap(bitmap, getResources()));
-        }
-      });
-    } else {
-      Glide.with(this).load(album.albumArt()).asBitmap().into(new SimpleTarget<Bitmap>() {
-        @Override
-        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-          albumArtView.setImageBitmap(bitmap);
-          rootView.setBackground(new ImagePath("").toBlurredBitmap(bitmap, getResources()));
-        }
-      });
-    }
+    showAlbumArt();
+  }
+
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .ofType(CoverArtDownloadedEvent.class)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<CoverArtDownloadedEvent>() {
+          @Override public void accept(CoverArtDownloadedEvent coverArtDownloadedEvent) {
+            showAlbumArt();
+          }
+        });
+  }
+
+  private void showAlbumArt() {
+    File file = null;
+    if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
+    Glide.with(this)
+        .load(album.albumArt())
+        .asBitmap()
+        .placeholder(R.drawable.a11)
+        .error(R.drawable.a9)
+        .centerCrop()
+        .signature(
+            new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
+        .into(new SimpleTarget<Bitmap>(300, 300) {
+          @Override public void onResourceReady(Bitmap bitmap, GlideAnimation glideAnimation) {
+            albumArtView.setImageBitmap(bitmap);
+            Observable.just(bitmap)
+                .map(new Function<Bitmap, BitmapDrawable>() {
+                  @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
+                    return new ImagePath("").toBlurredBitmap(bitmap, getResources());
+                  }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<BitmapDrawable>() {
+                  @Override public void onNext(BitmapDrawable bitmap) {
+                    rootView.setBackground(bitmap);
+                  }
+
+                  @Override public void onError(Throwable e) {
+                  }
+
+                  @Override public void onComplete() {
+                  }
+                });
+          }
+
+          @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
+            super.onLoadFailed(e, errorDrawable);
+            albumArtView.setImageDrawable(errorDrawable);
+            Bitmap bitmap = ((BitmapDrawable) errorDrawable).getBitmap();
+            Observable.just(bitmap)
+                .map(new Function<Bitmap, BitmapDrawable>() {
+                  @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
+                    return new ImagePath("").toBlurredBitmap(bitmap, getResources());
+                  }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<BitmapDrawable>() {
+                  @Override public void onNext(BitmapDrawable bitmap) {
+                    rootView.setBackground(bitmap);
+                  }
+
+                  @Override public void onError(Throwable e) {
+                  }
+
+                  @Override public void onComplete() {
+                  }
+                });
+          }
+        });
   }
 
   @Override protected void onPresenterPrepared(Album.Presenter presenter) {
@@ -133,5 +239,35 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
 
   @Override public void showTotalDuration(String duration) {
     totalTimeView.setText(String.format("Total Time: %s", duration));
+  }
+
+  @Override public void showPickOptions() {
+    final CharSequence[] items = { "Gallery", "Internet" };
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle("Pick From");
+    builder.setItems(items, new DialogInterface.OnClickListener() {
+      @Override public void onClick(DialogInterface dialog, int item) {
+        if (item == 0) {
+          presenter.onPickFromGalleryClick();
+        } else if (item == 1) {
+          presenter.onPickFromInternetClick();
+        }
+      }
+    });
+    builder.show();
+  }
+
+  @Override public void gotoGalleryScreen() {
+    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+    intent.setType("image/*");
+    startActivityForResult(intent, PICK_COVER_ART_GALLERY);
+  }
+
+  @Override public void gotoInternetCoverArtsScreen() {
+    getSupportFragmentManager().beginTransaction()
+        .add(android.R.id.content, CoverArtsFragment.newInstanceOfAlbumCovers(album),
+            CoverArtsFragment.class.getSimpleName())
+        .addToBackStack(CoverArtsFragment.class.getSimpleName())
+        .commit();
   }
 }

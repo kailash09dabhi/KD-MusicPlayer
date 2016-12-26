@@ -90,4 +90,16 @@ public final class AlbumPresenter extends Presenter<Album.View> implements Album
               }
             }));
   }
+
+  @Override public void onCoverArtClick() {
+    view().showPickOptions();
+  }
+
+  @Override public void onPickFromInternetClick() {
+    view().gotoInternetCoverArtsScreen();
+  }
+
+  @Override public void onPickFromGalleryClick() {
+    view().gotoGalleryScreen();
+  }
 }
