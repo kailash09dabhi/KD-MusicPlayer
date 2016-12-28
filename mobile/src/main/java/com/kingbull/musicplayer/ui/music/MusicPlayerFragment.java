@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.ui.music;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
@@ -22,6 +23,7 @@ import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.player.MusicPlayerEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.drawable.RoundLayerDrawable;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
 import com.kingbull.musicplayer.ui.music.widget.ShadowImageView;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
@@ -32,14 +34,14 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-import static com.kingbull.musicplayer.R.id.text_view_artist;
-
 public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presenter>
     implements MusicPlayer.View {
 
+  @BindView(R.id.equalizerView) ImageView equalizerView;
+  @BindView(R.id.nowPlayingView) ImageView nowPlayingView;
   @BindView(R.id.albumImageView) ShadowImageView albumImageView;
   @BindView(R.id.nameTextView) TextView nameTextView;
-  @BindView(text_view_artist) TextView textViewArtist;
+  @BindView(R.id.text_view_artist) TextView textViewArtist;
   @BindView(R.id.progressTextView) TextView progressTextView;
   @BindView(R.id.durationTextView) TextView durationTextView;
   @BindView(R.id.seekbar) MusicSeekBar seekBarProgress;
@@ -72,6 +74,10 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
+
+    equalizerView.setImageDrawable(new RoundLayerDrawable(R.drawable.ic_equalizer, Color.WHITE));
+    nowPlayingView.setImageDrawable(new RoundLayerDrawable(R.drawable.ic_queue_music, Color
+        .WHITE));
     compositeDisposable.add(RxBus.getInstance()
         .toObservable()
         .ofType(MusicEvent.class)
@@ -193,11 +199,11 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
             Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();
             Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
             if (darkMutedSwatch != null && lightMutedSwatch != null) {
-              updateUiWithPalleteSwatch(darkMutedSwatch, lightMutedSwatch);
+              updateUiWithPaletteSwatch(darkMutedSwatch, lightMutedSwatch);
             } else if (darkVibrantSwatch != null && lightVibrantSwatch != null) {
-              updateUiWithPalleteSwatch(darkVibrantSwatch, lightVibrantSwatch);
+              updateUiWithPaletteSwatch(darkVibrantSwatch, lightVibrantSwatch);
             } else if (vibrantSwatch != null && mutedSwatch != null) {
-              updateUiWithPalleteSwatch(vibrantSwatch, mutedSwatch);
+              updateUiWithPaletteSwatch(vibrantSwatch, mutedSwatch);
             }
           }
         }
@@ -208,7 +214,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.startProgresssAnimation();
   }
 
-  private void updateUiWithPalleteSwatch(Palette.Swatch darkSwatch, Palette.Swatch lightSwatch) {
+  private void updateUiWithPaletteSwatch(Palette.Swatch darkSwatch, Palette.Swatch lightSwatch) {
     getActivity().getWindow().setBackgroundDrawable(new ColorDrawable(darkSwatch.getRgb()));
     getView().setBackgroundColor(darkSwatch.getRgb());
     nameTextView.setTextColor(lightSwatch.getRgb());
