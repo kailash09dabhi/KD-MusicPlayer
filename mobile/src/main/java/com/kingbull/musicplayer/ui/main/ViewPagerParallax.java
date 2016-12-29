@@ -27,22 +27,22 @@ import java.io.InputStream;
 
 public final class ViewPagerParallax extends ViewPager {
   private final static String TAG = "ViewPagerParallax";
-  int current_position = -1;
-  float current_offset = 0.0f;
+  int currentPosition = -1;
+  float currentOffset = 0.0f;
   Window window;
   boolean isFlatTheme = false;
-  private int background_id = -1;
-  private int background_saved_id = -1;
+  private int backgroundId = -1;
+  private int backgroundSavedId = -1;
   private int saved_width = -1;
   private int saved_height = -1;
   private int saved_max_num_pages = -1;
-  private Bitmap saved_bitmap;
-  private boolean insufficientMemory = false;
-  private int max_num_pages = 6;
+  private Bitmap savedBitmap;
+  private boolean inSufficientMemory = false;
+  private int maxNumPages = 5;
   private int imageHeight;
   private int imageWidth;
-  private float zoom_level;
-  private float overlap_level;
+  private float zoomLevel;
+  private float overlapLevel;
   private Rect src = new Rect(), dst = new Rect();
   private boolean pagingEnabled = true;
   private boolean parallaxEnabled = true;
@@ -79,27 +79,27 @@ public final class ViewPagerParallax extends ViewPager {
     }
   }
 
-  private void set_new_background() {
-    if (background_id == -1) return;
-    if (max_num_pages == 0) return;
+  private void setNewBackground() {
+    if (backgroundId == -1) return;
+    if (maxNumPages == 0) return;
     if (getWidth() == 0 || getHeight() == 0) return;
     if ((saved_height == getHeight()) && (saved_width == getWidth()) &&
-        (background_saved_id == background_id) &&
-        (saved_max_num_pages == max_num_pages)) {
+        (backgroundSavedId == backgroundId) &&
+        (saved_max_num_pages == maxNumPages)) {
       return;
     }
     InputStream is;
     try {
-      is = getContext().getResources().openRawResource(background_id);
+      is = getContext().getResources().openRawResource(backgroundId);
       BitmapFactory.Options options = new BitmapFactory.Options();
       options.inJustDecodeBounds = true;
       BitmapFactory.decodeStream(is, null, options);
       imageHeight = options.outHeight;
       imageWidth = options.outWidth;
       if (loggable) Log.v(TAG, "imageHeight=" + imageHeight + ", imageWidth=" + imageWidth);
-      zoom_level = ((float) imageHeight) / getHeight();  // we are always in 'fitY' mode
+      zoomLevel = ((float) imageHeight) / getHeight();  // we are always in 'fitY' mode
       options.inJustDecodeBounds = false;
-      options.inSampleSize = Math.round(zoom_level);
+      options.inSampleSize = Math.round(zoomLevel);
       if (options.inSampleSize > 1) {
         imageHeight = imageHeight / options.inSampleSize;
         imageWidth = imageWidth / options.inSampleSize;
@@ -115,89 +115,90 @@ public final class ViewPagerParallax extends ViewPager {
       if (loggable) Log.v(TAG, "freeMemory = " + freeMemory);
       if (loggable) Log.v(TAG, "calculated bitmap size = " + bitmap_size);
       if (bitmap_size > freeMemory / 5) {
-        insufficientMemory = true;
+        inSufficientMemory = true;
         return; // we aren't going to use more than one fifth of free memory
       }
-      zoom_level = ((float) imageHeight) / getHeight();  // we are always in 'fitY' mode
-      overlap_level = zoom_level * Math.min(
-          Math.max(imageWidth / zoom_level - getWidth(), 0) / (max_num_pages - 1),
-          getWidth() / 2); // how many pixels to shift for each panel
+      zoomLevel = ((float) imageHeight) / getHeight();  // we are always in 'fitY' mode
+      overlapLevel =
+          zoomLevel * Math.min(Math.max(imageWidth / zoomLevel - getWidth(), 0) / (maxNumPages - 1),
+              getWidth() / 2); // how many pixels to shift for each panel
       is.reset();
-      saved_bitmap = BitmapFactory.decodeStream(is, null, options);
-      saved_bitmap = NativeStackBlur.process(saved_bitmap, 45);
+      savedBitmap = BitmapFactory.decodeStream(is, null, options);
+      savedBitmap = NativeStackBlur.process(savedBitmap, 45);
       if (window != null) {
-        Palette.from(saved_bitmap).generate(new Palette.PaletteAsyncListener() {
+        Palette.from(savedBitmap).generate(new Palette.PaletteAsyncListener() {
           public void onGenerated(Palette palette) {
             Palette.Swatch vibrantSwatch = palette.getDarkMutedSwatch();
             if (vibrantSwatch != null) {
               window.setBackgroundDrawable(
                   new ColorDrawable(palette.getDarkMutedColor(Color.DKGRAY)));
+              new SettingPreferences().saveWindowColor(palette.getDarkMutedColor(Color.DKGRAY));
             }
           }
         });
       }
-      if (loggable) Log.i(TAG, "real bitmap size = " + sizeOf(saved_bitmap) / 1024);
+      if (loggable) Log.i(TAG, "real bitmap size = " + sizeOf(savedBitmap) / 1024);
       if (loggable) {
-        Log.v(TAG, "saved_bitmap.getHeight()="
-            + saved_bitmap.getHeight()
-            + ", saved_bitmap.getWidth()="
-            + saved_bitmap.getWidth());
+        Log.v(TAG, "savedBitmap.getHeight()="
+            + savedBitmap.getHeight()
+            + ", savedBitmap.getWidth()="
+            + savedBitmap.getWidth());
       }
       is.close();
     } catch (IOException e) {
       if (loggable) Log.e(TAG, "Cannot decode: " + e.getMessage());
-      background_id = -1;
+      backgroundId = -1;
       return;
     }
     saved_height = getHeight();
     saved_width = getWidth();
-    background_saved_id = background_id;
-    saved_max_num_pages = max_num_pages;
+    backgroundSavedId = backgroundId;
+    saved_max_num_pages = maxNumPages;
   }
 
   @Override protected void onPageScrolled(int position, float offset, int offsetPixels) {
     super.onPageScrolled(position, offset, offsetPixels);
-    current_position = position;
-    current_offset = offset;
+    currentPosition = position;
+    currentOffset = offset;
   }
 
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
-    if (!insufficientMemory
+    if (!inSufficientMemory
         && parallaxEnabled
-        && saved_bitmap != null
+        && savedBitmap != null
         && canvas != null
         && !isFlatTheme) {
-      if (current_position == -1) current_position = getCurrentItem();
+      if (currentPosition == -1) currentPosition = getCurrentItem();
       // maybe we could get the current position from the getScrollX instead?
-      src.set((int) (overlap_level * (current_position + current_offset)), 0,
-          (int) (overlap_level * (current_position + current_offset) + (getWidth() * zoom_level)),
+      src.set((int) (overlapLevel * (currentPosition + currentOffset)), 0,
+          (int) (overlapLevel * (currentPosition + currentOffset) + (getWidth() * zoomLevel)),
           imageHeight);
       dst.set((int) (getScrollX()), 0, (int) (getScrollX() + canvas.getWidth()),
           canvas.getHeight());
-      canvas.drawBitmap(saved_bitmap, src, dst, null);
+      canvas.drawBitmap(savedBitmap, src, dst, null);
     }
   }
 
-  public void set_max_pages(int num_max_pages) {
-    max_num_pages = num_max_pages;
-    set_new_background();
+  public void setMaxPages(int numMaxPages) {
+    maxNumPages = numMaxPages;
+    setNewBackground();
   }
 
-  public void setBackgroundAsset(int res_id, Window window) {
-    background_id = res_id;
+  public void setBackgroundAsset(int resId, Window window) {
+    backgroundId = resId;
     this.window = window;
-    set_new_background();
+    setNewBackground();
   }
 
   @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
     super.onLayout(changed, l, t, r, b);
-    if (!insufficientMemory && parallaxEnabled) set_new_background();
+    if (!inSufficientMemory && parallaxEnabled) setNewBackground();
   }
 
   @Override public void setCurrentItem(int item) {
     super.setCurrentItem(item);
-    current_position = item;
+    currentPosition = item;
   }
 
   @Override public boolean onTouchEvent(MotionEvent event) {
@@ -241,9 +242,9 @@ public final class ViewPagerParallax extends ViewPager {
   }
 
   protected void onDetachedFromWindow() {
-    if (saved_bitmap != null) {
-      saved_bitmap.recycle();
-      saved_bitmap = null;
+    if (savedBitmap != null) {
+      savedBitmap.recycle();
+      savedBitmap = null;
     }
     super.onDetachedFromWindow();
   }

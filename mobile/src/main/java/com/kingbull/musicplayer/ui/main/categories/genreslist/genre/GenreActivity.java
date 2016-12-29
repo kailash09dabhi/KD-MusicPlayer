@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.genreslist.genre;
 
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
@@ -42,6 +43,7 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_song_list);
     ButterKnife.bind(this);
+    getWindow().setBackgroundDrawable(new ColorDrawable(new SettingPreferences().windowColor()));
     coverRecyclerView.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     coverRecyclerView.setOnViewSelectedListener(new SnappingRecyclerView.OnViewSelectedListener() {

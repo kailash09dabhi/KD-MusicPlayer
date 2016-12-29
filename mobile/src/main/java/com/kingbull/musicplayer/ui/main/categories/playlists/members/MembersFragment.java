@@ -5,6 +5,7 @@
  */
 package com.kingbull.musicplayer.ui.main.categories.playlists.members;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PlayList;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.MovedToPlaylistEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
@@ -77,6 +79,9 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
   }
 
   private void setupView(View v) {
+    ColorDrawable colorDrawable = new ColorDrawable(new SettingPreferences().windowColor());
+    //getActivity().getWindow().setBackgroundDrawable(colorDrawable);
+    v.setBackground(colorDrawable);
     titleView.setText(playList.name().toUpperCase());
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     musicList = playList.musicList();

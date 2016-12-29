@@ -25,6 +25,7 @@ import com.kingbull.musicplayer.di.StorageModule;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.storage.ImageFile;
 import com.kingbull.musicplayer.domain.storage.StorageDirectory;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.CoverArtDownloadedEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
@@ -89,6 +90,7 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
   }
 
   private void setupView(View v) {
+    v.setBackgroundColor(new SettingPreferences().windowColor());
     recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     coverArtsAdapter = new CoverArtsAdapter(coverArtUrls);

@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerTitleStrip;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ import com.kingbull.musicplayer.ui.main.categories.playlists.members.Members;
  */
 
 public class MusicCategoryFragment extends BaseFragment<Members.Presenter> {
-  @BindView(R.id.pager) ViewPagerParallax viewPager;
+  @BindView(R.id.pager) ViewPager viewPager;
   @BindView(R.id.tabTitleStrip) PagerTitleStrip pagerTitleStrip;
   @BindArray(R.array.tabs) String[] tabs;
   private MusicCategoryPagerAdapter musicCategoryPagerAdapter;
