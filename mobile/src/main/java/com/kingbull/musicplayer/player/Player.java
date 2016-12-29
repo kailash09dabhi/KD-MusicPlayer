@@ -3,7 +3,6 @@ package com.kingbull.musicplayer.player;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.Virtualizer;
-import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import java.util.List;
@@ -40,28 +39,12 @@ public interface Player {
   void useEffect(Reverb reverb);
 
   BassBoost bassBoost();
+
   Virtualizer virtualizer();
-
-  void registerCallback(Callback callback);
-
-  void unregisterCallback(Callback callback);
-
-  void removeCallbacks();
 
   void releasePlayer();
 
   void addToNowPlaylist(List<Music> songs);
 
   NowPlayingList nowPlayingMusicList();
-
-  interface Callback {
-
-    void onSwitchLast(@Nullable Music last);
-
-    void onSwitchNext(@Nullable Music next);
-
-    void onComplete(@Nullable Music next);
-
-    void onPlayStatusChanged(boolean isPlaying);
-  }
 }

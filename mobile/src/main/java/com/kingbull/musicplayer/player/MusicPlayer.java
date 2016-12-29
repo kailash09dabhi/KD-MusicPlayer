@@ -13,7 +13,6 @@ import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -26,7 +25,6 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   private MediaPlayer player;
   private NowPlayingList nowPlayingList;
   // Default size 2: for service and UI
-  private List<Callback> mCallbacks = new ArrayList<>(2);
   private boolean isPaused;
   private android.media.audiofx.Equalizer equalizer;
 
@@ -39,7 +37,6 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   @Override public boolean play() {
     if (isPaused) {
       player.start();
-      notifyPlayStatusChanged(true);
     } else {
       Music song = nowPlayingList.currentMusic();
       try {
@@ -48,11 +45,9 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
         player.prepare();
         player.start();
         isAudioSessionIdUpdated = true;
-        notifyPlayStatusChanged(true);
         ((SqlMusic) song).mediaStat().saveLastPlayed();
       } catch (IOException e) {
         Log.e(TAG, "play: ", e);
-        notifyPlayStatusChanged(false);
         return false;
       }
     }
@@ -71,7 +66,6 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     isPaused = false;
     nowPlayingList.previous();
     play();
-    notifyPlayPrevious(nowPlayingList.currentMusic());
     RxBus.getInstance()
         .post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.PREVIOUS));
     return true;
@@ -83,7 +77,6 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     if (hasNext) {
       Music next = nowPlayingList.next();
       play();
-      notifyPlayNext(next);
       RxBus.getInstance().post(new MusicEvent(next, MusicPlayerEvent.NEXT));
       return true;
     }
@@ -94,7 +87,6 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     if (player.isPlaying()) {
       player.pause();
       isPaused = true;
-      notifyPlayStatusChanged(false);
       RxBus.getInstance()
           .post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.PAUSE));
       return true;
@@ -179,7 +171,6 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
         break;
     }
     play();
-    notifyComplete(nowPlayingList.currentMusic());
   }
 
   @Override public void releasePlayer() {
@@ -198,39 +189,5 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     return nowPlayingList;
   }
 
-  @Override public void registerCallback(Callback callback) {
-    mCallbacks.add(callback);
-  }
 
-  @Override public void unregisterCallback(Callback callback) {
-    mCallbacks.remove(callback);
-  }
-
-  @Override public void removeCallbacks() {
-    mCallbacks.clear();
-  }
-
-  private void notifyPlayStatusChanged(boolean isPlaying) {
-    for (Callback callback : mCallbacks) {
-      callback.onPlayStatusChanged(isPlaying);
-    }
-  }
-
-  private void notifyPlayPrevious(Music song) {
-    for (Callback callback : mCallbacks) {
-      callback.onSwitchLast(song);
-    }
-  }
-
-  private void notifyPlayNext(Music song) {
-    for (Callback callback : mCallbacks) {
-      callback.onSwitchNext(song);
-    }
-  }
-
-  private void notifyComplete(Music song) {
-    for (Callback callback : mCallbacks) {
-      callback.onComplete(song);
-    }
-  }
 }

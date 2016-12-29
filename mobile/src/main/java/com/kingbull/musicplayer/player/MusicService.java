@@ -28,12 +28,19 @@ import android.support.v7.widget.AppCompatDrawableManager;
 import android.widget.RemoteViews;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import com.kingbull.musicplayer.ui.main.MainActivity;
 import com.kingbull.musicplayer.utils.AlbumUtils;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
 import java.util.List;
 import javax.inject.Inject;
+
+import static com.kingbull.musicplayer.R.id.albumImageView;
 
 /**
  * Created with Android Studio.
@@ -42,7 +49,7 @@ import javax.inject.Inject;
  * Time: 4:27 PM
  * Desc: PlayService
  */
-public final class MusicService extends Service implements Player, Player.Callback {
+public final class MusicService extends Service implements Player {
 
   public static final String ACTION_STOP_SERVICE = "com.kingbull.musicplayer.ACTION_STOP_SERVICE";
   private static final String ACTION_PLAY_TOGGLE = "com.kingbull.musicplayer.ACTION_PLAY_TOGGLE";
@@ -53,11 +60,27 @@ public final class MusicService extends Service implements Player, Player.Callba
   @Inject Player musicPlayer;
   private RemoteViews mContentViewBig, mContentViewSmall;
   private MediaSessionCompat mediaSession;
+  private CompositeDisposable compositeDisposable;
 
   @Override public void onCreate() {
     super.onCreate();
     MusicPlayerApp.instance().component().inject(this);
-    musicPlayer.registerCallback(this);
+    compositeDisposable = new CompositeDisposable();
+    compositeDisposable.add(RxBus.getInstance()
+        .toObservable()
+        .ofType(MusicEvent.class)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeWith(new DisposableObserver<MusicEvent>() {
+          @Override public void onNext(MusicEvent musicEvent) {
+            showNotification();
+          }
+
+          @Override public void onError(Throwable e) {
+          }
+
+          @Override public void onComplete() {
+          }
+        }));
     bindService(new Intent(this, MusicService.class), new ServiceConnection() {
       @Override public void onServiceConnected(ComponentName name, IBinder service) {
       }
@@ -104,7 +127,6 @@ public final class MusicService extends Service implements Player, Player.Callba
           pause();
         }
         stopForeground(true);
-        unregisterCallback(this);
       }
     }
     return START_STICKY;
@@ -116,12 +138,12 @@ public final class MusicService extends Service implements Player, Player.Callba
 
   @Override public boolean stopService(Intent name) {
     stopForeground(true);
-    unregisterCallback(this);
     return super.stopService(name);
   }
 
   @Override public void onDestroy() {
     releasePlayer();
+    if (compositeDisposable != null) compositeDisposable.clear();
     super.onDestroy();
   }
 
@@ -177,18 +199,6 @@ public final class MusicService extends Service implements Player, Player.Callba
     return null;
   }
 
-  @Override public void registerCallback(Callback callback) {
-    musicPlayer.registerCallback(callback);
-  }
-
-  @Override public void unregisterCallback(Callback callback) {
-    musicPlayer.unregisterCallback(callback);
-  }
-
-  @Override public void removeCallbacks() {
-    musicPlayer.removeCallbacks();
-  }
-
   @Override public void releasePlayer() {
     musicPlayer.releasePlayer();
     super.onDestroy();
@@ -201,24 +211,6 @@ public final class MusicService extends Service implements Player, Player.Callba
   @Override public NowPlayingList nowPlayingMusicList() {
     return musicPlayer.nowPlayingMusicList();
   }
-  // Playback Callbacks
-
-  @Override public void onSwitchLast(@Nullable Music last) {
-    showNotification();
-  }
-
-  @Override public void onSwitchNext(@Nullable Music next) {
-    showNotification();
-  }
-
-  @Override public void onComplete(@Nullable Music next) {
-    showNotification();
-  }
-
-  @Override public void onPlayStatusChanged(boolean isPlaying) {
-    showNotification();
-  }
-  // Notification
 
   /**
    * Show a notification while this service is running.
@@ -296,9 +288,9 @@ public final class MusicService extends Service implements Player, Player.Callba
         isPlaying() ? R.drawable.ic_remote_view_pause : R.drawable.ic_remote_view_play);
     Bitmap album = AlbumUtils.parseAlbum(getPlayingSong());
     if (album == null) {
-      remoteView.setImageViewResource(R.id.albumImageView, R.mipmap.ic_launcher);
+      remoteView.setImageViewResource(albumImageView, R.mipmap.ic_launcher);
     } else {
-      remoteView.setImageViewBitmap(R.id.albumImageView, album);
+      remoteView.setImageViewBitmap(albumImageView, album);
     }
     mediaSession.setMetadata(
         new MediaMetadataCompat.Builder().putString(MediaMetadataCompat.METADATA_KEY_ARTIST,

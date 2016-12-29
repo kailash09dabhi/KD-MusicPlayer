@@ -26,6 +26,6 @@ public final class SettingsActivity extends BaseActivity<Settings.Presenter> {
 
 
   @NonNull @Override protected PresenterFactory presenterFactory() {
-    return new PresenterFactory.SongList();
+    return new PresenterFactory.Settings();
   }
 }

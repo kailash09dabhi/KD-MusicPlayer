@@ -49,6 +49,7 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                     Music song = new SqlMusic(new Media.Smart(cursor));
                     songs.add(song);
                   } while (cursor.moveToNext());
+                  cursor.close();
                 }
                 return Flowable.just(songs);
               }
