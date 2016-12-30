@@ -45,7 +45,6 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_song_list);
     ButterKnife.bind(this);
-    getWindow().setBackgroundDrawable(new ColorDrawable(new SettingPreferences().windowColor()));
     artist = getIntent().getParcelableExtra("artist");
     coverRecyclerView.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -54,6 +53,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
         presenter.onAlbumSelected(position);
       }
     });
+    initializeWithThemeColors();
     coverRecyclerView.setHasFixedSize(true);
     adapter = new MusicRecyclerViewAdapter(songList, this);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -79,6 +79,15 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
         //presenter.onSortMenuClick();
       }
     });
+  }
+
+  private void initializeWithThemeColors() {
+    com.kingbull.musicplayer.ui.base.Color color =
+        new com.kingbull.musicplayer.ui.base.Color(new SettingPreferences().windowColor());
+    getWindow().setBackgroundDrawable(color.toDrawable());
+    ColorDrawable colorDrawable = color.light().toDrawable();
+    titleView.setBackground(colorDrawable);
+    recyclerView.setBackground(colorDrawable);
   }
 
   @Override protected void onPresenterPrepared(Artist.Presenter presenter) {

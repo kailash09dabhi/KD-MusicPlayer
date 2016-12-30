@@ -43,7 +43,6 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_song_list);
     ButterKnife.bind(this);
-    getWindow().setBackgroundDrawable(new ColorDrawable(new SettingPreferences().windowColor()));
     coverRecyclerView.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     coverRecyclerView.setOnViewSelectedListener(new SnappingRecyclerView.OnViewSelectedListener() {
@@ -52,6 +51,7 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
       }
     });
     coverRecyclerView.setHasFixedSize(true);
+    initiliazeWithThemeColors();
     adapter = new MusicRecyclerViewAdapter(songList, this);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(adapter);
@@ -76,6 +76,15 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
         //presenter.onSortMenuClick();
       }
     });
+  }
+
+  private void initiliazeWithThemeColors() {
+    com.kingbull.musicplayer.ui.base.Color color =
+        new com.kingbull.musicplayer.ui.base.Color(new SettingPreferences().windowColor());
+    getWindow().setBackgroundDrawable(color.toDrawable());
+    ColorDrawable colorDrawable = color.light().toDrawable();
+    titleView.setBackground(colorDrawable);
+    recyclerView.setBackground(colorDrawable);
   }
 
   @Override protected void onPresenterPrepared(Genre.Presenter presenter) {

@@ -5,7 +5,6 @@
  */
 package com.kingbull.musicplayer.ui.main.categories.playlists.members;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -25,6 +24,7 @@ import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.MovedToPlaylistEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
+import com.kingbull.musicplayer.ui.base.Color;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -79,13 +79,17 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
   }
 
   private void setupView(View v) {
-    ColorDrawable colorDrawable = new ColorDrawable(new SettingPreferences().windowColor());
-    //getActivity().getWindow().setBackgroundDrawable(colorDrawable);
-    v.setBackground(colorDrawable);
+    initializeWithThemeColors();
     titleView.setText(playList.name().toUpperCase());
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     musicList = playList.musicList();
     showPlaylistMembers(musicList);
+  }
+
+  private void initializeWithThemeColors() {
+    Color color = new Color(new SettingPreferences().windowColor());
+    titleView.setBackground(color.light().toDrawable());
+    recyclerView.setBackground(color.light().toDrawable());
   }
 
   @Override public void showPlaylistMembers(List<Music> songs) {

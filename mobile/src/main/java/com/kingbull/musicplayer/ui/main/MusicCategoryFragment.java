@@ -22,7 +22,7 @@ import com.kingbull.musicplayer.ui.main.categories.playlists.members.Members;
  * @date 12/20/2016.
  */
 
-public class MusicCategoryFragment extends BaseFragment<Members.Presenter> {
+public final class MusicCategoryFragment extends BaseFragment<Members.Presenter> {
   @BindView(R.id.pager) ViewPager viewPager;
   @BindView(R.id.tabTitleStrip) PagerTitleStrip pagerTitleStrip;
   @BindArray(R.array.tabs) String[] tabs;

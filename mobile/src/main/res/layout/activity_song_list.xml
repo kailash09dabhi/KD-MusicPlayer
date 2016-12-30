@@ -6,7 +6,6 @@
     android:orientation="vertical">
   <TextView
       android:id="@+id/titleView"
-      android:background="@color/transparent_black"
       android:ellipsize="marquee"
       android:fadingEdge="none"
       android:fadingEdgeLength="0dp"
@@ -27,7 +26,6 @@
       android:id="@+id/coverRecyclerView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="?attr/colorPrimary"
       android:clipToPadding="false"
       android:fadingEdge="none"
       android:minHeight="@dimen/cover_size"/>
@@ -37,7 +35,6 @@
       android:layout_height="0dp"
       android:layout_marginTop="1px"
       android:layout_weight="1"
-      android:background="@color/transparent_black"
       android:clipToPadding="false"
       android:fadingEdge="none"
       android:scrollbarSize="3dp"
@@ -48,7 +45,6 @@
       android:id="@+id/songMenu"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="@color/transparent_black"
       android:paddingLeft="5dp"
       android:paddingRight="?android:attr/listPreferredItemPaddingLeft"/>
 </LinearLayout>

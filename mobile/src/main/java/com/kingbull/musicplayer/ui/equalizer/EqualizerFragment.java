@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -33,7 +34,7 @@ import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.PresetReverbDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import javax.inject.Inject;
 
@@ -46,9 +47,9 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
   @BindView(R.id.virtualizerRoundKnobLayout) RelativeLayout virtualizerRoundKnobLayout;
   @BindView(R.id.bassBoostLayout) RelativeLayout bassBoostRoundKnobLayout;
   @BindView(R.id.volumeLayout) RelativeLayout volumeRoundKnobLayout;
-  CompositeDisposable compositeSubscription = new CompositeDisposable();
+  @BindView(R.id.bottomButtonContainer) LinearLayout bottomButtonContainer;
   @Inject Player player;
-  AudioManager audioManager;
+  private AudioManager audioManager;
   private BassBoost bassBoost;
   private Virtualizer virtualizer;
 
@@ -76,7 +77,17 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
     titleView.setText("Equalizer Preset".toUpperCase());
     setupRoundKnobButton();
-    compositeSubscription.add(RxBus.getInstance()
+    com.kingbull.musicplayer.ui.base.Color color =
+        new com.kingbull.musicplayer.ui.base.Color(new SettingPreferences().windowColor());
+    getActivity().getWindow().setBackgroundDrawable(color.toDrawable());
+    view.setBackground(color.light().toDrawable());
+    bottomButtonContainer.setBackground(color.toDrawable());
+    ((View) presetButton.getParent()).setBackground(color.toDrawable());
+    return view;
+  }
+
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
         .toObservable()
         .ofType(Preset.class)
         .observeOn(AndroidSchedulers.mainThread())
@@ -94,15 +105,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
                 break;
             }
           }
-        }));
-    return view;
-  }
-
-  @Override public void onDestroyView() {
-    super.onDestroyView();
-    if (compositeSubscription != null) {
-      compositeSubscription.clear();
-    }
+        });
   }
 
   private void setupRoundKnobButton() {
@@ -157,7 +160,6 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     });
     Reverb reverb = new SettingPreferences().reverb();
     effectButton.setText(reverb.name());
-
   }
 
   @Override protected void onPresenterPrepared(final Equalizer.Presenter presenter) {
@@ -174,7 +176,6 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
   }
 
   @Override public void takeChosenPreset(final EqualizerPreset equalizerPreset) {
-    //equalizerSpinner.setSelection(position);
     presetButton.setText(equalizerPreset.name());
     equalizerView.post(new Runnable() {
       @Override public void run() {

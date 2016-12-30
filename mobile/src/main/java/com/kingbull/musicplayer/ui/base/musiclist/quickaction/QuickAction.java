@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
+import com.kingbull.musicplayer.ui.base.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,8 +161,8 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
    * Show popup mWindow
    */
   public void show(View anchor) {
-    mRootView.findViewById(R.id.scroll)
-        .setBackground(activity.getWindow().getDecorView().getBackground());
+    Color color = new Color(new SettingPreferences().windowColor());
+    mRootView.findViewById(R.id.scroll).setBackground(color.toDrawable());
     preShow();
     int[] location = new int[2];
     mDidAction = false;

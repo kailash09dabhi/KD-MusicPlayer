@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.KeyEvent;
 
-public class RemoteReceiver extends BroadcastReceiver {
+public final class RemoteReceiver extends BroadcastReceiver {
   @Override public void onReceive(Context context, Intent intent) {
     if (Intent.ACTION_MEDIA_BUTTON.equals(intent.getAction())) {
       final KeyEvent event = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);

@@ -116,14 +116,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   }
 
   @OnCheckedChanged(R.id.flatThemeCheckbox) void onThemeCheckedChange(boolean isChecked) {
-    if (isChecked) {
-      settingPreferences.saveFlatTheme(true);
-      getActivity().getWindow()
-          .setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-              WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    } else {
-      settingPreferences.saveFlatTheme(false);
-    }
+    settingPreferences.saveFlatTheme(isChecked);
     RxBus.getInstance().post(new ThemeChangedEvent());
   }
 

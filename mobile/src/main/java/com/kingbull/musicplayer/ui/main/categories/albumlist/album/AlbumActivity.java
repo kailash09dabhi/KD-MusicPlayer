@@ -31,6 +31,7 @@ import com.kingbull.musicplayer.di.StorageModule;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.ImageFile;
 import com.kingbull.musicplayer.domain.storage.StorageDirectory;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.CoverArtDownloadedEvent;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
@@ -107,6 +108,9 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     super.onCreate(savedInstanceState);
     setContentView(R.layout.fragment_album);
     ButterKnife.bind(this);
+    com.kingbull.musicplayer.ui.base.Color color =
+        new com.kingbull.musicplayer.ui.base.Color(new SettingPreferences().windowColor());
+    getWindow().setBackgroundDrawable(color.toDrawable());
     album = getIntent().getParcelableExtra("album");
     adapter = new MusicRecyclerViewAdapter(songList, this);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -43,7 +44,9 @@ import java.util.List;
 
 public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
     implements CoverArts.View {
+  @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.searchView) EditText searchView;
+  @BindView(R.id.searchLayout) LinearLayout searchLayout;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.progress_overlay) ProgressOverlayLayout progressOverlay;
   @BindView(R.id.noResultFound) LinearLayout noResultFoundView;
@@ -90,8 +93,7 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
   }
 
   private void setupView(View v) {
-    v.setBackgroundColor(new SettingPreferences().windowColor());
-    recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+    initializeWithThemeColors(v);
     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     coverArtsAdapter = new CoverArtsAdapter(coverArtUrls);
     recyclerView.setAdapter(coverArtsAdapter);
@@ -105,6 +107,15 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
       searchView.setHint("Artist Name");
       searchView.setText(bundle.getString("artist_name", ""));
     }
+  }
+
+  private void initializeWithThemeColors(View v) {
+    com.kingbull.musicplayer.ui.base.Color color =
+        new com.kingbull.musicplayer.ui.base.Color(new SettingPreferences().windowColor());
+    titleView.setBackground(color.light().toDrawable());
+    v.setBackground(color.toDrawable());
+    searchLayout.setBackground(color.light().toDrawable());
+    recyclerView.setBackground(color.toDrawable());
   }
 
   @Override protected void onPresenterPrepared(CoverArts.Presenter presenter) {

@@ -40,8 +40,6 @@ import io.reactivex.observers.DisposableObserver;
 import java.util.List;
 import javax.inject.Inject;
 
-import static com.kingbull.musicplayer.R.id.albumImageView;
-
 /**
  * Created with Android Studio.
  * User: ryan.hoo.j@gmail.com
@@ -218,7 +216,8 @@ public final class MusicService extends Service implements Player {
   private void showNotification() {
     // The PendingIntent to launch our activity if the user selects this notification
     PendingIntent contentIntent =
-        PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+        PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class),
+            PendingIntent.FLAG_UPDATE_CURRENT);
     // Set the info for the views that show in the notification panel.
     Notification notification = new NotificationCompat.Builder(this).setSmallIcon(
         R.drawable.ic_notification_app_logo)  // the status icon
@@ -278,27 +277,34 @@ public final class MusicService extends Service implements Player {
     }
   }
 
-  private void updateRemoteViews(RemoteViews remoteView) {
-    Music music = musicPlayer.getPlayingSong();
+  private void updateRemoteViews(final RemoteViews remoteView) {
+    final Music music = musicPlayer.getPlayingSong();
     if (music != null) {
       remoteView.setTextViewText(R.id.nameTextView, music.media().title());
       remoteView.setTextViewText(R.id.text_view_artist, music.media().artist());
     }
     setVectorDrawable(remoteView, R.id.image_view_play_toggle,
         isPlaying() ? R.drawable.ic_remote_view_pause : R.drawable.ic_remote_view_play);
+    /*
+    FIXME: 12/30/2016 Somehow if we use async glide bitmap loading then its not working so  the loading bitmap on main thread let it work properly.!
+     */
     Bitmap album = AlbumUtils.parseAlbum(getPlayingSong());
     if (album == null) {
-      remoteView.setImageViewResource(albumImageView, R.mipmap.ic_launcher);
+      remoteView.setImageViewResource(R.id.albumImageView, R.mipmap.ic_launcher);
     } else {
-      remoteView.setImageViewBitmap(albumImageView, album);
+      remoteView.setImageViewBitmap(R.id.albumImageView, album);
     }
+    updateMediaSessionMetaData(music, album);
+  }
+
+  private void updateMediaSessionMetaData(Music music, Bitmap bitmap) {
     mediaSession.setMetadata(
         new MediaMetadataCompat.Builder().putString(MediaMetadataCompat.METADATA_KEY_ARTIST,
             music.media().artist())
             .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, music.media().album())
             .putString(MediaMetadataCompat.METADATA_KEY_TITLE, music.media().title())
             .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, 10000)
-            .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, album)
+            .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap)
             .build());
   }
 

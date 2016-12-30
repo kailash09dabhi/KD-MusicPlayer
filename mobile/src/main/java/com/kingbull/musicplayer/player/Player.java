@@ -47,4 +47,4 @@ public interface Player {
   void addToNowPlaylist(List<Music> songs);
 
   NowPlayingList nowPlayingMusicList();
-}
+} 
