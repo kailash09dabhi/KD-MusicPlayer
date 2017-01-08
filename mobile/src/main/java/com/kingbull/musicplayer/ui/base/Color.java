@@ -28,6 +28,12 @@ public final class Color {
     return new Color(android.graphics.Color.HSVToColor(hsv));
   }
 
+  public ColorDrawable ToSemiTransparentDrawable() {
+    ColorDrawable colorDrawable = new ColorDrawable(color);
+    colorDrawable.setAlpha(52);
+    return colorDrawable;
+  }
+
   public ColorDrawable toDrawable() {
     return new ColorDrawable(color);
   }

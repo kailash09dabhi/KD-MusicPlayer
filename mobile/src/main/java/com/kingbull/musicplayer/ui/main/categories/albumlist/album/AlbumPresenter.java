@@ -75,7 +75,7 @@ public final class AlbumPresenter extends Presenter<Album.View> implements Album
                     .subscribeWith(new ResourceSingleObserver<Long>() {
 
                       @Override public void onSuccess(Long value) {
-                        view().showTotalDuration(new Milliseconds(value).toTimeString());
+                        view().showTotalDuration(new Milliseconds(value).toString());
                       }
 
                       @Override public void onError(Throwable e) {

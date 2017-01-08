@@ -43,7 +43,7 @@ public final class Milliseconds {
     return String.format("%02d:%02d", minutes, seconds);
   }
 
-  public String toTimeString() {
+  public String toString() {
     if (milliSeconds >= TimeUnit.HOURS.toMillis(1)) {
       return toHhMmSs();
     } else {

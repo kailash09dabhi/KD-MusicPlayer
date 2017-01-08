@@ -26,6 +26,8 @@ public interface MediaStat extends SqlTableRow {
 
   void toggleFavourite();
 
+  long numberOfTimesPlayed();
+
   class Smart implements MediaStat, Parcelable, SqlTableRow {
     public static final Creator<Smart> CREATOR = new Creator<Smart>() {
       @Override public Smart createFromParcel(Parcel in) {
@@ -85,6 +87,10 @@ public interface MediaStat extends SqlTableRow {
     @Override public void toggleFavourite() {
       this.isFavourite = !isFavourite;
       save();
+    }
+
+    @Override public long numberOfTimesPlayed() {
+      return numberOfTimesPlayed;
     }
 
     @Override public int describeContents() {

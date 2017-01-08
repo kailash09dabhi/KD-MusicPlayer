@@ -24,6 +24,7 @@ import com.kingbull.musicplayer.ui.base.musiclist.edittags.EditTagsDialogFragmen
 import com.kingbull.musicplayer.ui.base.musiclist.quickaction.MusicQuickAction;
 import com.kingbull.musicplayer.ui.base.musiclist.ringtone.Ringtone;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
+import com.kingbull.musicplayer.ui.statistics.StatisticsDialogFragment;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,8 @@ import javax.inject.Inject;
  * @date 11/8/2016.
  */
 
-public final class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRecyclerViewAdapter.MusicViewHolder> {
+public final class MusicRecyclerViewAdapter
+    extends RecyclerView.Adapter<MusicRecyclerViewAdapter.MusicViewHolder> {
   List<Music> songs;
   @Inject Player player;
   android.support.v4.app.FragmentManager fragmentManager;
@@ -137,6 +139,12 @@ public final class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRe
           @Override public void editTags() {
             EditTagsDialogFragment.newInstance(songs.get(position))
                 .show(activity.getSupportFragmentManager(), EditTagsDialogFragment.class.getName());
+          }
+
+          @Override public void statistics() {
+            StatisticsDialogFragment.newInstance(songs.get(position))
+                .show(activity.getSupportFragmentManager(),
+                    StatisticsDialogFragment.class.getName());
           }
 
           @Override public void ringtone() {

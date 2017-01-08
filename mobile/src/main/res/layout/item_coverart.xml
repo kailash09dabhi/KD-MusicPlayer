@@ -16,7 +16,7 @@
       android:layout_height="match_parent"
       android:adjustViewBounds="true"
       android:scaleType="fitXY"
-      tools:src="@drawable/artistbg"/>
+      tools:src="@drawable/ic_queue_music"/>
 
   <TextView
       android:id="@+id/label"

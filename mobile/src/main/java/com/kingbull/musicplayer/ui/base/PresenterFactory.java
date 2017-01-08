@@ -1,8 +1,8 @@
 package com.kingbull.musicplayer.ui.base;
 
 import com.kingbull.musicplayer.MusicPlayerApp;
-import com.kingbull.musicplayer.ui.coverarts.CoverArtsPresenter;
 import com.kingbull.musicplayer.ui.coverarts.CoverArts;
+import com.kingbull.musicplayer.ui.coverarts.CoverArtsPresenter;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerPresenter;
 import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumPresenter;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
@@ -16,6 +16,7 @@ import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersPres
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
 import com.kingbull.musicplayer.ui.settings.SettingsPresenter;
+import com.kingbull.musicplayer.ui.statistics.StatisticsPresenter;
 
 /**
  * Creates a Presenter object.
@@ -29,6 +30,14 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
 
     @Override public GenresPresenter create() {
       return new GenresPresenter();
+    }
+  }
+
+  class Statistics
+      implements PresenterFactory<com.kingbull.musicplayer.ui.statistics.Statistics.Presenter> {
+
+    @Override public com.kingbull.musicplayer.ui.statistics.Statistics.Presenter create() {
+      return new StatisticsPresenter();
     }
   }
 
@@ -50,8 +59,7 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
     }
   }
 
-  class CoverArt
-      implements PresenterFactory<CoverArts.Presenter> {
+  class CoverArt implements PresenterFactory<CoverArts.Presenter> {
 
     @Override public CoverArts.Presenter create() {
       return new CoverArtsPresenter();

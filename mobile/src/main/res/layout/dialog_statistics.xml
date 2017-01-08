@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+  <TextView
+      android:id="@+id/titleView"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:gravity="center"
+      android:maxLines="1"
+      android:minHeight="?android:listPreferredItemHeight"
+      android:paddingLeft="?android:listPreferredItemPaddingLeft"
+      android:text="Statistics"
+      style="@style/AppTheme.TextAppearance.Title"/>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/titleView"
+      android:orientation="vertical"
+      android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+      android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+      android:paddingBottom="?android:attr/listPreferredItemPaddingLeft">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:padding="3dp"
+        android:layout_height="wrap_content"
+        android:text="title"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+    <TextView
+        android:id="@+id/artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="artist"
+        android:padding="3dp"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+    <TextView
+        android:id="@+id/numberOfTimesPlayed"
+        android:layout_width="wrap_content"
+        android:padding="3dp"
+        android:layout_height="wrap_content"
+        android:text="Number Of Times Played"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+    <TextView
+        android:id="@+id/totalListenedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Listened Time"
+        android:padding="3dp"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dp"
+        android:text="Duration"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+    <TextView
+        android:id="@+id/size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Size"
+        style="@style/AppTheme.TextAppearance.List.Medium"/>
+  </LinearLayout>
+
+</RelativeLayout>

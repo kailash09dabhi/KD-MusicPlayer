@@ -13,6 +13,8 @@ public interface MusicQuickActionListener {
 
   void editTags();
 
+  void statistics();
+
   void ringtone();
 
   void delete();

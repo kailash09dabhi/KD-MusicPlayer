@@ -3,7 +3,6 @@ package com.kingbull.musicplayer.ui.base.musiclist.quickaction;
 import android.app.Activity;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.Toast;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicQuickActionListener;
 
@@ -17,9 +16,10 @@ public final class MusicQuickAction {
   private final int ID_PLAY = 1;
   private final int ID_PLAYLIST = 2;
   private final int ID_EDIT_TAGS = 3;
-  private final int ID_RINGTONE = 4;
-  private final int ID_DELETE = 5;
-  private final int ID_SEND = 6;
+  private final int ID_STATISTICS = 4;
+  private final int ID_RINGTONE = 5;
+  private final int ID_DELETE = 6;
+  private final int ID_SEND = 7;
 
   private Activity activity;
   private QuickAction quickAction;
@@ -33,6 +33,8 @@ public final class MusicQuickAction {
         ContextCompat.getDrawable(activity, R.drawable.composer_button_multiselect));
     ActionItem editTagsItem = new ActionItem(ID_EDIT_TAGS, "Edit Tags",
         ContextCompat.getDrawable(activity, R.drawable.composer_button_sort));
+    ActionItem statisticsItem = new ActionItem(ID_STATISTICS, "Statistics",
+        ContextCompat.getDrawable(activity, R.drawable.composer_icn_search));
     final ActionItem setAsRingtoneItem = new ActionItem(ID_RINGTONE, "Set As Ringtone",
         ContextCompat.getDrawable(activity, R.drawable.composer_button_shuffle));
     final ActionItem deleteItem = new ActionItem(ID_DELETE, "Delete",
@@ -51,6 +53,8 @@ public final class MusicQuickAction {
           musicQuickActionListener.playlist();
         } else if (actionId == ID_EDIT_TAGS) {
           musicQuickActionListener.editTags();
+        } else if (actionId == ID_STATISTICS) {
+          musicQuickActionListener.statistics();
         } else if (actionId == ID_RINGTONE) {
           musicQuickActionListener.ringtone();
         } else if (actionId == ID_DELETE) {
@@ -62,12 +66,13 @@ public final class MusicQuickAction {
     });
     quickAction.setOnDismissListener(new QuickAction.OnDismissListener() {
       @Override public void onDismiss() {
-        Toast.makeText(activity, "Ups..dismissed", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(activity, "Ups..dismissed", Toast.LENGTH_SHORT)y.show();
       }
     });
     quickAction.addActionItem(playItem);
     quickAction.addActionItem(addToPlaylistItem);
     quickAction.addActionItem(editTagsItem);
+    quickAction.addActionItem(statisticsItem);
     quickAction.addActionItem(setAsRingtoneItem);
     quickAction.addActionItem(deleteItem);
     quickAction.addActionItem(sendItem);

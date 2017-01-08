@@ -142,7 +142,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   }
 
   @Override public void updateProgressDurationText(int duration) {
-    progressTextView.setText(new Milliseconds(duration).toTimeString());
+    progressTextView.setText(new Milliseconds(duration).toString());
   }
 
   @Override public void stopSeekbarProgress() {
@@ -172,7 +172,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     buttonFavoriteToggle.setImageResource(
         song.mediaStat().isFavorite() ? R.drawable.ic_favorite_yes : R.drawable.ic_favorite_no);
     // Step 3: Duration
-    durationTextView.setText(new Milliseconds(song.media().duration()).toTimeString());
+    durationTextView.setText(new Milliseconds(song.media().duration()).toString());
     // Step 4: Keep these things updated
     // - Album rotation
     // - Progress(progressTextView & seekBarProgress)
