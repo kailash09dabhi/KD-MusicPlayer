@@ -27,6 +27,8 @@ public final class MediaStatTable implements SqlTable {
       + " TEXT,"
       + Columns.NUMBER_OF_TIMES_PLAYED
       + " INTEGER,"
+      + Columns.TOTAL_LISTENED_TIME
+      + " INTEGER,"
       + Columns.LAST_TIME_PLAYED
       + " DATETIME DEFAULT CURRENT_TIMESTAMP,"
       + Columns.CREATED_AT
@@ -148,6 +150,7 @@ public final class MediaStatTable implements SqlTable {
     public static final String SQLITE_ID = "_id";
     public static final String MEDIA_ID = "media_id";
     public static final String FAVORITE = "favorite";
+    public static final String TOTAL_LISTENED_TIME = "total_listened_time";
     // playlist mediaId and playlist mediaId differentiated by "()"
     public static final String LAST_TIME_PLAYED = "last_time_played";
     public static final String NUMBER_OF_TIMES_PLAYED = "number_of_times_played";

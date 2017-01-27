@@ -28,6 +28,10 @@ public interface MediaStat extends SqlTableRow {
 
   long numberOfTimesPlayed();
 
+  void addToListenedTime(long difference);
+
+  long totalListenedTime();
+
   class Smart implements MediaStat, Parcelable, SqlTableRow {
     public static final Creator<Smart> CREATOR = new Creator<Smart>() {
       @Override public Smart createFromParcel(Parcel in) {
@@ -43,6 +47,7 @@ public interface MediaStat extends SqlTableRow {
     @Inject SQLiteDatabase sqliteDatabase;
     private boolean isFavourite;
     private long numberOfTimesPlayed;
+    private long totalListenedTime;
 
     public Smart(Cursor cursor) {
       mediaId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStatTable.Columns.MEDIA_ID));
@@ -52,6 +57,8 @@ public interface MediaStat extends SqlTableRow {
           cursor.getColumnIndexOrThrow(MediaStatTable.Columns.NUMBER_OF_TIMES_PLAYED));
       lastTimePlayed =
           cursor.getLong(cursor.getColumnIndexOrThrow(MediaStatTable.Columns.LAST_TIME_PLAYED));
+      totalListenedTime =
+          cursor.getLong(cursor.getColumnIndexOrThrow(MediaStatTable.Columns.TOTAL_LISTENED_TIME));
       MusicPlayerApp.instance().component().inject(this);
     }
 
@@ -60,6 +67,7 @@ public interface MediaStat extends SqlTableRow {
       numberOfTimesPlayed = in.readLong();
       lastTimePlayed = in.readLong();
       mediaId = in.readLong();
+      totalListenedTime = in.readLong();
       MusicPlayerApp.instance().component().inject(this);
     }
 
@@ -68,6 +76,7 @@ public interface MediaStat extends SqlTableRow {
       this.isFavourite = false;
       this.numberOfTimesPlayed = 0;
       this.lastTimePlayed = 0;
+      this.totalListenedTime = 0;
       MusicPlayerApp.instance().component().inject(this);
     }
 
@@ -93,6 +102,14 @@ public interface MediaStat extends SqlTableRow {
       return numberOfTimesPlayed;
     }
 
+    @Override public void addToListenedTime(long differenceInMillis) {
+      totalListenedTime = totalListenedTime + differenceInMillis;
+    }
+
+    @Override public long totalListenedTime() {
+      return totalListenedTime;
+    }
+
     @Override public int describeContents() {
       return 0;
     }
@@ -102,6 +119,7 @@ public interface MediaStat extends SqlTableRow {
       dest.writeLong(numberOfTimesPlayed);
       dest.writeLong(lastTimePlayed);
       dest.writeLong(mediaId);
+      dest.writeLong(totalListenedTime);
     }
 
     @Override public long save() {
@@ -111,6 +129,7 @@ public interface MediaStat extends SqlTableRow {
       values.put(MediaStatTable.Columns.LAST_TIME_PLAYED, new CurrentDateTime().toString());
       values.put(MediaStatTable.Columns.NUMBER_OF_TIMES_PLAYED, numberOfTimesPlayed);
       values.put(MediaStatTable.Columns.UPDATED_AT, new CurrentDateTime().toString());
+      values.put(MediaStatTable.Columns.TOTAL_LISTENED_TIME, totalListenedTime);
       return sqliteDatabase.insertWithOnConflict(MediaStatTable.NAME, null, values,
           SQLiteDatabase.CONFLICT_REPLACE);
     }

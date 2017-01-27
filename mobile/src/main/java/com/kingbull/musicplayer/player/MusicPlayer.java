@@ -8,8 +8,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.Time;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
-import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import java.io.IOException;
@@ -22,6 +22,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   boolean isAudioSessionIdUpdated = false;
   BassBoost bassBoost;
   Virtualizer virtualizer;
+  private Time time;
   private MediaPlayer player;
   private NowPlayingList nowPlayingList;
   // Default size 2: for service and UI
@@ -36,16 +37,18 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
 
   @Override public boolean play() {
     if (isPaused) {
+      time = new Time.Now();
       player.start();
     } else {
-      Music song = nowPlayingList.currentMusic();
+      Music music = nowPlayingList.currentMusic();
       try {
         player.reset();
-        player.setDataSource(song.media().path());
+        player.setDataSource(music.media().path());
         player.prepare();
         player.start();
         isAudioSessionIdUpdated = true;
-        ((SqlMusic) song).mediaStat().saveLastPlayed();
+        time = new Time.Now();
+        music.mediaStat().saveLastPlayed();
       } catch (IOException e) {
         Log.e(TAG, "play: ", e);
         return false;
@@ -57,6 +60,8 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   @Override public boolean play(Music music) {
+    if (time!=null)
+    nowPlayingList.currentMusic().mediaStat().addToListenedTime(time.difference(new Time.Now()));
     nowPlayingList.jumpTo(music);
     play();
     return true;
@@ -64,20 +69,20 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
 
   @Override public boolean playPrevious() {
     isPaused = false;
-    nowPlayingList.previous();
+    nowPlayingList.currentMusic().mediaStat().addToListenedTime(time.difference(new Time.Now()));
+    RxBus.getInstance().post(new MusicEvent(nowPlayingList.previous(), MusicPlayerEvent.PREVIOUS));
     play();
-    RxBus.getInstance()
-        .post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.PREVIOUS));
     return true;
   }
 
   @Override public boolean playNext() {
     isPaused = false;
-    boolean hasNext = nowPlayingList.size() > nowPlayingList.indexOf(nowPlayingList.currentMusic());
-    if (hasNext) {
-      Music next = nowPlayingList.next();
+    if (nowPlayingList.size() > nowPlayingList.indexOf(nowPlayingList.currentMusic())) { //has next?
+      nowPlayingList.currentMusic()
+          .mediaStat()
+          .addToListenedTime(time.difference(new Time.Now()));
+      RxBus.getInstance().post(new MusicEvent(nowPlayingList.next(), MusicPlayerEvent.NEXT));
       play();
-      RxBus.getInstance().post(new MusicEvent(next, MusicPlayerEvent.NEXT));
       return true;
     }
     return false;
@@ -87,6 +92,9 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     if (player.isPlaying()) {
       player.pause();
       isPaused = true;
+      nowPlayingList.currentMusic()
+          .mediaStat()
+          .addToListenedTime(time.difference(new Time.Now()));
       RxBus.getInstance()
           .post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.PAUSE));
       return true;
@@ -188,6 +196,4 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   @Override public NowPlayingList nowPlayingMusicList() {
     return nowPlayingList;
   }
-
-
 }
