@@ -12,7 +12,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import com.jaredrummler.fastscrollrecyclerview.FastScrollRecyclerView;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
@@ -47,7 +47,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, AllSongs.View {
   private final List<Music> musicList = new ArrayList<>();
   @BindView(R.id.totalSongCountView) TextView totalSongCountView;
-  @BindView(R.id.recyclerView) RecyclerView recyclerView;
+  @BindView(R.id.recyclerView) FastScrollRecyclerView recyclerView;
   @BindView(R.id.allRayMenu) AllRayMenu allRayMenu;
   @BindView(R.id.searchView) EditText searchView;
   private MusicRecyclerViewAdapter musicRecyclerViewAdapter;

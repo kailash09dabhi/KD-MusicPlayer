@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,8 +12,8 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="1px"
       android:background="@color/transparent_black"
-      android:gravity="center_vertical"
       android:clipChildren="true"
+      android:gravity="center_vertical"
       android:minHeight="?attr/listPreferredItemHeightLarge"
       android:orientation="vertical"
       android:padding="?android:attr/listPreferredItemPaddingLeft">
@@ -30,7 +31,11 @@
         tools:text="99"
         style="@style/AppTheme.TextAppearance.List.Small"/>
   </LinearLayout>
-  <android.support.v7.widget.RecyclerView
+  <!--<RelativeLayout-->
+  <!--android:layout_width="match_parent"-->
+  <!--android:layout_height="0dp"-->
+  <!--android:layout_weight="1">-->
+  <com.jaredrummler.fastscrollrecyclerview.FastScrollRecyclerView
       android:id="@+id/recyclerView"
       android:layout_width="match_parent"
       android:layout_height="0dp"
@@ -41,15 +46,19 @@
       android:fadingEdgeLength="34dp"
       android:overScrollMode="never"
       android:requiresFadingEdge="vertical"
-      android:scrollbarSize="3dp"
-      android:scrollbarThumbVertical="@drawable/scroll_thumb"
-      android:scrollbarTrackVertical="@drawable/transparent_white"
-      android:scrollbars="vertical"/>
+      android:scrollbars="vertical"
+      app:fastScrollAlwaysEnabled="false"
+      app:fastScrollHideDelay="600"
+      app:fastScrollPopupBackgroundColor="?attr/colorAccent"
+      app:fastScrollPopupTextColor="@android:color/white"
+      app:fastScrollThumbActiveColor="?attr/colorAccent"
+      app:fastScrollThumbInactiveColor="?attr/colorAccent"/>
+  <!--</RelativeLayout>-->
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:clipChildren="true"
       android:background="@color/transparent_strong_black"
+      android:clipChildren="true"
       android:orientation="horizontal">
 
     <com.kingbull.musicplayer.ui.main.categories.all.AllRayMenu

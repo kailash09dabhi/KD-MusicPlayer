@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.ui.base.musiclist;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.jaredrummler.fastscrollrecyclerview.FastScrollRecyclerView;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Milliseconds;
@@ -36,7 +38,7 @@ import javax.inject.Inject;
  */
 
 public final class MusicRecyclerViewAdapter
-    extends RecyclerView.Adapter<MusicRecyclerViewAdapter.MusicViewHolder> {
+    extends RecyclerView.Adapter<MusicRecyclerViewAdapter.MusicViewHolder>  implements FastScrollRecyclerView.SectionedAdapter {
   List<Music> songs;
   @Inject Player player;
   android.support.v4.app.FragmentManager fragmentManager;
@@ -171,6 +173,11 @@ public final class MusicRecyclerViewAdapter
 
   @Override public int getItemCount() {
     return songs.size();
+  }
+
+
+  @NonNull @Override public String getSectionName(int position) {
+    return String.valueOf(songs.get(position).media().title().charAt(0));
   }
 
   class MusicViewHolder extends RecyclerView.ViewHolder
