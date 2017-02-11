@@ -7,7 +7,9 @@ package com.kingbull.musicplayer.ui.main.categories.all;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +29,7 @@ import com.jaredrummler.fastscrollrecyclerview.FastScrollRecyclerView;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
@@ -35,12 +38,14 @@ import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.animators.SlideHorizontal;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.settings.SettingsActivity;
 import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,7 +125,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
           }
 
           @Override public void onDeleteSelectedClick() {
-
+            presenter.onDeleteSelectedMusic();
           }
 
           @Override public void onClearSelectionClick() {
@@ -209,6 +214,25 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   @Override public void showSortMusicScreen() {
     new SortDialogFragment().show(getActivity().getSupportFragmentManager(),
         SortDialogFragment.class.getName());
+  }
+
+  @Override public List<SqlMusic> selectedMusicList() {
+    return musicRecyclerViewAdapter.getSelectedMusics();
+  }
+
+  @Override public void removeFromMediaStoreAndList(Music music) {
+    getActivity().getContentResolver()
+        .delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.MediaColumns.DATA + "=?",
+            new String[] { music.media().path() });
+    new Snackbar(recyclerView).show("songs deleted successfully!");
+    musicRecyclerViewAdapter.notifyItemRemoved(musicList.indexOf(music));
+    musicList.remove(music);
+    getActivity().sendBroadcast(
+        new Intent(Intent.ACTION_DELETE, Uri.fromFile(new File(music.media().path()))));
+  }
+
+  @Override public void clearSelection() {
+    musicRecyclerViewAdapter.clearSelection();
   }
 
   @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {

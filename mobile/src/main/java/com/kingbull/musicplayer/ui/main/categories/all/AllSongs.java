@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.ui.main.categories.all;
 
 import android.database.Cursor;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.util.List;
@@ -22,6 +23,12 @@ public interface AllSongs {
     void showAddToPlayListDialog();
 
     void showSortMusicScreen();
+
+    List<SqlMusic> selectedMusicList();
+
+    void removeFromMediaStoreAndList(Music music);
+
+    void clearSelection();
   }
 
   interface Model extends Mvp.Model {
@@ -44,5 +51,7 @@ public interface AllSongs {
 
 
     void onSortEvent(SortEvent sortEvent);
+
+    void onDeleteSelectedMusic();
   }
 }

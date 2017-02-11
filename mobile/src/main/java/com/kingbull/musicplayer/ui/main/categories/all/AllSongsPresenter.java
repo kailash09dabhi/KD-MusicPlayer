@@ -16,6 +16,7 @@ import io.reactivex.functions.Predicate;
 import io.reactivex.observers.ResourceSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.ResourceSubscriber;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -201,5 +202,14 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
     }
     if (!sortEvent.isSortInAscending()) Collections.reverse(songs);
     view().showAllSongs(songs);
+  }
+
+  @Override public void onDeleteSelectedMusic() {
+    List<SqlMusic> musicList = view().selectedMusicList();
+    for (Music music : musicList) {
+      new File(music.media().path()).delete();
+      view().removeFromMediaStoreAndList(music);
+    }
+    view().clearSelection();
   }
 }
