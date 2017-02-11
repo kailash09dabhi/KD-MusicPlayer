@@ -1,9 +1,6 @@
 package com.kingbull.musicplayer.ui.base.animators;
 
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.view.animation.OvershootInterpolator;
-import com.kingbull.musicplayer.R;
 
 /**
  * CardView animation logic abstraction
@@ -34,43 +31,30 @@ public interface SlideHorizontal {
   }
 
   class Animation implements SlideHorizontal.Animator {
-    private final int DURATION = 300;
+    private final int DURATION = 700;
 
     @Override public void animateIn(final View view, final SlideHorizontal.Listener listener) {
-      android.view.animation.Animation animation1 =
-          AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_in_right);
-      animation1.setDuration(DURATION);
-      animation1.setInterpolator(new OvershootInterpolator(1.5f));
-      animation1.setAnimationListener(new android.view.animation.Animation.AnimationListener() {
-        @Override public void onAnimationStart(android.view.animation.Animation animation) {
+      view.animate().withStartAction(new Runnable() {
+        @Override public void run() {
           view.setVisibility(View.VISIBLE);
         }
-
-        @Override public void onAnimationEnd(android.view.animation.Animation animation) {
+      }).setDuration(DURATION).translationX(0).withEndAction(new Runnable() {
+        @Override public void run() {
           if (listener != null) listener.onInAnimationFinished();
         }
-
-        @Override public void onAnimationRepeat(android.view.animation.Animation animation) {
-        }
-      });
-      view.startAnimation(animation1);
+      }).start();
     }
 
-    @Override public void animateOut(View view, final SlideHorizontal.Listener listener) {
-      android.view.animation.Animation animation =
-          AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_out_left);
-      animation.setAnimationListener(new android.view.animation.Animation.AnimationListener() {
-        @Override public void onAnimationStart(android.view.animation.Animation animation) {
+    @Override public void animateOut(final View view, final SlideHorizontal.Listener listener) {
+      view.animate().withStartAction(new Runnable() {
+        @Override public void run() {
+          view.setVisibility(View.VISIBLE);
         }
-
-        @Override public void onAnimationEnd(android.view.animation.Animation animation) {
+      }).setDuration(DURATION).translationX(view.getWidth()).withEndAction(new Runnable() {
+        @Override public void run() {
           if (listener != null) listener.onOutAnimationFinished();
         }
-
-        @Override public void onAnimationRepeat(android.view.animation.Animation animation) {
-        }
-      });
-      view.startAnimation(animation);
+      }).start();
     }
   }
 }

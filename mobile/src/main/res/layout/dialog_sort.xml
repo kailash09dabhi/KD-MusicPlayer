@@ -7,7 +7,9 @@
     android:orientation="vertical"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingTop="?android:attr/listPreferredItemPaddingLeft">
+    android:paddingTop="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingBottom="?android:attr/listPreferredItemPaddingLeft"
+    >
 
   <TextView
       android:layout_width="match_parent"
@@ -15,7 +17,8 @@
       android:gravity="center"
       android:minHeight="?listPreferredItemHeight"
       android:text="Sort"
-      style="@style/AppTheme.TextAppearance.Title"/>
+      style="@style/AppTheme.TextAppearance.Title"
+      android:id="@+id/textView2"/>
   <RadioGroup
       android:layout_width="match_parent"
       android:layout_height="wrap_content">

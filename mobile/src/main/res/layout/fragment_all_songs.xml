@@ -8,27 +8,28 @@
     android:orientation="vertical">
   <FrameLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="80dp"
       android:layout_marginTop="1px"
       android:background="@color/transparent_black"
       android:clipChildren="true"
       android:gravity="center_vertical"
       android:minHeight="?attr/listPreferredItemHeightLarge"
-      android:padding="?android:attr/listPreferredItemPaddingLeft">
+      android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+      android:paddingRight="?android:attr/listPreferredItemPaddingRight">
     <LinearLayout
         android:id="@+id/totalSongLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="horizontal">
       <LinearLayout
           android:layout_width="0dp"
-          android:layout_height="match_parent"
-          android:orientation="vertical"
-          android:layout_weight="1">
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="?android:attr/listPreferredItemPaddingLeft"
             android:text="Total Songs"
             style="@style/AppTheme.TextAppearance.List"/>
         <TextView
@@ -41,15 +42,17 @@
       </LinearLayout>
       <ImageView
           android:id="@+id/sortButton"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+          android:layout_width="32dp"
+          android:layout_height="32dp"
           android:layout_marginLeft="20dp"
+          android:layout_gravity="center_vertical"
           android:layout_marginRight="20dp"
           android:src="@drawable/composer_button_sort"/>
       <ImageView
           android:id="@+id/searchButton"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+          android:layout_width="32dp"
+          android:layout_gravity="center_vertical"
+          android:layout_height="32dp"
           android:src="@drawable/composer_icn_search"/>
     </LinearLayout>
     <com.kingbull.musicplayer.ui.main.categories.all.SelectionContextOptionsLayout
@@ -63,8 +66,9 @@
     <LinearLayout
         android:id="@+id/searchLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:gravity="center"
         android:visibility="gone"
         >
       <ImageView
@@ -77,14 +81,13 @@
       <EditText
           android:id="@+id/searchView"
           android:layout_width="0dp"
-          android:layout_height="wrap_content"
+          android:layout_height="48dp"
           android:layout_marginLeft="8dp"
           android:layout_weight="1"
           android:drawableLeft="@android:drawable/ic_menu_search"
           android:drawablePadding="8dp"
           android:textColor="@color/white"
-          style="@style/AppTheme.TextAppearance.List.Medium"
-          />
+          style="@style/AppTheme.TextAppearance.List.Medium"/>
 
     </LinearLayout>
 

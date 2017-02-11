@@ -32,7 +32,7 @@ public interface Alpha {
   }
 
   class Animation implements Alpha.Animator {
-    private final int DURATION = 700;
+    private final int DURATION = 500;
 
     @Override public void animateIn(final View view, final Listener listener) {
       view.setAlpha(0);

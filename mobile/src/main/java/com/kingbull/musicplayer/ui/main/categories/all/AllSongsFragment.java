@@ -57,9 +57,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   @BindView(R.id.searchView) EditText searchView;
   private MusicRecyclerViewAdapter musicRecyclerViewAdapter;
   private final Alpha.Animation alphaAnimation = new Alpha.Animation();
-  private final SlideHorizontal.Animation slideAnimation =
-      new SlideHorizontal.Animation();
-
+  private final SlideHorizontal.Animation slideAnimation = new SlideHorizontal.Animation();
 
   @OnTextChanged(R.id.searchView) void onSearchTextChanged(CharSequence text) {
     presenter.onSearchTextChanged(text.toString());
@@ -92,9 +90,8 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
       new SlideHorizontal.Listener.Default() {
         @Override public void onOutAnimationFinished() {
           selectionContextOptionsLayout.setVisibility(View.GONE);
-          alphaAnimation.animateIn(totalSongLayout, Alpha.Listener.NONE);
           searchLayout.setVisibility(View.GONE);
-          slideAnimation.animateIn(totalSongLayout, SlideHorizontal.Listener.NONE);
+          alphaAnimation.animateIn(totalSongLayout, Alpha.Listener.NONE);
         }
       };
 
@@ -132,11 +129,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
             alphaAnimation.animateIn(totalSongLayout, Alpha.Listener.NONE);
           }
         });
-    allRayMenu.post(new Runnable() {
-      @Override public void run() {
-        searchView.getLayoutParams().height = allRayMenu.getHeight();
-      }
-    });
     allRayMenu.addOnMenuClickListener(new AllRayMenu.OnMenuClickListener() {
       @Override public void onSearchMenuClick() {
         slideAnimation.animateOut(allRayMenu, new SlideHorizontal.Listener.Default() {
