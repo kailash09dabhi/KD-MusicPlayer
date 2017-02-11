@@ -15,10 +15,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +32,8 @@ import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.animators.Alpha;
+import com.kingbull.musicplayer.ui.base.animators.SlideHorizontal;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.settings.SettingsActivity;
@@ -49,44 +50,53 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   @BindView(R.id.totalSongCountView) TextView totalSongCountView;
   @BindView(R.id.recyclerView) FastScrollRecyclerView recyclerView;
   @BindView(R.id.allRayMenu) AllRayMenu allRayMenu;
+  @BindView(R.id.totalSongLayout) LinearLayout totalSongLayout;
+  @BindView(R.id.searchLayout) LinearLayout searchLayout;
+  @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
+      selectionContextOptionsLayout;
   @BindView(R.id.searchView) EditText searchView;
   private MusicRecyclerViewAdapter musicRecyclerViewAdapter;
+  private final Alpha.Animation alphaAnimation = new Alpha.Animation();
+  private final SlideHorizontal.Animation slideAnimation =
+      new SlideHorizontal.Animation();
+
 
   @OnTextChanged(R.id.searchView) void onSearchTextChanged(CharSequence text) {
     presenter.onSearchTextChanged(text.toString());
   }
 
   @OnClick(R.id.exitSearchView) void onExitSearchClick() {
-    Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_left);
-    animation.setAnimationListener(new Animation.AnimationListener() {
-      @Override public void onAnimationStart(Animation animation) {
-      }
-
-      @Override public void onAnimationEnd(Animation animation) {
-        allRayMenu.setVisibility(View.VISIBLE);
-        Animation animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
-        animation1.setDuration(300);
-        animation1.setInterpolator(new OvershootInterpolator(1.5f));
-        animation1.setAnimationListener(new Animation.AnimationListener() {
-          @Override public void onAnimationStart(Animation animation) {
-          }
-
-          @Override public void onAnimationEnd(Animation animation) {
-            allRayMenu.expand(true);
-          }
-
-          @Override public void onAnimationRepeat(Animation animation) {
-          }
-        });
-        allRayMenu.startAnimation(animation1);
-      }
-
-      @Override public void onAnimationRepeat(Animation animation) {
-      }
-    });
-    ((View) searchView.getParent()).startAnimation(animation);
+    slideAnimation.animateOut(searchLayout, slideExitSearchListener);
     presenter.onExitSearchClick();
   }
+
+  @OnClick(R.id.searchButton) void onSearchClick() {
+    alphaAnimation.animateOut(totalSongLayout, Alpha.Listener.NONE);
+    slideAnimation.animateIn(searchLayout, SlideHorizontal.Listener.NONE);
+  }
+
+  @OnClick(R.id.sortButton) void onSortClick() {
+    presenter.onSortMenuClick();
+  }
+
+  private final SlideHorizontal.Listener.Default slideAllRayMenuAnimationListener =
+      new SlideHorizontal.Listener.Default() {
+        @Override public void onOutAnimationFinished() {
+          allRayMenu.setVisibility(View.GONE);
+          searchView.startAnimation(
+              AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_in_left));
+        }
+      };
+
+  private final SlideHorizontal.Listener.Default slideExitSearchListener =
+      new SlideHorizontal.Listener.Default() {
+        @Override public void onOutAnimationFinished() {
+          selectionContextOptionsLayout.setVisibility(View.GONE);
+          alphaAnimation.animateIn(totalSongLayout, Alpha.Listener.NONE);
+          searchLayout.setVisibility(View.GONE);
+          slideAnimation.animateIn(totalSongLayout, SlideHorizontal.Listener.NONE);
+        }
+      };
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -99,6 +109,29 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     musicRecyclerViewAdapter =
         new MusicRecyclerViewAdapter(musicList, (AppCompatActivity) getActivity());
     recyclerView.setAdapter(musicRecyclerViewAdapter);
+    musicRecyclerViewAdapter.addOnLongClickListener(
+        new MusicRecyclerViewAdapter.OnLongClickListener() {
+          @Override public void onLongClick() {
+            alphaAnimation.animateOut(totalSongLayout, Alpha.Listener.NONE);
+            alphaAnimation.animateIn(selectionContextOptionsLayout, Alpha.Listener.NONE);
+          }
+        });
+    selectionContextOptionsLayout.addOnContextOptionClickListener(
+        new SelectionContextOptionsLayout.OnContextOptionClickListener() {
+          @Override public void onAddToPlaylistClick() {
+            presenter.onAddToPlayListMenuClick();
+          }
+
+          @Override public void onDeleteSelectedClick() {
+
+          }
+
+          @Override public void onClearSelectionClick() {
+            musicRecyclerViewAdapter.clearSelection();
+            alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
+            alphaAnimation.animateIn(totalSongLayout, Alpha.Listener.NONE);
+          }
+        });
     allRayMenu.post(new Runnable() {
       @Override public void run() {
         searchView.getLayoutParams().height = allRayMenu.getHeight();
@@ -106,23 +139,13 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     });
     allRayMenu.addOnMenuClickListener(new AllRayMenu.OnMenuClickListener() {
       @Override public void onSearchMenuClick() {
-        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_right);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-          @Override public void onAnimationStart(Animation animation) {
-          }
-
-          @Override public void onAnimationEnd(Animation animation) {
+        slideAnimation.animateOut(allRayMenu, new SlideHorizontal.Listener.Default() {
+          @Override public void onOutAnimationFinished() {
             allRayMenu.setVisibility(View.GONE);
             searchView.startAnimation(
                 AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_in_left));
           }
-
-          @Override public void onAnimationRepeat(Animation animation) {
-          }
         });
-        animation.setInterpolator(new OvershootInterpolator(1.5f));
-        allRayMenu.startAnimation(animation);
-        //searchView.startAnimation(animation);
       }
 
       @Override public void onShuffleMenuClick() {

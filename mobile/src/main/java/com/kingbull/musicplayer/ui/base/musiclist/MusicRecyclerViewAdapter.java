@@ -38,13 +38,23 @@ import javax.inject.Inject;
  */
 
 public final class MusicRecyclerViewAdapter
-    extends RecyclerView.Adapter<MusicRecyclerViewAdapter.MusicViewHolder>  implements FastScrollRecyclerView.SectionedAdapter {
-  List<Music> songs;
+    extends RecyclerView.Adapter<MusicRecyclerViewAdapter.MusicViewHolder>
+    implements FastScrollRecyclerView.SectionedAdapter {
+  private List<Music> songs;
   @Inject Player player;
-  android.support.v4.app.FragmentManager fragmentManager;
-  AppCompatActivity activity;
-  MusicQuickAction musicQuickAction;
+  private android.support.v4.app.FragmentManager fragmentManager;
+  private AppCompatActivity activity;
+  private MusicQuickAction musicQuickAction;
   private SparseBooleanArray selectedItems = new SparseBooleanArray();
+  private OnLongClickListener onLongClickListener;
+
+  public interface OnLongClickListener {
+    void onLongClick();
+  }
+
+  public void addOnLongClickListener(OnLongClickListener onLongClickListener) {
+    this.onLongClickListener = onLongClickListener;
+  }
 
   public MusicRecyclerViewAdapter(List<Music> songs, AppCompatActivity activity) {
     this.songs = songs;
@@ -175,7 +185,6 @@ public final class MusicRecyclerViewAdapter
     return songs.size();
   }
 
-
   @NonNull @Override public String getSectionName(int position) {
     return String.valueOf(songs.get(position).media().title().charAt(0));
   }
@@ -206,6 +215,7 @@ public final class MusicRecyclerViewAdapter
 
     @Override public boolean onLongClick(View v) {
       toggleSelection(getAdapterPosition());
+      if (onLongClickListener != null) onLongClickListener.onLongClick();
       return true;
     }
   }

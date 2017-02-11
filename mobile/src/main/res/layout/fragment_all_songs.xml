@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:clipChildren="true"
     android:orientation="vertical">
-
-  <LinearLayout
+  <FrameLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="1px"
@@ -15,22 +14,82 @@
       android:clipChildren="true"
       android:gravity="center_vertical"
       android:minHeight="?attr/listPreferredItemHeightLarge"
-      android:orientation="vertical"
       android:padding="?android:attr/listPreferredItemPaddingLeft">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="?android:attr/listPreferredItemPaddingLeft"
-        android:text="Total Songs"
-        style="@style/AppTheme.TextAppearance.List"/>
-    <TextView
-        android:id="@+id/totalSongCountView"
+    <LinearLayout
+        android:id="@+id/totalSongLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+      <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          android:layout_weight="1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="?android:attr/listPreferredItemPaddingLeft"
+            android:text="Total Songs"
+            style="@style/AppTheme.TextAppearance.List"/>
+        <TextView
+            android:id="@+id/totalSongCountView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            tools:text="99"
+            style="@style/AppTheme.TextAppearance.List.Small"/>
+      </LinearLayout>
+      <ImageView
+          android:id="@+id/sortButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
+          android:src="@drawable/composer_button_sort"/>
+      <ImageView
+          android:id="@+id/searchButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:src="@drawable/composer_icn_search"/>
+    </LinearLayout>
+    <com.kingbull.musicplayer.ui.main.categories.all.SelectionContextOptionsLayout
+        android:id="@+id/selectionContextOptionsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+    </com.kingbull.musicplayer.ui.main.categories.all.SelectionContextOptionsLayout>
+    <LinearLayout
+        android:id="@+id/searchLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        tools:text="99"
-        style="@style/AppTheme.TextAppearance.List.Small"/>
-  </LinearLayout>
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+      <ImageView
+          android:id="@+id/exitSearchView"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:layout_gravity="center_vertical"
+          android:src="@drawable/composer_button_back"
+          />
+      <EditText
+          android:id="@+id/searchView"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="8dp"
+          android:layout_weight="1"
+          android:drawableLeft="@android:drawable/ic_menu_search"
+          android:drawablePadding="8dp"
+          android:textColor="@color/white"
+          style="@style/AppTheme.TextAppearance.List.Medium"
+          />
+
+    </LinearLayout>
+
+  </FrameLayout>
+
   <!--<RelativeLayout-->
   <!--android:layout_width="match_parent"-->
   <!--android:layout_height="0dp"-->
@@ -52,7 +111,8 @@
       app:fastScrollPopupBackgroundColor="?attr/colorAccent"
       app:fastScrollPopupTextColor="@android:color/white"
       app:fastScrollThumbActiveColor="?attr/colorAccent"
-      app:fastScrollThumbInactiveColor="?attr/colorAccent"/>
+      app:fastScrollThumbInactiveColor="?attr/colorAccent"
+      />
   <!--</RelativeLayout>-->
   <LinearLayout
       android:layout_width="match_parent"
@@ -66,30 +126,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="5dp"
-        android:paddingRight="?android:attr/listPreferredItemPaddingLeft"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-      <ImageView
-          android:id="@+id/exitSearchView"
-          android:layout_width="30dp"
-          android:layout_height="30dp"
-          android:layout_gravity="center_vertical"
-          android:src="@drawable/composer_button_back"/>
-      <EditText
-          android:id="@+id/searchView"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="8dp"
-          android:layout_weight="1"
-          android:drawableLeft="@android:drawable/ic_menu_search"
-          android:drawablePadding="8dp"
-          android:textColor="@color/white"
-          style="@style/AppTheme.TextAppearance.List.Medium"/>
-
-    </LinearLayout>
-
+        android:paddingRight="?android:attr/listPreferredItemPaddingLeft"
+        />
 
   </LinearLayout>
 
