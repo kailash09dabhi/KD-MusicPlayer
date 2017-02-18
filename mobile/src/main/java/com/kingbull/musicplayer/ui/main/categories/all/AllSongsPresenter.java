@@ -48,8 +48,12 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                   if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToFirst();
                     do {
-                      Music song = new SqlMusic(new Media.Smart(cursor));
-                      songs.add(song);
+                      Music music = new SqlMusic(new Media.Smart(cursor));
+                      if (!new File(music.media().path()).exists()) {
+                        view().removeSongFromMediaStore(music);
+                      } else {
+                        songs.add(music);
+                      }
                     } while (cursor.moveToNext());
                     cursor.close();
                   }
@@ -208,7 +212,8 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
     List<SqlMusic> musicList = view().selectedMusicList();
     for (Music music : musicList) {
       new File(music.media().path()).delete();
-      view().removeFromMediaStoreAndList(music);
+      view().removeSongFromMediaStore(music);
+      view().removeFromList(music);
     }
     view().clearSelection();
   }

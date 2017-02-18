@@ -117,8 +117,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
             if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.PLAY
                 || musicEvent.musicPlayerEvent() == MusicPlayerEvent.PAUSE) {
               buttonPlayToggle.setImageResource(
-                  musicEvent.musicPlayerEvent() == MusicPlayerEvent.PAUSE ? R.drawable.ic_pause
-                      : R.drawable.ic_play);
+                  musicEvent.musicPlayerEvent() == MusicPlayerEvent.PAUSE ? R.drawable.ic_play
+                      : R.drawable.ic_pause);
               if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.PLAY) {
                 albumImageView.resumeRotateAnimation();
                 seekBarProgress.startProgresssAnimation();

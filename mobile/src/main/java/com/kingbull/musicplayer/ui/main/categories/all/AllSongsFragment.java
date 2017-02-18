@@ -220,19 +220,22 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     return musicRecyclerViewAdapter.getSelectedMusics();
   }
 
-  @Override public void removeFromMediaStoreAndList(Music music) {
-    getActivity().getContentResolver()
-        .delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.MediaColumns.DATA + "=?",
-            new String[] { music.media().path() });
+  @Override public void removeFromList(Music music) {
     new Snackbar(recyclerView).show("songs deleted successfully!");
     musicRecyclerViewAdapter.notifyItemRemoved(musicList.indexOf(music));
     musicList.remove(music);
-    getActivity().sendBroadcast(
-        new Intent(Intent.ACTION_DELETE, Uri.fromFile(new File(music.media().path()))));
   }
 
   @Override public void clearSelection() {
     musicRecyclerViewAdapter.clearSelection();
+  }
+
+  @Override public void removeSongFromMediaStore(Music music) {
+    getActivity().getContentResolver()
+        .delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.MediaColumns.DATA + "=?",
+            new String[] { music.media().path() });
+    getActivity().sendBroadcast(
+        new Intent(Intent.ACTION_DELETE, Uri.fromFile(new File(music.media().path()))));
   }
 
   @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {

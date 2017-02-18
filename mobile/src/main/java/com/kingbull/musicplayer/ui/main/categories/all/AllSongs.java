@@ -26,9 +26,11 @@ public interface AllSongs {
 
     List<SqlMusic> selectedMusicList();
 
-    void removeFromMediaStoreAndList(Music music);
+    void removeFromList(Music music);
 
     void clearSelection();
+
+    void removeSongFromMediaStore(Music music);
   }
 
   interface Model extends Mvp.Model {
