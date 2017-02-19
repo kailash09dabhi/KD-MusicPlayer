@@ -28,13 +28,13 @@ public final class PlayModeToggleView extends ImageView {
   public void takePlayMode(MusicMode musicMode) {
     switch (musicMode) {
       case REPEAT_ALL:
-        setImageResource(R.drawable.ic_play_mode_list);
-        break;
-      case REPEAT_SINGLE:
         setImageResource(R.drawable.ic_play_mode_loop);
         break;
-      case REPEAT_NONE:
+      case REPEAT_SINGLE:
         setImageResource(R.drawable.ic_play_mode_single);
+        break;
+      case REPEAT_NONE:
+        setImageResource(R.drawable.ic_play_mode_list);
         break;
     }
   }
