@@ -30,7 +30,7 @@ import javax.inject.Singleton;
     if (containsKey(file)) {
       song = get(file);
     } else {
-      song = new SqlMusic(mediaTable.mediaByPath(file.getAbsolutePath()));
+      song = new SqlMusic(mediaTable.mediaByFile(file));
       put(file, song);
     }
     return song;

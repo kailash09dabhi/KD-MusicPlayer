@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Media;
+import java.io.File;
 
 /**
  * @author Kailash Dabhi
@@ -45,18 +46,18 @@ public final class MediaTable {
     return media;
   }
 
-  public Media mediaByPath(String path) {
+  public Media mediaByFile(File file) {
     Cursor mediaCursor = MusicPlayerApp.instance()
         .getContentResolver()
         .query(URI, PROJECTIONS, MediaStore.Audio.Media.DATA + " = " + "?", new String[] {
-            String.valueOf(path)
+            String.valueOf(file.getAbsolutePath())
         }, "");
     mediaCursor.moveToFirst();
     Media media;
     if (mediaCursor != null && mediaCursor.getCount() > 0 && mediaCursor.moveToFirst()) {
       media = new Media.Smart(mediaCursor);
     } else {
-      media = Media.NONE;
+      media = new Media.Smart(file);
     }
     mediaCursor.close();
     return media;

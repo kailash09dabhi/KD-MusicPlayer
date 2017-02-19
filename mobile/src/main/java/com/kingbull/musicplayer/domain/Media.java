@@ -1,9 +1,12 @@
 package com.kingbull.musicplayer.domain;
 
 import android.database.Cursor;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import java.io.File;
 
 /**
@@ -42,7 +45,7 @@ public interface Media {
       return 0;
     }
 
-    @Override public int size() {
+    @Override public long size() {
       return 0;
     }
 
@@ -69,7 +72,7 @@ public interface Media {
 
   long duration();
 
-  int size();
+  long size();
 
   long dateAdded();
 
@@ -87,7 +90,7 @@ public interface Media {
       }
     };
     private final long duration;
-    private final int size;
+    private final long size;
     private final String title;
     private final long year;
     private final long mediaId;
@@ -110,9 +113,22 @@ public interface Media {
       albumId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
     }
 
+    public Smart(File file) {
+      mediaId = 0;
+      title = file.getName();
+      artist = "";
+      album = "";
+      path = file.getAbsolutePath();
+      duration = MediaPlayer.create(MusicPlayerApp.instance(), Uri.fromFile(file)).getDuration();
+      size = file.length();
+      dateAdded = new File(path()).lastModified();
+      year = 0;
+      albumId = 0;
+    }
+
     protected Smart(Parcel in) {
       duration = in.readLong();
-      size = in.readInt();
+      size = in.readLong();
       title = in.readString();
       year = in.readLong();
       mediaId = in.readLong();
@@ -151,7 +167,7 @@ public interface Media {
       return duration;
     }
 
-    @Override public int size() {
+    @Override public long size() {
       return size;
     }
 
@@ -169,7 +185,7 @@ public interface Media {
 
     @Override public void writeToParcel(Parcel dest, int flags) {
       dest.writeLong(duration);
-      dest.writeInt(size);
+      dest.writeLong(size);
       dest.writeString(title);
       dest.writeLong(year);
       dest.writeLong(mediaId);
@@ -193,7 +209,7 @@ public interface Media {
       }
     };
     private final long duration;
-    private final int size;
+    private final long size;
     private final String title;
     private final long year;
     private final long mediaId;
@@ -225,7 +241,7 @@ public interface Media {
 
     protected PlaylistMember(Parcel in) {
       duration = in.readLong();
-      size = in.readInt();
+      size = in.readLong();
       title = in.readString();
       year = in.readLong();
       mediaId = in.readLong();
@@ -264,7 +280,7 @@ public interface Media {
       return duration;
     }
 
-    @Override public int size() {
+    @Override public long size() {
       return size;
     }
 
@@ -282,7 +298,7 @@ public interface Media {
 
     @Override public void writeToParcel(Parcel dest, int flags) {
       dest.writeLong(duration);
-      dest.writeInt(size);
+      dest.writeLong(size);
       dest.writeString(title);
       dest.writeLong(year);
       dest.writeLong(mediaId);
