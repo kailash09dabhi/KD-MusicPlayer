@@ -60,8 +60,9 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   @Override public boolean play(Music music) {
-    if (time!=null)
-    nowPlayingList.currentMusic().mediaStat().addToListenedTime(time.difference(new Time.Now()));
+    if (time != null) {
+      nowPlayingList.currentMusic().mediaStat().addToListenedTime(time.difference(new Time.Now()));
+    }
     nowPlayingList.jumpTo(music);
     play();
     return true;
@@ -78,9 +79,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   @Override public boolean playNext() {
     isPaused = false;
     if (nowPlayingList.size() > nowPlayingList.indexOf(nowPlayingList.currentMusic())) { //has next?
-      nowPlayingList.currentMusic()
-          .mediaStat()
-          .addToListenedTime(time.difference(new Time.Now()));
+      nowPlayingList.currentMusic().mediaStat().addToListenedTime(time.difference(new Time.Now()));
       RxBus.getInstance().post(new MusicEvent(nowPlayingList.next(), MusicPlayerEvent.NEXT));
       play();
       return true;
@@ -92,9 +91,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     if (player.isPlaying()) {
       player.pause();
       isPaused = true;
-      nowPlayingList.currentMusic()
-          .mediaStat()
-          .addToListenedTime(time.difference(new Time.Now()));
+      nowPlayingList.currentMusic().mediaStat().addToListenedTime(time.difference(new Time.Now()));
       RxBus.getInstance()
           .post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.PAUSE));
       return true;
@@ -137,7 +134,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   @Override public void useEffect(Reverb reverb) {
-    PresetReverb mReverb = new PresetReverb(0, player.getAudioSessionId());//<<<<<<<<<<<<<
+    PresetReverb mReverb = new PresetReverb(0, player.getAudioSessionId());
     mReverb.setPreset(reverb.id());
     mReverb.setEnabled(true);
     player.setAuxEffectSendLevel(1.0f);
@@ -167,18 +164,18 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
         } else {
           nowPlayingList.next();
         }
+        play();
         break;
       case REPEAT_SINGLE:
+        play();
         break;
       case REPEAT_NONE:
-        if (nowPlayingList.indexOf(nowPlayingList.currentMusic()) >= nowPlayingList.size() - 1) {
-          nowPlayingList.jumpTo(null);
-        } else {
+        if (nowPlayingList.indexOf(nowPlayingList.currentMusic()) < nowPlayingList.size() - 1) {
           nowPlayingList.next();
+          play();
         }
         break;
     }
-    play();
   }
 
   @Override public void releasePlayer() {

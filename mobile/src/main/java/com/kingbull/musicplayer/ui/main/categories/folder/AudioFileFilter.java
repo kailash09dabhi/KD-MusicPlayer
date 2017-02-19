@@ -132,7 +132,7 @@ public final class AudioFileFilter implements FileFilter {
         AMR("amr"),
         OGG("ogg"),
         //MKV("mkv"),
-        //WAV("wav")
+        WAV("wav")
         ;
 
         private String filesuffix;

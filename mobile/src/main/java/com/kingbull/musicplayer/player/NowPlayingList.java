@@ -25,7 +25,7 @@ public interface NowPlayingList extends List<Music> {
     private int currentRunningMusicIndex = NO_POSITION;
 
     @Override public Music currentMusic() {
-      if (isEmpty() && currentRunningMusicIndex == NO_POSITION) {
+      if (isEmpty() || currentRunningMusicIndex == NO_POSITION) {
         throw new IllegalStateException("current running music index is -1");
       }
       return get(currentRunningMusicIndex);
