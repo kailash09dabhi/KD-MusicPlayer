@@ -79,6 +79,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     ButterKnife.bind(this, view);
     equalizerView.setImageDrawable(new RoundLayerDrawable(R.drawable.ic_equalizer, Color.WHITE));
     nowPlayingView.setImageDrawable(new RoundLayerDrawable(R.drawable.ic_queue_music, Color.WHITE));
+    initializeWithThemeColors();
   }
 
   @Override public void onStop() {
@@ -212,6 +213,18 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     albumImageView.startRotateAnimation();
     seekBarProgress.startProgresssAnimation();
   }
+
+
+  private void initializeWithThemeColors() {
+    com.kingbull.musicplayer.ui.base.Color color =
+        new com.kingbull.musicplayer.ui.base.Color(new SettingPreferences().windowColor());
+    getActivity(). getWindow().setBackgroundDrawable(color.dark().toDrawable());
+    nameTextView.setTextColor(color.light(5).toDrawable().getColor());
+    textViewArtist.setTextColor(color.light(5).toDrawable().getColor());
+    progressTextView.setTextColor(color.light(5).toDrawable().getColor());
+    durationTextView.setTextColor(color.light(5).toDrawable().getColor());
+  }
+
 
   private void updateUiWithPaletteSwatch(Palette.Swatch darkSwatch, Palette.Swatch lightSwatch) {
     getActivity().getWindow().setBackgroundDrawable(new ColorDrawable(darkSwatch.getRgb()));

@@ -21,6 +21,13 @@ public final class Color {
     return new Color(android.graphics.Color.HSVToColor(hsv));
   }
 
+  public Color light(float value) {
+    float[] hsv = new float[3];
+    android.graphics.Color.colorToHSV(color, hsv);
+    hsv[2] *= 1f + value; // value component
+    return new Color(android.graphics.Color.HSVToColor(hsv));
+  }
+
   public Color dark() {
     float[] hsv = new float[3];
     android.graphics.Color.colorToHSV(color, hsv);
