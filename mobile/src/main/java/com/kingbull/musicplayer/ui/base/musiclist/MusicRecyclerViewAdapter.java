@@ -25,6 +25,7 @@ import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.musiclist.edittags.EditTagsDialogFragment;
 import com.kingbull.musicplayer.ui.base.musiclist.quickaction.MusicQuickAction;
 import com.kingbull.musicplayer.ui.base.musiclist.ringtone.Ringtone;
+import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.statistics.StatisticsDialogFragment;
 import java.io.File;
@@ -36,13 +37,11 @@ import javax.inject.Inject;
  * @author Kailash Dabhi
  * @date 11/8/2016.
  */
-
 public final class MusicRecyclerViewAdapter
     extends RecyclerView.Adapter<MusicRecyclerViewAdapter.MusicViewHolder>
     implements FastScrollRecyclerView.SectionedAdapter {
   private List<Music> songs;
   @Inject Player player;
-  private android.support.v4.app.FragmentManager fragmentManager;
   private AppCompatActivity activity;
   private MusicQuickAction musicQuickAction;
   private SparseBooleanArray selectedItems = new SparseBooleanArray();
@@ -59,7 +58,6 @@ public final class MusicRecyclerViewAdapter
   public MusicRecyclerViewAdapter(List<Music> songs, AppCompatActivity activity) {
     this.songs = songs;
     this.activity = activity;
-    this.fragmentManager = activity.getSupportFragmentManager();
     this.musicQuickAction = new MusicQuickAction(activity);
     MusicPlayerApp.instance().component().inject(this);
   }
@@ -119,7 +117,7 @@ public final class MusicRecyclerViewAdapter
         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_all_music, parent, false));
   }
 
-  @Override public void onBindViewHolder(MusicViewHolder holder, final int position) {
+  @Override public void onBindViewHolder(final MusicViewHolder holder, final int position) {
     if (isSelected(position)) {
       holder.itemView.setBackgroundColor(
           ContextCompat.getColor(holder.itemView.getContext(), R.color.transparent_strong_black));
@@ -167,6 +165,10 @@ public final class MusicRecyclerViewAdapter
             new File(songs.get(position).media().path()).delete();
             activity.sendBroadcast(new Intent(Intent.ACTION_DELETE,
                 Uri.fromFile(new File(songs.get(position).media().path()))));
+            new Snackbar(holder.itemView).show(
+                String.format("%s has been deleted!", songs.get(position).media().title()));
+            songs.remove(position);
+            notifyItemRemoved(position);
           }
 
           @Override public void send() {
