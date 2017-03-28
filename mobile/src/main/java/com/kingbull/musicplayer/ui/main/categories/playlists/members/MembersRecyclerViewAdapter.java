@@ -33,16 +33,17 @@ import javax.inject.Inject;
  * @author Kailash Dabhi
  * @date 11/8/2016.
  */
-
 public final class MembersRecyclerViewAdapter
     extends RecyclerView.Adapter<MembersRecyclerViewAdapter.ViewHolder> {
   @Inject Player player;
   private List<Music> songs;
   private android.support.v4.app.FragmentManager fragmentManager;
   private AppCompatActivity activity;
-  private MemberQuickAction memberQuickAction;
+  private MemberQuickAction playlistQuickAction;
+  private MemberQuickAction quickActionWithDeleteOption;
   private SparseBooleanArray selectedItems = new SparseBooleanArray();
   private PlayList playList;
+  private MemberQuickActionListener memberQuickActionListener;
 
   public MembersRecyclerViewAdapter(PlayList playList, List<Music> songs,
       AppCompatActivity activity) {
@@ -50,7 +51,8 @@ public final class MembersRecyclerViewAdapter
     this.songs = songs;
     this.activity = activity;
     this.fragmentManager = activity.getSupportFragmentManager();
-    this.memberQuickAction = new MemberQuickAction(activity);
+    this.playlistQuickAction = new MemberQuickAction(activity, false);
+    this.quickActionWithDeleteOption = new MemberQuickAction(activity, true);
     MusicPlayerApp.instance().component().inject(this);
   }
 
@@ -123,7 +125,7 @@ public final class MembersRecyclerViewAdapter
     holder.durationView.setText(new Milliseconds(music.media().duration()).toMmSs());
     holder.moreActionsView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(final View v) {
-        memberQuickAction.show(v, new MemberQuickActionListener() {
+        memberQuickActionListener = new MemberQuickActionListener() {
           @Override public void play() {
             player.addToNowPlaylist(songs);
             player.play(songs.get(position));
@@ -151,7 +153,7 @@ public final class MembersRecyclerViewAdapter
               ((PlayList.Smart) playList).remove(songs.get(position));
               songs.remove(position);
               notifyItemRemoved(position);
-            }else if (playList instanceof FavouritesPlayList){
+            } else if (playList instanceof FavouritesPlayList) {
               songs.get(position).mediaStat().delete();
               songs.remove(position);
               notifyItemRemoved(position);
@@ -165,7 +167,12 @@ public final class MembersRecyclerViewAdapter
                 Uri.fromFile(new File(songs.get(position).media().path())));
             activity.startActivity(Intent.createChooser(share, "Share Sound File"));
           }
-        });
+        };
+        if (playList instanceof PlayList.Smart || playList instanceof FavouritesPlayList) {
+          quickActionWithDeleteOption.show(v, memberQuickActionListener);
+        } else {
+          playlistQuickAction.show(v,memberQuickActionListener);
+        }
       }
     });
   }
