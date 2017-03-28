@@ -14,9 +14,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
@@ -26,6 +28,7 @@ import com.kingbull.musicplayer.event.MovedToPlaylistEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.Color;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -35,6 +38,24 @@ import java.util.List;
 public final class MembersFragment extends BaseFragment<Members.Presenter> implements Members.View {
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
+  @BindView(R.id.multipleDeleteView) ImageView multipleDeleteView;
+  private final Alpha.Animation alphaAnimation = new Alpha.Animation();
+  private MembersRecyclerViewAdapter.OnSelectionListener onSelectionListener =
+      new MembersRecyclerViewAdapter.OnSelectionListener() {
+        @Override public void onClearSelection() {
+          alphaAnimation.animateOut(multipleDeleteView, Alpha.Listener.NONE);
+        }
+
+        @Override public void onMultiSelection(int selectionCount) {
+          alphaAnimation.animateIn(multipleDeleteView, Alpha.Listener.NONE);
+        }
+      };
+  ;
+
+  @OnClick(R.id.multipleDeleteView) void onMultipleDeleteClick() {
+    ((MembersRecyclerViewAdapter) recyclerView.getAdapter()).deleteSelectedMusicFromPlaylist();
+  }
+
   PlayList playList;
   List<Music> musicList;
 
@@ -93,7 +114,9 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
   }
 
   @Override public void showPlaylistMembers(List<Music> songs) {
-    recyclerView.setAdapter(
-        new MembersRecyclerViewAdapter(playList, songs, (AppCompatActivity) getActivity()));
+    MembersRecyclerViewAdapter adapter =
+        new MembersRecyclerViewAdapter(playList, songs, (AppCompatActivity) getActivity());
+    adapter.addOnSelectionListener(onSelectionListener);
+    recyclerView.setAdapter(adapter);
   }
 }

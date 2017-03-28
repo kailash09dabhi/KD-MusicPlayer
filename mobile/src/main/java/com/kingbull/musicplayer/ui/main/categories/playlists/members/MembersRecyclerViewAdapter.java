@@ -66,6 +66,11 @@ public final class MembersRecyclerViewAdapter
     } else {
       selectedItems.put(position, true);
     }
+    if (getSelectedItemCount() == 0) {
+      onSelectionListener.onClearSelection();
+    } else {
+      onSelectionListener.onMultiSelection(getSelectedItemCount());
+    }
     notifyItemChanged(position);
   }
 
@@ -84,6 +89,7 @@ public final class MembersRecyclerViewAdapter
     for (Integer i : selection) {
       notifyItemChanged(i);
     }
+    onSelectionListener.onClearSelection();
   }
 
   public int getSelectedItemCount() {
@@ -154,7 +160,7 @@ public final class MembersRecyclerViewAdapter
               songs.remove(position);
               notifyItemRemoved(position);
             } else if (playList instanceof FavouritesPlayList) {
-              songs.get(position).mediaStat().delete();
+              songs.get(position).mediaStat().toggleFavourite();
               songs.remove(position);
               notifyItemRemoved(position);
             }
@@ -179,6 +185,27 @@ public final class MembersRecyclerViewAdapter
 
   @Override public int getItemCount() {
     return songs.size();
+  }
+
+  public void deleteSelectedMusicFromPlaylist() {
+    List<Integer> positions = getSelectedItems();
+    List<Music> deletableFiles = new ArrayList<>();
+    if (playList instanceof PlayList.Smart) {
+      for (Integer pos : positions) {
+        Music music = songs.get(pos);
+        ((PlayList.Smart) playList).remove(music);
+        deletableFiles.add(music);
+      }
+    } else if (playList instanceof FavouritesPlayList) {
+      for (Integer pos : positions) {
+        Music music = songs.get(pos);
+        music.mediaStat().toggleFavourite();
+        deletableFiles.add(music);
+      }
+    }
+    clearSelection();
+    notifyItemRangeRemoved(0, songs.size());
+    songs.removeAll(deletableFiles);
   }
 
   class ViewHolder extends RecyclerView.ViewHolder
@@ -219,5 +246,17 @@ public final class MembersRecyclerViewAdapter
       }
       return true;
     }
+  }
+
+  private OnSelectionListener onSelectionListener;
+
+  public void addOnSelectionListener(OnSelectionListener onSelectionListener) {
+    this.onSelectionListener = onSelectionListener;
+  }
+
+  interface OnSelectionListener {
+    void onClearSelection();
+
+    void onMultiSelection(int selectionCount);
   }
 }
