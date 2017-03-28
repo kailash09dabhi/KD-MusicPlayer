@@ -30,7 +30,7 @@ public final class FavouritesPlayList implements PlayList, Parcelable {
   }
 
   @Override public String name() {
-    return "Favourites";
+    return "Private Favourites";
   }
 
   @Override public List<Music> musicList() {

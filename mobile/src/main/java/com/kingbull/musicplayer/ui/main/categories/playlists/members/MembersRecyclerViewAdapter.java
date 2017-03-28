@@ -18,6 +18,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PlayList;
+import com.kingbull.musicplayer.domain.storage.sqlite.FavouritesPlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.musiclist.edittags.EditTagsDialogFragment;
@@ -148,6 +149,10 @@ public final class MembersRecyclerViewAdapter
           @Override public void delete() {
             if (playList instanceof PlayList.Smart) {
               ((PlayList.Smart) playList).remove(songs.get(position));
+              songs.remove(position);
+              notifyItemRemoved(position);
+            }else if (playList instanceof FavouritesPlayList){
+              songs.get(position).mediaStat().delete();
               songs.remove(position);
               notifyItemRemoved(position);
             }
