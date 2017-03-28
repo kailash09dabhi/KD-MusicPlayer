@@ -171,7 +171,7 @@ public final class MembersRecyclerViewAdapter
         if (playList instanceof PlayList.Smart || playList instanceof FavouritesPlayList) {
           quickActionWithDeleteOption.show(v, memberQuickActionListener);
         } else {
-          playlistQuickAction.show(v,memberQuickActionListener);
+          playlistQuickAction.show(v, memberQuickActionListener);
         }
       }
     });
@@ -196,17 +196,27 @@ public final class MembersRecyclerViewAdapter
     }
 
     @Override public void onClick(final View view) {
-      if (!isAnyItemSelected()) {
-        player.addToNowPlaylist(songs);
-        player.play(songs.get(getAdapterPosition()));
-        view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
+      if (playList instanceof PlayList.Smart || playList instanceof FavouritesPlayList) {
+        if (!isAnyItemSelected()) {
+          playSongsOfPlaylist(view);
+        } else {
+          toggleSelection(getAdapterPosition());
+        }
       } else {
-        toggleSelection(getAdapterPosition());
+        playSongsOfPlaylist(view);
       }
     }
 
+    private void playSongsOfPlaylist(View view) {
+      player.addToNowPlaylist(songs);
+      player.play(songs.get(getAdapterPosition()));
+      view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
+    }
+
     @Override public boolean onLongClick(View v) {
-      toggleSelection(getAdapterPosition());
+      if (playList instanceof PlayList.Smart || playList instanceof FavouritesPlayList) {
+        toggleSelection(getAdapterPosition());
+      }
       return true;
     }
   }
