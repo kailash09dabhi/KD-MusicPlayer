@@ -77,7 +77,7 @@ public final class PlayListsFragment extends BaseFragment<PlayLists.Presenter>
   }
 
   @Override public void showAllPlaylist(List<PlayList> playLists) {
-    recyclerView.setAdapter(new PlayListsAdapter(playLists));
+    recyclerView.setAdapter(new PlayListsAdapter(playLists,getActivity()));
   }
 
   @Override public void refreshListOfPlaylist(PlayList playlist) {

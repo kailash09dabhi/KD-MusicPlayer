@@ -16,7 +16,6 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/27/2016.
  */
-
 public interface PlayList {
   PlayList NONE = new PlayList() {
     @Override public String name() {
@@ -139,6 +138,14 @@ public interface PlayList {
                 null);
         cursor.close();
       }
+    }
+
+    public void delete() {
+      String where = MediaStore.Audio.Playlists._ID + "=?";
+      String[] selectionArgs = { String.valueOf(playlistId) };
+      MusicPlayerApp.instance()
+          .getContentResolver()
+          .delete(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, where, selectionArgs);
     }
 
     @Override public boolean equals(Object o) {

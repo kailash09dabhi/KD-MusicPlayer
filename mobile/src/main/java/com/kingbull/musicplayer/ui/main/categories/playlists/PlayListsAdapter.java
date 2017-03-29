@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
-import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersFragment;
 import java.util.List;
 
@@ -19,13 +20,13 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/8/2016.
  */
-
 public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapter.ViewHolder> {
+  private List<PlayList> playLists;
+  private final PlaylistQuickAction playlistQuickAction;
 
-  List<PlayList> playLists;
-
-  public PlayListsAdapter(List<PlayList> playLists) {
+  public PlayListsAdapter(List<PlayList> playLists, Activity activity) {
     this.playLists = playLists;
+    this.playlistQuickAction = new PlaylistQuickAction(activity);
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -51,14 +52,23 @@ public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapte
     @BindView(R.id.nameView) TextView textView;
     @BindView(R.id.moreActionsView) ImageView imageview;
 
+    @OnClick(R.id.moreActionsView) void onMoreActionsClick(View view) {
+      playlistQuickAction.show(view, new PlaylistQuickActionListener() {
+        @Override public void rename() {
+        }
+
+        @Override public void delete() {
+          PlayList playList = playLists.get(getAdapterPosition());
+          if (playList instanceof PlayList.Smart) ((PlayList.Smart) playList).delete();
+          playLists.remove(getAdapterPosition());
+          notifyItemRemoved(getAdapterPosition());
+        }
+      });
+    }
+
     public ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
-      imageview.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-          new Snackbar(v).show("tapped!" + playLists.get(getAdapterPosition()));
-        }
-      });
       itemView.setOnClickListener(this);
     }
 
