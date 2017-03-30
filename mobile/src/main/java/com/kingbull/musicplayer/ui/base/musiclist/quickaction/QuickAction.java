@@ -263,13 +263,13 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
    * Listener for item click
    */
   public interface OnActionItemClickListener {
-    public abstract void onItemClick(QuickAction source, int pos, int actionId);
+    void onItemClick(QuickAction source, int pos, int actionId);
   }
 
   /**
    * Listener for window dismiss
    */
   public interface OnDismissListener {
-    public abstract void onDismiss();
+    void onDismiss();
   }
 }

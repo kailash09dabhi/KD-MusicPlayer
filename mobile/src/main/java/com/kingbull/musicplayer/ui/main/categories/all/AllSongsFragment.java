@@ -7,6 +7,7 @@ package com.kingbull.musicplayer.ui.main.categories.all;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,6 +30,7 @@ import com.jaredrummler.fastscrollrecyclerview.FastScrollRecyclerView;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.event.SortEvent;
@@ -90,7 +92,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
               AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_in_left));
         }
       };
-
   private final SlideHorizontal.Listener.Default slideExitSearchListener =
       new SlideHorizontal.Listener.Default() {
         @Override public void onOutAnimationFinished() {
@@ -104,9 +105,19 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
       Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_all_songs, null);
   }
-
+  private int getNegativePaintType(int color) {
+    //hexa = "#28cb43";
+    return (color & 0xFF000000) | (~color & 0x00FFFFFF);
+  }
   private void setupView() {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    recyclerView.setPopupBackgroundColor(getNegativePaintType(
+        new SettingPreferences().windowColor()));
+    recyclerView.setThumbActiveColor(getNegativePaintType(
+       new SettingPreferences().windowColor()));
+    recyclerView.setTrackInactiveColor(getNegativePaintType(
+        new SettingPreferences().windowColor()));
+    recyclerView.setPopupTextColor(Color.WHITE);
     getLoaderManager().initLoader(0, null, this);
     musicRecyclerViewAdapter =
         new MusicRecyclerViewAdapter(musicList, (AppCompatActivity) getActivity());
