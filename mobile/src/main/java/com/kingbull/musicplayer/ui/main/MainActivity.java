@@ -14,9 +14,15 @@ import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.Artist;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import java.util.Random;
 
 public final class MainActivity extends BaseActivity<Artist.Presenter> {
@@ -60,6 +66,19 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
               Log.e("backstack", getSupportFragmentManager().getBackStackEntryAt(
                   getSupportFragmentManager().getBackStackEntryCount() - 1).getName());
+            }
+          }
+        });
+  }
+
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
+          @Override public void accept(Object o) throws Exception {
+            if (o instanceof PaletteEvent) {
+              tabLayout.setBackgroundColor(new UiColors().tab().intValue());
             }
           }
         });

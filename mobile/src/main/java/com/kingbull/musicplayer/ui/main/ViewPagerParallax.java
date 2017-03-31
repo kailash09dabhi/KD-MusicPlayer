@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Debug;
 import android.support.v4.view.ViewPager;
@@ -20,6 +19,8 @@ import com.commit451.nativestackblur.NativeStackBlur;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.ThemeChangedEvent;
+import com.kingbull.musicplayer.event.PaletteEvent;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import java.io.IOException;
@@ -83,9 +84,8 @@ public final class ViewPagerParallax extends ViewPager {
     if (backgroundId == -1) return;
     if (maxNumPages == 0) return;
     if (getWidth() == 0 || getHeight() == 0) return;
-    if ((saved_height == getHeight()) && (saved_width == getWidth()) &&
-        (backgroundSavedId == backgroundId) &&
-        (saved_max_num_pages == maxNumPages)) {
+    if ((saved_height == getHeight()) && (saved_width == getWidth()) && (backgroundSavedId
+        == backgroundId) && (saved_max_num_pages == maxNumPages)) {
       return;
     }
     InputStream is;
@@ -128,12 +128,9 @@ public final class ViewPagerParallax extends ViewPager {
       if (window != null) {
         Palette.from(savedBitmap).generate(new Palette.PaletteAsyncListener() {
           public void onGenerated(Palette palette) {
-            Palette.Swatch vibrantSwatch = palette.getDarkMutedSwatch();
-            if (vibrantSwatch != null) {
-              window.setBackgroundDrawable(
-                  new ColorDrawable(palette.getDarkMutedColor(Color.DKGRAY)));
-              new SettingPreferences().saveWindowColor(palette.getDarkMutedColor(Color.DKGRAY));
-            }
+            new SettingPreferences().saveWindowColor(palette.getDarkMutedColor(Color.DKGRAY));
+            window.setBackgroundDrawable(new UiColors().statusBar().asDrawable());
+            RxBus.getInstance().post(new PaletteEvent(palette));
           }
         });
       }
