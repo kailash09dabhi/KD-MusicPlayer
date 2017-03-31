@@ -30,13 +30,13 @@ import com.jaredrummler.fastscrollrecyclerview.FastScrollRecyclerView;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.animators.SlideHorizontal;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
@@ -54,6 +54,8 @@ import java.util.List;
 public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, AllSongs.View {
   private final List<Music> musicList = new ArrayList<>();
+  private final Alpha.Animation alphaAnimation = new Alpha.Animation();
+  private final SlideHorizontal.Animation slideAnimation = new SlideHorizontal.Animation();
   @BindView(R.id.totalSongCountView) TextView totalSongCountView;
   @BindView(R.id.recyclerView) FastScrollRecyclerView recyclerView;
   @BindView(R.id.allRayMenu) AllRayMenu allRayMenu;
@@ -61,10 +63,24 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   @BindView(R.id.searchLayout) LinearLayout searchLayout;
   @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
       selectionContextOptionsLayout;
+  private final SlideHorizontal.Listener.Default slideExitSearchListener =
+      new SlideHorizontal.Listener.Default() {
+        @Override public void onOutAnimationFinished() {
+          selectionContextOptionsLayout.setVisibility(View.GONE);
+          searchLayout.setVisibility(View.GONE);
+          alphaAnimation.animateIn(totalSongLayout, Alpha.Listener.NONE);
+        }
+      };
   @BindView(R.id.searchView) EditText searchView;
+  private final SlideHorizontal.Listener.Default slideAllRayMenuAnimationListener =
+      new SlideHorizontal.Listener.Default() {
+        @Override public void onOutAnimationFinished() {
+          allRayMenu.setVisibility(View.GONE);
+          searchView.startAnimation(
+              AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_in_left));
+        }
+      };
   private MusicRecyclerViewAdapter musicRecyclerViewAdapter;
-  private final Alpha.Animation alphaAnimation = new Alpha.Animation();
-  private final SlideHorizontal.Animation slideAnimation = new SlideHorizontal.Animation();
 
   @OnTextChanged(R.id.searchView) void onSearchTextChanged(CharSequence text) {
     presenter.onSearchTextChanged(text.toString());
@@ -84,40 +100,23 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     presenter.onSortMenuClick();
   }
 
-  private final SlideHorizontal.Listener.Default slideAllRayMenuAnimationListener =
-      new SlideHorizontal.Listener.Default() {
-        @Override public void onOutAnimationFinished() {
-          allRayMenu.setVisibility(View.GONE);
-          searchView.startAnimation(
-              AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_in_left));
-        }
-      };
-  private final SlideHorizontal.Listener.Default slideExitSearchListener =
-      new SlideHorizontal.Listener.Default() {
-        @Override public void onOutAnimationFinished() {
-          selectionContextOptionsLayout.setVisibility(View.GONE);
-          searchLayout.setVisibility(View.GONE);
-          alphaAnimation.animateIn(totalSongLayout, Alpha.Listener.NONE);
-        }
-      };
-
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_all_songs, null);
   }
-  private int getNegativePaintType(int color) {
-    //hexa = "#28cb43";
-    return (color & 0xFF000000) | (~color & 0x00FFFFFF);
-  }
+
   private void setupView() {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    recyclerView.setPopupBackgroundColor(getNegativePaintType(
-        new SettingPreferences().windowColor()));
-    recyclerView.setThumbActiveColor(getNegativePaintType(
-       new SettingPreferences().windowColor()));
-    recyclerView.setTrackInactiveColor(getNegativePaintType(
-        new SettingPreferences().windowColor()));
-    recyclerView.setPopupTextColor(Color.WHITE);
+    UiColors uiColors = new UiColors();
+    int popupColor = uiColors.statusBar().intValue();
+    recyclerView.setPopupBackgroundColor(Color.WHITE);
+    recyclerView.setThumbActiveColor(Color.WHITE);
+    recyclerView.setTrackInactiveColor(popupColor);
+    recyclerView.setPopupTextColor(popupColor);
+    int screenColor = uiColors.screen().intValue();
+    recyclerView.setBackgroundColor(screenColor);
+    ((View) totalSongLayout.getParent()).setBackgroundColor(uiColors.tab().intValue());
+    allRayMenu.setBackgroundColor(screenColor);
     getLoaderManager().initLoader(0, null, this);
     musicRecyclerViewAdapter =
         new MusicRecyclerViewAdapter(musicList, (AppCompatActivity) getActivity());

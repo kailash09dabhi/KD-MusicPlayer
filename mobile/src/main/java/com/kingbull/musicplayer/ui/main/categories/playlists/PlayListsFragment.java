@@ -20,6 +20,7 @@ import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.event.PlaylistCreatedEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsCursorLoader;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -41,6 +42,7 @@ public final class PlayListsFragment extends BaseFragment<PlayLists.Presenter>
   private void setupView(View v) {
     recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    recyclerView.setBackgroundColor(new UiColors().screen().intValue());
     getLoaderManager().initLoader(0, null, this);
   }
 

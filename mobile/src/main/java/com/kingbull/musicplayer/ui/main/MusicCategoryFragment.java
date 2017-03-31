@@ -15,13 +15,13 @@ import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.Members;
 
 /**
  * @author Kailash Dabhi
  * @date 12/20/2016.
  */
-
 public final class MusicCategoryFragment extends BaseFragment<Members.Presenter> {
   @BindView(R.id.pager) ViewPager viewPager;
   @BindView(R.id.tabTitleStrip) PagerTitleStrip pagerTitleStrip;
@@ -43,6 +43,7 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.setOffscreenPageLimit(3);
     viewPager.setCurrentItem(2);
+    pagerTitleStrip.setBackgroundColor(new UiColors().screen().intValue());
     setupPagerTitleStrip();
   }
 

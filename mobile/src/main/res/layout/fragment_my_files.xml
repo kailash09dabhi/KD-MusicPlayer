@@ -10,23 +10,22 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="1px"
-      android:background="@color/transparent_black"
       android:gravity="center_vertical"
       android:minHeight="?attr/listPreferredItemHeightLarge"
       android:orientation="vertical"
       android:padding="?android:attr/listPreferredItemPaddingLeft">
     <TextView
+      style="@style/AppTheme.TextAppearance.List"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="?android:attr/listPreferredItemPaddingLeft"
-        android:text="Directory"
-        style="@style/AppTheme.TextAppearance.List"/>
+      android:text="Directory" />
     <TextView
         android:id="@+id/directoryPathView"
+      style="@style/AppTheme.TextAppearance.List.Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="/storage/"
-        style="@style/AppTheme.TextAppearance.List.Small"/>
+      android:text="/storage/" />
   </LinearLayout>
 
   <android.support.v7.widget.RecyclerView
@@ -36,15 +35,14 @@
       android:layout_marginTop="1px"
       android:layout_weight="1"
       android:clipToPadding="false"
+    android:fadeScrollbars="true"
+    android:fadingEdgeLength="34dp"
       android:overScrollMode="never"
       android:paddingLeft="10dp"
       android:paddingRight="10dp"
+    android:requiresFadingEdge="vertical"
       android:scrollbarSize="3dp"
       android:scrollbarThumbVertical="@drawable/transparent_white"
-      android:background="@color/transparent_strong_black"
-      android:fadeScrollbars="true"
-      android:fadingEdgeLength="34dp"
-      android:requiresFadingEdge="vertical"
       android:scrollbars="vertical"
 
       />

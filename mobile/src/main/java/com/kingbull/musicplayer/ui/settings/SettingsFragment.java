@@ -30,6 +30,7 @@ import com.kingbull.musicplayer.event.ThemeChangedEvent;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -38,7 +39,6 @@ import java.util.Calendar;
 
 public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     implements Settings.View {
-
   SettingPreferences settingPreferences = new SettingPreferences();
   @BindView(R.id.fullScreenCheckbox) CheckBox fullScreenCheckbox;
   @BindView(R.id.durationSecondsView) TextView durationSecondsView;
@@ -59,6 +59,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   private void setupView(View v) {
     fullScreenCheckbox.setChecked(settingPreferences.isFullScreen());
     durationSecondsView.setText(new SettingPreferences().filterDurationInSeconds() + " sec");
+    v.setBackgroundColor(new UiColors().screen().intValue());
   }
 
   @Override protected Disposable subscribeEvents() {

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import java.util.List;
 
 public final class GenresListFragment extends Fragment
@@ -34,6 +35,7 @@ public final class GenresListFragment extends Fragment
   private void setupView(View v) {
     recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    recyclerView.setBackgroundColor(new UiColors().screen().intValue());
     getLoaderManager().initLoader(0, null, this);
   }
 

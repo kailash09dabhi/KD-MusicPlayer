@@ -2,23 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/transparent_black"
     android:layout_height="match_parent"
     android:orientation="vertical">
   <TextView
       android:id="@+id/titleView"
+    style="@style/AppTheme.TextAppearance.Title"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="@color/transparent_black"
       android:gravity="center"
       android:minHeight="?actionBarSize"
-      android:text="Settings"
-      style="@style/AppTheme.TextAppearance.Title"/>
+    android:text="Settings" />
   <ScrollView
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1"
-      android:background="@color/transparent_black"
       android:fadeScrollbars="true"
       android:fadingEdgeLength="34dp"
       android:overScrollMode="never"
@@ -34,6 +31,7 @@
         android:paddingRight="16dp">
       <TextView
           android:id="@+id/sleepTimerView"
+        style="@style/AppTheme.TextAppearance.List.Medium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fontFamily="sans-serif"
@@ -41,11 +39,11 @@
           android:minHeight="?listPreferredItemHeight"
           android:singleLine="true"
           android:text="Sleep Timer"
-          tools:text="afd"
-          style="@style/AppTheme.TextAppearance.List.Medium"/>
+        tools:text="afd" />
 
       <TextView
           android:id="@+id/languageView"
+        style="@style/AppTheme.TextAppearance.List.Medium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fontFamily="sans-serif"
@@ -53,8 +51,7 @@
           android:minHeight="?listPreferredItemHeight"
           android:singleLine="true"
           android:text="Language"
-          tools:text="afd"
-          style="@style/AppTheme.TextAppearance.List.Medium"/>
+        tools:text="afd" />
 
       <LinearLayout
           android:layout_width="match_parent"
@@ -63,6 +60,7 @@
           android:minHeight="?listPreferredItemHeight"
           android:orientation="horizontal">
         <TextView
+          style="@style/AppTheme.TextAppearance.List.Medium"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -70,8 +68,7 @@
             android:lines="1"
             android:singleLine="true"
             android:text="Full Screen"
-            tools:text="afd"
-            style="@style/AppTheme.TextAppearance.List.Medium"/>
+          tools:text="afd" />
         <CheckBox
             android:id="@+id/fullScreenCheckbox"
             android:layout_width="wrap_content"
@@ -83,6 +80,7 @@
 
       <TextView
           android:id="@+id/removeAdsView"
+        style="@style/AppTheme.TextAppearance.List.Medium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fontFamily="sans-serif"
@@ -91,8 +89,7 @@
           android:minHeight="?listPreferredItemHeight"
           android:singleLine="true"
           android:text="Remove Ads"
-          tools:text="afd"
-          style="@style/AppTheme.TextAppearance.List.Medium"/>
+        tools:text="afd" />
       <LinearLayout
           android:id="@+id/hideSmallClips"
           android:layout_width="match_parent"
@@ -104,6 +101,7 @@
             android:orientation="horizontal"
             android:paddingBottom="@dimen/mp.padding.small">
           <TextView
+            style="@style/AppTheme.TextAppearance.List.Medium"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
               android:layout_weight="1"
@@ -112,10 +110,10 @@
               android:maxLines="1"
               android:singleLine="true"
               android:text="Hide Small Clips"
-              tools:text="afd"
-              style="@style/AppTheme.TextAppearance.List.Medium"/>
+            tools:text="afd" />
           <TextView
               android:id="@+id/durationSecondsView"
+            style="@style/AppTheme.TextAppearance.List.Small"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:fontFamily="sans-serif"
@@ -123,16 +121,15 @@
               android:maxLines="1"
               android:singleLine="true"
               android:text="10 sec"
-              tools:text="afd"
-              style="@style/AppTheme.TextAppearance.List.Small"/>
+            tools:text="afd" />
         </LinearLayout>
         <TextView
+          style="@style/AppTheme.TextAppearance.List.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:text="Filter out small audio clips. Set a threshold duration below which the files will not be displayed."
-            tools:text="afd"
-            style="@style/AppTheme.TextAppearance.List.Small"/>
+          tools:text="afd" />
       </LinearLayout>
       <LinearLayout
           android:layout_width="match_parent"
@@ -141,6 +138,7 @@
           android:minHeight="?listPreferredItemHeight"
           android:orientation="horizontal">
         <TextView
+          style="@style/AppTheme.TextAppearance.List.Medium"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -148,8 +146,7 @@
             android:lines="1"
             android:singleLine="true"
             android:text="Flat Theme"
-            tools:text="afd"
-            style="@style/AppTheme.TextAppearance.List.Medium"/>
+          tools:text="afd" />
         <CheckBox
             android:id="@+id/flatThemeCheckbox"
             android:layout_width="wrap_content"

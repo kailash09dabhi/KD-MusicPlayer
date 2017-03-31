@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import java.io.File;
 import java.util.ArrayList;
@@ -25,11 +26,9 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/12/2016.
  */
-
 public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> implements MyFiles.View {
   @BindView(R.id.directoryPathView) TextView directoryPathView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
-
   MyFilesAdapter myFilesAdapter;
   private ArrayList<File> files = new ArrayList<>();
 
@@ -37,6 +36,8 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_my_files, null);
     ButterKnife.bind(this, view);
+    recyclerView.setBackgroundColor(new UiColors().screen().intValue());
+    ((View) directoryPathView.getParent()).setBackgroundColor(new UiColors().tab().intValue());
     return view;
   }
 
