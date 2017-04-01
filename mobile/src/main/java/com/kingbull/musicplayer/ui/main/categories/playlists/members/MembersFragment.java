@@ -18,11 +18,11 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PlayList;
-import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.MovedToPlaylistEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.Color;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -31,10 +31,12 @@ import io.reactivex.functions.Consumer;
 import java.util.List;
 
 public final class MembersFragment extends BaseFragment<Members.Presenter> implements Members.View {
+  private final Alpha.Animation alphaAnimation = new Alpha.Animation();
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.multipleDeleteView) ImageView multipleDeleteView;
-  private final Alpha.Animation alphaAnimation = new Alpha.Animation();
+  PlayList playList;
+  List<Music> musicList;
   private MembersRecyclerViewAdapter.OnSelectionListener onSelectionListener =
       new MembersRecyclerViewAdapter.OnSelectionListener() {
         @Override public void onClearSelection() {
@@ -45,14 +47,6 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
           alphaAnimation.animateIn(multipleDeleteView, Alpha.Listener.NONE);
         }
       };
-  ;
-
-  @OnClick(R.id.multipleDeleteView) void onMultipleDeleteClick() {
-    ((MembersRecyclerViewAdapter) recyclerView.getAdapter()).deleteSelectedMusicFromPlaylist();
-  }
-
-  PlayList playList;
-  List<Music> musicList;
 
   public static MembersFragment newInstance(PlayList playList) {
     MembersFragment fragment = new MembersFragment();
@@ -60,6 +54,10 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
     bundle.putParcelable("playlist", (Parcelable) playList);
     fragment.setArguments(bundle);
     return fragment;
+  }
+
+  @OnClick(R.id.multipleDeleteView) void onMultipleDeleteClick() {
+    ((MembersRecyclerViewAdapter) recyclerView.getAdapter()).deleteSelectedMusicFromPlaylist();
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,7 +101,7 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
   }
 
   private void initializeWithThemeColors() {
-    Color color = new Color(new SettingPreferences().windowColor());
+    Color color = new Color(new UiColors().window().intValue());
     titleView.setBackground(color.light().toDrawable());
     recyclerView.setBackground(color.light().toDrawable());
   }

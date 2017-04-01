@@ -30,6 +30,7 @@ import com.kingbull.musicplayer.event.Preset;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.PresetReverbDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
@@ -78,7 +79,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     titleView.setText("Equalizer Preset".toUpperCase());
     setupRoundKnobButton();
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new SettingPreferences().windowColor());
+        new com.kingbull.musicplayer.ui.base.Color(new UiColors().window().intValue());
     getActivity().getWindow().setBackgroundDrawable(color.toDrawable());
     view.setBackground(color.light().toDrawable());
     bottomButtonContainer.setBackground(color.toDrawable());

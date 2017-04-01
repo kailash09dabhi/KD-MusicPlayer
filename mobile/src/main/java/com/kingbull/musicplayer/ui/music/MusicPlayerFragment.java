@@ -29,6 +29,7 @@ import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.player.MusicPlayerEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.base.drawable.RoundLayerDrawable;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
 import com.kingbull.musicplayer.ui.music.widget.ShadowImageView;
@@ -217,7 +218,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
 
   private void initializeWithThemeColors() {
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new SettingPreferences().windowColor());
+        new com.kingbull.musicplayer.ui.base.Color(new UiColors().window().intValue());
     getActivity(). getWindow().setBackgroundDrawable(color.dark().toDrawable());
     nameTextView.setTextColor(color.light(5).toDrawable().getColor());
     textViewArtist.setTextColor(color.light(5).toDrawable().getColor());

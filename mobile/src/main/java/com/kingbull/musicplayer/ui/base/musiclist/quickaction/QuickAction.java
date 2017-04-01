@@ -17,8 +17,8 @@ import android.widget.ImageView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.ui.base.Color;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +76,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
    * @param id Layout resource id
    */
   public void setRootViewId(int id) {
-    mRootView = (ViewGroup) inflater.inflate(id, null);
+    mRootView = inflater.inflate(id, null);
     mTrack = (ViewGroup) mRootView.findViewById(R.id.tracks);
     //mArrowDown = (ImageView) mRootView.findViewById(R.id.arrow_down);
     //mArrowUp = (ImageView) mRootView.findViewById(R.id.arrow_up);
@@ -115,7 +115,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
     mActionItemList.add(action);
     String title = action.getTitle();
     Drawable icon = action.getIcon();
-    View container = (View) inflater.inflate(R.layout.action_item, null);
+    View container = inflater.inflate(R.layout.action_item, null);
     ImageView img = (ImageView) container.findViewById(R.id.iv_icon);
     TextView text = (TextView) container.findViewById(R.id.tv_title);
     if (icon != null) {
@@ -161,7 +161,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
    * Show popup mWindow
    */
   public void show(View anchor) {
-    Color color = new Color(new SettingPreferences().windowColor());
+    Color color = new Color(new UiColors().window().intValue());
     mRootView.findViewById(R.id.scroll).setBackground(color.toDrawable());
     preShow();
     int[] location = new int[2];

@@ -1,19 +1,19 @@
 package com.kingbull.musicplayer.ui.base;
 
-import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
+import com.kingbull.musicplayer.domain.storage.preferences.PalettePreference;
 
 /**
  * @author Kailash Dabhi
  * @date 3/31/2017
  */
 public final class UiColors {
-  private final SettingPreferences preferences = new SettingPreferences();
+  private final PalettePreference prefs = new PalettePreference();
 
   public UiColors() {
   }
 
   public Color window() {
-    return new Color(preferences.windowColor());
+    return new Color(prefs.darkVibrantColor());
   }
 
   public Color statusBar() {

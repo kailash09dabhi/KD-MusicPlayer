@@ -17,9 +17,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import github.nisrulz.recyclerviewhelper.RVHItemTouchHelperCallback;
 import java.util.List;
 
@@ -38,7 +38,7 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
 
   private void setupView(View v) {
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new SettingPreferences().windowColor());
+        new com.kingbull.musicplayer.ui.base.Color(new UiColors().window().intValue());
     v.setBackground(color.light().toDrawable());
     titleView.setText("Now Playing".toUpperCase());
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

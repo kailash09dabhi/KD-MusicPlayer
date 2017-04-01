@@ -17,7 +17,6 @@
 package com.kingbull.musicplayer.domain.storage.preferences;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.media.audiofx.PresetReverb;
 import android.preference.PreferenceManager;
 import com.kingbull.musicplayer.MusicPlayerApp;
@@ -73,14 +72,6 @@ public final class SettingPreferences {
     settingsPrefs.edit().putInt(Key.LAST_CHOSEN_PRESET_ID, equalizerPreset).apply();
   }
 
-  public int windowColor() {
-    return settingsPrefs.getInt(Key.WINDOW_COLOR, Color.DKGRAY);
-  }
-
-  public void saveWindowColor(int windowColor) {
-    settingsPrefs.edit().putInt(Key.WINDOW_COLOR, windowColor).apply();
-  }
-
   public boolean lastChosenPresetIsOfSystem() {
     return settingsPrefs.getBoolean(Key.LAST_CHOSEN_PRESET_IS_OF_SYSTEM, true);
   }
@@ -114,7 +105,6 @@ public final class SettingPreferences {
 
   public final static class Key {
     public final static String MUSIC_MODE = "music_mode";
-    public final static String WINDOW_COLOR = "window_color";
     public final static String IS_FULL_SCREEN = "full_screen";
     public final static String IS_FLAT_THEME = "flat_theme";
     public final static String LAST_CHOSEN_PRESET_IS_OF_SYSTEM = "last_chosen_preset_is_of_system";

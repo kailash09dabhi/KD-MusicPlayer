@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Debug;
@@ -17,9 +16,10 @@ import android.view.MotionEvent;
 import android.view.Window;
 import com.commit451.nativestackblur.NativeStackBlur;
 import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.domain.storage.preferences.PalettePreference;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
-import com.kingbull.musicplayer.event.ThemeChangedEvent;
 import com.kingbull.musicplayer.event.PaletteEvent;
+import com.kingbull.musicplayer.event.ThemeChangedEvent;
 import com.kingbull.musicplayer.ui.base.UiColors;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -128,7 +128,7 @@ public final class ViewPagerParallax extends ViewPager {
       if (window != null) {
         Palette.from(savedBitmap).generate(new Palette.PaletteAsyncListener() {
           public void onGenerated(Palette palette) {
-            new SettingPreferences().saveWindowColor(palette.getDarkMutedColor(Color.DKGRAY));
+            new PalettePreference().save(palette);
             window.setBackgroundDrawable(new UiColors().statusBar().asDrawable());
             RxBus.getInstance().post(new PaletteEvent(palette));
           }
@@ -171,8 +171,7 @@ public final class ViewPagerParallax extends ViewPager {
       src.set((int) (overlapLevel * (currentPosition + currentOffset)), 0,
           (int) (overlapLevel * (currentPosition + currentOffset) + (getWidth() * zoomLevel)),
           imageHeight);
-      dst.set((int) (getScrollX()), 0, (int) (getScrollX() + canvas.getWidth()),
-          canvas.getHeight());
+      dst.set(getScrollX(), 0, getScrollX() + canvas.getWidth(), canvas.getHeight());
       canvas.drawBitmap(savedBitmap, src, dst, null);
     }
   }

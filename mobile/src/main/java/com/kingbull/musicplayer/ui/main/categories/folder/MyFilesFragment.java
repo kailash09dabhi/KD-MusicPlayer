@@ -14,6 +14,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.storage.preferences.PalettePreference;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.UiColors;
@@ -38,6 +39,7 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
     ButterKnife.bind(this, view);
     recyclerView.setBackgroundColor(new UiColors().screen().intValue());
     ((View) directoryPathView.getParent()).setBackgroundColor(new UiColors().tab().intValue());
+    directoryPathView.setTextColor(new PalettePreference().darkMutedColor());
     return view;
   }
 
