@@ -88,6 +88,7 @@ public final class ViewPagerParallax extends ViewPager {
         == backgroundId) && (saved_max_num_pages == maxNumPages)) {
       return;
     }
+    if (savedBitmap != null && !savedBitmap.isRecycled()) savedBitmap.recycle();
     InputStream is;
     try {
       is = getContext().getResources().openRawResource(backgroundId);
@@ -123,14 +124,17 @@ public final class ViewPagerParallax extends ViewPager {
           zoomLevel * Math.min(Math.max(imageWidth / zoomLevel - getWidth(), 0) / (maxNumPages - 1),
               getWidth() / 2); // how many pixels to shift for each panel
       is.reset();
-      savedBitmap = BitmapFactory.decodeStream(is, null, options);
-      savedBitmap = NativeStackBlur.process(savedBitmap, 45);
+      Bitmap bitmap = BitmapFactory.decodeStream(is, null, options);
+      savedBitmap = NativeStackBlur.process(bitmap, 45);
+      bitmap.recycle();
       if (window != null) {
         Palette.from(savedBitmap).generate(new Palette.PaletteAsyncListener() {
           public void onGenerated(Palette palette) {
-            new PalettePreference().save(palette);
-            window.setBackgroundDrawable(new UiColors().statusBar().asDrawable());
-            RxBus.getInstance().post(new PaletteEvent(palette));
+            if (palette != null) {
+              new PalettePreference().save(palette);
+              window.setBackgroundDrawable(new UiColors().statusBar().asDrawable());
+              RxBus.getInstance().post(new PaletteEvent(palette));
+            }
           }
         });
       }
