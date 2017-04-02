@@ -14,11 +14,15 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.domain.storage.preferences.PalettePreference;
+import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +43,7 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
     ButterKnife.bind(this, view);
     recyclerView.setBackgroundColor(new UiColors().screen().intValue());
     ((View) directoryPathView.getParent()).setBackgroundColor(new UiColors().tab().intValue());
-    directoryPathView.setTextColor(new PalettePreference().darkMutedColor());
+    directoryPathView.setTextColor(new UiColors().bodyTextColor().intValue());
     return view;
   }
 
@@ -72,6 +76,19 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
   @Override public void showMusicPlayer() {
     Intent intent = new Intent(getActivity(), MusicPlayerActivity.class);
     startActivity(intent);
+  }
+
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
+          @Override public void accept(Object o) throws Exception {
+            if (o instanceof PaletteEvent) {
+              myFilesAdapter.notifyDataSetChanged();
+            }
+          }
+        });
   }
 
   @Override protected void onPresenterPrepared(final MyFiles.Presenter presenter) {

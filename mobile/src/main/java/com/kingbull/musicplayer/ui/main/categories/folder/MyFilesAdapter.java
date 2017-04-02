@@ -12,6 +12,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.FileMusicMap;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Milliseconds;
+import com.kingbull.musicplayer.ui.base.UiColors;
 import java.io.File;
 import java.util.List;
 import javax.inject.Inject;
@@ -20,15 +21,14 @@ import javax.inject.Inject;
  * @author Kailash Dabhi
  * @date 11/8/2016.
  */
-
 public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
   private final int FOLDER = 0, SONG = 1;
-
   List<File> files;
   MyFiles.Presenter presenter;
   @Inject FileMusicMap fileMusicMap;
+  private UiColors uiColors = new UiColors();
 
-  public MyFilesAdapter(List<File> files, MyFiles.Presenter presenter) {
+  public MyFilesAdapter(final List<File> files, MyFiles.Presenter presenter) {
     this.files = files;
     this.presenter = presenter;
     MusicPlayerApp.instance().component().inject(this);
@@ -57,6 +57,8 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
   }
 
   @Override public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+    int titleColor = uiColors.titleTextColor().intValue();
+    int bodyColor = uiColors.bodyTextColor().intValue();
     if (viewHolder instanceof FolderFileViewHolder) {
       FolderFileViewHolder holder = (FolderFileViewHolder) viewHolder;
       holder.folderNameView.setText(files.get(position).getName());
@@ -64,12 +66,17 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
           new Folder.Cached(Folder.Smart.from(files.get(position))).allMusics().size()
               + " "
               + "song");
+      holder.folderNameView.setTextColor(titleColor);
+      holder.totalFilesView.setTextColor(bodyColor);
     } else if (viewHolder instanceof SongFileViewHolder) {
       SongFileViewHolder holder = (SongFileViewHolder) viewHolder;
       Media media = fileMusicMap.music(files.get(position)).media();
       holder.fileNameView.setText(media.title());
       holder.artistView.setText(media.artist());
       holder.durationView.setText(new Milliseconds(media.duration()).toMmSs());
+      holder.fileNameView.setTextColor(titleColor);
+      holder.artistView.setTextColor(bodyColor);
+      holder.durationView.setTextColor(bodyColor);
     }
   }
 
