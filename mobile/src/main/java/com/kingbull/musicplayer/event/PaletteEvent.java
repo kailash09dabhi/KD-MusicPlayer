@@ -6,7 +6,7 @@ import android.support.v7.graphics.Palette;
  * @author Kailash Dabhi
  * @date 3/31/2017
  */
-public class PaletteEvent {
+public final class PaletteEvent {
   private final Palette palette;
 
   public PaletteEvent(Palette palette) {

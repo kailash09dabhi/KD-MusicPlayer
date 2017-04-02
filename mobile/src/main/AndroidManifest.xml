@@ -1,50 +1,48 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kingbull.musicplayer">
+  package="com.kingbull.musicplayer">
 
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-  <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+  <uses-permission android:name="android.permission.INTERNET" />
 
   <application
-      android:name="MusicPlayerApp"
-      android:allowBackup="true"
-      android:icon="@mipmap/ic_launcher"
-      android:label="@string/app_name"
-      android:supportsRtl="true"
-      android:theme="@style/AppTheme">
+    android:name="MusicPlayerApp"
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:supportsRtl="true"
+    android:theme="@style/AppTheme">
     <activity android:name=".ui.main.MainActivity">
       <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <activity android:name=".ui.main.categories.genreslist.genre.GenreActivity"/>
-    <activity android:name=".ui.music.MusicPlayerActivity"/>
-    <activity android:name=".ui.equalizer.EqualizerActivity"/>
-    <activity android:name=".ui.settings.SettingsActivity"/>
-    <activity android:name=".ui.main.categories.albumlist.album.AlbumActivity"/>
-    <activity android:name=".ui.main.categories.artistlist.artist.ArtistActivity"/>
+    <activity android:name=".ui.main.categories.genreslist.genre.GenreActivity" />
+    <activity android:name=".ui.music.MusicPlayerActivity" />
+    <activity android:name=".ui.equalizer.EqualizerActivity" />
+    <activity android:name=".ui.settings.SettingsActivity" />
+    <activity android:name=".ui.main.categories.albumlist.album.AlbumActivity" />
+    <activity android:name=".ui.main.categories.artistlist.artist.ArtistActivity" />
 
     <meta-data
-        android:name="com.kingbull.musicplayer.image.AlbumArtModule"
-        android:value="GlideModule"/>
+      android:name="com.kingbull.musicplayer.image.AlbumArtModule"
+      android:value="GlideModule" />
     <receiver android:name=".player.CallReceiver">
       <intent-filter>
-        <action android:name="android.intent.action.PHONE_STATE"/>
+        <action android:name="android.intent.action.PHONE_STATE" />
       </intent-filter>
     </receiver>
     <service android:name=".player.MusicService">
       <intent-filter>
-        <action android:name="com.kingbull.musicplayer.ACTION_PLAY_TOGGLE"/>
-        <action android:name="com.kingbull.musicplayer.ACTION_PLAY_NEXT"/>
-        <action android:name="com.kingbull.musicplayer.ACTION_PLAY_LAST"/>
-        <action android:name="com.kingbull.musicplayer.ACTION_STOP_SERVICE"/>
+        <action android:name="com.kingbull.musicplayer.ACTION_PLAY_TOGGLE" />
+        <action android:name="com.kingbull.musicplayer.ACTION_PLAY_NEXT" />
+        <action android:name="com.kingbull.musicplayer.ACTION_PLAY_LAST" />
+        <action android:name="com.kingbull.musicplayer.ACTION_STOP_SERVICE" />
       </intent-filter>
     </service>
-
   </application>
-
 </manifest>
