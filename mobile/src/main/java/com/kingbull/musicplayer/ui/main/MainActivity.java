@@ -29,8 +29,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
   private final int arrayBg[] = {
       R.drawable.a1, R.drawable.a2, R.drawable.a3, R.drawable.a4, R.drawable.a5, R.drawable.a6,
       R.drawable.a7, R.drawable.a8, R.drawable.a9, R.drawable.a10, R.drawable.a11, R.drawable.a12,
-      R.drawable.a13, R.drawable.a14, R.drawable.a15, R.drawable.a16, R.drawable.a17,
-      R.drawable.a18,
+      R.drawable.a13, R.drawable.a14, R.drawable.a15, R.drawable.a16, R.drawable.a17, R.drawable.a18
   };
   @BindView(R.id.viewPager) ViewPagerParallax viewPager;
   @BindArray(R.array.main_tabs) String[] tabs;
@@ -69,6 +68,17 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
             }
           }
         });
+    //io.reactivex.Observable.interval(2, 10, TimeUnit.SECONDS)
+    //    .observeOn(AndroidSchedulers.mainThread())
+    //    .doOnNext(new Consumer<Long>() {
+    //      int i = 18;
+    //
+    //      @Override public void accept(Long aLong) throws Exception {
+    //        viewPager.setBackgroundAsset(arrayBg[i++], getWindow());
+    //        if (i >= arrayBg.length) i = 18;
+    //      }
+    //    })
+    //    .subscribe();
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -78,7 +88,9 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof PaletteEvent) {
-              tabLayout.setBackgroundColor(new UiColors().tab().intValue());
+              int color = new UiColors().tab().intValue();
+              tabLayout.setBackgroundColor(color);
+              new ViewPagerEdgeEffectHack(viewPager).applyColor(color);
             }
           }
         });
