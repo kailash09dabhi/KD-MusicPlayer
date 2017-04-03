@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists;
 
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +21,13 @@ import java.util.List;
  * @date 11/8/2016.
  */
 public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapter.ViewHolder> {
-  private List<PlayList> playLists;
   private final PlaylistQuickAction playlistQuickAction;
+  private List<PlayList> playLists;
+  private AppCompatActivity activity;
 
-  public PlayListsAdapter(List<PlayList> playLists, Activity activity) {
+  public PlayListsAdapter(List<PlayList> playLists, AppCompatActivity activity) {
     this.playLists = playLists;
+    this.activity = activity;
     this.playlistQuickAction = new PlaylistQuickAction(activity);
   }
 
@@ -52,9 +54,19 @@ public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapte
     @BindView(R.id.nameView) TextView textView;
     @BindView(R.id.moreActionsView) ImageView imageview;
 
-    @OnClick(R.id.moreActionsView) void onMoreActionsClick(View view) {
+    public ViewHolder(View itemView) {
+      super(itemView);
+      ButterKnife.bind(this, itemView);
+      itemView.setOnClickListener(this);
+    }
+
+    @OnClick(R.id.moreActionsView) void onMoreActionsClick(final View view) {
       playlistQuickAction.show(view, new PlaylistQuickActionListener() {
         @Override public void rename() {
+          PlaylistRenameDialogFragment.newInstance(
+              (PlayList.Smart) playLists.get(getAdapterPosition()))
+              .show(activity.getSupportFragmentManager(),
+                  PlaylistRenameDialogFragment.class.getName());
         }
 
         @Override public void delete() {
@@ -64,12 +76,6 @@ public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapte
           notifyItemRemoved(getAdapterPosition());
         }
       });
-    }
-
-    public ViewHolder(View itemView) {
-      super(itemView);
-      ButterKnife.bind(this, itemView);
-      itemView.setOnClickListener(this);
     }
 
     @Override public void onClick(View view) {

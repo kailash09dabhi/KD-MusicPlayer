@@ -59,6 +59,11 @@ public interface PlayList {
       name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Playlists.NAME));
     }
 
+    public Smart(Long playlistId, String name) {
+      this.playlistId = playlistId;
+      this.name = name;
+    }
+
     protected Smart(Parcel in) {
       playlistId = in.readLong();
       name = in.readString();
@@ -66,6 +71,16 @@ public interface PlayList {
 
     @Override public String name() {
       return name;
+    }
+
+    public PlayList.Smart rename(String name) {
+      ContentValues values = new ContentValues(1);
+      values.put(MediaStore.Audio.Playlists.NAME, name);
+      MusicPlayerApp.instance()
+          .getContentResolver()
+          .update(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, values, "_id=" + playlistId,
+              null);
+      return new PlayList.Smart(playlistId, name);
     }
 
     @Override public List<Music> musicList() {
