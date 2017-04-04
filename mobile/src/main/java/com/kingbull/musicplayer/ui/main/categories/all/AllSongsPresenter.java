@@ -29,7 +29,6 @@ import static android.content.ContentValues.TAG;
  * @author Kailash Dabhi
  * @date 11/10/2016.
  */
-
 public final class AllSongsPresenter extends Presenter<AllSongs.View>
     implements AllSongs.Presenter {
   @Inject Player musicPlayer;
@@ -73,7 +72,6 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribeWith(new ResourceSubscriber<List<Music>>() {
-
                 @Override public void onError(Throwable throwable) {
                   Log.e(TAG, "onError: ", throwable);
                 }
@@ -215,6 +213,8 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
       view().removeSongFromMediaStore(music);
       view().removeFromList(music);
     }
+    view().showMessage(String.format("%d songs deleted successfully!", musicList.size()));
     view().clearSelection();
+    view().hideSelectionContextOptions();
   }
 }
