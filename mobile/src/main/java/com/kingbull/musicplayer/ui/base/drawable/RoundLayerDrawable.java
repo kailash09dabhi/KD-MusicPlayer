@@ -17,9 +17,9 @@ public final class RoundLayerDrawable extends LayerDrawable {
   public RoundLayerDrawable(int drawableResource, int roundColor) {
     super(new Drawable[] {
         ContextCompat.getDrawable(MusicPlayerApp.instance(), drawableResource),
-        new OvalShapeDrawable(roundColor)
+        new StrokedOvalDrawable(roundColor)
     });
-    int dp5 = dpToPx(5);
+    int dp5 = dpToPx(15);
     setLayerInset(0, dp5, dp5, dp5, dp5);
   }
 

@@ -8,15 +8,13 @@ import android.graphics.drawable.shapes.OvalShape;
  * @author Kailash Dabhi
  * @date 12/28/2016.
  */
-
-public final class OvalShapeDrawable extends ShapeDrawable {
-
-  public OvalShapeDrawable(int color) {
+final class StrokedOvalDrawable extends ShapeDrawable {
+  public StrokedOvalDrawable(int color) {
     super(new OvalShape());
     Paint paint = getPaint();
     paint.setAntiAlias(true);
     paint.setColor(color);
     paint.setStyle(Paint.Style.STROKE);
-    paint.setStrokeWidth(4);
+    paint.setStrokeWidth(10);
   }
 }
