@@ -1,133 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
   <FrameLayout
-      android:layout_width="match_parent"
-      android:layout_height="80dp"
-      android:clipChildren="true"
-      android:gravity="center_vertical"
-      android:minHeight="?attr/listPreferredItemHeightLarge"
-      android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-      android:paddingRight="?android:attr/listPreferredItemPaddingRight">
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:clipChildren="true"
+    android:gravity="center_vertical"
+    android:minHeight="?attr/listPreferredItemHeightLarge"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingRight="?android:attr/listPreferredItemPaddingRight">
+
     <LinearLayout
-        android:id="@+id/totalSongLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal">
+      android:id="@+id/totalSongLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center"
+      android:orientation="horizontal">
+
       <LinearLayout
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:orientation="vertical">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
         <TextView
           style="@style/AppTheme.TextAppearance.List"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
           android:text="Total Songs" />
+
         <TextView
-            android:id="@+id/totalSongCountView"
+          android:id="@+id/totalSongCountView"
           style="@style/AppTheme.TextAppearance.List.Small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingLeft="5dp"
           tools:text="99" />
       </LinearLayout>
+
       <ImageView
-          android:id="@+id/sortButton"
-          android:layout_width="32dp"
-          android:layout_height="32dp"
-          android:layout_gravity="center_vertical"
-        android:layout_marginLeft="20dp"
-          android:layout_marginRight="20dp"
-          android:src="@drawable/composer_button_sort"/>
-      <ImageView
-          android:id="@+id/searchButton"
-          android:layout_width="32dp"
-          android:layout_height="32dp"
+        android:id="@+id/sortButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_gravity="center_vertical"
-          android:src="@drawable/composer_icn_search"/>
-    </LinearLayout>
-    <com.kingbull.musicplayer.ui.main.categories.all.SelectionContextOptionsLayout
-        android:id="@+id/selectionContextOptionsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone">
-    </com.kingbull.musicplayer.ui.main.categories.all.SelectionContextOptionsLayout>
-    <LinearLayout
-        android:id="@+id/searchLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-      android:orientation="horizontal"
-        android:visibility="gone"
-        >
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:padding="4dp"
+        android:src="@drawable/ic_sort_48dp" />
+
       <ImageView
-          android:id="@+id/exitSearchView"
-          android:layout_width="30dp"
-          android:layout_height="30dp"
-          android:layout_gravity="center_vertical"
-          android:src="@drawable/composer_button_back"
-          />
-      <EditText
-          android:id="@+id/searchView"
-        style="@style/AppTheme.TextAppearance.List.Medium"
-          android:layout_width="0dp"
-          android:layout_height="48dp"
-          android:layout_marginLeft="8dp"
-          android:layout_weight="1"
-          android:drawableLeft="@android:drawable/ic_menu_search"
-          android:drawablePadding="8dp"
-        android:textColor="@color/white" />
-
+        android:id="@+id/searchButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        android:padding="4dp"
+        android:src="@drawable/ic_search_48dp" />
     </LinearLayout>
 
-  </FrameLayout>
+    <com.kingbull.musicplayer.ui.main.categories.all.SelectionContextOptionsLayout
+      android:id="@+id/selectionContextOptionsLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center"
+      android:orientation="horizontal"
+      android:visibility="gone" />
 
+    <LinearLayout
+      android:id="@+id/searchLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center"
+      android:orientation="horizontal"
+      android:visibility="gone">
+
+      <ImageView
+        android:id="@+id/exitSearchView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/composer_button_back" />
+
+      <EditText
+        android:id="@+id/searchView"
+        style="@style/AppTheme.TextAppearance.List.Medium"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:drawablePadding="8dp"
+        android:textColor="@color/white" />
+    </LinearLayout>
+  </FrameLayout>
   <!--<RelativeLayout-->
   <!--android:layout_width="match_parent"-->
   <!--android:layout_height="0dp"-->
   <!--android:layout_weight="1">-->
   <com.jaredrummler.fastscrollrecyclerview.FastScrollRecyclerView
-      android:id="@+id/recyclerView"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1"
-      android:clipToPadding="false"
-      android:fadeScrollbars="true"
-      android:fadingEdgeLength="34dp"
-      android:overScrollMode="never"
-      android:requiresFadingEdge="vertical"
-      android:scrollbars="vertical"
-      app:fastScrollAlwaysEnabled="false"
-      app:fastScrollHideDelay="600"
-      app:fastScrollPopupBackgroundColor="?attr/colorAccent"
-      app:fastScrollPopupTextColor="@android:color/white"
-      app:fastScrollThumbActiveColor="?attr/colorAccent"
-      app:fastScrollThumbInactiveColor="?attr/colorAccent"
-      />
+    android:id="@+id/recyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:clipToPadding="false"
+    android:fadeScrollbars="true"
+    android:fadingEdgeLength="34dp"
+    android:overScrollMode="never"
+    android:requiresFadingEdge="vertical"
+    android:scrollbars="vertical"
+    app:fastScrollAlwaysEnabled="false"
+    app:fastScrollHideDelay="600"
+    app:fastScrollPopupBackgroundColor="?attr/colorAccent"
+    app:fastScrollPopupTextColor="@android:color/white"
+    app:fastScrollThumbActiveColor="?attr/colorAccent"
+    app:fastScrollThumbInactiveColor="?attr/colorAccent" />
   <!--</RelativeLayout>-->
   <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:clipChildren="true"
-      android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="true"
+    android:orientation="horizontal">
 
     <com.kingbull.musicplayer.ui.main.categories.all.AllRayMenu
-        android:id="@+id/allRayMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="?android:attr/listPreferredItemPaddingLeft"
-        />
-
+      android:id="@+id/allRayMenu"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingLeft="5dp"
+      android:paddingRight="?android:attr/listPreferredItemPaddingLeft" />
   </LinearLayout>
-
-
 </LinearLayout>

@@ -31,6 +31,10 @@ public interface AllSongs {
     void clearSelection();
 
     void removeSongFromMediaStore(Music music);
+
+    void hideSelectionContextOptions();
+
+    void showMessage(String format);
   }
 
   interface Model extends Mvp.Model {

@@ -30,7 +30,7 @@ import com.kingbull.musicplayer.player.MusicPlayerEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.UiColors;
-import com.kingbull.musicplayer.ui.base.drawable.RoundLayerDrawable;
+import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
 import com.kingbull.musicplayer.ui.music.widget.ShadowImageView;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
@@ -41,7 +41,6 @@ import io.reactivex.functions.Consumer;
 
 public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presenter>
     implements MusicPlayer.View {
-
   @BindView(R.id.equalizerView) ImageView equalizerView;
   @BindView(R.id.nowPlayingView) ImageView nowPlayingView;
   @BindView(R.id.albumImageView) ShadowImageView albumImageView;
@@ -78,8 +77,11 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    equalizerView.setImageDrawable(new RoundLayerDrawable(R.drawable.ic_equalizer, Color.WHITE));
-    nowPlayingView.setImageDrawable(new RoundLayerDrawable(R.drawable.ic_queue_music, Color.WHITE));
+    int fillColor = new UiColors().statusBar().intValue();
+    equalizerView.setImageDrawable(
+        new IconDrawable(R.drawable.ic_equalizer, Color.WHITE, fillColor));
+    nowPlayingView.setImageDrawable(
+        new IconDrawable(R.drawable.ic_queue_music, Color.WHITE, fillColor));
     initializeWithThemeColors();
   }
 
@@ -215,17 +217,15 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.startProgresssAnimation();
   }
 
-
   private void initializeWithThemeColors() {
     com.kingbull.musicplayer.ui.base.Color color =
         new com.kingbull.musicplayer.ui.base.Color(new UiColors().window().intValue());
-    getActivity(). getWindow().setBackgroundDrawable(color.dark().toDrawable());
+    getActivity().getWindow().setBackgroundDrawable(color.dark().toDrawable());
     nameTextView.setTextColor(color.light(5).toDrawable().getColor());
     textViewArtist.setTextColor(color.light(5).toDrawable().getColor());
     progressTextView.setTextColor(color.light(5).toDrawable().getColor());
     durationTextView.setTextColor(color.light(5).toDrawable().getColor());
   }
-
 
   private void updateUiWithPaletteSwatch(Palette.Swatch darkSwatch, Palette.Swatch lightSwatch) {
     getActivity().getWindow().setBackgroundDrawable(new ColorDrawable(darkSwatch.getRgb()));

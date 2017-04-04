@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -32,6 +33,7 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
+import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
@@ -39,6 +41,7 @@ import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.animators.SlideHorizontal;
+import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
@@ -60,6 +63,8 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   @BindView(R.id.recyclerView) FastScrollRecyclerView recyclerView;
   @BindView(R.id.allRayMenu) AllRayMenu allRayMenu;
   @BindView(R.id.totalSongLayout) LinearLayout totalSongLayout;
+  @BindView(R.id.sortButton) ImageView sortButton;
+  @BindView(R.id.searchButton) ImageView searchButton;
   @BindView(R.id.searchLayout) LinearLayout searchLayout;
   @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
       selectionContextOptionsLayout;
@@ -140,8 +145,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
           @Override public void onClearSelectionClick() {
             musicRecyclerViewAdapter.clearSelection();
-            alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
-            alphaAnimation.animateIn(totalSongLayout, Alpha.Listener.NONE);
+            hideSelectionContextOptions();
           }
         });
     allRayMenu.addOnMenuClickListener(new AllRayMenu.OnMenuClickListener() {
@@ -171,6 +175,10 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
         presenter.onSortMenuClick();
       }
     });
+    sortButton.setImageDrawable(
+        new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, Color.BLACK));
+    searchButton.setImageDrawable(
+        new IconDrawable(R.drawable.ic_search_48dp, Color.WHITE, Color.BLACK));
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -183,6 +191,13 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
               presenter.onSortEvent((SortEvent) o);
             } else if (o instanceof DurationFilterEvent) {
               getLoaderManager().restartLoader(0, null, AllSongsFragment.this);
+            } else if (o instanceof PaletteEvent) {
+              int fillColor = new UiColors().statusBar().intValue();
+              sortButton.setImageDrawable(
+                  new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, fillColor));
+              searchButton.setImageDrawable(
+                  new IconDrawable(R.drawable.ic_search_48dp, Color.WHITE, fillColor));
+              selectionContextOptionsLayout.updateIconsColor(fillColor);
             }
           }
         });
@@ -231,7 +246,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override public void removeFromList(Music music) {
-    new Snackbar(recyclerView).show("songs deleted successfully!");
     musicRecyclerViewAdapter.notifyItemRemoved(musicList.indexOf(music));
     musicList.remove(music);
   }
@@ -246,6 +260,15 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
             new String[] { music.media().path() });
     getActivity().sendBroadcast(
         new Intent(Intent.ACTION_DELETE, Uri.fromFile(new File(music.media().path()))));
+  }
+
+  @Override public void hideSelectionContextOptions() {
+    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
+    alphaAnimation.animateIn(totalSongLayout, Alpha.Listener.NONE);
+  }
+
+  @Override public void showMessage(String message) {
+    new Snackbar(recyclerView).show(message);
   }
 
   @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {

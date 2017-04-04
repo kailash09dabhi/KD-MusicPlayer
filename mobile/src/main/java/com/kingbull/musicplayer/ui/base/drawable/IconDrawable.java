@@ -9,18 +9,17 @@ import com.kingbull.musicplayer.MusicPlayerApp;
 
 /**
  * @author Kailash Dabhi
- * @date 12/28/2016.
+ * @date 4/4/2017
  */
-
-public final class RoundLayerDrawable extends LayerDrawable {
-
-  public RoundLayerDrawable(int drawableResource, int roundColor) {
+public final class IconDrawable extends LayerDrawable {
+  public IconDrawable(int drawableResource, int strokeColor, int fillColor) {
     super(new Drawable[] {
+        new FilledOvalDrawable(fillColor),
         ContextCompat.getDrawable(MusicPlayerApp.instance(), drawableResource),
-        new OvalShapeDrawable(roundColor)
+        new StrokedOvalDrawable(strokeColor),
     });
-    int dp5 = dpToPx(5);
-    setLayerInset(0, dp5, dp5, dp5, dp5);
+    int dp5 = dpToPx(8);
+    setLayerInset(1, dp5, dp5, dp5, dp5);
   }
 
   private static int dpToPx(float dipValue) {
