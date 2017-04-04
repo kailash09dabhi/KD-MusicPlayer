@@ -18,5 +18,6 @@ public interface NowPlaying {
   }
 
   interface Presenter extends Mvp.Presenter<NowPlaying.View> {
+    void onShuffleClick();
   }
 }

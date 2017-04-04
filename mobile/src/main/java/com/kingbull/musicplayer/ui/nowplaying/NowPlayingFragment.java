@@ -5,6 +5,7 @@
  */
 package com.kingbull.musicplayer.ui.nowplaying;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,14 +13,17 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.UiColors;
+import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import github.nisrulz.recyclerviewhelper.RVHItemTouchHelperCallback;
 import java.util.List;
 
@@ -27,19 +31,27 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
     implements NowPlaying.View {
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
+  @BindView(R.id.shuffleButton) ImageView shuffleButton;
+
+  @OnClick(R.id.shuffleButton) void onShuffleClick() {
+    presenter.onShuffleClick();
+  }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_playlist, null);
+    View view = inflater.inflate(R.layout.fragment_now_playing_list, null);
     ButterKnife.bind(this, view);
     setupView(view);
     return view;
   }
 
   private void setupView(View v) {
+    UiColors uiColors = new UiColors();
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new UiColors().window().intValue());
+        new com.kingbull.musicplayer.ui.base.Color(uiColors.window().intValue());
     v.setBackground(color.light().toDrawable());
+    shuffleButton.setImageDrawable(
+        new IconDrawable(R.drawable.ic_shuffle_48dp, Color.WHITE, uiColors.statusBar().intValue()));
     titleView.setText("Now Playing".toUpperCase());
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
   }
