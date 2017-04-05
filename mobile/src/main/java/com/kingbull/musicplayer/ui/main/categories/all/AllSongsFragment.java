@@ -161,11 +161,17 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     musicRecyclerViewAdapter =
         new MusicRecyclerViewAdapter(musicList, (AppCompatActivity) getActivity());
     recyclerView.setAdapter(musicRecyclerViewAdapter);
-    musicRecyclerViewAdapter.addOnLongClickListener(
-        new MusicRecyclerViewAdapter.OnLongClickListener() {
-          @Override public void onLongClick() {
-            alphaAnimation.animateOut(totalSongLayout, Alpha.Listener.NONE);
-            alphaAnimation.animateIn(selectionContextOptionsLayout, Alpha.Listener.NONE);
+    musicRecyclerViewAdapter.addOnSelectionListener(
+        new MusicRecyclerViewAdapter.OnSelectionListener() {
+          @Override public void onClearSelection() {
+            hideSelectionContextOptions();
+          }
+
+          @Override public void onMultiSelection(int selectionCount) {
+            if (selectionCount == 1) {
+              alphaAnimation.animateOut(totalSongLayout, Alpha.Listener.NONE);
+              alphaAnimation.animateIn(selectionContextOptionsLayout, Alpha.Listener.NONE);
+            }
           }
         });
     selectionContextOptionsLayout.addOnContextOptionClickListener(

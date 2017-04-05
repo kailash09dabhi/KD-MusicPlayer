@@ -40,20 +40,12 @@ import javax.inject.Inject;
 public final class MusicRecyclerViewAdapter
     extends RecyclerView.Adapter<MusicRecyclerViewAdapter.MusicViewHolder>
     implements FastScrollRecyclerView.SectionedAdapter {
-  private List<Music> songs;
   @Inject Player player;
+  private List<Music> songs;
   private AppCompatActivity activity;
   private MusicQuickAction musicQuickAction;
   private SparseBooleanArray selectedItems = new SparseBooleanArray();
-  private OnLongClickListener onLongClickListener;
-
-  public interface OnLongClickListener {
-    void onLongClick();
-  }
-
-  public void addOnLongClickListener(OnLongClickListener onLongClickListener) {
-    this.onLongClickListener = onLongClickListener;
-  }
+  private OnSelectionListener onSelectionListener;
 
   public MusicRecyclerViewAdapter(List<Music> songs, AppCompatActivity activity) {
     this.songs = songs;
@@ -62,17 +54,31 @@ public final class MusicRecyclerViewAdapter
     MusicPlayerApp.instance().component().inject(this);
   }
 
-  public boolean isSelected(int position) {
-    return getSelectedItems().contains(position);
+  public void addOnSelectionListener(OnSelectionListener onSelectionListener) {
+    this.onSelectionListener = onSelectionListener;
   }
 
-  public void toggleSelection(int position) {
+  /**
+   * Toggle the selection status of the item at a given position
+   *
+   * @param position Position of the item to toggle the selection status for
+   */
+  public final void toggleSelection(int position) {
     if (selectedItems.get(position, false)) {
       selectedItems.delete(position);
     } else {
       selectedItems.put(position, true);
     }
+    if (getSelectedItemCount() == 0) {
+      onSelectionListener.onClearSelection();
+    } else {
+      onSelectionListener.onMultiSelection(getSelectedItemCount());
+    }
     notifyItemChanged(position);
+  }
+
+  public int getSelectedItemCount() {
+    return selectedItems.size();
   }
 
   public boolean isAnyItemSelected() {
@@ -84,16 +90,16 @@ public final class MusicRecyclerViewAdapter
     return isAnySelected;
   }
 
-  public void clearSelection() {
+  /**
+   * Clear the selection status for all items
+   */
+  public final void clearSelection() {
     List<Integer> selection = getSelectedItems();
     selectedItems.clear();
     for (Integer i : selection) {
       notifyItemChanged(i);
     }
-  }
-
-  public int getSelectedItemCount() {
-    return selectedItems.size();
+    onSelectionListener.onClearSelection();
   }
 
   public List<Integer> getSelectedItems() {
@@ -183,12 +189,22 @@ public final class MusicRecyclerViewAdapter
     });
   }
 
+  public boolean isSelected(int position) {
+    return getSelectedItems().contains(position);
+  }
+
   @Override public int getItemCount() {
     return songs.size();
   }
 
   @NonNull @Override public String getSectionName(int position) {
     return String.valueOf(songs.get(position).media().title().charAt(0));
+  }
+
+  public interface OnSelectionListener {
+    void onClearSelection();
+
+    void onMultiSelection(int selectionCount);
   }
 
   class MusicViewHolder extends RecyclerView.ViewHolder
@@ -205,20 +221,19 @@ public final class MusicRecyclerViewAdapter
       itemView.setOnLongClickListener(this);
     }
 
+    @Override public final boolean onLongClick(View view) {
+      toggleSelection(getAdapterPosition());
+      return true;
+    }
+
     @Override public void onClick(final View view) {
-      if (!isAnyItemSelected()) {
+      if (getSelectedItemCount() > 0) {
+        toggleSelection(getAdapterPosition());
+      } else {
         player.addToNowPlaylist(songs);
         player.play(songs.get(getAdapterPosition()));
         view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
-      } else {
-        toggleSelection(getAdapterPosition());
       }
-    }
-
-    @Override public boolean onLongClick(View v) {
-      toggleSelection(getAdapterPosition());
-      if (onLongClickListener != null) onLongClickListener.onLongClick();
-      return true;
     }
   }
 }
