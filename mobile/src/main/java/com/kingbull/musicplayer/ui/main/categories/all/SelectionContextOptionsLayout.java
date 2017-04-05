@@ -2,6 +2,9 @@ package com.kingbull.musicplayer.ui.main.categories.all;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,11 +20,17 @@ import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 public final class SelectionContextOptionsLayout extends LinearLayout {
   @BindView(R.id.addToPlaylistButton) ImageView addToPlaylistButton;
   @BindView(R.id.deleteButton) ImageView deleteButton;
+  @BindView(R.id.clearSelectionsButton) ImageView clearSelectionsButton;
   private OnContextOptionClickListener listener;
 
   public SelectionContextOptionsLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
     init();
+  }
+
+  private void init() {
+    inflate(getContext(), R.layout.selection_context_options, this);
+    ButterKnife.bind(this);
   }
 
   @OnClick(R.id.clearSelectionsButton) void onClearSelectionsClick() {
@@ -40,16 +49,14 @@ public final class SelectionContextOptionsLayout extends LinearLayout {
     this.listener = listener;
   }
 
-  private void init() {
-    inflate(getContext(), R.layout.selection_context_options, this);
-    ButterKnife.bind(this);
-  }
-
   public void updateIconsColor(int fillColor) {
     addToPlaylistButton.setImageDrawable(
         new IconDrawable(R.drawable.ic_playlist_add_48dp, Color.WHITE, fillColor));
     deleteButton.setImageDrawable(
         new IconDrawable(R.drawable.ic_delete_48dp, Color.WHITE, fillColor));
+    Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_remote_view_close);
+    drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+    clearSelectionsButton.setImageDrawable(drawable);
   }
 
   interface OnContextOptionClickListener {
