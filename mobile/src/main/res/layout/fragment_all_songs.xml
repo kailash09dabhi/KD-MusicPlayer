@@ -79,10 +79,11 @@
       android:visibility="gone">
 
       <ImageView
-        android:id="@+id/exitSearchView"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:id="@+id/exitSearchButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_gravity="center_vertical"
+        android:padding="4dp"
         android:src="@drawable/composer_button_back" />
 
       <EditText
@@ -92,9 +93,10 @@
         android:layout_height="48dp"
         android:layout_marginLeft="8dp"
         android:layout_weight="1"
-        android:drawableLeft="@android:drawable/ic_menu_search"
         android:drawablePadding="8dp"
-        android:textColor="@color/white" />
+        android:hint="Search"
+        android:textColor="@color/white"
+        android:textColorHint="@color/colorAccent" />
     </LinearLayout>
   </FrameLayout>
   <!--<RelativeLayout-->

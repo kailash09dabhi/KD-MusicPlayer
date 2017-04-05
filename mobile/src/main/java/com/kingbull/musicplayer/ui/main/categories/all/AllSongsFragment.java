@@ -65,6 +65,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   @BindView(R.id.totalSongLayout) LinearLayout totalSongLayout;
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.searchButton) ImageView searchButton;
+  @BindView(R.id.exitSearchButton) ImageView exitSearchButton;
   @BindView(R.id.searchLayout) LinearLayout searchLayout;
   @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
       selectionContextOptionsLayout;
@@ -91,7 +92,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     presenter.onSearchTextChanged(text.toString());
   }
 
-  @OnClick(R.id.exitSearchView) void onExitSearchClick() {
+  @OnClick(R.id.exitSearchButton) void onExitSearchClick() {
     slideAnimation.animateOut(searchLayout, slideExitSearchListener);
     presenter.onExitSearchClick();
   }
@@ -108,6 +109,40 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_all_songs, null);
+  }
+
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
+          @Override public void accept(Object o) throws Exception {
+            if (o instanceof SortEvent) {
+              presenter.onSortEvent((SortEvent) o);
+            } else if (o instanceof DurationFilterEvent) {
+              getLoaderManager().restartLoader(0, null, AllSongsFragment.this);
+            } else if (o instanceof PaletteEvent) {
+              UiColors uiColors = new UiColors();
+              updateDrawableOfButtons(uiColors.statusBar().intValue());
+              searchView.setHintTextColor(uiColors.bodyTextColor().intValue());
+            }
+          }
+        });
+  }
+
+  private void updateDrawableOfButtons(int fillColor) {
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, fillColor));
+    searchButton.setImageDrawable(
+        new IconDrawable(R.drawable.ic_search_48dp, Color.WHITE, fillColor));
+    exitSearchButton.setImageDrawable(
+        new IconDrawable(R.drawable.ic_back_48dp, Color.WHITE, fillColor));
+    selectionContextOptionsLayout.updateIconsColor(fillColor);
+  }
+
+  @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {
+    ButterKnife.bind(this, getView());
+    setupView();
+    presenter.takeView(this);
   }
 
   private void setupView() {
@@ -175,32 +210,11 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
         presenter.onSortMenuClick();
       }
     });
-    sortButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, Color.BLACK));
-    searchButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_search_48dp, Color.WHITE, Color.BLACK));
+    updateDrawableOfButtons(Color.BLACK);
   }
 
-  @Override protected Disposable subscribeEvents() {
-    return RxBus.getInstance()
-        .toObservable()
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            if (o instanceof SortEvent) {
-              presenter.onSortEvent((SortEvent) o);
-            } else if (o instanceof DurationFilterEvent) {
-              getLoaderManager().restartLoader(0, null, AllSongsFragment.this);
-            } else if (o instanceof PaletteEvent) {
-              int fillColor = new UiColors().statusBar().intValue();
-              sortButton.setImageDrawable(
-                  new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, fillColor));
-              searchButton.setImageDrawable(
-                  new IconDrawable(R.drawable.ic_search_48dp, Color.WHITE, fillColor));
-              selectionContextOptionsLayout.updateIconsColor(fillColor);
-            }
-          }
-        });
+  @Override protected PresenterFactory<AllSongs.Presenter> presenterFactory() {
+    return new PresenterFactory.AllSongs();
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -269,15 +283,5 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public void showMessage(String message) {
     new Snackbar(recyclerView).show(message);
-  }
-
-  @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {
-    ButterKnife.bind(this, getView());
-    setupView();
-    presenter.takeView(this);
-  }
-
-  @Override protected PresenterFactory<AllSongs.Presenter> presenterFactory() {
-    return new PresenterFactory.AllSongs();
   }
 }
