@@ -13,9 +13,7 @@ import java.io.File;
  * @author Kailash Dabhi
  * @date 12/1/2016.
  */
-
 public interface Media {
-
   Media NONE = new Media() {
     @Override public long mediaId() {
       return 0;
@@ -79,7 +77,6 @@ public interface Media {
   long year();
 
   class Smart implements Media, Parcelable {
-
     public static final Creator<Smart> CREATOR = new Creator<Smart>() {
       @Override public Smart createFromParcel(Parcel in) {
         return new Smart(in);
@@ -119,7 +116,12 @@ public interface Media {
       artist = "";
       album = "";
       path = file.getAbsolutePath();
-      duration = MediaPlayer.create(MusicPlayerApp.instance(), Uri.fromFile(file)).getDuration();
+      MediaPlayer mediaPlayer = MediaPlayer.create(MusicPlayerApp.instance(), Uri.fromFile(file));
+      if (mediaPlayer != null) {
+        duration = mediaPlayer.getDuration();
+      } else {
+        duration = 0;
+      }
       size = file.length();
       dateAdded = new File(path()).lastModified();
       year = 0;
@@ -137,6 +139,10 @@ public interface Media {
       path = in.readString();
       dateAdded = in.readLong();
       albumId = in.readLong();
+    }
+
+    @Override public int describeContents() {
+      return 0;
     }
 
     @Override public long mediaId() {
@@ -179,10 +185,6 @@ public interface Media {
       return year;
     }
 
-    @Override public int describeContents() {
-      return 0;
-    }
-
     @Override public void writeToParcel(Parcel dest, int flags) {
       dest.writeLong(duration);
       dest.writeLong(size);
@@ -198,7 +200,6 @@ public interface Media {
   }
 
   class PlaylistMember implements Media, Parcelable {
-
     public static final Creator<Smart> CREATOR = new Creator<Smart>() {
       @Override public Smart createFromParcel(Parcel in) {
         return new Smart(in);
