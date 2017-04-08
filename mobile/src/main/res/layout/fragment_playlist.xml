@@ -13,8 +13,10 @@
       style="@style/AppTheme.TextAppearance.Title"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:gravity="center"
-      android:minHeight="?actionBarSize" />
+      android:gravity="bottom|center_horizontal"
+      android:minHeight="?actionBarSize"
+      android:paddingBottom="12dp"
+      android:textAppearance="@style/AppTheme.TextAppearance.Title.Pager" />
 
     <ImageView
       android:id="@+id/multipleDeleteView"
@@ -23,8 +25,8 @@
       android:layout_alignParentRight="true"
       android:layout_marginRight="8dp"
       android:padding="8dp"
-      android:visibility="gone"
-      android:src="@drawable/composer_button_delete" />
+      android:src="@drawable/composer_button_delete"
+      android:visibility="gone" />
   </RelativeLayout>
 
   <android.support.v7.widget.RecyclerView

@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import butterknife.BindView;
@@ -26,11 +28,11 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
-import com.kingbull.musicplayer.event.ThemeChangedEvent;
+import com.kingbull.musicplayer.event.PaletteEvent;
+import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -39,9 +41,11 @@ import java.util.Calendar;
 
 public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     implements Settings.View {
-  SettingPreferences settingPreferences = new SettingPreferences();
+  private final SettingPreferences settingPreferences = new SettingPreferences();
   @BindView(R.id.fullScreenCheckbox) CheckBox fullScreenCheckbox;
   @BindView(R.id.durationSecondsView) TextView durationSecondsView;
+  @BindView(R.id.headerLayout) LinearLayout headerLayout;
+  @BindView(R.id.scrollView) ScrollView scrollView;
 
   @OnClick(R.id.hideSmallClips) void onClickHideSmallClips() {
     new DurationFilterDialogFragment().show(getActivity().getSupportFragmentManager(),
@@ -52,35 +56,58 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_settings, null);
     ButterKnife.bind(this, view);
-    setupView(view);
     return view;
   }
 
-  private void setupView(View v) {
-    fullScreenCheckbox.setChecked(settingPreferences.isFullScreen());
-    durationSecondsView.setText(new SettingPreferences().filterDurationInSeconds() + " sec");
-    v.setBackgroundColor(new UiColors().screen().intValue());
+  @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    setupView();
   }
 
   @Override protected Disposable subscribeEvents() {
     return RxBus.getInstance()
         .toObservable()
-        .ofType(DurationFilterEvent.class)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<DurationFilterEvent>() {
-          @Override public void accept(DurationFilterEvent sortEvent) {
-            durationSecondsView.setText(
-                new SettingPreferences().filterDurationInSeconds() + " sec");
+        .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Object>() {
+          @Override public void accept(Object o) throws Exception {
+            if (o instanceof DurationFilterEvent) {
+              durationSecondsView.setText(
+                  new SettingPreferences().filterDurationInSeconds() + " sec");
+            } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+              applyUiColors();
+            }
           }
         });
+  }
+
+  @Override protected PresenterFactory<Settings.Presenter> presenterFactory() {
+    return new PresenterFactory.Settings();
   }
 
   @Override protected void onPresenterPrepared(Settings.Presenter presenter) {
     presenter.takeView(this);
   }
 
-  @Override protected PresenterFactory<Settings.Presenter> presenterFactory() {
-    return new PresenterFactory.Settings();
+  private void setupView() {
+    fullScreenCheckbox.setChecked(settingPreferences.isFullScreen());
+    durationSecondsView.setText(settingPreferences.filterDurationInSeconds() + " sec");
+    applyUiColors();
+  }
+
+  private void applyUiColors() {
+    scrollView.setBackgroundColor(uiColors.screen().intValue());
+    headerLayout.setBackgroundColor(uiColors.header().intValue());
+    deepChangeTextColor((ViewGroup) getView());
+  }
+
+  public void deepChangeTextColor(ViewGroup parentLayout) {
+    for (int count = 0; count < parentLayout.getChildCount(); count++) {
+      View view = parentLayout.getChildAt(count);
+      if (view instanceof TextView) {
+        ((TextView) view).setTextColor(uiColors.titleTextColor().intValue());
+      } else if (view instanceof ViewGroup) {
+        deepChangeTextColor((ViewGroup) view);
+      }
+    }
   }
 
   @OnClick(R.id.sleepTimerView) void onSleepTimerClick() {
@@ -103,6 +130,13 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     timePickerDialog.show();
   }
 
+  private void setAlarmToStopApp(long scheduleAt) {
+    PendingIntent pendingIntent =
+        PendingIntent.getService(getActivity(), 0, new Intent(MusicService.ACTION_STOP_SERVICE), 0);
+    AlarmManager mgr = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+    mgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + scheduleAt, pendingIntent);
+  }
+
   @OnCheckedChanged(R.id.fullScreenCheckbox) void onFullScreenCheckedChange(boolean isChecked) {
     if (isChecked) {
       settingPreferences.saveFullScreen(true);
@@ -118,13 +152,6 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
 
   @OnCheckedChanged(R.id.flatThemeCheckbox) void onThemeCheckedChange(boolean isChecked) {
     settingPreferences.saveFlatTheme(isChecked);
-    RxBus.getInstance().post(new ThemeChangedEvent());
-  }
-
-  private void setAlarmToStopApp(long scheduleAt) {
-    PendingIntent pendingIntent =
-        PendingIntent.getService(getActivity(), 0, new Intent(MusicService.ACTION_STOP_SERVICE), 0);
-    AlarmManager mgr = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-    mgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + scheduleAt, pendingIntent);
+    RxBus.getInstance().post(new ThemeEvent());
   }
 }

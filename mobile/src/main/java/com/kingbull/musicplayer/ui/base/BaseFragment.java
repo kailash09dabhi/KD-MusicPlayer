@@ -10,8 +10,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public abstract class BaseFragment<P extends Mvp.Presenter> extends Fragment {
-
   private static final int LOADER_ID = 101;
+  protected final UiColors uiColors = new UiColors();
   protected P presenter;
   private CompositeDisposable compositeDisposable;
 
@@ -20,23 +20,16 @@ public abstract class BaseFragment<P extends Mvp.Presenter> extends Fragment {
     addSubscription(subscribeEvents());
   }
 
-  @Override public void onDestroyView() {
-    super.onDestroyView();
-    if (compositeDisposable != null) {
-      compositeDisposable.clear();
-    }
-  }
-
-  protected Disposable subscribeEvents() {
-    return null;
-  }
-
   private void addSubscription(Disposable subscription) {
     if (subscription == null) return;
     if (compositeDisposable == null) {
       compositeDisposable = new CompositeDisposable();
     }
     compositeDisposable.add(subscription);
+  }
+
+  protected Disposable subscribeEvents() {
+    return null;
   }
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
@@ -63,7 +56,12 @@ public abstract class BaseFragment<P extends Mvp.Presenter> extends Fragment {
     });
   }
 
-  protected abstract void onPresenterPrepared(P presenter);
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    if (compositeDisposable != null) {
+      compositeDisposable.clear();
+    }
+  }
 
   /**
    * Instance of {@link PresenterFactory} use to create a Presenter when needed. This instance
@@ -71,4 +69,6 @@ public abstract class BaseFragment<P extends Mvp.Presenter> extends Fragment {
    * not contain {@link android.app.Activity} context reference since it will be keep on rotations.
    */
   protected abstract PresenterFactory<P> presenterFactory();
+
+  protected abstract void onPresenterPrepared(P presenter);
 }

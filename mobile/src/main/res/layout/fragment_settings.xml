@@ -1,162 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+  <LinearLayout
+    android:id="@+id/headerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-  <TextView
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1px"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft">
+
+    <TextView
       android:id="@+id/titleView"
-    style="@style/AppTheme.TextAppearance.Title"
+      style="@style/AppTheme.TextAppearance.Title.Pager"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:gravity="center"
-      android:minHeight="?actionBarSize"
-    android:text="Settings" />
-  <ScrollView
+      android:paddingTop="22dp"
+      android:text="SETTINGS" />
+
+    <TextView
+      android:id="@+id/directoryPathView"
+      style="@style/AppTheme.TextAppearance.List.Small"
       android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1"
-      android:fadeScrollbars="true"
-      android:fadingEdgeLength="34dp"
-      android:overScrollMode="never"
-      android:requiresFadingEdge="vertical"
-      android:scrollbars="vertical"
-      >
+      android:layout_height="wrap_content"
+      android:paddingBottom="9dp"
+      android:text="your settings" />
+  </LinearLayout>
+
+  <ScrollView
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_marginBottom="1px"
+    android:layout_weight="1"
+    android:fadeScrollbars="true"
+    android:fadingEdgeLength="34dp"
+    android:overScrollMode="never"
+    android:requiresFadingEdge="vertical"
+    android:scrollbars="vertical">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+      xmlns:tools="http://schemas.android.com/tools"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:paddingLeft="16dp"
+      android:paddingRight="16dp">
+
       <TextView
-          android:id="@+id/sleepTimerView"
+        android:id="@+id/sleepTimerView"
         style="@style/AppTheme.TextAppearance.List.Medium"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:fontFamily="sans-serif"
-          android:lines="1"
-          android:minHeight="?listPreferredItemHeight"
-          android:singleLine="true"
-          android:text="Sleep Timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:lines="1"
+        android:minHeight="?listPreferredItemHeight"
+        android:singleLine="true"
+        android:text="Sleep Timer"
         tools:text="afd" />
 
       <TextView
-          android:id="@+id/languageView"
+        android:id="@+id/languageView"
         style="@style/AppTheme.TextAppearance.List.Medium"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:fontFamily="sans-serif"
-          android:lines="1"
-          android:minHeight="?listPreferredItemHeight"
-          android:singleLine="true"
-          android:text="Language"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:lines="1"
+        android:minHeight="?listPreferredItemHeight"
+        android:singleLine="true"
+        android:text="Language"
         tools:text="afd" />
 
       <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:gravity="center"
-          android:minHeight="?listPreferredItemHeight"
-          android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="?listPreferredItemHeight"
+        android:orientation="horizontal">
+
         <TextView
           style="@style/AppTheme.TextAppearance.List.Medium"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif"
-            android:lines="1"
-            android:singleLine="true"
-            android:text="Full Screen"
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:fontFamily="sans-serif"
+          android:lines="1"
+          android:singleLine="true"
+          android:text="Full Screen"
           tools:text="afd" />
+
         <CheckBox
-            android:id="@+id/fullScreenCheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="8dp"
-            />
+          android:id="@+id/fullScreenCheckbox"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:padding="8dp" />
       </LinearLayout>
 
       <TextView
-          android:id="@+id/removeAdsView"
+        android:id="@+id/removeAdsView"
         style="@style/AppTheme.TextAppearance.List.Medium"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:fontFamily="sans-serif"
-          android:lines="1"
-          android:maxLines="1"
-          android:minHeight="?listPreferredItemHeight"
-          android:singleLine="true"
-          android:text="Remove Ads"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:lines="1"
+        android:maxLines="1"
+        android:minHeight="?listPreferredItemHeight"
+        android:singleLine="true"
+        android:text="Remove Ads"
         tools:text="afd" />
+
       <LinearLayout
-          android:id="@+id/hideSmallClips"
+        android:id="@+id/hideSmallClips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/mp.padding.small">
+          android:orientation="horizontal"
+          android:paddingBottom="@dimen/mp.padding.small">
+
           <TextView
             style="@style/AppTheme.TextAppearance.List.Medium"
-              android:layout_width="0dp"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:fontFamily="sans-serif"
-              android:lines="1"
-              android:maxLines="1"
-              android:singleLine="true"
-              android:text="Hide Small Clips"
-            tools:text="afd" />
-          <TextView
-              android:id="@+id/durationSecondsView"
-            style="@style/AppTheme.TextAppearance.List.Small"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:fontFamily="sans-serif"
-              android:lines="1"
-              android:maxLines="1"
-              android:singleLine="true"
-              android:text="10 sec"
-            tools:text="afd" />
-        </LinearLayout>
-        <TextView
-          style="@style/AppTheme.TextAppearance.List.Small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="Filter out small audio clips. Set a threshold duration below which the files will not be displayed."
-          tools:text="afd" />
-      </LinearLayout>
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:gravity="center"
-          android:minHeight="?listPreferredItemHeight"
-          android:orientation="horizontal">
-        <TextView
-          style="@style/AppTheme.TextAppearance.List.Medium"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="sans-serif"
             android:lines="1"
+            android:maxLines="1"
             android:singleLine="true"
-            android:text="Flat Theme"
-          tools:text="afd" />
-        <CheckBox
-            android:id="@+id/flatThemeCheckbox"
+            android:text="Hide Small Clips"
+            tools:text="afd" />
+
+          <TextView
+            android:id="@+id/durationSecondsView"
+            style="@style/AppTheme.TextAppearance.List.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="8dp"
-            />
+            android:fontFamily="sans-serif"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="10 sec"
+            tools:text="afd" />
+        </LinearLayout>
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.List.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif"
+          android:text="Filter out small audio clips. Set a threshold duration below which the files will not be displayed."
+          tools:text="afd" />
       </LinearLayout>
 
-    </LinearLayout>
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="?listPreferredItemHeight"
+        android:orientation="horizontal">
 
+        <TextView
+          style="@style/AppTheme.TextAppearance.List.Medium"
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:fontFamily="sans-serif"
+          android:lines="1"
+          android:singleLine="true"
+          android:text="Flat Theme"
+          tools:text="afd" />
+
+        <CheckBox
+          android:id="@+id/flatThemeCheckbox"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:padding="8dp" />
+      </LinearLayout>
+    </LinearLayout>
   </ScrollView>
 </LinearLayout>

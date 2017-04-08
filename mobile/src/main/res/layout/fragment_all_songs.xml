@@ -29,10 +29,10 @@
         android:orientation="vertical">
 
         <TextView
-          style="@style/AppTheme.TextAppearance.List"
+          style="@style/AppTheme.TextAppearance.Title.Pager"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Total Songs" />
+          android:text="TOTAL SONGS" />
 
         <TextView
           android:id="@+id/totalSongCountView"

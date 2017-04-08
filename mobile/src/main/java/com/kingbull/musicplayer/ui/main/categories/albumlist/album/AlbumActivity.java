@@ -104,52 +104,6 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     }
   }
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.fragment_album);
-    ButterKnife.bind(this);
-    com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new UiColors().window().intValue());
-    getWindow().setBackgroundDrawable(color.toDrawable());
-    album = getIntent().getParcelableExtra("album");
-    adapter = new MusicRecyclerViewAdapter(songList, this);
-    recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    recyclerView.setAdapter(adapter);
-    getSupportLoaderManager().initLoader(0, null, this);
-    titleView.setText(album.name());
-    titleView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-    titleView.setSingleLine(true);
-    titleView.setMarqueeRepeatLimit(-1);
-    titleView.setSelected(true);
-    songListRayMenu.addOnMenuClickListener(new SongListRayMenu.OnMenuClickListener() {
-
-      @Override public void onShuffleMenuClick() {
-        //presenter.onShuffleMenuClick();
-      }
-
-      @Override public void onAddToPlaylistMenuClick() {
-        //presenter.onAddToPlayListMenuClick();
-      }
-
-      @Override public void onSortMenuClick() {
-        //presenter.onSortMenuClick();
-      }
-    });
-    showAlbumArt();
-  }
-
-  @Override protected Disposable subscribeEvents() {
-    return RxBus.getInstance()
-        .toObservable()
-        .ofType(CoverArtDownloadedEvent.class)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<CoverArtDownloadedEvent>() {
-          @Override public void accept(CoverArtDownloadedEvent coverArtDownloadedEvent) {
-            showAlbumArt();
-          }
-        });
-  }
-
   private void showAlbumArt() {
     File file = null;
     if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
@@ -162,29 +116,6 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
         .signature(
             new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
         .into(new SimpleTarget<Bitmap>(300, 300) {
-          @Override public void onResourceReady(Bitmap bitmap, GlideAnimation glideAnimation) {
-            albumArtView.setImageBitmap(bitmap);
-            Observable.just(bitmap)
-                .map(new Function<Bitmap, BitmapDrawable>() {
-                  @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
-                    return new ImagePath("").toBlurredBitmap(bitmap, getResources());
-                  }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<BitmapDrawable>() {
-                  @Override public void onNext(BitmapDrawable bitmap) {
-                    rootView.setBackground(bitmap);
-                  }
-
-                  @Override public void onError(Throwable e) {
-                  }
-
-                  @Override public void onComplete() {
-                  }
-                });
-          }
-
           @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
             super.onLoadFailed(e, errorDrawable);
             albumArtView.setImageDrawable(errorDrawable);
@@ -209,7 +140,63 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
                   }
                 });
           }
+
+          @Override public void onResourceReady(Bitmap bitmap, GlideAnimation glideAnimation) {
+            albumArtView.setImageBitmap(bitmap);
+            Observable.just(bitmap)
+                .map(new Function<Bitmap, BitmapDrawable>() {
+                  @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
+                    return new ImagePath("").toBlurredBitmap(bitmap, getResources());
+                  }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<BitmapDrawable>() {
+                  @Override public void onNext(BitmapDrawable bitmap) {
+                    rootView.setBackground(bitmap);
+                  }
+
+                  @Override public void onError(Throwable e) {
+                  }
+
+                  @Override public void onComplete() {
+                  }
+                });
+          }
         });
+  }
+
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.fragment_album);
+    ButterKnife.bind(this);
+    com.kingbull.musicplayer.ui.base.Color color =
+        new com.kingbull.musicplayer.ui.base.Color(new UiColors().screen().intValue());
+    getWindow().setBackgroundDrawable(color.toDrawable());
+    album = getIntent().getParcelableExtra("album");
+    adapter = new MusicRecyclerViewAdapter(songList, this);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    recyclerView.setAdapter(adapter);
+    getSupportLoaderManager().initLoader(0, null, this);
+    titleView.setText(album.name());
+    titleView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+    titleView.setSingleLine(true);
+    titleView.setMarqueeRepeatLimit(-1);
+    titleView.setSelected(true);
+    songListRayMenu.addOnMenuClickListener(new SongListRayMenu.OnMenuClickListener() {
+      @Override public void onShuffleMenuClick() {
+        //presenter.onShuffleMenuClick();
+      }
+
+      @Override public void onAddToPlaylistMenuClick() {
+        //presenter.onAddToPlayListMenuClick();
+      }
+
+      @Override public void onSortMenuClick() {
+        //presenter.onSortMenuClick();
+      }
+    });
+    showAlbumArt();
   }
 
   @Override protected void onPresenterPrepared(Album.Presenter presenter) {
@@ -218,6 +205,18 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
 
   @NonNull @Override protected PresenterFactory presenterFactory() {
     return new PresenterFactory.Album();
+  }
+
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .ofType(CoverArtDownloadedEvent.class)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<CoverArtDownloadedEvent>() {
+          @Override public void accept(CoverArtDownloadedEvent coverArtDownloadedEvent) {
+            showAlbumArt();
+          }
+        });
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

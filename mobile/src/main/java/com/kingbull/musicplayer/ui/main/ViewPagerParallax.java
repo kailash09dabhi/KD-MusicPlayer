@@ -19,7 +19,7 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.storage.preferences.PalettePreference;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.PaletteEvent;
-import com.kingbull.musicplayer.event.ThemeChangedEvent;
+import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.UiColors;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -54,30 +54,25 @@ public final class ViewPagerParallax extends ViewPager {
     init();
   }
 
-  public ViewPagerParallax(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    init();
-  }
-
   private void init() {
     RxBus.getInstance()
-        .toObservable()
-        .ofType(ThemeChangedEvent.class)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<ThemeChangedEvent>() {
-          @Override public void accept(ThemeChangedEvent themeChangedEvent) throws Exception {
+        .toObservable().ofType(ThemeEvent.class)
+        .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<ThemeEvent>() {
+      @Override public void accept(ThemeEvent themeEvent) throws Exception {
             isFlatTheme = new SettingPreferences().isFlatTheme();
             invalidate();
           }
         });
   }
 
-  @SuppressLint("NewApi") private int sizeOf(Bitmap data) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR1) {
-      return data.getRowBytes() * data.getHeight();
-    } else {
-      return data.getByteCount();
-    }
+  public ViewPagerParallax(Context context, AttributeSet attrs) {
+    super(context, attrs);
+    init();
+  }
+
+  public void setMaxPages(int numMaxPages) {
+    maxNumPages = numMaxPages;
+    setNewBackground();
   }
 
   private void setNewBackground() {
@@ -157,66 +152,18 @@ public final class ViewPagerParallax extends ViewPager {
     saved_max_num_pages = maxNumPages;
   }
 
-  @Override protected void onPageScrolled(int position, float offset, int offsetPixels) {
-    super.onPageScrolled(position, offset, offsetPixels);
-    currentPosition = position;
-    currentOffset = offset;
-  }
-
-  @Override protected void onDraw(Canvas canvas) {
-    super.onDraw(canvas);
-    if (!inSufficientMemory
-        && parallaxEnabled
-        && savedBitmap != null
-        && canvas != null
-        && !isFlatTheme) {
-      if (currentPosition == -1) currentPosition = getCurrentItem();
-      // maybe we could get the current position from the getScrollX instead?
-      src.set((int) (overlapLevel * (currentPosition + currentOffset)), 0,
-          (int) (overlapLevel * (currentPosition + currentOffset) + (getWidth() * zoomLevel)),
-          imageHeight);
-      dst.set(getScrollX(), 0, getScrollX() + canvas.getWidth(), canvas.getHeight());
-      canvas.drawBitmap(savedBitmap, src, dst, null);
+  @SuppressLint("NewApi") private int sizeOf(Bitmap data) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR1) {
+      return data.getRowBytes() * data.getHeight();
+    } else {
+      return data.getByteCount();
     }
-  }
-
-  public void setMaxPages(int numMaxPages) {
-    maxNumPages = numMaxPages;
-    setNewBackground();
   }
 
   public void setBackgroundAsset(int resId, Window window) {
     backgroundId = resId;
     this.window = window;
     setNewBackground();
-  }
-
-  @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
-    super.onLayout(changed, l, t, r, b);
-    if (!inSufficientMemory && parallaxEnabled) setNewBackground();
-  }
-
-  @Override public void setCurrentItem(int item) {
-    super.setCurrentItem(item);
-    currentPosition = item;
-  }
-
-  @Override public boolean onTouchEvent(MotionEvent event) {
-    if (this.pagingEnabled) {
-      return super.onTouchEvent(event);
-    }
-    return false;
-  }
-
-  @Override public boolean onInterceptTouchEvent(MotionEvent event) {
-    // fix for https://github.com/JakeWharton/Android-ViewPagerIndicator/issues/72
-    if (isFakeDragging()) {
-      return false;
-    }
-    if (this.pagingEnabled) {
-      return super.onInterceptTouchEvent(event);
-    }
-    return false;
   }
 
   public boolean isPagingEnabled() {
@@ -247,5 +194,56 @@ public final class ViewPagerParallax extends ViewPager {
       savedBitmap = null;
     }
     super.onDetachedFromWindow();
+  }
+
+  @Override public void setCurrentItem(int item) {
+    super.setCurrentItem(item);
+    currentPosition = item;
+  }
+
+  @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    super.onLayout(changed, l, t, r, b);
+    if (!inSufficientMemory && parallaxEnabled) setNewBackground();
+  }
+
+  @Override protected void onPageScrolled(int position, float offset, int offsetPixels) {
+    super.onPageScrolled(position, offset, offsetPixels);
+    currentPosition = position;
+    currentOffset = offset;
+  }
+
+  @Override public boolean onInterceptTouchEvent(MotionEvent event) {
+    // fix for https://github.com/JakeWharton/Android-ViewPagerIndicator/issues/72
+    if (isFakeDragging()) {
+      return false;
+    }
+    if (this.pagingEnabled) {
+      return super.onInterceptTouchEvent(event);
+    }
+    return false;
+  }
+
+  @Override public boolean onTouchEvent(MotionEvent event) {
+    if (this.pagingEnabled) {
+      return super.onTouchEvent(event);
+    }
+    return false;
+  }
+
+  @Override protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
+    if (!inSufficientMemory
+        && parallaxEnabled
+        && savedBitmap != null
+        && canvas != null
+        && !isFlatTheme) {
+      if (currentPosition == -1) currentPosition = getCurrentItem();
+      // maybe we could get the current position from the getScrollX instead?
+      src.set((int) (overlapLevel * (currentPosition + currentOffset)), 0,
+          (int) (overlapLevel * (currentPosition + currentOffset) + (getWidth() * zoomLevel)),
+          imageHeight);
+      dst.set(getScrollX(), 0, getScrollX() + canvas.getWidth(), canvas.getHeight());
+      canvas.drawBitmap(savedBitmap, src, dst, null);
+    }
   }
 }

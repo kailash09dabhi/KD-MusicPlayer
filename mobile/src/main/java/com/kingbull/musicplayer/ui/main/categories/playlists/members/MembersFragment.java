@@ -20,9 +20,7 @@ import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.event.MovedToPlaylistEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
-import com.kingbull.musicplayer.ui.base.Color;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -68,15 +66,6 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
     return view;
   }
 
-  @Override protected void onPresenterPrepared(Members.Presenter presenter) {
-    presenter.takeView(this);
-    setupView(getView());
-  }
-
-  @NonNull @Override protected PresenterFactory<Members.Presenter> presenterFactory() {
-    return new PresenterFactory.MusicListOfPlaylist();
-  }
-
   @Override protected Disposable subscribeEvents() {
     return RxBus.getInstance()
         .toObservable()
@@ -92,6 +81,15 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
         });
   }
 
+  @NonNull @Override protected PresenterFactory<Members.Presenter> presenterFactory() {
+    return new PresenterFactory.MusicListOfPlaylist();
+  }
+
+  @Override protected void onPresenterPrepared(Members.Presenter presenter) {
+    presenter.takeView(this);
+    setupView(getView());
+  }
+
   private void setupView(View v) {
     initializeWithThemeColors();
     titleView.setText(playList.name().toUpperCase());
@@ -101,9 +99,8 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
   }
 
   private void initializeWithThemeColors() {
-    Color color = new Color(new UiColors().window().intValue());
-    titleView.setBackground(color.light().toDrawable());
-    recyclerView.setBackground(color.light().toDrawable());
+    titleView.setBackgroundColor(uiColors.header().intValue());
+    recyclerView.setBackgroundColor(uiColors.screen().intValue());
   }
 
   @Override public void showPlaylistMembers(List<Music> songs) {

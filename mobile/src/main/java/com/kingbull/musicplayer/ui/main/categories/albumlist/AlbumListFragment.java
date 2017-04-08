@@ -7,7 +7,6 @@ package com.kingbull.musicplayer.ui.main.categories.albumlist;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,11 +15,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Album;
-import com.kingbull.musicplayer.ui.base.UiColors;
+import com.kingbull.musicplayer.event.PaletteEvent;
+import com.kingbull.musicplayer.event.ThemeEvent;
+import com.kingbull.musicplayer.ui.base.BaseFragment;
+import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import java.util.List;
 
-public final class AlbumListFragment extends Fragment
+public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, AlbumList.View {
   AlbumList.Presenter presenter = new AlbumListPresenter();
   private RecyclerView recyclerView;
@@ -36,8 +42,28 @@ public final class AlbumListFragment extends Fragment
   private void setupView(View v) {
     recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-    recyclerView.setBackgroundColor(new UiColors().screen().intValue());
+    recyclerView.setBackgroundColor(uiColors.screen().intValue());
     getLoaderManager().initLoader(0, null, this);
+  }
+
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
+          @Override public void accept(Object o) throws Exception {
+            if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+              recyclerView.setBackgroundColor(uiColors.screen().intValue());
+            }
+          }
+        });
+  }
+
+  @Override protected PresenterFactory<AlbumList.Presenter> presenterFactory() {
+    return new PresenterFactory.AlbumList();
+  }
+
+  @Override protected void onPresenterPrepared(AlbumList.Presenter presenter) {
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

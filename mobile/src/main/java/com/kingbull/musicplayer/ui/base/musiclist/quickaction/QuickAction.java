@@ -61,16 +61,6 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
   }
 
   /**
-   * Get action item at an index
-   *
-   * @param index Index of item (position from callback)
-   * @return Action Item at the position
-   */
-  public ActionItem getActionItem(int index) {
-    return mActionItemList.get(index);
-  }
-
-  /**
    * Set root view.
    *
    * @param id Layout resource id
@@ -153,6 +143,16 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
     mChildPos++;
   }
 
+  /**
+   * Get action item at an index
+   *
+   * @param index Index of item (position from callback)
+   * @return Action Item at the position
+   */
+  public ActionItem getActionItem(int index) {
+    return mActionItemList.get(index);
+  }
+
   public void setOnActionItemClickListener(OnActionItemClickListener listener) {
     mItemClickListener = listener;
   }
@@ -161,7 +161,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
    * Show popup mWindow
    */
   public void show(View anchor) {
-    Color color = new Color(new UiColors().window().intValue());
+    Color color = new Color(new UiColors().quickAction().intValue());
     mRootView.findViewById(R.id.scroll).setBackground(color.toDrawable());
     preShow();
     int[] location = new int[2];
@@ -244,7 +244,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
   //}
 
   /**
-   * Set listener for window dismissed. This listener will only be fired if the quicakction dialog
+   * Set listener for screen dismissed. This listener will only be fired if the quicakction dialog
    * is dismissed
    * by clicking outside the dialog or clicking on sticky item.
    */
@@ -267,7 +267,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
   }
 
   /**
-   * Listener for window dismiss
+   * Listener for screen dismiss
    */
   public interface OnDismissListener {
     void onDismiss();

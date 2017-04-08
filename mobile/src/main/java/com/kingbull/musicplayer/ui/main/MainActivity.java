@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.PaletteEvent;
+import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.UiColors;
@@ -34,12 +35,13 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
   @BindView(R.id.viewPager) ViewPagerParallax viewPager;
   @BindArray(R.array.main_tabs) String[] tabs;
   @BindView(R.id.sliding_tabs) TabLayout tabLayout;
+  private MainPagerAdapter adapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
-    MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager(), this, tabs);
+    adapter = new MainPagerAdapter(getSupportFragmentManager(), this, tabs);
     viewPager.setAdapter(adapter);
     viewPager.setOffscreenPageLimit(4);
     viewPager.setCurrentItem(0);
@@ -81,21 +83,6 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
     //    .subscribe();
   }
 
-  @Override protected Disposable subscribeEvents() {
-    return RxBus.getInstance()
-        .toObservable()
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            if (o instanceof PaletteEvent) {
-              int color = new UiColors().tab().intValue();
-              tabLayout.setBackgroundColor(color);
-              new ViewPagerEdgeEffectHack(viewPager).applyColor(color);
-            }
-          }
-        });
-  }
-
   private void setupTabLayout() {
     ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
     int tabsCount = viewGroup.getChildCount();
@@ -118,5 +105,20 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
 
   @NonNull @Override protected PresenterFactory presenterFactory() {
     return new PresenterFactory.Artist();
+  }
+
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
+          @Override public void accept(Object o) throws Exception {
+            if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+              int color = new UiColors().tab().intValue();
+              tabLayout.setBackgroundColor(color);
+              new ViewPagerEdgeEffectHack(viewPager).applyColor(color);
+            }
+          }
+        });
   }
 }

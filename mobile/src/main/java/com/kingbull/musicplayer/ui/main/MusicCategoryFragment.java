@@ -13,10 +13,15 @@ import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.event.PaletteEvent;
+import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.Members;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * @author Kailash Dabhi
@@ -43,15 +48,28 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.setOffscreenPageLimit(3);
     viewPager.setCurrentItem(2);
-    pagerTitleStrip.setBackgroundColor(new UiColors().screen().intValue());
+    pagerTitleStrip.setBackgroundColor(uiColors.screen().intValue());
     setupPagerTitleStrip();
   }
 
-  @Override protected void onPresenterPrepared(Members.Presenter presenter) {
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
+          @Override public void accept(Object o) throws Exception {
+            if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+              pagerTitleStrip.setBackgroundColor(uiColors.header().intValue());
+            }
+          }
+        });
   }
 
   @Override protected PresenterFactory<Members.Presenter> presenterFactory() {
     return new PresenterFactory.MusicListOfPlaylist();
+  }
+
+  @Override protected void onPresenterPrepared(Members.Presenter presenter) {
   }
 
   private void setupPagerTitleStrip() {

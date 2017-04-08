@@ -79,34 +79,12 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     titleView.setText("Equalizer Preset".toUpperCase());
     setupRoundKnobButton();
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new UiColors().window().intValue());
+        new com.kingbull.musicplayer.ui.base.Color(new UiColors().screen().intValue());
     getActivity().getWindow().setBackgroundDrawable(color.toDrawable());
     view.setBackground(color.light().toDrawable());
     bottomButtonContainer.setBackground(color.toDrawable());
     ((View) presetButton.getParent()).setBackground(color.toDrawable());
     return view;
-  }
-
-  @Override protected Disposable subscribeEvents() {
-    return RxBus.getInstance()
-        .toObservable()
-        .ofType(Preset.class)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Preset>() {
-          @Override public void accept(Preset preset) {
-            switch (preset.event()) {
-              case Preset.Event.CLICK:
-                presenter.onPresetSelected(preset.equalizerPreset());
-                break;
-              case Preset.Event.NEW:
-                presenter.onNewPresetEvent(preset.presetName());
-                break;
-              case Preset.Event.REVERB:
-                effectButton.setText(preset.reverb().name());
-                break;
-            }
-          }
-        });
   }
 
   private void setupRoundKnobButton() {
@@ -163,6 +141,32 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     effectButton.setText(reverb.name());
   }
 
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .ofType(Preset.class)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Preset>() {
+          @Override public void accept(Preset preset) {
+            switch (preset.event()) {
+              case Preset.Event.CLICK:
+                presenter.onPresetSelected(preset.equalizerPreset());
+                break;
+              case Preset.Event.NEW:
+                presenter.onNewPresetEvent(preset.presetName());
+                break;
+              case Preset.Event.REVERB:
+                effectButton.setText(preset.reverb().name());
+                break;
+            }
+          }
+        });
+  }
+
+  @Override protected PresenterFactory<Equalizer.Presenter> presenterFactory() {
+    return new PresenterFactory.Equalizer();
+  }
+
   @Override protected void onPresenterPrepared(final Equalizer.Presenter presenter) {
     presenter.takeView(this);
     equalizerView.addOnBandValueChangeListener(new EqualizerView.OnBandValueChangeListener() {
@@ -170,10 +174,6 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
         presenter.onBandValueChange(bandNumber, percentageValue);
       }
     });
-  }
-
-  @Override protected PresenterFactory<Equalizer.Presenter> presenterFactory() {
-    return new PresenterFactory.Equalizer();
   }
 
   @Override public void takeChosenPreset(final EqualizerPreset equalizerPreset) {

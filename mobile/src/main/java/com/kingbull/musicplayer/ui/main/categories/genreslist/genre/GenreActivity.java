@@ -81,7 +81,7 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
 
   private void initiliazeWithThemeColors() {
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new UiColors().window().intValue());
+        new com.kingbull.musicplayer.ui.base.Color(new UiColors().screen().intValue());
     getWindow().setBackgroundDrawable(color.toDrawable());
     ColorDrawable colorDrawable = color.light().toDrawable();
     titleView.setBackground(colorDrawable);

@@ -7,8 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.widget.EdgeEffect;
 import java.lang.reflect.Field;
 
-import static com.kingbull.musicplayer.R.id.viewPager;
-
 /**
  * @author Kailash Dabhi
  * @date 4/3/2017
@@ -28,7 +26,7 @@ public final class ViewPagerEdgeEffectHack {
       }) {
         Field field = clazz.getDeclaredField(name);
         field.setAccessible(true);
-        Object edge = field.get(viewPager); // android.support.v4.widget.EdgeEffectCompat
+        Object edge = field.get(pager); // android.support.v4.widget.EdgeEffectCompat
         Field fEdgeEffect = edge.getClass().getDeclaredField("mEdgeEffect");
         fEdgeEffect.setAccessible(true);
         applyEdgeEffectColor((EdgeEffect) fEdgeEffect.get(edge), color);

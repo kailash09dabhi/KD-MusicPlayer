@@ -111,11 +111,15 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
 
   private void initializeWithThemeColors(View v) {
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new UiColors().window().intValue());
+        new com.kingbull.musicplayer.ui.base.Color(new UiColors().screen().intValue());
     titleView.setBackground(color.light().toDrawable());
     v.setBackground(color.toDrawable());
     searchLayout.setBackground(color.light().toDrawable());
     recyclerView.setBackground(color.toDrawable());
+  }
+
+  @Override protected PresenterFactory<CoverArts.Presenter> presenterFactory() {
+    return new PresenterFactory.CoverArt();
   }
 
   @Override protected void onPresenterPrepared(CoverArts.Presenter presenter) {
@@ -127,10 +131,6 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
     } else {
       presenter.onArtistSearch(bundle.getString("artist_name", ""));
     }
-  }
-
-  @Override protected PresenterFactory<CoverArts.Presenter> presenterFactory() {
-    return new PresenterFactory.CoverArt();
   }
 
   @Override public void showCoverArts(List<String> imageUrls) {

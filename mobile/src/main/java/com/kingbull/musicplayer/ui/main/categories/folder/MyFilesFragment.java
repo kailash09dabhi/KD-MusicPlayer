@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.PaletteEvent;
+import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.UiColors;
@@ -41,15 +42,14 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_my_files, null);
     ButterKnife.bind(this, view);
-    recyclerView.setBackgroundColor(new UiColors().screen().intValue());
-    ((View) directoryPathView.getParent()).setBackgroundColor(new UiColors().tab().intValue());
-    directoryPathView.setTextColor(new UiColors().bodyTextColor().intValue());
+    applyUIColors();
     return view;
   }
 
-  @Override public void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
-    outState.putSerializable("files", files);
+  private void applyUIColors() {
+    recyclerView.setBackgroundColor(uiColors.screen().intValue());
+    ((View) directoryPathView.getParent()).setBackgroundColor(new UiColors().tab().intValue());
+    directoryPathView.setTextColor(new UiColors().bodyTextColor().intValue());
   }
 
   @Override public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
@@ -57,6 +57,11 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
       files = (ArrayList<File>) savedInstanceState.get("files");
     }
     super.onViewStateRestored(savedInstanceState);
+  }
+
+  @Override public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putSerializable("files", files);
   }
 
   @Override public void showFiles(List<File> songs) {
@@ -84,11 +89,16 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
-            if (o instanceof PaletteEvent) {
+            if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
               myFilesAdapter.notifyDataSetChanged();
+              applyUIColors();
             }
           }
         });
+  }
+
+  @NonNull @Override protected PresenterFactory presenterFactory() {
+    return new PresenterFactory.MyFiles();
   }
 
   @Override protected void onPresenterPrepared(final MyFiles.Presenter presenter) {
@@ -106,9 +116,5 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
         }
       }
     });
-  }
-
-  @NonNull @Override protected PresenterFactory presenterFactory() {
-    return new PresenterFactory.MyFiles();
   }
 }

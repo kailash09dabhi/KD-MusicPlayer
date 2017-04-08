@@ -3,6 +3,7 @@ package com.kingbull.musicplayer.ui.base;
 import android.support.annotation.IntDef;
 import android.support.v7.graphics.Palette;
 import com.kingbull.musicplayer.domain.storage.preferences.PalettePreference;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -20,6 +21,15 @@ public final class UiColors {
 
   public UiColors(@Swatch int swatch) {
     this.swatch = swatch;
+  }
+
+  public Color statusBar() {
+    return screen().dark(0.25f);
+  }
+
+  public Color screen() {
+    if (new SettingPreferences().isFlatTheme()) return new Color(swatch().getRgb());
+    return new Color(swatch().getRgb()).transparent(0.9f);
   }
 
   public Palette.Swatch swatch() {
@@ -50,20 +60,23 @@ public final class UiColors {
     return swatch;
   }
 
-  public Color window() {
+  public Color quickAction() {
+    if (new SettingPreferences().isFlatTheme()) return header();
     return new Color(swatch().getRgb());
   }
 
-  public Color statusBar() {
-    return window().dark(0.25f);
+  public Color header() {
+    if (new SettingPreferences().isFlatTheme()) return screen().light(0.16f);
+    return screen().dark(0.9f).transparent(0.9f);
+  }
+
+  public Color dialog() {
+    if (new SettingPreferences().isFlatTheme()) return screen().light(0.16f);
+    return new Color(swatch().getRgb()).transparent(0.09f);
   }
 
   public Color tab() {
-    return window().transparent(0.9f);
-  }
-
-  public Color screen() {
-    return tab().dark(0.7f).transparent(0.9f);
+    return header();
   }
 
   public Color bodyTextColor() {

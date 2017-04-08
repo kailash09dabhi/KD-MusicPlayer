@@ -74,6 +74,11 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     return inflater.inflate(R.layout.fragment_music, container, false);
   }
 
+  @Override public void onStop() {
+    super.onStop();
+    seekBarProgress.dontAnimate();
+  }
+
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
@@ -83,31 +88,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     nowPlayingView.setImageDrawable(
         new IconDrawable(R.drawable.ic_queue_music, Color.WHITE, fillColor));
     initializeWithThemeColors();
-  }
-
-  @Override public void onStop() {
-    super.onStop();
-    seekBarProgress.dontAnimate();
-  }
-
-  @OnClick(R.id.button_play_toggle) public void onPlayToggleAction(View view) {
-    presenter.onPlayToggleClick();
-  }
-
-  @OnClick(R.id.button_play_mode_toggle) public void onPlayModeToggleAction(View view) {
-    presenter.onPlayModeToggleClick();
-  }
-
-  @OnClick(R.id.button_play_next) public void onPlayNextAction(View view) {
-    presenter.onPlayNextClick();
-  }
-
-  @OnClick(R.id.button_play_previous) public void onPlayPreviousClick() {
-    presenter.onPlayPreviousClick();
-  }
-
-  @OnClick(R.id.button_favorite_toggle) public void onFavoriteToggleAction(View view) {
-    presenter.onFavoriteToggleClick();
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -135,38 +115,14 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         });
   }
 
-  @Override protected void onPresenterPrepared(MusicPlayer.Presenter presenter) {
-    this.presenter.takeView(this);
-    seekBarProgress.takePresenter(presenter);
-    updatePlayMode(new SettingPreferences().musicMode());
-  }
-
   @Override protected PresenterFactory presenterFactory() {
     return new PresenterFactory.MusicPlayer();
   }
 
-  @Override public void updateProgressDurationText(int duration) {
-    progressTextView.setText(new Milliseconds(duration).toString());
-  }
-
-  @Override public void stopSeekbarProgress() {
-    seekBarProgress.dontAnimate();
-    seekBarProgress.startProgresssAnimation();
-  }
-
-  @Override public void showEqualizerScreen() {
-    Intent intent = new Intent(getActivity(), EqualizerActivity.class);
-    startActivity(intent);
-  }
-
-  @Override public void pause() {
-    albumImageView.pauseRotateAnimation();
-    seekBarProgress.dontAnimate();
-  }
-
-  @Override public void play() {
-    albumImageView.resumeRotateAnimation();
-    seekBarProgress.startProgresssAnimation();
+  @Override protected void onPresenterPrepared(MusicPlayer.Presenter presenter) {
+    this.presenter.takeView(this);
+    seekBarProgress.takePresenter(presenter);
+    updatePlayMode(new SettingPreferences().musicMode());
   }
 
   @Override public void onSongUpdated(Music song) {
@@ -217,16 +173,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.startProgresssAnimation();
   }
 
-  private void initializeWithThemeColors() {
-    com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new UiColors().window().intValue());
-    getActivity().getWindow().setBackgroundDrawable(color.dark().toDrawable());
-    nameTextView.setTextColor(color.light(5).toDrawable().getColor());
-    textViewArtist.setTextColor(color.light(5).toDrawable().getColor());
-    progressTextView.setTextColor(color.light(5).toDrawable().getColor());
-    durationTextView.setTextColor(color.light(5).toDrawable().getColor());
-  }
-
   private void updateUiWithPaletteSwatch(Palette.Swatch darkSwatch, Palette.Swatch lightSwatch) {
     getActivity().getWindow().setBackgroundDrawable(new ColorDrawable(darkSwatch.getRgb()));
     getView().setBackgroundColor(darkSwatch.getRgb());
@@ -245,11 +191,65 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         favorite ? R.drawable.ic_favorite_yes : R.drawable.ic_favorite_no);
   }
 
+  @Override public void updateProgressDurationText(int duration) {
+    progressTextView.setText(new Milliseconds(duration).toString());
+  }
+
   @Override public void updateSeekBar(int progress) {
     seekBarProgress.updateThumb(progress);
   }
 
   @Override public void updateSeekBarAfter(long updateProgressInterval) {
     seekBarProgress.animateProgressAfter(updateProgressInterval);
+  }
+
+  @Override public void stopSeekbarProgress() {
+    seekBarProgress.dontAnimate();
+    seekBarProgress.startProgresssAnimation();
+  }
+
+  @Override public void showEqualizerScreen() {
+    Intent intent = new Intent(getActivity(), EqualizerActivity.class);
+    startActivity(intent);
+  }
+
+  @Override public void pause() {
+    albumImageView.pauseRotateAnimation();
+    seekBarProgress.dontAnimate();
+  }
+
+  @Override public void play() {
+    albumImageView.resumeRotateAnimation();
+    seekBarProgress.startProgresssAnimation();
+  }
+
+  private void initializeWithThemeColors() {
+    com.kingbull.musicplayer.ui.base.Color color =
+        new com.kingbull.musicplayer.ui.base.Color(new UiColors().screen().intValue());
+    getActivity().getWindow().setBackgroundDrawable(color.dark().toDrawable());
+    nameTextView.setTextColor(color.light(5).toDrawable().getColor());
+    textViewArtist.setTextColor(color.light(5).toDrawable().getColor());
+    progressTextView.setTextColor(color.light(5).toDrawable().getColor());
+    durationTextView.setTextColor(color.light(5).toDrawable().getColor());
+  }
+
+  @OnClick(R.id.button_play_toggle) public void onPlayToggleAction(View view) {
+    presenter.onPlayToggleClick();
+  }
+
+  @OnClick(R.id.button_play_mode_toggle) public void onPlayModeToggleAction(View view) {
+    presenter.onPlayModeToggleClick();
+  }
+
+  @OnClick(R.id.button_play_next) public void onPlayNextAction(View view) {
+    presenter.onPlayNextClick();
+  }
+
+  @OnClick(R.id.button_play_previous) public void onPlayPreviousClick() {
+    presenter.onPlayPreviousClick();
+  }
+
+  @OnClick(R.id.button_favorite_toggle) public void onFavoriteToggleAction(View view) {
+    presenter.onFavoriteToggleClick();
   }
 }

@@ -48,7 +48,7 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
   private void setupView(View v) {
     UiColors uiColors = new UiColors();
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(uiColors.window().intValue());
+        new com.kingbull.musicplayer.ui.base.Color(uiColors.screen().intValue());
     v.setBackground(color.light().toDrawable());
     shuffleButton.setImageDrawable(
         new IconDrawable(R.drawable.ic_shuffle_48dp, Color.WHITE, uiColors.statusBar().intValue()));
@@ -56,12 +56,12 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
   }
 
-  @Override protected void onPresenterPrepared(NowPlaying.Presenter presenter) {
-    presenter.takeView(this);
-  }
-
   @Override protected PresenterFactory<NowPlaying.Presenter> presenterFactory() {
     return new PresenterFactory.NowPlaying();
+  }
+
+  @Override protected void onPresenterPrepared(NowPlaying.Presenter presenter) {
+    presenter.takeView(this);
   }
 
   @Override public void showNowPlayingList(List<Music> musicList, int position) {

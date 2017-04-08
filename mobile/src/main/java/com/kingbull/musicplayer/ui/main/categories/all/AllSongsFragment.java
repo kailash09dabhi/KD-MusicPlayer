@@ -35,10 +35,10 @@ import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.SortEvent;
+import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.animators.SlideHorizontal;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
@@ -121,10 +121,9 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
               presenter.onSortEvent((SortEvent) o);
             } else if (o instanceof DurationFilterEvent) {
               getLoaderManager().restartLoader(0, null, AllSongsFragment.this);
-            } else if (o instanceof PaletteEvent) {
-              UiColors uiColors = new UiColors();
-              updateDrawableOfButtons(uiColors.statusBar().intValue());
-              searchView.setHintTextColor(uiColors.bodyTextColor().intValue());
+            } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+              updateDrawableOfButtons(uiColors.header().dark(0.01f).transparent(0.16f).intValue());
+              applyUiColors();
             }
           }
         });
@@ -139,6 +138,23 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     selectionContextOptionsLayout.updateIconsColor(fillColor);
   }
 
+  private void applyUiColors() {
+    int headerColor = uiColors.header().intValue();
+    recyclerView.setPopupBackgroundColor(Color.WHITE);
+    recyclerView.setThumbActiveColor(Color.WHITE);
+    recyclerView.setTrackInactiveColor(headerColor);
+    recyclerView.setPopupTextColor(headerColor);
+    ((View) totalSongLayout.getParent()).setBackgroundColor(headerColor);
+    int screenColor = uiColors.screen().intValue();
+    recyclerView.setBackgroundColor(screenColor);
+    allRayMenu.setBackgroundColor(screenColor);
+    searchView.setHintTextColor(uiColors.bodyTextColor().intValue());
+  }
+
+  @Override protected PresenterFactory<AllSongs.Presenter> presenterFactory() {
+    return new PresenterFactory.AllSongs();
+  }
+
   @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {
     ButterKnife.bind(this, getView());
     setupView();
@@ -147,16 +163,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   private void setupView() {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    UiColors uiColors = new UiColors();
-    int popupColor = uiColors.statusBar().intValue();
-    recyclerView.setPopupBackgroundColor(Color.WHITE);
-    recyclerView.setThumbActiveColor(Color.WHITE);
-    recyclerView.setTrackInactiveColor(popupColor);
-    recyclerView.setPopupTextColor(popupColor);
-    int screenColor = uiColors.screen().intValue();
-    recyclerView.setBackgroundColor(screenColor);
-    ((View) totalSongLayout.getParent()).setBackgroundColor(uiColors.tab().intValue());
-    allRayMenu.setBackgroundColor(screenColor);
+    applyUiColors();
     getLoaderManager().initLoader(0, null, this);
     musicRecyclerViewAdapter =
         new MusicRecyclerViewAdapter(musicList, (AppCompatActivity) getActivity());
@@ -217,10 +224,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
       }
     });
     updateDrawableOfButtons(Color.BLACK);
-  }
-
-  @Override protected PresenterFactory<AllSongs.Presenter> presenterFactory() {
-    return new PresenterFactory.AllSongs();
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
