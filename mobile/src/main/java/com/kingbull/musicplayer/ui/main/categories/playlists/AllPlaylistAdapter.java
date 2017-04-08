@@ -20,12 +20,12 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/8/2016.
  */
-public final class PlayListsAdapter extends RecyclerView.Adapter<PlayListsAdapter.ViewHolder> {
+public final class AllPlaylistAdapter extends RecyclerView.Adapter<AllPlaylistAdapter.ViewHolder> {
   private final PlaylistQuickAction playlistQuickAction;
   private List<PlayList> playLists;
   private AppCompatActivity activity;
 
-  public PlayListsAdapter(List<PlayList> playLists, AppCompatActivity activity) {
+  public AllPlaylistAdapter(List<PlayList> playLists, AppCompatActivity activity) {
     this.playLists = playLists;
     this.activity = activity;
     this.playlistQuickAction = new PlaylistQuickAction(activity);

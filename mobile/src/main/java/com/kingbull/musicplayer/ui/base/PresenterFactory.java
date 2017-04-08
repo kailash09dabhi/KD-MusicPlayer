@@ -11,8 +11,7 @@ import com.kingbull.musicplayer.ui.main.categories.artistlist.ArtistListPresente
 import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.ArtistPresenter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
 import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenresPresenter;
-import com.kingbull.musicplayer.ui.main.categories.playlists.PlayLists;
-import com.kingbull.musicplayer.ui.main.categories.playlists.PlayListsPresenter;
+import com.kingbull.musicplayer.ui.main.categories.playlists.AllPlayListPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.Members;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersPresenter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
@@ -111,9 +110,11 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
     }
   }
 
-  class Playlists implements PresenterFactory<PlayLists.Presenter> {
-    @Override public PlayLists.Presenter create() {
-      return new PlayListsPresenter();
+  class AllPlaylist implements
+      PresenterFactory<com.kingbull.musicplayer.ui.main.categories.playlists.AllPlaylist.Presenter> {
+    @Override
+    public com.kingbull.musicplayer.ui.main.categories.playlists.AllPlaylist.Presenter create() {
+      return new AllPlayListPresenter();
     }
   }
 

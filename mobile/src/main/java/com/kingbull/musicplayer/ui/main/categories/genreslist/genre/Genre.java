@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Kailash Dabhi on 09-07-2016.
  * You can contact us at kailash09dabhi@gmail.com OR on skype(kailash.09)
- * Copyright (c) 2016 Kingbull Technology. PlayLists rights reserved.
+ * Copyright (c) 2016 Kingbull Technology. AllPlaylist rights reserved.
  */
 public interface Genre {
   interface View extends Mvp.View {

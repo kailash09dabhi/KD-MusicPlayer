@@ -13,14 +13,12 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/12/2016.
  */
-
-public final class PlayListsModel implements PlayLists.Model {
-
-  PlayListsModel() {
+public final class AllPlaylistModel implements AllPlaylist.Model {
+  AllPlaylistModel() {
     MusicPlayerApp.instance().component().inject(this);
   }
 
-  @Override public List<PlayList> listOfPlayList() {
+  @Override public List<PlayList> allPlaylist() {
     PlayList playList1 = new RecentlyAddedPlayList();
     PlayList playList2 = new LastPlayedPlayList();
     PlayList playList3 = new MostPlayedPlayList();

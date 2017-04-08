@@ -35,8 +35,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.List;
 
-public final class AllPlayListFragment extends BaseFragment<PlayLists.Presenter>
-    implements LoaderManager.LoaderCallbacks<Cursor>, PlayLists.View {
+public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presenter>
+    implements LoaderManager.LoaderCallbacks<Cursor>, AllPlaylist.View {
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.headerLayout) LinearLayout headerLayout;
   @BindView(R.id.header) TextView headerView;
@@ -77,11 +77,11 @@ public final class AllPlayListFragment extends BaseFragment<PlayLists.Presenter>
         });
   }
 
-  @Override protected PresenterFactory<PlayLists.Presenter> presenterFactory() {
-    return new PresenterFactory.Playlists();
+  @Override protected PresenterFactory<AllPlaylist.Presenter> presenterFactory() {
+    return new PresenterFactory.AllPlaylist();
   }
 
-  @Override protected void onPresenterPrepared(PlayLists.Presenter presenter) {
+  @Override protected void onPresenterPrepared(AllPlaylist.Presenter presenter) {
     presenter.takeView(this);
   }
 
@@ -90,15 +90,14 @@ public final class AllPlayListFragment extends BaseFragment<PlayLists.Presenter>
   }
 
   @Override public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-    presenter.onAllSongsCursorLoadFinished(cursor);
+    presenter.onAllPlaylistCursorLoadFinished(cursor);
   }
 
   @Override public void onLoaderReset(Loader<Cursor> loader) {
-    // Empty
   }
 
   @Override public void showAllPlaylist(List<PlayList> playLists) {
-    recyclerView.setAdapter(new PlayListsAdapter(playLists, (AppCompatActivity) getActivity()));
+    recyclerView.setAdapter(new AllPlaylistAdapter(playLists, (AppCompatActivity) getActivity()));
   }
 
   @Override public void refreshListOfPlaylist() {

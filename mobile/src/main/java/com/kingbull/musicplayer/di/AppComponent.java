@@ -18,7 +18,7 @@ import com.kingbull.musicplayer.ui.equalizer.reverb.PresetReverbDialogFragment;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesAdapter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
-import com.kingbull.musicplayer.ui.main.categories.playlists.PlayListsModel;
+import com.kingbull.musicplayer.ui.main.categories.playlists.AllPlaylistModel;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
@@ -62,7 +62,7 @@ public interface AppComponent {
 
   void inject(AddToPlayListDialogFragment fragment);
 
-  void inject(PlayListsModel playListsModel);
+  void inject(AllPlaylistModel allPlaylistModel);
 
   void inject(LastPlayedPlayList playList);
 

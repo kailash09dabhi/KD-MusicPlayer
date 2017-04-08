@@ -11,18 +11,18 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/10/2016.
  */
-public final class PlayListsPresenter extends Presenter<PlayLists.View>
-    implements PlayLists.Presenter {
-  PlayLists.Model model = new PlayListsModel();
+public final class AllPlayListPresenter extends Presenter<AllPlaylist.View>
+    implements AllPlaylist.Presenter {
+  AllPlaylist.Model model = new AllPlaylistModel();
   List<PlayList> listOfPlayList;
 
-  @Override public void takeView(@NonNull PlayLists.View view) {
+  @Override public void takeView(@NonNull AllPlaylist.View view) {
     super.takeView(view);
-    listOfPlayList = model.listOfPlayList();
+    listOfPlayList = model.allPlaylist();
     view().showAllPlaylist(listOfPlayList);
   }
 
-  @Override public void onAllSongsCursorLoadFinished(Cursor cursor) {
+  @Override public void onAllPlaylistCursorLoadFinished(Cursor cursor) {
   }
 
   @Override public void onPlaylistCreated(PlayList playlist) {

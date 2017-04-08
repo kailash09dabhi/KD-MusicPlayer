@@ -10,7 +10,7 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/10/2016.
  */
-public interface PlayLists {
+public interface AllPlaylist {
   interface View extends Mvp.View {
     void showAllPlaylist(List<PlayList> playLists);
 
@@ -20,11 +20,11 @@ public interface PlayLists {
   }
 
   interface Model extends Mvp.Model {
-    List<PlayList> listOfPlayList();
+    List<PlayList> allPlaylist();
   }
 
-  interface Presenter extends Mvp.Presenter<PlayLists.View> {
-    void onAllSongsCursorLoadFinished(Cursor cursor);
+  interface Presenter extends Mvp.Presenter<AllPlaylist.View> {
+    void onAllPlaylistCursorLoadFinished(Cursor cursor);
 
     void onPlaylistCreated(PlayList playlist);
 
