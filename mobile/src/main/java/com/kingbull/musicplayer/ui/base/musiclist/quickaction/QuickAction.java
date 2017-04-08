@@ -66,16 +66,16 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
    * @param id Layout resource id
    */
   public void setRootViewId(int id) {
-    mRootView = inflater.inflate(id, null);
-    mTrack = (ViewGroup) mRootView.findViewById(R.id.tracks);
-    //mArrowDown = (ImageView) mRootView.findViewById(R.id.arrow_down);
-    //mArrowUp = (ImageView) mRootView.findViewById(R.id.arrow_up);
+    rootView = inflater.inflate(id, null);
+    mTrack = (ViewGroup) rootView.findViewById(R.id.tracks);
+    //mArrowDown = (ImageView) rootView.findViewById(R.id.arrow_down);
+    //mArrowUp = (ImageView) rootView.findViewById(R.id.arrow_up);
     //This was previously defined on show() method, moved here to prevent force close that occured
     //when tapping fastly on a view to show quickaction dialog.
     //Thanx to zammbi (github.com/zammbi)
-    mRootView.setLayoutParams(
+    rootView.setLayoutParams(
         new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-    setContentView(mRootView);
+    setContentView(rootView);
   }
 
   /**
@@ -158,23 +158,23 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
   }
 
   /**
-   * Show popup mWindow
+   * Show popup popupWindow
    */
   public void show(View anchor) {
     Color color = new Color(new ColorTheme.Smart().quickAction().intValue());
-    mRootView.findViewById(R.id.scroll).setBackground(color.toDrawable());
+    rootView.findViewById(R.id.scroll).setBackground(color.toDrawable());
     preShow();
     int[] location = new int[2];
     mDidAction = false;
     anchor.getLocationOnScreen(location);
     Rect anchorRect = new Rect(location[0], location[1], location[0] + anchor.getWidth(),
         location[1] + anchor.getHeight());
-    //mRootView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-    mRootView.measure(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-    int rootWidth = mRootView.getMeasuredWidth();
-    int rootHeight = mRootView.getMeasuredHeight();
-    int screenWidth = mWindowManager.getDefaultDisplay().getWidth();
-    //int screenHeight 	= mWindowManager.getDefaultDisplay().getHeight();
+    //rootView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+    rootView.measure(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+    int rootWidth = rootView.getMeasuredWidth();
+    int rootHeight = rootView.getMeasuredHeight();
+    int screenWidth = windowManager.getDefaultDisplay().getWidth();
+    //int screenHeight 	= windowManager.getDefaultDisplay().getHeight();
     int xPos = (screenWidth - rootWidth) / 2;
     int yPos = anchorRect.top - rootHeight;
     boolean onTop = true;
@@ -185,7 +185,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
     }
     //showArrow(((onTop) ? R.id.arrow_down : R.id.arrow_up), anchorRect.centerX());
     setAnimationStyle(screenWidth, anchorRect.centerX(), onTop);
-    mWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, xPos, yPos);
+    popupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, xPos, yPos);
     if (mAnimateTrack) mTrack.startAnimation(mTrackAnim);
   }
 
@@ -202,26 +202,26 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
     int arrowPos = screenWidth;
     switch (mAnimStyle) {
       case ANIM_GROW_FROM_LEFT:
-        mWindow.setAnimationStyle(
+        popupWindow.setAnimationStyle(
             (onTop) ? R.style.Animations_PopUpMenu_Left : R.style.Animations_PopDownMenu_Left);
         break;
       case ANIM_GROW_FROM_RIGHT:
-        mWindow.setAnimationStyle(
+        popupWindow.setAnimationStyle(
             (onTop) ? R.style.Animations_PopUpMenu_Right : R.style.Animations_PopDownMenu_Right);
         break;
       case ANIM_GROW_FROM_CENTER:
-        mWindow.setAnimationStyle(
+        popupWindow.setAnimationStyle(
             (onTop) ? R.style.Animations_PopUpMenu_Center : R.style.Animations_PopDownMenu_Center);
         break;
       case ANIM_AUTO:
         if (arrowPos <= screenWidth / 4) {
-          mWindow.setAnimationStyle(
+          popupWindow.setAnimationStyle(
               (onTop) ? R.style.Animations_PopUpMenu_Left : R.style.Animations_PopDownMenu_Left);
         } else if (arrowPos > screenWidth / 4 && arrowPos < 3 * (screenWidth / 4)) {
-          mWindow.setAnimationStyle((onTop) ? R.style.Animations_PopUpMenu_Center
+          popupWindow.setAnimationStyle((onTop) ? R.style.Animations_PopUpMenu_Center
               : R.style.Animations_PopDownMenu_Center);
         } else {
-          mWindow.setAnimationStyle((onTop) ? R.style.Animations_PopDownMenu_Right
+          popupWindow.setAnimationStyle((onTop) ? R.style.Animations_PopDownMenu_Right
               : R.style.Animations_PopDownMenu_Right);
         }
         break;

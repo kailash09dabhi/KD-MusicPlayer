@@ -6,6 +6,7 @@
     android:orientation="vertical">
   <TextView
       android:id="@+id/titleView"
+    style="@style/AppTheme.TextAppearance.Title"
       android:ellipsize="marquee"
       android:fadingEdge="none"
       android:fadingEdgeLength="0dp"
@@ -19,8 +20,7 @@
       android:paddingRight="30dp"
       android:paddingTop="16dp"
       android:scrollHorizontally="true"
-      android:text="shimmer adfsfdasdadf skkkk"
-      style="@style/AppTheme.TextAppearance.Title"/>
+    android:text="shimmer adfsfdasdadf skkkk" />
 
   <com.kingbull.musicplayer.ui.base.view.SnappingRecyclerView
       android:id="@+id/coverRecyclerView"
@@ -33,7 +33,6 @@
       android:id="@+id/recyclerView"
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      android:layout_marginTop="1px"
       android:layout_weight="1"
       android:clipToPadding="false"
       android:fadingEdge="none"

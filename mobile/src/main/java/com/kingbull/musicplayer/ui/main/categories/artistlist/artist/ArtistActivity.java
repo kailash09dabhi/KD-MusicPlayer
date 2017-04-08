@@ -20,7 +20,6 @@ import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
-import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.base.view.SnappingRecyclerView;
 import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.SongListRayMenu;
@@ -81,15 +80,13 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   }
 
   private void initializeWithThemeColors() {
-    ColorTheme.Flat colorTheme = new ColorTheme.Flat();
-    com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(colorTheme.statusBar().intValue());
-    new StatusBarColor(color).applyOn(getWindow());
-    int headerColor = colorTheme.header().intValue();
+    new StatusBarColor(flatTheme.statusBar()).applyOn(getWindow());
+    int headerColor = flatTheme.header().intValue();
+    int screenColor = flatTheme.screen().intValue();
     titleView.setBackgroundColor(headerColor);
     recyclerView.setBackgroundColor(headerColor);
-    coverRecyclerView.setBackgroundColor(colorTheme.screen().intValue());
-    artistRayMenu.setBackgroundColor(colorTheme.screen().intValue());
+    coverRecyclerView.setBackgroundColor(screenColor);
+    artistRayMenu.setBackgroundColor(screenColor);
   }
 
   @NonNull @Override protected PresenterFactory presenterFactory() {

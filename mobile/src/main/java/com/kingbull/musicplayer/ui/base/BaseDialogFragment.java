@@ -15,6 +15,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    new StatusBarColor(new ColorTheme.Smart().statusBar()).applyOn(getDialog().getWindow());
+    getDialog().getWindow().setBackgroundDrawable(new ColorTheme.Smart().dialog().asDrawable());
   }
 }

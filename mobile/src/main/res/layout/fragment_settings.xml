@@ -9,7 +9,6 @@
     android:id="@+id/headerLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="1px"
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft">
@@ -35,7 +34,6 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_marginBottom="1px"
     android:layout_weight="1"
     android:fadeScrollbars="true"
     android:fadingEdgeLength="34dp"

@@ -6,14 +6,14 @@
     android:orientation="vertical">
   <TextView
       android:id="@+id/titleView"
+    style="@style/AppTheme.TextAppearance.Title.Pager"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
       android:paddingBottom="12dp"
       android:paddingTop="16dp"
       android:text="Album Cover"
-      android:textAllCaps="true"
-      style="@style/AppTheme.TextAppearance.Title.Pager"/>
+    android:textAllCaps="true" />
 
   <FrameLayout
       android:layout_width="match_parent"
@@ -30,7 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="1px"
-        android:layout_marginTop="1px"
         android:layout_weight="1"
         android:clipToPadding="false"
         android:fadeScrollbars="true"
@@ -53,6 +52,7 @@
           android:layout_height="150dp"
           app:srcCompat="@drawable/ic_error_outline"/>
       <TextView
+        style="@style/AppTheme.TextAppearance.Title"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
@@ -60,8 +60,7 @@
           android:layout_marginRight="20dp"
           android:layout_marginTop="20dp"
           android:gravity="center"
-          android:text="Sorry, no cover art found! \nPlease try another keyword to search."
-          style="@style/AppTheme.TextAppearance.Title"/>
+        android:text="Sorry, no cover art found! \nPlease try another keyword to search." />
 
     </LinearLayout>
   </FrameLayout>
@@ -81,13 +80,13 @@
         android:layout_weight="1">
       <EditText
           android:id="@+id/searchView"
+        style="@style/AppTheme.TextAppearance.List.Medium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:hint="album name"
           android:paddingTop="?android:attr/listPreferredItemPaddingLeft"
           android:textColor="@android:color/white"
-          android:textColorHint="@android:color/white"
-          style="@style/AppTheme.TextAppearance.List.Medium"/>
+        android:textColorHint="@android:color/white" />
 
     </android.support.design.widget.TextInputLayout>
     <ImageView
