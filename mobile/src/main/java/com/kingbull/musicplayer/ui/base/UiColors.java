@@ -67,7 +67,7 @@ public final class UiColors {
 
   public Color header() {
     if (new SettingPreferences().isFlatTheme()) return screen().light(0.16f);
-    return screen().dark(0.9f).transparent(0.9f);
+    return screen().dark(0.16f).transparent(0.81f);
   }
 
   public Color dialog() {

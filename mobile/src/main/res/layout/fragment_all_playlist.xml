@@ -13,22 +13,22 @@
     android:layout_marginTop="1px"
     android:gravity="center_vertical"
     android:orientation="vertical"
+    android:padding="16dp"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft">
 
     <TextView
+      android:id="@+id/header"
       style="@style/AppTheme.TextAppearance.List"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:paddingTop="22dp"
       android:text="MY PLAYLISTS" />
 
     <TextView
-      android:id="@+id/directoryPathView"
+      android:id="@+id/description"
       style="@style/AppTheme.TextAppearance.List.Small"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingBottom="9dp"
-      android:text="/storage/" />
+      android:text="Listen your saved playlist" />
   </LinearLayout>
 
   <android.support.v7.widget.RecyclerView

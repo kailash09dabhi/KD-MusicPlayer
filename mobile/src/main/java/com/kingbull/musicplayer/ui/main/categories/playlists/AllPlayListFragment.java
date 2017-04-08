@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
@@ -34,10 +35,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.List;
 
-public final class PlayListsFragment extends BaseFragment<PlayLists.Presenter>
+public final class AllPlayListFragment extends BaseFragment<PlayLists.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, PlayLists.View {
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.headerLayout) LinearLayout headerLayout;
+  @BindView(R.id.header) TextView headerView;
+  @BindView(R.id.description) TextView descriptionView;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -55,7 +58,9 @@ public final class PlayListsFragment extends BaseFragment<PlayLists.Presenter>
 
   @Override protected Disposable subscribeEvents() {
     return RxBus.getInstance()
-        .toObservable().observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Object>() {
+        .toObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof PlaylistCreatedEvent) {
               PlaylistCreatedEvent playlistCreatedEvent = (PlaylistCreatedEvent) o;
@@ -65,6 +70,8 @@ public final class PlayListsFragment extends BaseFragment<PlayLists.Presenter>
             } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
               recyclerView.setBackgroundColor(uiColors.screen().intValue());
               headerLayout.setBackgroundColor(uiColors.header().intValue());
+              headerView.setTextColor(uiColors.titleTextColor().intValue());
+              descriptionView.setTextColor(uiColors.bodyTextColor().intValue());
             }
           }
         });

@@ -97,12 +97,12 @@
 
     <com.kingbull.musicplayer.ui.music.MusicSeekBar
         android:id="@+id/seekbar"
+      style="@style/Widget.AppCompat.SeekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:max="100"
         tools:progress="50"
-        style="@style/Widget.AppCompat.SeekBar"
         />
 
     <TextView
@@ -149,7 +149,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_play"
+      app:srcCompat="@drawable/ic_pause"
         />
 
     <android.support.v7.widget.AppCompatImageView

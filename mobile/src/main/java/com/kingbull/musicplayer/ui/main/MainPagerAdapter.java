@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsFragment;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesFragment;
-import com.kingbull.musicplayer.ui.main.categories.playlists.PlayListsFragment;
+import com.kingbull.musicplayer.ui.main.categories.playlists.AllPlayListFragment;
 import com.kingbull.musicplayer.ui.settings.SettingsFragment;
 
 final class MainPagerAdapter extends FragmentPagerAdapter {
@@ -27,7 +27,7 @@ final class MainPagerAdapter extends FragmentPagerAdapter {
     } else if (position == 1) {
       fragment = new MusicCategoryFragment();
     } else if (position == 2) {
-      fragment = new PlayListsFragment();
+      fragment = new AllPlayListFragment();
     } else if (position == 3) {
       fragment = new MyFilesFragment();
     } else if (position == 4) {

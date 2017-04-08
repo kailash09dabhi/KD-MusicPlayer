@@ -28,7 +28,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:paddingBottom="9dp"
-      android:text="your settings" />
+      android:text="Configure your settings" />
   </LinearLayout>
 
   <ScrollView
