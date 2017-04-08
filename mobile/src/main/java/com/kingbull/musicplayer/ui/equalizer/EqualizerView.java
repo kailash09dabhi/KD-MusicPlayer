@@ -15,6 +15,7 @@ import android.view.View;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlEqualizerPreset;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +23,13 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/20/2016.
  */
-
 public final class EqualizerView extends View {
   private final Paint paint = new Paint();
+  private final Paint linePaint = new Paint();
   private final Paint circlePaint = new Paint();
   private final List<Point> equalizerPointList = new ArrayList<>();
   private final List<Point> curvePivotPointList = new ArrayList<>();
-  OnBandValueChangeListener onBandValueChangeListener;
+  private OnBandValueChangeListener onBandValueChangeListener;
   private RadialGradient radialGradient;
   private Point lastTouchedPoint;
   private int maxHeight;
@@ -39,21 +40,10 @@ public final class EqualizerView extends View {
     init();
   }
 
-  public EqualizerView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-    init();
-  }
-
   private void init() {
-    paint.setStyle(Paint.Style.STROKE);
-    paint.setAntiAlias(true);
-    paint.setStrokeWidth(10);
-    paint.setStrokeJoin(Paint.Join.ROUND);
-    paint.setStrokeCap(Paint.Cap.ROUND);
-    circlePaint.setColor(Color.WHITE);
-    circlePaint.setStyle(Paint.Style.STROKE);
-    circlePaint.setAntiAlias(true);
-    circlePaint.setStrokeWidth(10);
+    setupCurvaturePaint();
+    setupLinePaint();
+    setupCirclePaint();
     post(new Runnable() {
       @Override public void run() {
         maxHeight = getHeight() * 80 / 100;
@@ -62,6 +52,7 @@ public final class EqualizerView extends View {
             ContextCompat.getColor(getContext(), R.color.dark_gray_shade),
             ContextCompat.getColor(getContext(), R.color.light_gray_shade), Shader.TileMode.CLAMP);
         paint.setShader(radialGradient);
+        linePaint.setColor(new ColorTheme.Flat().header().intValue());
         equalizerPointList.add(new Point(getWidth() / 10 * 1, getHeight() / 2));
         equalizerPointList.add(new Point((getWidth() / 10) * 3, getHeight() / 2));
         equalizerPointList.add(new Point((getWidth() / 10) * 5, getHeight() / 2));
@@ -77,27 +68,32 @@ public final class EqualizerView extends View {
     });
   }
 
-  @Override protected void onDraw(Canvas canvas) {
-    for (int i = 0; i < curvePivotPointList.size() - 1; i++) {
-      Point pivotPoint1 = curvePivotPointList.get(i);
-      Point pivotPoint2 = curvePivotPointList.get(i + 1);
-      Point equalizerPoint = equalizerPointList.get(i);
-      int yDesired = equalizerPoint.y;
-      int xMin = pivotPoint1.x;
-      int yMax = getHeight() / 2;
-      int xMax = pivotPoint2.x;
-      int yMin = getMinY(yMax, yDesired);
-      Path localPath1 = new Path();
-      localPath1.moveTo(xMax, yMax);
-      localPath1.cubicTo((xMax - (xMax - xMin) / 2) - 10, yMin, (xMax - (xMax - xMin) / 2) + 10,
-          yMin, xMin, yMax);
-      canvas.drawPath(localPath1, paint);
-      canvas.drawCircle(xMax - (xMax - xMin) / 2, yDesired, 10.0f, circlePaint);
-    }
+  private void setupCurvaturePaint() {
+    paint.setStyle(Paint.Style.STROKE);
+    paint.setAntiAlias(true);
+    paint.setStrokeWidth(10);
+    paint.setStrokeJoin(Paint.Join.ROUND);
+    paint.setStrokeCap(Paint.Cap.ROUND);
   }
 
-  private int getMinY(int maxY, int desiredY) {
-    return (int) ((4 * desiredY - maxY) / 3.0f);
+  private void setupLinePaint() {
+    linePaint.setStyle(Paint.Style.STROKE);
+    linePaint.setAntiAlias(true);
+    linePaint.setStrokeWidth(6);
+    linePaint.setStrokeJoin(Paint.Join.ROUND);
+    linePaint.setStrokeCap(Paint.Cap.ROUND);
+  }
+
+  private void setupCirclePaint() {
+    circlePaint.setColor(Color.WHITE);
+    circlePaint.setStyle(Paint.Style.STROKE);
+    circlePaint.setAntiAlias(true);
+    circlePaint.setStrokeWidth(10);
+  }
+
+  public EqualizerView(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+    init();
   }
 
   @Override public boolean onTouchEvent(MotionEvent event) {
@@ -140,6 +136,33 @@ public final class EqualizerView extends View {
         break;
     }
     return true;
+  }
+
+  @Override protected void onDraw(Canvas canvas) {
+    for (int i = 0; i < curvePivotPointList.size() - 1; i++) {
+      Point pivotPoint1 = curvePivotPointList.get(i);
+      Point pivotPoint2 = curvePivotPointList.get(i + 1);
+      Point equalizerPoint = equalizerPointList.get(i);
+      int yDesired = equalizerPoint.y;
+      int xMin = pivotPoint1.x;
+      int yMax = getHeight() / 2;
+      int xMax = pivotPoint2.x;
+      int yMin = getMinY(yMax, yDesired);
+      //draw straight faded line for denoting the frequency
+      canvas.drawLine((xMax - (xMax - xMin) / 2), 70, (xMax - (xMax - xMin) / 2), getHeight() - 70,
+          linePaint);
+      //draw curve now
+      Path localPath1 = new Path();
+      localPath1.moveTo(xMax, yMax);
+      localPath1.cubicTo((xMax - (xMax - xMin) / 2) - 10, yMin, (xMax - (xMax - xMin) / 2) + 10,
+          yMin, xMin, yMax);
+      canvas.drawPath(localPath1, paint);
+      canvas.drawCircle(xMax - (xMax - xMin) / 2, yDesired, 10.0f, circlePaint);
+    }
+  }
+
+  private int getMinY(int maxY, int desiredY) {
+    return (int) ((4 * desiredY - maxY) / 3.0f);
   }
 
   public void addOnBandValueChangeListener(OnBandValueChangeListener onBandValueChangeListener) {
