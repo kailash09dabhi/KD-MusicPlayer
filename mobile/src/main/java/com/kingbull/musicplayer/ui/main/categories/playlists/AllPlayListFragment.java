@@ -52,7 +52,7 @@ public final class AllPlayListFragment extends BaseFragment<PlayLists.Presenter>
 
   private void setupView(View v) {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    recyclerView.setBackgroundColor(uiColors.screen().intValue());
+    recyclerView.setBackgroundColor(colorTheme.screen().intValue());
     getLoaderManager().initLoader(0, null, this);
   }
 
@@ -68,10 +68,10 @@ public final class AllPlayListFragment extends BaseFragment<PlayLists.Presenter>
             } else if (o instanceof PlaylistRenameEvent) {
               presenter.onPlaylistRename((PlaylistRenameEvent) o);
             } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              recyclerView.setBackgroundColor(uiColors.screen().intValue());
-              headerLayout.setBackgroundColor(uiColors.header().intValue());
-              headerView.setTextColor(uiColors.titleTextColor().intValue());
-              descriptionView.setTextColor(uiColors.bodyTextColor().intValue());
+              recyclerView.setBackgroundColor(colorTheme.screen().intValue());
+              headerLayout.setBackgroundColor(colorTheme.header().intValue());
+              headerView.setTextColor(colorTheme.titleText().intValue());
+              descriptionView.setTextColor(colorTheme.bodyText().intValue());
             }
           }
         });

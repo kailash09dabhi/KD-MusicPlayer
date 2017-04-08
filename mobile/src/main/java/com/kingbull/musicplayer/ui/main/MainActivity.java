@@ -19,7 +19,7 @@ import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.UiColors;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.Artist;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -114,7 +114,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              int color = new UiColors().tab().intValue();
+              int color = new ColorTheme.Smart().tab().intValue();
               tabLayout.setBackgroundColor(color);
               new ViewPagerEdgeEffectHack(viewPager).applyColor(color);
             }

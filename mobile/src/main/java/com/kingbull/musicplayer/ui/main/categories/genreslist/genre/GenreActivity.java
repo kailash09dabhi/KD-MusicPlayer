@@ -19,8 +19,8 @@ import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.base.view.SnappingRecyclerView;
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
 
   private void initiliazeWithThemeColors() {
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new UiColors().screen().intValue());
+        new com.kingbull.musicplayer.ui.base.Color(new ColorTheme.Smart().screen().intValue());
     getWindow().setBackgroundDrawable(color.toDrawable());
     ColorDrawable colorDrawable = color.light().toDrawable();
     titleView.setBackground(colorDrawable);

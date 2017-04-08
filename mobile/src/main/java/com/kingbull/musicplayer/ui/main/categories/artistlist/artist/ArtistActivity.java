@@ -1,7 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.artistlist.artist;
 
 import android.database.Cursor;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
@@ -19,8 +18,8 @@ import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.base.view.SnappingRecyclerView;
 import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.SongListRayMenu;
@@ -31,7 +30,6 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/8/2016.
  */
-
 public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Artist.View {
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
@@ -67,7 +65,6 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     titleView.setMarqueeRepeatLimit(-1);
     titleView.setSelected(true);
     artistRayMenu.addOnMenuClickListener(new SongListRayMenu.OnMenuClickListener() {
-
       @Override public void onShuffleMenuClick() {
         //presenter.onShuffleMenuClick();
       }
@@ -83,12 +80,15 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   }
 
   private void initializeWithThemeColors() {
+    ColorTheme.Flat colorTheme = new ColorTheme.Flat();
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new UiColors().screen().intValue());
+        new com.kingbull.musicplayer.ui.base.Color(colorTheme.statusBar().intValue());
     getWindow().setBackgroundDrawable(color.toDrawable());
-    ColorDrawable colorDrawable = color.light().toDrawable();
-    titleView.setBackground(colorDrawable);
-    recyclerView.setBackground(colorDrawable);
+    int headerColor = colorTheme.header().intValue();
+    titleView.setBackgroundColor(headerColor);
+    recyclerView.setBackgroundColor(headerColor);
+    coverRecyclerView.setBackgroundColor(colorTheme.screen().intValue());
+    artistRayMenu.setBackgroundColor(colorTheme.screen().intValue());
   }
 
   @Override protected void onPresenterPrepared(Artist.Presenter presenter) {

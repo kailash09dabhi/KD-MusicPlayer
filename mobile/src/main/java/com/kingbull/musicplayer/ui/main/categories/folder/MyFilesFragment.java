@@ -19,7 +19,6 @@ import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -47,9 +46,9 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
   }
 
   private void applyUIColors() {
-    recyclerView.setBackgroundColor(uiColors.screen().intValue());
-    ((View) directoryPathView.getParent()).setBackgroundColor(new UiColors().tab().intValue());
-    directoryPathView.setTextColor(new UiColors().bodyTextColor().intValue());
+    recyclerView.setBackgroundColor(colorTheme.screen().intValue());
+    ((View) directoryPathView.getParent()).setBackgroundColor(colorTheme.tab().intValue());
+    directoryPathView.setTextColor(colorTheme.bodyText().intValue());
   }
 
   @Override public void onViewStateRestored(@Nullable Bundle savedInstanceState) {

@@ -6,12 +6,13 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public abstract class BaseFragment<P extends Mvp.Presenter> extends Fragment {
   private static final int LOADER_ID = 101;
-  protected final UiColors uiColors = new UiColors();
+  protected final ColorTheme colorTheme = new ColorTheme.Smart();
   protected P presenter;
   private CompositeDisposable compositeDisposable;
 

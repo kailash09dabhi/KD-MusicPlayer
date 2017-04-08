@@ -29,8 +29,8 @@ import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.player.MusicPlayerEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.UiColors;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
 import com.kingbull.musicplayer.ui.music.widget.ShadowImageView;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
@@ -82,7 +82,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    int fillColor = new UiColors().statusBar().intValue();
+    int fillColor = new ColorTheme.Smart().statusBar().intValue();
     equalizerView.setImageDrawable(
         new IconDrawable(R.drawable.ic_equalizer, Color.WHITE, fillColor));
     nowPlayingView.setImageDrawable(
@@ -225,7 +225,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
 
   private void initializeWithThemeColors() {
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new UiColors().screen().intValue());
+        new com.kingbull.musicplayer.ui.base.Color(new ColorTheme.Smart().screen().intValue());
     getActivity().getWindow().setBackgroundDrawable(color.dark().toDrawable());
     nameTextView.setTextColor(color.light(5).toDrawable().getColor());
     textViewArtist.setTextColor(color.light(5).toDrawable().getColor());

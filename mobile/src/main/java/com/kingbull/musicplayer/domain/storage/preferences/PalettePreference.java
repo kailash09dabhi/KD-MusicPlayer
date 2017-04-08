@@ -17,8 +17,11 @@ package com.kingbull.musicplayer.domain.storage.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.IntDef;
 import android.support.v7.graphics.Palette;
 import com.kingbull.musicplayer.MusicPlayerApp;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import static android.graphics.Color.BLACK;
 
@@ -30,39 +33,67 @@ public final class PalettePreference {
         .getSharedPreferences(PalettePreference.class.getSimpleName(), Context.MODE_PRIVATE);
   }
 
-  public Palette.Swatch mutedSwatch() {
-    return new Palette.Swatch(prefs.getInt(Key.MUTED, BLACK),
-        prefs.getInt(Key.MUTED_POPULATION, 0));
+  public Palette.Swatch swatch(@Swatch int swatchValue) {
+    Palette.Swatch swatch = null;
+    switch (swatchValue) {
+      case Swatch.DARK_MUTED:
+        swatch = darkMutedSwatch();
+        break;
+      case Swatch.DARK_VIBRANT:
+        swatch = darkVibrantSwatch();
+        break;
+      case Swatch.DOMINANT:
+        swatch = dominantSwatch();
+        break;
+      case Swatch.LIGHT_MUTED:
+        swatch = lightMutedSwatch();
+        break;
+      case Swatch.LIGHT_VIBRANT:
+        swatch = lightVibrantSwatch();
+        break;
+      case Swatch.MUTED:
+        swatch = mutedSwatch();
+        break;
+      case Swatch.VIBRANT:
+        swatch = vibrantSwatch();
+        break;
+    }
+    return swatch;
   }
 
-  public Palette.Swatch vibrantSwatch() {
-    return new Palette.Swatch(prefs.getInt(Key.VIBRANT, BLACK),
-        prefs.getInt(Key.VIBRANT_POPULATION, 0));
-  }
-
-  public Palette.Swatch dominantSwatch() {
-    return new Palette.Swatch(prefs.getInt(Key.DOMINANT, BLACK),
-        prefs.getInt(Key.DOMINANT_POPULATION, 0));
-  }
-
-  public Palette.Swatch lightMutedSwatch() {
-    return new Palette.Swatch(prefs.getInt(Key.LIGHT_MUTED, BLACK),
-        prefs.getInt(Key.LIGHT_MUTED_POPULATION, 0));
-  }
-
-  public Palette.Swatch lightVibrantSwatch() {
-    return new Palette.Swatch(prefs.getInt(Key.LIGHT_VIBRANT, BLACK),
-        prefs.getInt(Key.LIGHT_VIBRANT_POPULATION, 0));
-  }
-
-  public Palette.Swatch darkMutedSwatch() {
+  private Palette.Swatch darkMutedSwatch() {
     return new Palette.Swatch(prefs.getInt(Key.DARK_MUTED, BLACK),
         prefs.getInt(Key.DARK_MUTED_POPULATION, 0));
   }
 
-  public Palette.Swatch darkVibrantSwatch() {
+  private Palette.Swatch darkVibrantSwatch() {
     return new Palette.Swatch(prefs.getInt(Key.DARK_VIBRANT, BLACK),
         prefs.getInt(Key.DARK_VIBRANT_POPULATION, 0));
+  }
+
+  private Palette.Swatch dominantSwatch() {
+    return new Palette.Swatch(prefs.getInt(Key.DOMINANT, BLACK),
+        prefs.getInt(Key.DOMINANT_POPULATION, 0));
+  }
+
+  private Palette.Swatch lightMutedSwatch() {
+    return new Palette.Swatch(prefs.getInt(Key.LIGHT_MUTED, BLACK),
+        prefs.getInt(Key.LIGHT_MUTED_POPULATION, 0));
+  }
+
+  private Palette.Swatch lightVibrantSwatch() {
+    return new Palette.Swatch(prefs.getInt(Key.LIGHT_VIBRANT, BLACK),
+        prefs.getInt(Key.LIGHT_VIBRANT_POPULATION, 0));
+  }
+
+  private Palette.Swatch mutedSwatch() {
+    return new Palette.Swatch(prefs.getInt(Key.MUTED, BLACK),
+        prefs.getInt(Key.MUTED_POPULATION, 0));
+  }
+
+  private Palette.Swatch vibrantSwatch() {
+    return new Palette.Swatch(prefs.getInt(Key.VIBRANT, BLACK),
+        prefs.getInt(Key.VIBRANT_POPULATION, 0));
   }
 
   public void save(Palette palette) {
@@ -103,6 +134,19 @@ public final class PalettePreference {
     editor.putInt(Key.DARK_MUTED, palette.getDarkMutedColor(BLACK));
     editor.putInt(Key.DARK_VIBRANT, palette.getDarkVibrantColor(BLACK));
     editor.apply();
+  }
+
+  @IntDef({
+      Swatch.DARK_MUTED, Swatch.DARK_VIBRANT, Swatch.LIGHT_MUTED, Swatch.LIGHT_VIBRANT,
+      Swatch.MUTED, Swatch.DOMINANT, Swatch.VIBRANT
+  }) @Retention(RetentionPolicy.SOURCE) public @interface Swatch {
+    int DARK_MUTED = 0;
+    int DARK_VIBRANT = 1;
+    int LIGHT_MUTED = 2;
+    int LIGHT_VIBRANT = 3;
+    int MUTED = 4;
+    int DOMINANT = 5;
+    int VIBRANT = 6;
   }
 
   public final static class Key {

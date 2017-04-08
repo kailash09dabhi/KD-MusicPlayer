@@ -48,7 +48,7 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.setOffscreenPageLimit(3);
     viewPager.setCurrentItem(2);
-    pagerTitleStrip.setBackgroundColor(uiColors.screen().intValue());
+    pagerTitleStrip.setBackgroundColor(colorTheme.screen().intValue());
     setupPagerTitleStrip();
   }
 
@@ -59,7 +59,7 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              pagerTitleStrip.setBackgroundColor(uiColors.header().intValue());
+              pagerTitleStrip.setBackgroundColor(colorTheme.header().intValue());
             }
           }
         });

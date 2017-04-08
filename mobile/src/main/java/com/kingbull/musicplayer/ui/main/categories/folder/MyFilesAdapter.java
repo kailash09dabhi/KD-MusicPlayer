@@ -12,7 +12,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.FileMusicMap;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Milliseconds;
-import com.kingbull.musicplayer.ui.base.UiColors;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import java.io.File;
 import java.util.List;
 import javax.inject.Inject;
@@ -26,7 +26,7 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
   List<File> files;
   MyFiles.Presenter presenter;
   @Inject FileMusicMap fileMusicMap;
-  private UiColors uiColors = new UiColors();
+  private ColorTheme colorTheme = new ColorTheme.Smart();
 
   public MyFilesAdapter(final List<File> files, MyFiles.Presenter presenter) {
     this.files = files;
@@ -48,17 +48,9 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
     return holder;
   }
 
-  @Override public int getItemViewType(int position) {
-    if (files.get(position).isDirectory()) {
-      return FOLDER;
-    } else {
-      return SONG;
-    }
-  }
-
   @Override public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-    int titleColor = uiColors.titleTextColor().intValue();
-    int bodyColor = uiColors.bodyTextColor().intValue();
+    int titleColor = colorTheme.titleText().intValue();
+    int bodyColor = colorTheme.bodyText().intValue();
     if (viewHolder instanceof FolderFileViewHolder) {
       FolderFileViewHolder holder = (FolderFileViewHolder) viewHolder;
       holder.folderNameView.setText(files.get(position).getName());
@@ -77,6 +69,14 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
       holder.fileNameView.setTextColor(titleColor);
       holder.artistView.setTextColor(bodyColor);
       holder.durationView.setTextColor(bodyColor);
+    }
+  }
+
+  @Override public int getItemViewType(int position) {
+    if (files.get(position).isDirectory()) {
+      return FOLDER;
+    } else {
+      return SONG;
     }
   }
 

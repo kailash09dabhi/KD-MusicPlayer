@@ -20,7 +20,7 @@ import com.kingbull.musicplayer.domain.storage.preferences.PalettePreference;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
-import com.kingbull.musicplayer.ui.base.UiColors;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import java.io.IOException;
@@ -127,7 +127,7 @@ public final class ViewPagerParallax extends ViewPager {
           public void onGenerated(Palette palette) {
             if (palette != null) {
               new PalettePreference().save(palette);
-              window.setBackgroundDrawable(new UiColors().statusBar().asDrawable());
+              window.setBackgroundDrawable(new ColorTheme.Smart().statusBar().asDrawable());
               RxBus.getInstance().post(new PaletteEvent(palette));
             }
           }

@@ -42,7 +42,7 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
   private void setupView(View v) {
     recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    recyclerView.setBackgroundColor(uiColors.screen().intValue());
+    recyclerView.setBackgroundColor(colorTheme.screen().intValue());
     getLoaderManager().initLoader(0, null, this);
   }
 
@@ -53,7 +53,7 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              recyclerView.setBackgroundColor(uiColors.screen().intValue());
+              recyclerView.setBackgroundColor(colorTheme.screen().intValue());
             }
           }
         });

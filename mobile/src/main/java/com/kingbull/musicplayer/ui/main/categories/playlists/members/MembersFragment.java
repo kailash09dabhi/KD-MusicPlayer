@@ -99,8 +99,8 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
   }
 
   private void initializeWithThemeColors() {
-    titleView.setBackgroundColor(uiColors.header().intValue());
-    recyclerView.setBackgroundColor(uiColors.screen().intValue());
+    titleView.setBackgroundColor(colorTheme.header().intValue());
+    recyclerView.setBackgroundColor(colorTheme.screen().intValue());
   }
 
   @Override public void showPlaylistMembers(List<Music> songs) {

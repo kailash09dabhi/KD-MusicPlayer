@@ -94,8 +94,8 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   }
 
   private void applyUiColors() {
-    scrollView.setBackgroundColor(uiColors.screen().intValue());
-    headerLayout.setBackgroundColor(uiColors.header().intValue());
+    scrollView.setBackgroundColor(colorTheme.screen().intValue());
+    headerLayout.setBackgroundColor(colorTheme.header().intValue());
     deepChangeTextColor((ViewGroup) getView());
   }
 
@@ -103,7 +103,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     for (int count = 0; count < parentLayout.getChildCount(); count++) {
       View view = parentLayout.getChildAt(count);
       if (view instanceof TextView) {
-        ((TextView) view).setTextColor(uiColors.titleTextColor().intValue());
+        ((TextView) view).setTextColor(colorTheme.titleText().intValue());
       } else if (view instanceof ViewGroup) {
         deepChangeTextColor((ViewGroup) view);
       }

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.Window;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 
 /**
  * @author Kailash Dabhi
@@ -14,6 +15,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-    getDialog().getWindow().setBackgroundDrawable(new UiColors().dialog().asDrawable());
+    getDialog().getWindow().setBackgroundDrawable(new ColorTheme.Smart().dialog().asDrawable());
   }
 }

@@ -15,7 +15,7 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.event.PlaylistRenameEvent;
 import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
-import com.kingbull.musicplayer.ui.base.UiColors;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 
 /**
  * @author Kailash Dabhi
@@ -55,6 +55,6 @@ public final class PlaylistRenameDialogFragment extends BaseDialogFragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    playlistNameView.setHintTextColor(new UiColors().bodyTextColor().intValue());
+    playlistNameView.setHintTextColor(new ColorTheme.Smart().bodyText().intValue());
   }
 }
