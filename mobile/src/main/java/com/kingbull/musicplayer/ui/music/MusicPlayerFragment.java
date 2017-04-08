@@ -3,7 +3,6 @@ package com.kingbull.musicplayer.ui.music;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
@@ -29,6 +28,7 @@ import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.player.MusicPlayerEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
@@ -174,7 +174,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   }
 
   private void updateUiWithPaletteSwatch(Palette.Swatch darkSwatch, Palette.Swatch lightSwatch) {
-    getActivity().getWindow().setBackgroundDrawable(new ColorDrawable(darkSwatch.getRgb()));
+    new StatusBarColor(new com.kingbull.musicplayer.ui.base.Color(darkSwatch.getRgb())).applyOn(
+        getActivity().getWindow());
     getView().setBackgroundColor(darkSwatch.getRgb());
     nameTextView.setTextColor(lightSwatch.getRgb());
     textViewArtist.setTextColor(lightSwatch.getRgb());
@@ -225,8 +226,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
 
   private void initializeWithThemeColors() {
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new ColorTheme.Smart().screen().intValue());
-    getActivity().getWindow().setBackgroundDrawable(color.dark().toDrawable());
+        new com.kingbull.musicplayer.ui.base.Color(flatTheme.screen().intValue());
+    new StatusBarColor(flatTheme.statusBar()).applyOn(getActivity().getWindow());
     nameTextView.setTextColor(color.light(5).toDrawable().getColor());
     textViewArtist.setTextColor(color.light(5).toDrawable().getColor());
     progressTextView.setTextColor(color.light(5).toDrawable().getColor());

@@ -12,25 +12,19 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatActivity {
-
   private static final int LOADER_ID = 9;
   protected P presenter;
+  protected ColorTheme flatTheme = new ColorTheme.Flat();
   private CompositeDisposable compositeDisposable;
 
   @Override protected void attachBaseContext(Context newBase) {
     super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-  }
-
-  @Override protected void onDestroy() {
-    super.onDestroy();
-    if (compositeDisposable != null) {
-      compositeDisposable.clear();
-    }
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -58,14 +52,6 @@ public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatAct
     return actionBar;
   }
 
-  protected void addDisposable(Disposable disposable) {
-    if (disposable == null) return;
-    if (compositeDisposable == null) {
-      compositeDisposable = new CompositeDisposable();
-    }
-    compositeDisposable.add(disposable);
-  }
-
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     // LoaderCallbacks as an object, so no hint regarding Loader will be leak to the subclasses.
@@ -90,7 +76,12 @@ public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatAct
     addDisposable(subscribeEvents());
   }
 
-  protected abstract void onPresenterPrepared(P presenter);
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    if (compositeDisposable != null) {
+      compositeDisposable.clear();
+    }
+  }
 
   /**
    * Instance of {@link PresenterFactory} use to create a Presenter when needed. This instance
@@ -98,6 +89,16 @@ public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatAct
    * not contain {@link android.app.Activity} context reference since it will be keep on rotations.
    */
   @NonNull protected abstract PresenterFactory<P> presenterFactory();
+
+  protected abstract void onPresenterPrepared(P presenter);
+
+  protected void addDisposable(Disposable disposable) {
+    if (disposable == null) return;
+    if (compositeDisposable == null) {
+      compositeDisposable = new CompositeDisposable();
+    }
+    compositeDisposable.add(disposable);
+  }
 
   protected Disposable subscribeEvents() {
     return null;

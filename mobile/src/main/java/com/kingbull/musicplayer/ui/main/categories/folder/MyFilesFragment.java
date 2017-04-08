@@ -46,9 +46,9 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
   }
 
   private void applyUIColors() {
-    recyclerView.setBackgroundColor(colorTheme.screen().intValue());
-    ((View) directoryPathView.getParent()).setBackgroundColor(colorTheme.tab().intValue());
-    directoryPathView.setTextColor(colorTheme.bodyText().intValue());
+    recyclerView.setBackgroundColor(smartColorTheme.screen().intValue());
+    ((View) directoryPathView.getParent()).setBackgroundColor(smartColorTheme.tab().intValue());
+    directoryPathView.setTextColor(smartColorTheme.bodyText().intValue());
   }
 
   @Override public void onViewStateRestored(@Nullable Bundle savedInstanceState) {

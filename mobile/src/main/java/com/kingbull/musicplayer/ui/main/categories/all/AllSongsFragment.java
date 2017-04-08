@@ -123,7 +123,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
               getLoaderManager().restartLoader(0, null, AllSongsFragment.this);
             } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
               updateDrawableOfButtons(
-                  colorTheme.header().dark(0.01f).transparent(0.16f).intValue());
+                  smartColorTheme.header().dark(0.01f).transparent(0.16f).intValue());
               applyUiColors();
             }
           }
@@ -140,16 +140,16 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   private void applyUiColors() {
-    int headerColor = colorTheme.header().intValue();
+    int headerColor = smartColorTheme.header().intValue();
     recyclerView.setPopupBackgroundColor(Color.WHITE);
     recyclerView.setThumbActiveColor(Color.WHITE);
     recyclerView.setTrackInactiveColor(headerColor);
     recyclerView.setPopupTextColor(headerColor);
     ((View) totalSongLayout.getParent()).setBackgroundColor(headerColor);
-    int screenColor = colorTheme.screen().intValue();
+    int screenColor = smartColorTheme.screen().intValue();
     recyclerView.setBackgroundColor(screenColor);
     allRayMenu.setBackgroundColor(screenColor);
-    searchView.setHintTextColor(colorTheme.bodyText().intValue());
+    searchView.setHintTextColor(smartColorTheme.bodyText().intValue());
   }
 
   @Override protected PresenterFactory<AllSongs.Presenter> presenterFactory() {

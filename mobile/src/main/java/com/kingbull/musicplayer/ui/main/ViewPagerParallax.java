@@ -20,6 +20,7 @@ import com.kingbull.musicplayer.domain.storage.preferences.PalettePreference;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
+import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -56,9 +57,11 @@ public final class ViewPagerParallax extends ViewPager {
 
   private void init() {
     RxBus.getInstance()
-        .toObservable().ofType(ThemeEvent.class)
-        .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<ThemeEvent>() {
-      @Override public void accept(ThemeEvent themeEvent) throws Exception {
+        .toObservable()
+        .ofType(ThemeEvent.class)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<ThemeEvent>() {
+          @Override public void accept(ThemeEvent themeEvent) throws Exception {
             isFlatTheme = new SettingPreferences().isFlatTheme();
             invalidate();
           }
@@ -127,7 +130,7 @@ public final class ViewPagerParallax extends ViewPager {
           public void onGenerated(Palette palette) {
             if (palette != null) {
               new PalettePreference().save(palette);
-              window.setBackgroundDrawable(new ColorTheme.Smart().statusBar().asDrawable());
+              new StatusBarColor(new ColorTheme.Smart().statusBar()).applyOn(window);
               RxBus.getInstance().post(new PaletteEvent(palette));
             }
           }

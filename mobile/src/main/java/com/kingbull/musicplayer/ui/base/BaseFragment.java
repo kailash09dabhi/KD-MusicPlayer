@@ -12,7 +12,8 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class BaseFragment<P extends Mvp.Presenter> extends Fragment {
   private static final int LOADER_ID = 101;
-  protected final ColorTheme colorTheme = new ColorTheme.Smart();
+  protected final ColorTheme smartColorTheme = new ColorTheme.Smart();
+  protected final ColorTheme flatTheme = new ColorTheme.Flat();
   protected P presenter;
   private CompositeDisposable compositeDisposable;
 

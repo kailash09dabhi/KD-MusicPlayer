@@ -1,7 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.genreslist.genre;
 
 import android.database.Cursor;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
@@ -18,9 +17,10 @@ import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
+import com.kingbull.musicplayer.ui.base.Color;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
-import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.base.view.SnappingRecyclerView;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
       }
     });
     coverRecyclerView.setHasFixedSize(true);
-    initiliazeWithThemeColors();
+    initializeWithThemeColors();
     adapter = new MusicRecyclerViewAdapter(songList, this);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(adapter);
@@ -79,21 +79,22 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     });
   }
 
-  private void initiliazeWithThemeColors() {
-    com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new ColorTheme.Smart().screen().intValue());
-    getWindow().setBackgroundDrawable(color.toDrawable());
-    ColorDrawable colorDrawable = color.light().toDrawable();
-    titleView.setBackground(colorDrawable);
-    recyclerView.setBackground(colorDrawable);
-  }
-
-  @Override protected void onPresenterPrepared(Genre.Presenter presenter) {
-    presenter.takeView(this);
+  private void initializeWithThemeColors() {
+    new StatusBarColor(flatTheme.statusBar()).applyOn(getWindow());
+    Color header = flatTheme.header();
+    titleView.setBackgroundColor(header.intValue());
+    recyclerView.setBackgroundColor(header.intValue());
+    Color screen = flatTheme.screen();
+    coverRecyclerView.setBackgroundColor(screen.intValue());
+    songListRayMenu.setBackgroundColor(screen.intValue());
   }
 
   @NonNull @Override protected PresenterFactory presenterFactory() {
     return new PresenterFactory.SongList();
+  }
+
+  @Override protected void onPresenterPrepared(Genre.Presenter presenter) {
+    presenter.takeView(this);
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

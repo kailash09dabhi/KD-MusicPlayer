@@ -30,7 +30,7 @@ import com.kingbull.musicplayer.event.Preset;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
+import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.PresetReverbDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
@@ -78,12 +78,11 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
     titleView.setText("Equalizer Preset".toUpperCase());
     setupRoundKnobButton();
-    com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new ColorTheme.Smart().screen().intValue());
-    getActivity().getWindow().setBackgroundDrawable(color.toDrawable());
-    view.setBackground(color.light().toDrawable());
-    bottomButtonContainer.setBackground(color.toDrawable());
-    ((View) presetButton.getParent()).setBackground(color.toDrawable());
+    com.kingbull.musicplayer.ui.base.Color color = flatTheme.screen();
+    new StatusBarColor(color).applyOn(getActivity().getWindow());
+    view.setBackground(color.toDrawable());
+    bottomButtonContainer.setBackground(flatTheme.header().toDrawable());
+    ((View) presetButton.getParent()).setBackground(flatTheme.header().toDrawable());
     return view;
   }
 

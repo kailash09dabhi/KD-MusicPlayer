@@ -18,6 +18,7 @@ import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
@@ -83,7 +84,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     ColorTheme.Flat colorTheme = new ColorTheme.Flat();
     com.kingbull.musicplayer.ui.base.Color color =
         new com.kingbull.musicplayer.ui.base.Color(colorTheme.statusBar().intValue());
-    getWindow().setBackgroundDrawable(color.toDrawable());
+    new StatusBarColor(color).applyOn(getWindow());
     int headerColor = colorTheme.header().intValue();
     titleView.setBackgroundColor(headerColor);
     recyclerView.setBackgroundColor(headerColor);
@@ -91,12 +92,12 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     artistRayMenu.setBackgroundColor(colorTheme.screen().intValue());
   }
 
-  @Override protected void onPresenterPrepared(Artist.Presenter presenter) {
-    presenter.takeView(this);
-  }
-
   @NonNull @Override protected PresenterFactory presenterFactory() {
     return new PresenterFactory.Artist();
+  }
+
+  @Override protected void onPresenterPrepared(Artist.Presenter presenter) {
+    presenter.takeView(this);
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

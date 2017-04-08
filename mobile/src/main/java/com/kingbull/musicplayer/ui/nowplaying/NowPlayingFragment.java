@@ -22,6 +22,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import github.nisrulz.recyclerviewhelper.RVHItemTouchHelperCallback;
 import java.util.List;
@@ -45,11 +46,13 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
   }
 
   private void setupView(View v) {
+    new StatusBarColor(flatTheme.statusBar()).applyOn(getActivity().getWindow());
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(colorTheme.screen().intValue());
+        new com.kingbull.musicplayer.ui.base.Color(flatTheme.statusBar().intValue());
     v.setBackground(color.light().toDrawable());
     shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, Color.WHITE,
-        colorTheme.statusBar().intValue()));
+        flatTheme.statusBar().intValue()));
+    titleView.setBackgroundColor(flatTheme.header().intValue());
     titleView.setText("Now Playing".toUpperCase());
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
   }

@@ -34,8 +34,8 @@ import com.kingbull.musicplayer.domain.storage.StorageDirectory;
 import com.kingbull.musicplayer.event.CoverArtDownloadedEvent;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
-import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.coverarts.CoverArtsFragment;
 import io.reactivex.Observable;
@@ -55,10 +55,8 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/8/2016.
  */
-
 public final class AlbumActivity extends BaseActivity<Album.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Album.View {
-
   private final int PICK_COVER_ART_GALLERY = 9;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
@@ -170,9 +168,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     super.onCreate(savedInstanceState);
     setContentView(R.layout.fragment_album);
     ButterKnife.bind(this);
-    com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new ColorTheme.Smart().screen().intValue());
-    getWindow().setBackgroundDrawable(color.toDrawable());
+    new StatusBarColor(flatTheme.statusBar()).applyOn(getWindow());
     album = getIntent().getParcelableExtra("album");
     adapter = new MusicRecyclerViewAdapter(songList, this);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -199,12 +195,12 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     showAlbumArt();
   }
 
-  @Override protected void onPresenterPrepared(Album.Presenter presenter) {
-    presenter.takeView(this);
-  }
-
   @NonNull @Override protected PresenterFactory presenterFactory() {
     return new PresenterFactory.Album();
+  }
+
+  @Override protected void onPresenterPrepared(Album.Presenter presenter) {
+    presenter.takeView(this);
   }
 
   @Override protected Disposable subscribeEvents() {
