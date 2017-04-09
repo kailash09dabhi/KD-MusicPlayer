@@ -69,10 +69,6 @@ public interface PlayList {
       name = in.readString();
     }
 
-    @Override public String name() {
-      return name;
-    }
-
     public PlayList.Smart rename(String name) {
       ContentValues values = new ContentValues(1);
       values.put(MediaStore.Audio.Playlists.NAME, name);
@@ -81,6 +77,19 @@ public interface PlayList {
           .update(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, values, "_id=" + playlistId,
               null);
       return new PlayList.Smart(playlistId, name);
+    }
+
+    @Override public String name() {
+      return name;
+    }
+
+    @Override public int describeContents() {
+      return 0;
+    }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+      dest.writeLong(playlistId);
+      dest.writeString(name);
     }
 
     @Override public List<Music> musicList() {
@@ -107,15 +116,6 @@ public interface PlayList {
       return musicList;
     }
 
-    @Override public int describeContents() {
-      return 0;
-    }
-
-    @Override public void writeToParcel(Parcel dest, int flags) {
-      dest.writeLong(playlistId);
-      dest.writeString(name);
-    }
-
     public void addAll(List<? extends Music> musicList) {
       String[] cols = new String[] { "count(*)" };
       Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId);
@@ -134,7 +134,7 @@ public interface PlayList {
             contentValues.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, music.media().mediaId());
             MusicPlayerApp.instance().getContentResolver().insert(uri, contentValues);
           }
-          //MusicPlayerApp.instance().getContentResolver().bulkInsert(uri, contentValues);
+          //MusicPlayerApp.newInstance().getContentResolver().bulkInsert(uri, contentValues);
         }
         cursor.close();
       }
@@ -163,18 +163,18 @@ public interface PlayList {
           .delete(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, where, selectionArgs);
     }
 
+    @Override public int hashCode() {
+      int result = (int) (playlistId ^ (playlistId >>> 32));
+      result = 31 * result + name.hashCode();
+      return result;
+    }
+
     @Override public boolean equals(Object o) {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
       Smart smart = (Smart) o;
       if (playlistId != smart.playlistId) return false;
       return name.equals(smart.name);
-    }
-
-    @Override public int hashCode() {
-      int result = (int) (playlistId ^ (playlistId >>> 32));
-      result = 31 * result + name.hashCode();
-      return result;
     }
   }
 }

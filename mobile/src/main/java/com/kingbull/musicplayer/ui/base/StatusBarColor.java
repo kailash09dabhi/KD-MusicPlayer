@@ -9,9 +9,13 @@ import android.view.WindowManager;
  * @date 4/8/2017
  */
 public final class StatusBarColor {
-  private final Color color;
+  private final int color;
 
   public StatusBarColor(Color color) {
+    this.color = color.intValue();
+  }
+
+  public StatusBarColor(int color) {
     this.color = color;
   }
 
@@ -19,7 +23,11 @@ public final class StatusBarColor {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       //not needed if we set <item name="android:windowDrawsSystemBarBackgrounds">true</item> in style
       window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-      window.setStatusBarColor(color.intValue());
+      window.setStatusBarColor(color);
     }
+  }
+
+  public int intValue() {
+    return color;
   }
 }

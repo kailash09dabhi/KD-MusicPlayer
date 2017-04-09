@@ -33,6 +33,14 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
 
+  public static NowPlayingFragment newInstance(int statusBarColor) {
+    NowPlayingFragment nowPlayingFragment = new NowPlayingFragment();
+    Bundle bundle = new Bundle();
+    bundle.putInt("statusBarColor", statusBarColor);
+    nowPlayingFragment.setArguments(bundle);
+    return nowPlayingFragment;
+  }
+
   @OnClick(R.id.shuffleButton) void onShuffleClick() {
     presenter.onShuffleClick();
   }
@@ -55,6 +63,12 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
     titleView.setBackgroundColor(flatTheme.header().intValue());
     titleView.setText("Now Playing".toUpperCase());
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+  }
+
+  @Override public void onDestroyView() {
+    new StatusBarColor(getArguments().getInt("statusBarColor", 0)).applyOn(
+        getActivity().getWindow());
+    super.onDestroyView();
   }
 
   @Override protected PresenterFactory<NowPlaying.Presenter> presenterFactory() {

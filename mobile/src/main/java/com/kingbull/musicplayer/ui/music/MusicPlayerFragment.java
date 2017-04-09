@@ -30,7 +30,6 @@ import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
-import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
 import com.kingbull.musicplayer.ui.music.widget.ShadowImageView;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
@@ -52,8 +51,9 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @BindView(R.id.button_play_mode_toggle) PlayModeToggleView playModeToggleView;
   @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
   @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
+  StatusBarColor statusBarColor;
 
-  public static MusicPlayerFragment instance() {
+  public static MusicPlayerFragment newInstance() {
     MusicPlayerFragment fragment = new MusicPlayerFragment();
     return fragment;
   }
@@ -64,7 +64,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
 
   @OnClick(R.id.nowPlayingView) void onNowPlayingClick() {
     getFragmentManager().beginTransaction()
-        .add(android.R.id.content, new NowPlayingFragment())
+        .add(android.R.id.content, NowPlayingFragment.newInstance(statusBarColor.intValue()))
         .addToBackStack(NowPlayingFragment.class.getSimpleName())
         .commit();
   }
@@ -82,12 +82,9 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    int fillColor = new ColorTheme.Smart().statusBar().intValue();
-    equalizerView.setImageDrawable(
-        new IconDrawable(R.drawable.ic_equalizer, Color.WHITE, fillColor));
-    nowPlayingView.setImageDrawable(
-        new IconDrawable(R.drawable.ic_queue_music, Color.WHITE, fillColor));
-    initializeWithThemeColors();
+    com.kingbull.musicplayer.ui.base.Color color =
+        new com.kingbull.musicplayer.ui.base.Color(flatTheme.screen().intValue());
+    applyColorTheme(flatTheme.header().intValue(), color.light(5).toDrawable().getColor());
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -153,11 +150,13 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
                   Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();
                   Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
                   if (darkMutedSwatch != null && lightMutedSwatch != null) {
-                    updateUiWithPaletteSwatch(darkMutedSwatch, lightMutedSwatch);
+                    applyColorTheme(darkMutedSwatch.getRgb(), lightMutedSwatch.getRgb());
                   } else if (darkVibrantSwatch != null && lightVibrantSwatch != null) {
-                    updateUiWithPaletteSwatch(darkVibrantSwatch, lightVibrantSwatch);
+                    applyColorTheme(darkVibrantSwatch.getRgb(), lightVibrantSwatch.getRgb());
                   } else if (vibrantSwatch != null && mutedSwatch != null) {
-                    updateUiWithPaletteSwatch(vibrantSwatch, mutedSwatch);
+                    applyColorTheme(vibrantSwatch.getRgb(), mutedSwatch.getRgb());
+                  } else {
+                    applyColorTheme(flatTheme.header().intValue(), flatTheme.bodyText().intValue());
                   }
                 }
               }
@@ -171,16 +170,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.updateMusic(song);
     albumImageView.startRotateAnimation();
     seekBarProgress.startProgresssAnimation();
-  }
-
-  private void updateUiWithPaletteSwatch(Palette.Swatch darkSwatch, Palette.Swatch lightSwatch) {
-    new StatusBarColor(new com.kingbull.musicplayer.ui.base.Color(darkSwatch.getRgb())).applyOn(
-        getActivity().getWindow());
-    getView().setBackgroundColor(darkSwatch.getRgb());
-    nameTextView.setTextColor(lightSwatch.getRgb());
-    textViewArtist.setTextColor(lightSwatch.getRgb());
-    progressTextView.setTextColor(lightSwatch.getRgb());
-    durationTextView.setTextColor(lightSwatch.getRgb());
   }
 
   @Override public void updatePlayMode(MusicMode musicMode) {
@@ -224,14 +213,18 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.startProgresssAnimation();
   }
 
-  private void initializeWithThemeColors() {
-    com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(flatTheme.screen().intValue());
-    new StatusBarColor(flatTheme.statusBar()).applyOn(getActivity().getWindow());
-    nameTextView.setTextColor(color.light(5).toDrawable().getColor());
-    textViewArtist.setTextColor(color.light(5).toDrawable().getColor());
-    progressTextView.setTextColor(color.light(5).toDrawable().getColor());
-    durationTextView.setTextColor(color.light(5).toDrawable().getColor());
+  private void applyColorTheme(int darkColor, int lightColor) {
+    statusBarColor = new StatusBarColor(new com.kingbull.musicplayer.ui.base.Color(darkColor));
+    statusBarColor.applyOn(getActivity().getWindow());
+    getView().setBackgroundColor(darkColor);
+    nameTextView.setTextColor(lightColor);
+    textViewArtist.setTextColor(lightColor);
+    progressTextView.setTextColor(lightColor);
+    durationTextView.setTextColor(lightColor);
+    equalizerView.setImageDrawable(
+        new IconDrawable(R.drawable.ic_equalizer, Color.WHITE, darkColor));
+    nowPlayingView.setImageDrawable(
+        new IconDrawable(R.drawable.ic_queue_music, Color.WHITE, darkColor));
   }
 
   @OnClick(R.id.button_play_toggle) public void onPlayToggleAction(View view) {

@@ -41,9 +41,7 @@ import static com.kingbull.musicplayer.R.drawable.rotoron;
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * **************************************************************************
  */
-
 public final class RoundKnobButton extends RelativeLayout implements OnGestureListener {
-
   ImageView ivBack;
   int imageRes[] = {
       R.drawable.stator1, R.drawable.stator2, R.drawable.stator3, R.drawable.stator4,
@@ -83,17 +81,13 @@ public final class RoundKnobButton extends RelativeLayout implements OnGestureLi
     ivRotor.setImageResource(rotoron);
   }
 
-  public void addRotationListener(RoundKnobButtonListener l) {
-    m_listener = l;
-  }
-
   public void SetState(boolean state) {
     mState = state;
     ivRotor.setImageResource(state ? rotoron : rotoroff);
   }
 
-  private float cartesianToPolar(float x, float y) {
-    return (float) -Math.toDegrees(Math.atan2(x - 0.5f, y - 0.5f));
+  public void addRotationListener(RoundKnobButtonListener l) {
+    m_listener = l;
   }
 
   @Override public boolean onTouchEvent(MotionEvent event) {
@@ -104,11 +98,22 @@ public final class RoundKnobButton extends RelativeLayout implements OnGestureLi
     }
   }
 
+  public void setBackgroundResource(@DrawableRes int resId) {
+    ivBack.setImageResource(resId);
+  }
+
   public boolean onDown(MotionEvent event) {
     float x = event.getX() / ((float) getWidth());
     float y = event.getY() / ((float) getHeight());
     mAngleDown = cartesianToPolar(1 - x, 1 - y);// 1- to correct our custom axis direction
     return true;
+  }
+
+  private float cartesianToPolar(float x, float y) {
+    return (float) -Math.toDegrees(Math.atan2(x - 0.5f, y - 0.5f));
+  }
+
+  public void onShowPress(MotionEvent e) {
   }
 
   public boolean onSingleTapUp(MotionEvent e) {
@@ -123,21 +128,6 @@ public final class RoundKnobButton extends RelativeLayout implements OnGestureLi
       if (m_listener != null) m_listener.onStateChange(mState);
     }
     return true;
-  }
-
-  public void setRotorPosAngle(float deg) {
-    if (deg >= 210 || deg <= 150) {
-      if (deg > 180) deg = deg - 360;
-      Matrix matrix = new Matrix();
-      matrix.postRotate((float) deg, getWidth() / 2, getHeight() / 2);
-      ivRotor.animate().rotation(deg).setDuration(0).start();
-    }
-  }
-
-  public void setRotorPercentage(int percentage) {
-    int posDegree = percentage * 3 - 150;
-    if (posDegree < 0) posDegree = 360 + posDegree;
-    setRotorPosAngle(posDegree);
   }
 
   public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
@@ -168,18 +158,26 @@ public final class RoundKnobButton extends RelativeLayout implements OnGestureLi
     }
   }
 
-  public void onShowPress(MotionEvent e) {
+  public void onLongPress(MotionEvent e) {
   }
 
   public boolean onFling(MotionEvent arg0, MotionEvent arg1, float arg2, float arg3) {
     return false;
   }
 
-  public void onLongPress(MotionEvent e) {
+  public void setRotorPosAngle(float deg) {
+    if (deg >= 210 || deg <= 150) {
+      if (deg > 180) deg = deg - 360;
+      Matrix matrix = new Matrix();
+      matrix.postRotate(deg, getWidth() / 2, getHeight() / 2);
+      ivRotor.animate().rotation(deg).setDuration(0).start();
+    }
   }
 
-  public void setBackgroundResource(@DrawableRes int resId) {
-    ivBack.setImageResource(resId);
+  public void setRotorPercentage(int percentage) {
+    int posDegree = percentage * 3 - 150;
+    if (posDegree < 0) posDegree = 360 + posDegree;
+    setRotorPosAngle(posDegree);
   }
 
   interface RoundKnobButtonListener {

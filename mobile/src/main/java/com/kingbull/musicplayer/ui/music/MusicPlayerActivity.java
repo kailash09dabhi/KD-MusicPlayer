@@ -16,16 +16,16 @@ public final class MusicPlayerActivity extends BaseActivity<MusicPlayer.Presente
     super.onCreate(savedInstanceState);
     if (savedInstanceState == null) {
       getSupportFragmentManager().beginTransaction()
-          .add(android.R.id.content, MusicPlayerFragment.instance(),
+          .add(android.R.id.content, MusicPlayerFragment.newInstance(),
               MusicPlayerFragment.class.getSimpleName())
           .commit();
     }
   }
 
-  @Override protected void onPresenterPrepared(MusicPlayer.Presenter presenter) {
-  }
-
   @NonNull @Override protected PresenterFactory presenterFactory() {
     return new PresenterFactory.MusicPlayer();
+  }
+
+  @Override protected void onPresenterPrepared(MusicPlayer.Presenter presenter) {
   }
 }
