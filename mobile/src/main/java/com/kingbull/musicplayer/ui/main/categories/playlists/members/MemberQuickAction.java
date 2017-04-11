@@ -1,12 +1,14 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists.members;
 
 import android.app.Activity;
-import android.support.v4.content.ContextCompat;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.Toast;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.quickaction.ActionItem;
 import com.kingbull.musicplayer.ui.base.musiclist.quickaction.QuickAction;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 
 /**
  * @author Kailash Dabhi
@@ -27,18 +29,19 @@ public final class MemberQuickAction {
   public MemberQuickAction(final Activity activity, boolean hasDeleteOption) {
     this.activity = activity;
     this.hasDeleteOption = hasDeleteOption;
+    int fillColor = new ColorTheme.Flat().header().intValue();
     final ActionItem playItem = new ActionItem(ID_PLAY, "Play",
-        ContextCompat.getDrawable(activity, R.drawable.composer_button_play));
+        new IconDrawable(R.drawable.ic_play_48dp, Color.WHITE, fillColor));
     final ActionItem addToPlaylistItem = new ActionItem(ID_MOVE_TO, "Move To",
-        ContextCompat.getDrawable(activity, R.drawable.composer_button_multiselect));
+        new IconDrawable(R.drawable.ic_playlist_add_48dp, Color.WHITE, fillColor));
     final ActionItem editTagsItem = new ActionItem(ID_EDIT_TAGS, "Edit Tags",
-        ContextCompat.getDrawable(activity, R.drawable.composer_button_sort));
+        new IconDrawable(R.drawable.ic_edit_48dp, Color.WHITE, fillColor));
     final ActionItem setAsRingtoneItem = new ActionItem(ID_RINGTONE, "Set As Ringtone",
-        ContextCompat.getDrawable(activity, R.drawable.composer_button_shuffle));
+        new IconDrawable(R.drawable.ic_ringtone_48dp, Color.WHITE, fillColor));
     final ActionItem deleteItem = new ActionItem(ID_DELETE, "Delete from playlist",
-        ContextCompat.getDrawable(activity, R.drawable.composer_button_delete));
+        new IconDrawable(R.drawable.ic_delete_48dp, Color.WHITE, fillColor));
     final ActionItem sendItem = new ActionItem(ID_SEND, "Send",
-        ContextCompat.getDrawable(activity, R.drawable.composer_button_queue));
+        new IconDrawable(R.drawable.ic_send_48dp, Color.WHITE, fillColor));
     //use setSticky(true) to disable QuickAction dialog being dismissed after an item is clicked
     quickAction = new QuickAction(activity);
     //setup the action item click listener

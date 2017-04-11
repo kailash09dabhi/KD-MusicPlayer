@@ -2,7 +2,6 @@ package com.kingbull.musicplayer.ui.base.musiclist.quickaction;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
@@ -29,15 +28,15 @@ public final class MusicQuickAction {
     this.activity = activity;
     int fillColor = new ColorTheme.Flat().header().intValue();
     final ActionItem playItem = new ActionItem(ID_PLAY, "Play",
-        ContextCompat.getDrawable(activity, R.drawable.ic_play));
+        new IconDrawable(R.drawable.ic_play_48dp, Color.WHITE, fillColor));
     final ActionItem addToPlaylistItem = new ActionItem(ID_PLAYLIST, "Add To PlayList",
         new IconDrawable(R.drawable.ic_playlist_add_48dp, Color.WHITE, fillColor));
     ActionItem editTagsItem = new ActionItem(ID_EDIT_TAGS, "Edit Tags",
         new IconDrawable(R.drawable.ic_edit_48dp, Color.WHITE, fillColor));
     ActionItem statisticsItem = new ActionItem(ID_STATISTICS, "Statistics",
-        ContextCompat.getDrawable(activity, R.drawable.composer_icn_search));
+        new IconDrawable(R.drawable.ic_info_outline_48dp, Color.WHITE, fillColor));
     final ActionItem setAsRingtoneItem = new ActionItem(ID_RINGTONE, "Set As Ringtone",
-        ContextCompat.getDrawable(activity, R.drawable.composer_button_shuffle));
+        new IconDrawable(R.drawable.ic_ringtone_48dp, Color.WHITE, fillColor));
     final ActionItem deleteItem = new ActionItem(ID_DELETE, "Delete",
         new IconDrawable(R.drawable.ic_delete_48dp, Color.WHITE, fillColor));
     ActionItem sendItem = new ActionItem(ID_SEND, "Send",

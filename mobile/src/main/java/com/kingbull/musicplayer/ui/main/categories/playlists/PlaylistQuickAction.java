@@ -1,12 +1,14 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists;
 
 import android.app.Activity;
-import android.support.v4.content.ContextCompat;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.Toast;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.quickaction.ActionItem;
 import com.kingbull.musicplayer.ui.base.musiclist.quickaction.QuickAction;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 
 /**
  * @author Kailash Dabhi
@@ -21,10 +23,11 @@ public final class PlaylistQuickAction {
 
   public PlaylistQuickAction(final Activity activity) {
     this.activity = activity;
+    int fillColor = new ColorTheme.Flat().header().intValue();
     final ActionItem renameItem = new ActionItem(ID_RENAME, "Rename",
-        ContextCompat.getDrawable(activity, R.drawable.composer_button_play));
+        new IconDrawable(R.drawable.ic_edit_48dp, Color.WHITE, fillColor));
     final ActionItem deleteItem = new ActionItem(ID_DELETE, "Delete",
-        ContextCompat.getDrawable(activity, R.drawable.composer_button_delete));
+        new IconDrawable(R.drawable.ic_delete_48dp, Color.WHITE, fillColor));
     //use setSticky(true) to disable QuickAction dialog being dismissed after an item is clicked
     quickAction = new QuickAction(activity);
     //setup the action item click listener

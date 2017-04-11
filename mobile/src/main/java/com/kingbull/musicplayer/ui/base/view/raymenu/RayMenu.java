@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.ui.base.view.raymenu;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,10 +17,11 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 
 public class RayMenu extends RelativeLayout {
   private com.kingbull.musicplayer.ui.base.view.raymenu.RayLayout mRayLayout;
-
   private ImageView mHintView;
 
   public RayMenu(Context context) {
@@ -27,45 +29,19 @@ public class RayMenu extends RelativeLayout {
     init(context);
   }
 
-  public RayMenu(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    init(context);
-  }
-
-  private static Animation createItemDisapperAnimation(final long duration,
-      final boolean isClicked) {
-    AnimationSet animationSet = new AnimationSet(true);
-    animationSet.addAnimation(
-        new ScaleAnimation(1.0f, isClicked ? 2.0f : 0.0f, 1.0f, isClicked ? 2.0f : 0.0f,
-            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f));
-    animationSet.addAnimation(new AlphaAnimation(1.0f, 0.0f));
-    animationSet.setDuration(duration);
-    animationSet.setInterpolator(new DecelerateInterpolator());
-    animationSet.setFillAfter(true);
-    return animationSet;
-  }
-
-  private static Animation createHintSwitchAnimation(final boolean expanded) {
-    Animation animation =
-        new RotateAnimation(expanded ? 45 : 0, expanded ? 0 : 45, Animation.RELATIVE_TO_SELF, 0.5f,
-            Animation.RELATIVE_TO_SELF, 0.5f);
-    animation.setStartOffset(0);
-    animation.setDuration(400);
-    animation.setInterpolator(new DecelerateInterpolator());
-    animation.setFillAfter(true);
-    return animation;
-  }
-
   private void init(Context context) {
     setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
     setClipChildren(false);
     LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     li.inflate(R.layout.ray_menu, this);
-    mRayLayout = (com.kingbull.musicplayer.ui.base.view.raymenu.RayLayout) findViewById(R.id.item_layout);
+    mRayLayout =
+        (com.kingbull.musicplayer.ui.base.view.raymenu.RayLayout) findViewById(R.id.item_layout);
     final ViewGroup controlLayout = (ViewGroup) findViewById(R.id.control_layout);
+    final ImageView hintView = (ImageView) findViewById(R.id.control_hint);
+    int fillColor = new ColorTheme.Flat().header().intValue();
+    hintView.setImageDrawable(new IconDrawable(R.drawable.ic_add_48dp, Color.WHITE, fillColor));
     controlLayout.setClickable(true);
     controlLayout.setOnTouchListener(new OnTouchListener() {
-
       @Override public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
           mHintView.startAnimation(createHintSwitchAnimation(mRayLayout.isExpanded()));
@@ -82,6 +58,22 @@ public class RayMenu extends RelativeLayout {
     }, 300);
   }
 
+  private static Animation createHintSwitchAnimation(final boolean expanded) {
+    Animation animation =
+        new RotateAnimation(expanded ? 45 : 0, expanded ? 0 : 45, Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f);
+    animation.setStartOffset(0);
+    animation.setDuration(400);
+    animation.setInterpolator(new DecelerateInterpolator());
+    animation.setFillAfter(true);
+    return animation;
+  }
+
+  public RayMenu(Context context, AttributeSet attrs) {
+    super(context, attrs);
+    init(context);
+  }
+
   public void expand(boolean withAnimation) {
     mRayLayout.switchState(withAnimation);
   }
@@ -93,24 +85,21 @@ public class RayMenu extends RelativeLayout {
 
   private OnClickListener getItemClickListener(final OnClickListener listener) {
     return new OnClickListener() {
-
       @Override public void onClick(final View viewClicked) {
         Animation animation = bindItemAnimation(viewClicked, true, 400);
         animation.setAnimationListener(new AnimationListener() {
-
           @Override public void onAnimationStart(Animation animation) {
-          }
-
-          @Override public void onAnimationRepeat(Animation animation) {
           }
 
           @Override public void onAnimationEnd(Animation animation) {
             postDelayed(new Runnable() {
-
               @Override public void run() {
                 itemDidDisappear();
               }
             }, 0);
+          }
+
+          @Override public void onAnimationRepeat(Animation animation) {
           }
         });
         final int itemCount = mRayLayout.getChildCount();
@@ -143,5 +132,18 @@ public class RayMenu extends RelativeLayout {
       item.clearAnimation();
     }
     mRayLayout.switchState(false);
+  }
+
+  private static Animation createItemDisapperAnimation(final long duration,
+      final boolean isClicked) {
+    AnimationSet animationSet = new AnimationSet(true);
+    animationSet.addAnimation(
+        new ScaleAnimation(1.0f, isClicked ? 2.0f : 0.0f, 1.0f, isClicked ? 2.0f : 0.0f,
+            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f));
+    animationSet.addAnimation(new AlphaAnimation(1.0f, 0.0f));
+    animationSet.setDuration(duration);
+    animationSet.setInterpolator(new DecelerateInterpolator());
+    animationSet.setFillAfter(true);
+    return animationSet;
   }
 }

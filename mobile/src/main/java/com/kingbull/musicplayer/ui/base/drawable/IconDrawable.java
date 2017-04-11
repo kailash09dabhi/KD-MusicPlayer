@@ -22,7 +22,7 @@ public final class IconDrawable extends LayerDrawable {
     setLayerInset(1, dp5, dp5, dp5, dp5);
   }
 
-  private static int dpToPx(float dipValue) {
+  public static int dpToPx(float dipValue) {
     DisplayMetrics metrics = MusicPlayerApp.instance().getResources().getDisplayMetrics();
     return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
   }
