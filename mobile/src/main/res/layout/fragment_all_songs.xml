@@ -99,10 +99,6 @@
         android:textColorHint="@color/colorAccent" />
     </LinearLayout>
   </FrameLayout>
-  <!--<RelativeLayout-->
-  <!--android:layout_width="match_parent"-->
-  <!--android:layout_height="0dp"-->
-  <!--android:layout_weight="1">-->
   <com.jaredrummler.fastscrollrecyclerview.FastScrollRecyclerView
     android:id="@+id/recyclerView"
     android:layout_width="match_parent"
@@ -120,18 +116,4 @@
     app:fastScrollPopupTextColor="@android:color/white"
     app:fastScrollThumbActiveColor="?attr/colorAccent"
     app:fastScrollThumbInactiveColor="?attr/colorAccent" />
-  <!--</RelativeLayout>-->
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clipChildren="true"
-    android:orientation="horizontal">
-
-    <com.kingbull.musicplayer.ui.main.categories.all.AllRayMenu
-      android:id="@+id/allRayMenu"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:paddingLeft="5dp"
-      android:paddingRight="?android:attr/listPreferredItemPaddingLeft" />
-  </LinearLayout>
 </LinearLayout>

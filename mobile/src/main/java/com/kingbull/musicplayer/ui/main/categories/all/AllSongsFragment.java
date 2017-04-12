@@ -61,7 +61,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   private final SlideHorizontal.Animation slideAnimation = new SlideHorizontal.Animation();
   @BindView(R.id.totalSongCountView) TextView totalSongCountView;
   @BindView(R.id.recyclerView) FastScrollRecyclerView recyclerView;
-  @BindView(R.id.allRayMenu) AllRayMenu allRayMenu;
   @BindView(R.id.totalSongLayout) LinearLayout totalSongLayout;
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.searchButton) ImageView searchButton;
@@ -81,7 +80,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   private final SlideHorizontal.Listener.Default slideAllRayMenuAnimationListener =
       new SlideHorizontal.Listener.Default() {
         @Override public void onOutAnimationFinished() {
-          allRayMenu.setVisibility(View.GONE);
           searchView.startAnimation(
               AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_in_left));
         }
@@ -148,7 +146,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     ((View) totalSongLayout.getParent()).setBackgroundColor(headerColor);
     int screenColor = smartColorTheme.screen().intValue();
     recyclerView.setBackgroundColor(screenColor);
-    allRayMenu.setBackgroundColor(screenColor);
     searchView.setHintTextColor(smartColorTheme.bodyText().intValue());
   }
 
@@ -197,33 +194,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
             hideSelectionContextOptions();
           }
         });
-    allRayMenu.addOnMenuClickListener(new AllRayMenu.OnMenuClickListener() {
-      @Override public void onSearchMenuClick() {
-        slideAnimation.animateOut(allRayMenu, new SlideHorizontal.Listener.Default() {
-          @Override public void onOutAnimationFinished() {
-            allRayMenu.setVisibility(View.GONE);
-            searchView.startAnimation(
-                AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_in_left));
-          }
-        });
-      }
-
-      @Override public void onShuffleMenuClick() {
-        presenter.onShuffleMenuClick();
-      }
-
-      @Override public void onSettingsMenuClick() {
-        presenter.onSettingsMenuClick();
-      }
-
-      @Override public void onAddToPlaylistMenuClick() {
-        presenter.onAddToPlayListMenuClick();
-      }
-
-      @Override public void onSortMenuClick() {
-        presenter.onSortMenuClick();
-      }
-    });
     updateDrawableOfButtons(Color.BLACK);
   }
 

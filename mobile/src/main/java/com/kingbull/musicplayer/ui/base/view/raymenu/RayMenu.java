@@ -53,13 +53,13 @@ public class RayMenu extends RelativeLayout {
       @Override public void run() {
         mRayLayout.switchState(true);
       }
-    }, 300);
+    }, 800);
     postDelayed(new Runnable() {
       @Override public void run() {
         int fillColor = new ColorTheme.Flat().header().intValue();
         hintView.setImageDrawable(new IconDrawable(R.drawable.ic_add_48dp, Color.WHITE, fillColor));
       }
-    }, 1000);
+    }, 700);
   }
 
   private static Animation createHintSwitchAnimation(final boolean expanded) {

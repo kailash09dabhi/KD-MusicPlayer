@@ -32,7 +32,7 @@ public final class SongListRayMenu extends com.kingbull.musicplayer.ui.base.view
     int fillColor = new ColorTheme.Flat().header().intValue();
     for (int i = 0; i < itemCount; i++) {
       ImageView item = new ImageView(getContext());
-      int dp4 = IconDrawable.dpToPx(1);
+      int dp4 = IconDrawable.dpToPx(2);
       item.setPadding(dp4, dp4, dp4, dp4);
       if (MENUS[i] == ADD_TO_PLAYLIST) {
         item.setImageDrawable(
