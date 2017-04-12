@@ -38,8 +38,6 @@ public class RayMenu extends RelativeLayout {
         (com.kingbull.musicplayer.ui.base.view.raymenu.RayLayout) findViewById(R.id.item_layout);
     final ViewGroup controlLayout = (ViewGroup) findViewById(R.id.control_layout);
     final ImageView hintView = (ImageView) findViewById(R.id.control_hint);
-    int fillColor = new ColorTheme.Flat().header().intValue();
-    hintView.setImageDrawable(new IconDrawable(R.drawable.ic_add_48dp, Color.WHITE, fillColor));
     controlLayout.setClickable(true);
     controlLayout.setOnTouchListener(new OnTouchListener() {
       @Override public boolean onTouch(View v, MotionEvent event) {
@@ -56,6 +54,12 @@ public class RayMenu extends RelativeLayout {
         mRayLayout.switchState(true);
       }
     }, 300);
+    postDelayed(new Runnable() {
+      @Override public void run() {
+        int fillColor = new ColorTheme.Flat().header().intValue();
+        hintView.setImageDrawable(new IconDrawable(R.drawable.ic_add_48dp, Color.WHITE, fillColor));
+      }
+    }, 1000);
   }
 
   private static Animation createHintSwitchAnimation(final boolean expanded) {
@@ -95,6 +99,12 @@ public class RayMenu extends RelativeLayout {
             postDelayed(new Runnable() {
               @Override public void run() {
                 itemDidDisappear();
+                postDelayed(new Runnable() {
+                  @Override public void run() {
+                    mHintView.startAnimation(createHintSwitchAnimation(mRayLayout.isExpanded()));
+                    mRayLayout.switchState(true);
+                  }
+                }, 400);
               }
             }, 0);
           }
