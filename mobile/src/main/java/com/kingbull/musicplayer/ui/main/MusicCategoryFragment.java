@@ -74,7 +74,7 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
 
   private void setupPagerTitleStrip() {
     Typeface localTypeface =
-        Typeface.createFromAsset(getContext().getAssets(), "fonts/julius-sans-one" + ".ttf");
+        Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_title));
     for (int i = 0; i < pagerTitleStrip.getChildCount(); i++) {
       if ((pagerTitleStrip.getChildAt(i) instanceof TextView)) {
         final TextView titleView = ((TextView) pagerTitleStrip.getChildAt(i));

@@ -29,7 +29,6 @@ import com.kingbull.musicplayer.domain.storage.StorageDirectory;
 import com.kingbull.musicplayer.event.CoverArtDownloadedEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -111,7 +110,7 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
 
   private void initializeWithThemeColors(View v) {
     com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(new ColorTheme.Smart().screen().intValue());
+        new com.kingbull.musicplayer.ui.base.Color(flatTheme.screen().intValue());
     titleView.setBackground(color.light().toDrawable());
     v.setBackground(color.toDrawable());
     searchLayout.setBackground(color.light().toDrawable());

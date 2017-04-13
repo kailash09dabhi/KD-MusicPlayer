@@ -93,18 +93,18 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
         View tabViewChild = tabViewGroup.getChildAt(i);
         if (tabViewChild instanceof TextView) {
           ((TextView) tabViewChild).setTypeface(
-              Typeface.createFromAsset(getAssets(), getString(R.string.font_julius_sans_one)),
+              Typeface.createFromAsset(getAssets(), getString(R.string.font_title)),
               Typeface.BOLD);
         }
       }
     }
   }
 
-  @Override protected void onPresenterPrepared(Artist.Presenter presenter) {
-  }
-
   @NonNull @Override protected PresenterFactory presenterFactory() {
     return new PresenterFactory.Artist();
+  }
+
+  @Override protected void onPresenterPrepared(Artist.Presenter presenter) {
   }
 
   @Override protected Disposable subscribeEvents() {

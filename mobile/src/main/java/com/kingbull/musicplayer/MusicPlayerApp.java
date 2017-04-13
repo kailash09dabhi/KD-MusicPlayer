@@ -33,7 +33,7 @@ public final class MusicPlayerApp extends Application {
     application = this;
     // Custom fonts
     CalligraphyConfig.initDefault(
-        new CalligraphyConfig.Builder().setDefaultFontPath("fonts/JosefinSans-Regular.ttf")
+        new CalligraphyConfig.Builder().setDefaultFontPath(getString(R.string.font_body))
             .setFontAttrId(R.attr.fontPath)
             .build());
     injectDependencies();

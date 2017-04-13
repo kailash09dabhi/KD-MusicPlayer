@@ -42,6 +42,6 @@ final class MusicCategoryPagerAdapter extends FragmentPagerAdapter {
   }
 
   @Override public CharSequence getPageTitle(int position) {
-    return tabs[position];
+    return tabs[position].toUpperCase();
   }
 }
