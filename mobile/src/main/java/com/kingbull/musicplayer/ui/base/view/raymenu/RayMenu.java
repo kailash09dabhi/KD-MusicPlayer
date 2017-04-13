@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
@@ -90,37 +89,8 @@ public class RayMenu extends RelativeLayout {
   private OnClickListener getItemClickListener(final OnClickListener listener) {
     return new OnClickListener() {
       @Override public void onClick(final View viewClicked) {
-        Animation animation = bindItemAnimation(viewClicked, true, 400);
-        animation.setAnimationListener(new AnimationListener() {
-          @Override public void onAnimationStart(Animation animation) {
-          }
-
-          @Override public void onAnimationEnd(Animation animation) {
-            postDelayed(new Runnable() {
-              @Override public void run() {
-                itemDidDisappear();
-                postDelayed(new Runnable() {
-                  @Override public void run() {
-                    mHintView.startAnimation(createHintSwitchAnimation(mRayLayout.isExpanded()));
-                    mRayLayout.switchState(true);
-                  }
-                }, 400);
-              }
-            }, 0);
-          }
-
-          @Override public void onAnimationRepeat(Animation animation) {
-          }
-        });
-        final int itemCount = mRayLayout.getChildCount();
-        for (int i = 0; i < itemCount; i++) {
-          View item = mRayLayout.getChildAt(i);
-          if (viewClicked != item) {
-            bindItemAnimation(item, false, 300);
-          }
-        }
+        bindItemAnimation(viewClicked, true, 400);
         mRayLayout.invalidate();
-        mHintView.startAnimation(createHintSwitchAnimation(true));
         if (listener != null) {
           listener.onClick(viewClicked);
         }
@@ -135,15 +105,6 @@ public class RayMenu extends RelativeLayout {
     return animation;
   }
 
-  private void itemDidDisappear() {
-    final int itemCount = mRayLayout.getChildCount();
-    for (int i = 0; i < itemCount; i++) {
-      View item = mRayLayout.getChildAt(i);
-      item.clearAnimation();
-    }
-    mRayLayout.switchState(false);
-  }
-
   private static Animation createItemDisapperAnimation(final long duration,
       final boolean isClicked) {
     AnimationSet animationSet = new AnimationSet(true);
@@ -153,7 +114,7 @@ public class RayMenu extends RelativeLayout {
     animationSet.addAnimation(new AlphaAnimation(1.0f, 0.0f));
     animationSet.setDuration(duration);
     animationSet.setInterpolator(new DecelerateInterpolator());
-    animationSet.setFillAfter(true);
+    animationSet.setFillAfter(false);
     return animationSet;
   }
 }
