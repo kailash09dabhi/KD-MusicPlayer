@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="font.title">fonts/julius-sans-one.ttf</string><!--public domain -->
-  <string name="font.body">fonts/Roboto-Light.ttf</string><!--public domain-->
+  <string name="font.body">fonts/Ubuntu-L.ttf</string><!--public domain-->
 </resources>
