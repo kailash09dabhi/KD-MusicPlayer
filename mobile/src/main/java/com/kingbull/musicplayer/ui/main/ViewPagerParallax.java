@@ -63,6 +63,11 @@ public final class ViewPagerParallax extends ViewPager {
         .subscribe(new Consumer<ThemeEvent>() {
           @Override public void accept(ThemeEvent themeEvent) throws Exception {
             isFlatTheme = new SettingPreferences().isFlatTheme();
+            if (isFlatTheme) {
+              setBackgroundColor(new ColorTheme.Flat().header().light(0.25f).intValue());
+            } else {
+              setBackgroundColor(0);
+            }
             invalidate();
           }
         });
