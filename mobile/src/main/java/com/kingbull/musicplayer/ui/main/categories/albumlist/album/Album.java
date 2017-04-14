@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.ui.main.categories.albumlist.album;
 
 import android.database.Cursor;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.util.List;
 
@@ -21,6 +22,12 @@ public interface Album {
     void gotoGalleryScreen();
 
     void gotoInternetCoverArtsScreen();
+
+    void showSortMusicListDialog();
+
+    void showAddToPlayListDialog();
+
+    void showMusicScreen();
   }
 
   interface Model extends Mvp.Model {
@@ -34,5 +41,13 @@ public interface Album {
     void onPickFromInternetClick();
 
     void onPickFromGalleryClick();
+
+    void onSortMenuClick();
+
+    void onAddToPlayListMenuClick();
+
+    void onShuffleMenuClick();
+
+    void onSortEvent(SortEvent sortEvent);
   }
 }

@@ -32,12 +32,16 @@ import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.ImageFile;
 import com.kingbull.musicplayer.domain.storage.StorageDirectory;
 import com.kingbull.musicplayer.event.CoverArtDownloadedEvent;
+import com.kingbull.musicplayer.event.SortEvent;
+import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.coverarts.CoverArtsFragment;
+import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
+import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -80,7 +84,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     if (requestCode == PICK_COVER_ART_GALLERY && resultCode == Activity.RESULT_OK) {
       if (data == null) {
         //Display an error
-        new Snackbar(recyclerView).show("Sorry to say but we couldnt fetch the album art!");
+        new Snackbar(recyclerView).show("Sorry to say but we couldn't fetch the album art!");
         return;
       }
       Glide.with(this).load(data.getData()).asBitmap().into(new SimpleTarget<Bitmap>(300, 300) {
@@ -181,15 +185,15 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     titleView.setSelected(true);
     songListRayMenu.addOnMenuClickListener(new SongListRayMenu.OnMenuClickListener() {
       @Override public void onShuffleMenuClick() {
-        //presenter.onShuffleMenuClick();
+        presenter.onShuffleMenuClick();
       }
 
       @Override public void onAddToPlaylistMenuClick() {
-        //presenter.onAddToPlayListMenuClick();
+        presenter.onAddToPlayListMenuClick();
       }
 
       @Override public void onSortMenuClick() {
-        //presenter.onSortMenuClick();
+        presenter.onSortMenuClick();
       }
     });
     showAlbumArt();
@@ -206,11 +210,13 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   @Override protected Disposable subscribeEvents() {
     return RxBus.getInstance()
         .toObservable()
-        .ofType(CoverArtDownloadedEvent.class)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<CoverArtDownloadedEvent>() {
-          @Override public void accept(CoverArtDownloadedEvent coverArtDownloadedEvent) {
-            showAlbumArt();
+        .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Object>() {
+          @Override public void accept(Object o) throws Exception {
+            if (o instanceof CoverArtDownloadedEvent) {
+              showAlbumArt();
+            } else if (o instanceof SortEvent) {
+              presenter.onSortEvent((SortEvent) o);
+            }
           }
         });
   }
@@ -268,5 +274,19 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
             CoverArtsFragment.class.getSimpleName())
         .addToBackStack(CoverArtsFragment.class.getSimpleName())
         .commit();
+  }
+
+  @Override public void showSortMusicListDialog() {
+    new SortDialogFragment().show(getSupportFragmentManager(), SortDialogFragment.class.getName());
+  }
+
+  @Override public void showAddToPlayListDialog() {
+    AddToPlayListDialogFragment.newInstance(adapter.getSelectedMusics())
+        .show(getSupportFragmentManager(), AddToPlayListDialogFragment.class.getName());
+    adapter.clearSelection();
+  }
+
+  @Override public void showMusicScreen() {
+    startActivity(new Intent(this, MusicPlayerActivity.class));
   }
 }

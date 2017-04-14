@@ -15,6 +15,7 @@ import com.kingbull.musicplayer.ui.equalizer.EqualizerFragment;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerModel;
 import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.PresetReverbDialogFragment;
+import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumPresenter;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesAdapter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
@@ -29,52 +30,58 @@ import javax.inject.Singleton;
 
 @Singleton @Component(modules = { AppModule.class, StorageModule.class })
 public interface AppComponent {
-
   void inject(MusicService service);
 
   void inject(SqlEqualizerPreset preset);
 
-  void inject(MembersRecyclerViewAdapter adapter);
+  void inject(SqlMusic music);
 
-  void inject(PresetReverbDialogFragment fragment);
-
-  void inject(EqualizerFragment fragment);
-
-  void inject(EqualizerModel model);
-
-  void inject(FavouritesPlayList playList);
-
-  void inject(PresetDialogFragment fragment);
-
-  void inject(MyFilesPresenter presenter);
-
-  void inject(MusicRecyclerViewAdapter adapter);
+  void inject(MediaStat.Smart mediaStat);
 
   void inject(CallReceiver receiver);
 
-  void inject(MediaStat.Smart mediaStat);
+  //adapter
+  void inject(MembersRecyclerViewAdapter adapter);
 
   void inject(NowPlayingAdapter adapter);
 
   void inject(MyFilesAdapter adapter);
 
-  void inject(SqlMusic music);
+  void inject(MusicRecyclerViewAdapter adapter);
 
-  void inject(AddToPlayListDialogFragment fragment);
+  //playlist
+  void inject(FavouritesPlayList playList);
 
-  void inject(AllPlaylistModel allPlaylistModel);
+  void inject(MostPlayedPlayList playList);
 
   void inject(LastPlayedPlayList playList);
 
-  void inject(MostPlayedPlayList playList);
+  // models
+  void inject(EqualizerModel model);
+
+  void inject(AllPlaylistModel allPlaylistModel);
+
+  // presenters
+  void inject(MyFilesPresenter presenter);
 
   void inject(AllSongsPresenter presenter);
 
   void inject(NowPlayingPresenter presenter);
 
+  void inject(MusicPlayerPresenter presenter);
+
+  void inject(AlbumPresenter presenter);
+
+  //fragments
   void inject(MusicPlayerFragment fragment);
 
-  void inject(MusicPlayerPresenter presenter);
+  void inject(AddToPlayListDialogFragment fragment);
+
+  void inject(PresetReverbDialogFragment fragment);
+
+  void inject(PresetDialogFragment fragment);
+
+  void inject(EqualizerFragment fragment);
 
   MusicPlayerApp app();
 }

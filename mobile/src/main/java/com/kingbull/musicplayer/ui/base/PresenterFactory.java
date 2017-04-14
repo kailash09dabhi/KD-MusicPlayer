@@ -68,7 +68,9 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
       PresenterFactory<com.kingbull.musicplayer.ui.main.categories.albumlist.album.Album.Presenter> {
     @Override
     public com.kingbull.musicplayer.ui.main.categories.albumlist.album.Album.Presenter create() {
-      return new AlbumPresenter();
+      AlbumPresenter albumPresenter = new AlbumPresenter();
+      MusicPlayerApp.instance().component().inject(albumPresenter);
+      return albumPresenter;
     }
   }
 

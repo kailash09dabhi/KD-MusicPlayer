@@ -45,7 +45,13 @@ public final class MusicRecyclerViewAdapter
   private AppCompatActivity activity;
   private MusicQuickAction musicQuickAction;
   private SparseBooleanArray selectedItems = new SparseBooleanArray();
-  private OnSelectionListener onSelectionListener;
+  private OnSelectionListener onSelectionListener = new OnSelectionListener() {
+    @Override public void onClearSelection() {
+    }
+
+    @Override public void onMultiSelection(int selectionCount) {
+    }
+  };
 
   public MusicRecyclerViewAdapter(List<Music> songs, AppCompatActivity activity) {
     this.songs = songs;
