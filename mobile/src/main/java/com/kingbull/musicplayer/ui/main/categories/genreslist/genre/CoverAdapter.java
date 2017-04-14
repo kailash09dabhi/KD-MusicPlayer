@@ -38,7 +38,7 @@ public final class CoverAdapter extends RecyclerView.Adapter<CoverAdapter.SongFi
         .error(R.drawable.a1)
         .crossFade()
         .into(holder.imageView);
-    holder.labelView.setText(albums.get(position).albumArt());
+    holder.labelView.setText(albums.get(position).name());
   }
 
   @Override public int getItemCount() {
