@@ -363,7 +363,8 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     songList.remove(music);
   }
 
-  @Override public void showMessage(String format) {
+  @Override public void showMessage(String message) {
+    new Snackbar(recyclerView).show(message);
   }
 
   @Override public void hideSelectionContextOptions() {

@@ -3,6 +3,7 @@ package com.kingbull.musicplayer.ui.main.categories.artistlist.artist;
 import android.database.Cursor;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.util.List;
 
@@ -20,6 +21,24 @@ public interface Artist {
     void showEmptyView();
 
     void showEmptyDueToDurationFilterMessage();
+
+    void showSelectionOptions();
+
+    void clearSelection();
+
+    void hideSelectionOptions();
+
+    List<SqlMusic> selectedMusicList();
+
+    void removeSongFromMediaStore(Music music);
+
+    void removeFromList(Music music);
+
+    void showMessage(String format);
+
+    void hideSelectionContextOptions();
+
+    void showAddToPlayListDialog();
   }
 
   interface Model extends Mvp.Model {
@@ -29,5 +48,15 @@ public interface Artist {
     void onSongCursorLoadFinished(Cursor cursor);
 
     void onAlbumSelected(int position);
+
+    void onClearSelectionClick();
+
+    void onMultiSelection(int selectionCount);
+
+    void onAddToPlayListMenuClick();
+
+    void onDeleteSelectedMusicClick();
+
+    void onClearSelection();
   }
 }
