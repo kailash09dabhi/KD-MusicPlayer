@@ -25,6 +25,7 @@ import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.musiclist.edittags.EditTagsDialogFragment;
 import com.kingbull.musicplayer.ui.base.musiclist.quickaction.MusicQuickAction;
 import com.kingbull.musicplayer.ui.base.musiclist.ringtone.Ringtone;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.statistics.StatisticsDialogFragment;
@@ -219,10 +220,14 @@ public final class MusicRecyclerViewAdapter
     @BindView(R.id.durationView) TextView durationView;
     @BindView(R.id.artistView) TextView albumView;
     @BindView(R.id.moreActionsView) ImageView moreActionsView;
+    ColorTheme smartTheme = new ColorTheme.Smart();
 
     public MusicViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
+      fileNameView.setTextColor(smartTheme.titleText().intValue());
+      durationView.setTextColor(smartTheme.bodyText().intValue());
+      albumView.setTextColor(smartTheme.bodyText().intValue());
       itemView.setOnClickListener(this);
       itemView.setOnLongClickListener(this);
     }
