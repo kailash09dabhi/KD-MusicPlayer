@@ -59,7 +59,16 @@ public final class SelectionContextOptionsLayout extends LinearLayout {
     clearSelectionsButton.setImageDrawable(drawable);
   }
 
-  interface OnContextOptionClickListener {
+  public void updateIconSize(int size) {
+    addToPlaylistButton.getLayoutParams().width = size;
+    addToPlaylistButton.getLayoutParams().height = size;
+    deleteButton.getLayoutParams().width = size;
+    deleteButton.getLayoutParams().height = size;
+    clearSelectionsButton.getLayoutParams().width = size;
+    clearSelectionsButton.getLayoutParams().height = size;
+  }
+
+  public interface OnContextOptionClickListener {
     void onAddToPlaylistClick();
 
     void onDeleteSelectedClick();

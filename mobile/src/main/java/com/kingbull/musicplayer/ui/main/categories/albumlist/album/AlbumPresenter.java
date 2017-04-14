@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
@@ -15,6 +16,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.observers.ResourceSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.ResourceSubscriber;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,7 +28,6 @@ import org.reactivestreams.Publisher;
  * @author Kailash Dabhi
  * @date 11/9/2016.
  */
-
 public final class AlbumPresenter extends Presenter<Album.View> implements Album.Presenter {
   @Inject Player musicPlayer;
   private CompositeDisposable compositeDisposable;
@@ -79,7 +80,6 @@ public final class AlbumPresenter extends Presenter<Album.View> implements Album
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(new ResourceSingleObserver<Long>() {
-
                       @Override public void onSuccess(Long value) {
                         view().showTotalDuration(new Milliseconds(value).toString());
                       }
@@ -198,4 +198,19 @@ public final class AlbumPresenter extends Presenter<Album.View> implements Album
     view().showSongs(songs);
   }
 
+  @Override public void onDeleteSelectedMusicClick() {
+    List<SqlMusic> musicList = view().selectedMusicList();
+    for (Music music : musicList) {
+      new File(music.media().path()).delete();
+      view().removeSongFromMediaStore(music);
+      view().removeFromList(music);
+    }
+    view().showMessage(String.format("%d songs deleted successfully!", musicList.size()));
+    view().clearSelection();
+    view().hideSelectionContextOptions();
+  }
+
+  @Override public void onClearSelectionClick() {
+    view().clearSelection();
+  }
 }

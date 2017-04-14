@@ -9,7 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -32,16 +34,19 @@ import com.kingbull.musicplayer.di.StorageModule;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.ImageFile;
 import com.kingbull.musicplayer.domain.storage.StorageDirectory;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.CoverArtDownloadedEvent;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
+import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.coverarts.CoverArtsFragment;
+import com.kingbull.musicplayer.ui.main.categories.all.SelectionContextOptionsLayout;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
 import io.reactivex.Observable;
@@ -64,8 +69,11 @@ import java.util.List;
 public final class AlbumActivity extends BaseActivity<Album.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Album.View {
   private final int PICK_COVER_ART_GALLERY = 9;
+  private final Alpha.Animation alphaAnimation = new Alpha.Animation();
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
+  @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
+      selectionContextOptionsLayout;
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
   @BindView(R.id.songMenu) SongListRayMenu songListRayMenu;
@@ -74,9 +82,9 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   @BindView(R.id.totaltracks) TextView totalTracks;
   @BindView(R.id.artistname) TextView artistNameView;
   @BindView(R.id.rootView) View rootView;
-  MusicRecyclerViewAdapter adapter;
-  List<Music> songList = new ArrayList<>();
-  StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
+  private MusicRecyclerViewAdapter adapter;
+  private List<Music> songList = new ArrayList<>();
+  private StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
   private com.kingbull.musicplayer.domain.Album album;
 
   @OnClick(R.id.albumart) void onCoverArtClick() {
@@ -187,6 +195,32 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     new StatusBarColor(flatTheme.statusBar()).applyOn(getWindow());
     album = getIntent().getParcelableExtra("album");
     adapter = new MusicRecyclerViewAdapter(songList, this);
+    adapter.addOnSelectionListener(new MusicRecyclerViewAdapter.OnSelectionListener() {
+      @Override public void onClearSelection() {
+        hideSelectionContextOptions();
+      }
+
+      @Override public void onMultiSelection(int selectionCount) {
+        if (selectionCount == 1) {
+          alphaAnimation.animateOut(titleView, Alpha.Listener.NONE);
+          alphaAnimation.animateIn(selectionContextOptionsLayout, Alpha.Listener.NONE);
+        }
+      }
+    });
+    selectionContextOptionsLayout.addOnContextOptionClickListener(
+        new SelectionContextOptionsLayout.OnContextOptionClickListener() {
+          @Override public void onAddToPlaylistClick() {
+            presenter.onAddToPlayListMenuClick();
+          }
+
+          @Override public void onDeleteSelectedClick() {
+            presenter.onDeleteSelectedMusicClick();
+          }
+
+          @Override public void onClearSelectionClick() {
+            presenter.onClearSelectionClick();
+          }
+        });
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(adapter);
     getSupportLoaderManager().initLoader(0, null, this);
@@ -213,6 +247,8 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, fillColor));
     shuffleButton.setImageDrawable(
         new IconDrawable(R.drawable.ic_shuffle_48dp, Color.WHITE, fillColor));
+    selectionContextOptionsLayout.updateIconsColor(fillColor);
+    selectionContextOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
   }
 
   @NonNull @Override protected PresenterFactory presenterFactory() {
@@ -225,7 +261,9 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
 
   @Override protected Disposable subscribeEvents() {
     return RxBus.getInstance()
-        .toObservable().observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Object>() {
+        .toObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof CoverArtDownloadedEvent) {
               showAlbumArt();
@@ -303,5 +341,33 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
 
   @Override public void showMusicScreen() {
     startActivity(new Intent(this, MusicPlayerActivity.class));
+  }
+
+  @Override public void clearSelection() {
+    adapter.clearSelection();
+    hideSelectionContextOptions();
+  }
+
+  @Override public List<SqlMusic> selectedMusicList() {
+    return adapter.getSelectedMusics();
+  }
+
+  @Override public void removeSongFromMediaStore(Music music) {
+    getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+        MediaStore.MediaColumns.DATA + "=?", new String[] { music.media().path() });
+    sendBroadcast(new Intent(Intent.ACTION_DELETE, Uri.fromFile(new File(music.media().path()))));
+  }
+
+  @Override public void removeFromList(Music music) {
+    adapter.notifyItemRemoved(songList.indexOf(music));
+    songList.remove(music);
+  }
+
+  @Override public void showMessage(String format) {
+  }
+
+  @Override public void hideSelectionContextOptions() {
+    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
+    alphaAnimation.animateIn(titleView, Alpha.Listener.NONE);
   }
 }
