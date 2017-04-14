@@ -53,7 +53,7 @@ public interface ColorTheme {
 
   class Flat extends AbstractColorTheme {
     @Override public Color header() {
-      return screen().light(0.16f);
+      return screen().light(0.25f);
     }
 
     @Override public Color screen() {
@@ -75,11 +75,11 @@ public interface ColorTheme {
 
   class Transparent extends AbstractColorTheme {
     @Override public Color header() {
-      return screen().dark(0.16f).transparent(0.81f);
+      return screen().dark(0.16f).transparent(0.52f);
     }
 
     @Override public Color screen() {
-      return new Color(prefs.swatch(type).getRgb()).transparent(0.9f);
+      return new Color(prefs.swatch(type).getRgb()).transparent(0.7f);
     }
 
     @Override public Color dialog() {
