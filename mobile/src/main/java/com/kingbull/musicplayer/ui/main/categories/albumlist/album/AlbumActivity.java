@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
+import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.coverarts.CoverArtsFragment;
@@ -64,6 +66,8 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   private final int PICK_COVER_ART_GALLERY = 9;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
+  @BindView(R.id.sortButton) ImageView sortButton;
+  @BindView(R.id.shuffleButton) ImageView shuffleButton;
   @BindView(R.id.songMenu) SongListRayMenu songListRayMenu;
   @BindView(R.id.albumart) ImageView albumArtView;
   @BindView(R.id.totaltime) TextView totalTimeView;
@@ -77,6 +81,14 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
 
   @OnClick(R.id.albumart) void onCoverArtClick() {
     presenter.onCoverArtClick();
+  }
+
+  @OnClick(R.id.sortButton) void onSortClick() {
+    presenter.onSortMenuClick();
+  }
+
+  @OnClick(R.id.shuffleButton) void onShuffleClick() {
+    presenter.onShuffleMenuClick();
   }
 
   @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -197,6 +209,10 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
       }
     });
     showAlbumArt();
+    int fillColor = 0;
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, fillColor));
+    shuffleButton.setImageDrawable(
+        new IconDrawable(R.drawable.ic_shuffle_48dp, Color.WHITE, fillColor));
   }
 
   @NonNull @Override protected PresenterFactory presenterFactory() {
@@ -209,8 +225,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
 
   @Override protected Disposable subscribeEvents() {
     return RxBus.getInstance()
-        .toObservable()
-        .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Object>() {
+        .toObservable().observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof CoverArtDownloadedEvent) {
               showAlbumArt();
