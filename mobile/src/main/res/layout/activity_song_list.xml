@@ -85,8 +85,11 @@
     android:layout_height="0dp"
     android:layout_weight="1"
     android:clipToPadding="false"
-    android:fadingEdge="none"
+    android:fadeScrollbars="true"
+    android:fadingEdgeLength="34dp"
+    android:overScrollMode="never"
+    android:requiresFadingEdge="vertical"
     android:scrollbarSize="3dp"
-    android:scrollbarThumbVertical="@drawable/scroll_thumb"
-    android:scrollbarTrackVertical="@drawable/transparent_white" />
+    android:scrollbarThumbVertical="@drawable/transparent_white"
+    android:scrollbars="vertical" />
 </LinearLayout>

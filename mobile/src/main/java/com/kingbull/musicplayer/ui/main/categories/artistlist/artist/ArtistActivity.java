@@ -33,6 +33,7 @@ import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.base.view.SnappingRecyclerView;
 import com.kingbull.musicplayer.ui.main.categories.all.SelectionContextOptionsLayout;
@@ -134,7 +135,8 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     ((View) titleView.getParent()).setBackgroundColor(headerColor);
     ((View) coverRecyclerView.getParent()).setBackgroundColor(screenColor);
     buttonLayout.setBackgroundColor(flatTheme.screen().transparent(0.1f).intValue());
-    recyclerView.setBackgroundColor(headerColor);
+    recyclerView.setBackgroundColor(new ColorTheme.Transparent().header().intValue());
+    ((View) recyclerView.getParent()).setBackgroundColor(headerColor);
   }
 
   @NonNull @Override protected PresenterFactory presenterFactory() {

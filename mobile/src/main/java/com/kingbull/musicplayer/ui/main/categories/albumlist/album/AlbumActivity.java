@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -222,6 +223,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
         });
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(adapter);
+    recyclerView.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent_black));
     getSupportLoaderManager().initLoader(0, null, this);
     titleView.setText(album.name());
     titleView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
