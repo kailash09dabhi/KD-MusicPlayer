@@ -65,9 +65,12 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
                 songs.addAll(musicList);
                 if (musicList.size() > 0) {
                   albumMusicsMap = new AlbumMusicsMap(musicList);
-                  albums = new ArrayList<Album>(albumMusicsMap.keySet());
+                  albums = new ArrayList<>(albumMusicsMap.keySet());
+                  Album allSongs = new Album.Smart("All Songs");
+                  albums.add(0, allSongs);
+                  albumMusicsMap.put(allSongs, musicList);
                   view().setAlbumPager(albums);
-                  view().showSongs(albumMusicsMap.get(albums.get(0)));
+                  view().showSongs(albumMusicsMap.get(allSongs));
                 } else {
                   view().showEmptyDueToDurationFilterMessage();
                 }
@@ -83,7 +86,9 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
   }
 
   @Override public void onAlbumSelected(int position) {
-    if (position >= 0) view().showSongs(albumMusicsMap.get(albums.get(position)));
+    if (position >= 0) {
+      view().showSongs(albumMusicsMap.get(albums.get(position)));
+    }
   }
 
   @Override public void onClearSelectionClick() {

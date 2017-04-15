@@ -59,8 +59,8 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
   @BindView(R.id.buttonLayout) LinearLayout buttonLayout;
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
-  MusicRecyclerViewAdapter adapter;
-  List<Music> songList = new ArrayList<>();
+  private MusicRecyclerViewAdapter adapter;
+  private List<Music> songList = new ArrayList<>();
 
   @OnClick(R.id.sortButton) void onSortClick() {
     presenter.onSortMenuClick();

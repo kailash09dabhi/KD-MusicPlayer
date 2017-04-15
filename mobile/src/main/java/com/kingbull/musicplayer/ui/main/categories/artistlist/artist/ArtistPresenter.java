@@ -67,8 +67,9 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
                   albums = new ArrayList<>(albumMusicsMap.keySet());
                   Album allSongs = new Album.Smart("All Songs");
                   albums.add(0, allSongs);
+                  albumMusicsMap.put(allSongs, musicList);
                   view().setAlbumPager(albums);
-                  view().showSongs(musicList);
+                  view().showSongs(albumMusicsMap.get(allSongs));
                 } else {
                   view().showEmptyDueToDurationFilterMessage();
                 }
@@ -84,9 +85,7 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
   }
 
   @Override public void onAlbumSelected(int position) {
-    if (position == 0) {
-      view().showSongs(songs);
-    } else {
+    if (position >= 0) {
       view().showSongs(albumMusicsMap.get(albums.get(position)));
     }
   }
