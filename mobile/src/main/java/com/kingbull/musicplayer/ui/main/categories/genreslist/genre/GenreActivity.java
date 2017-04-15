@@ -56,7 +56,6 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
   @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
       selectionContextOptionsLayout;
   @BindView(R.id.coverRecyclerView) SnappingRecyclerView coverRecyclerView;
-  @BindView(R.id.songMenu) SongListRayMenu songListRayMenu;
   @BindView(R.id.buttonLayout) LinearLayout buttonLayout;
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
@@ -117,21 +116,9 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     titleView.setSingleLine(true);
     titleView.setMarqueeRepeatLimit(-1);
     titleView.setSelected(true);
-    songListRayMenu.addOnMenuClickListener(new SongListRayMenu.OnMenuClickListener() {
-      @Override public void onShuffleMenuClick() {
-        //presenter.onShuffleMenuClick();
-      }
-
-      @Override public void onAddToPlaylistMenuClick() {
-        //presenter.onAddToPlayListMenuClick();
-      }
-
-      @Override public void onSortMenuClick() {
-        //presenter.onSortMenuClick();
-      }
-    });
     int fillColor = 0;
-    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, android.graphics.Color.WHITE, fillColor));
+    sortButton.setImageDrawable(
+        new IconDrawable(R.drawable.ic_sort_48dp, android.graphics.Color.WHITE, fillColor));
     shuffleButton.setImageDrawable(
         new IconDrawable(R.drawable.ic_shuffle_48dp, android.graphics.Color.WHITE, fillColor));
     selectionContextOptionsLayout.updateIconsColor(fillColor);
@@ -140,16 +127,12 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
 
   private void initializeWithThemeColors() {
     new StatusBarColor(flatTheme.statusBar()).applyOn(getWindow());
-
     int headerColor = flatTheme.header().intValue();
     int screenColor = flatTheme.screen().intValue();
     ((View) titleView.getParent()).setBackgroundColor(headerColor);
     recyclerView.setBackgroundColor(headerColor);
     ((View) coverRecyclerView.getParent()).setBackgroundColor(screenColor);
     buttonLayout.setBackgroundColor(flatTheme.screen().transparent(0.1f).intValue());
-    songListRayMenu.setBackgroundColor(screenColor);
-
-
   }
 
   @NonNull @Override protected PresenterFactory presenterFactory() {

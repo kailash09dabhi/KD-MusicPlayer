@@ -89,12 +89,4 @@
     android:scrollbarSize="3dp"
     android:scrollbarThumbVertical="@drawable/scroll_thumb"
     android:scrollbarTrackVertical="@drawable/transparent_white" />
-
-  <com.kingbull.musicplayer.ui.main.categories.genreslist.genre.SongListRayMenu
-    android:id="@+id/songMenu"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="5dp"
-    android:paddingRight="?android:attr/listPreferredItemPaddingLeft"
-    android:visibility="gone" />
 </LinearLayout>

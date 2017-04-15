@@ -76,7 +76,6 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
       selectionContextOptionsLayout;
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
-  @BindView(R.id.songMenu) SongListRayMenu songListRayMenu;
   @BindView(R.id.albumart) ImageView albumArtView;
   @BindView(R.id.totaltime) TextView totalTimeView;
   @BindView(R.id.totaltracks) TextView totalTracks;
@@ -229,19 +228,6 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     titleView.setSingleLine(true);
     titleView.setMarqueeRepeatLimit(-1);
     titleView.setSelected(true);
-    songListRayMenu.addOnMenuClickListener(new SongListRayMenu.OnMenuClickListener() {
-      @Override public void onShuffleMenuClick() {
-        presenter.onShuffleMenuClick();
-      }
-
-      @Override public void onAddToPlaylistMenuClick() {
-        presenter.onAddToPlayListMenuClick();
-      }
-
-      @Override public void onSortMenuClick() {
-        presenter.onSortMenuClick();
-      }
-    });
     showAlbumArt();
     int fillColor = 0;
     sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, fillColor));

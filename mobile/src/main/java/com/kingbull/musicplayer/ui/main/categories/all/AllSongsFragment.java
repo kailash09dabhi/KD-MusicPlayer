@@ -18,7 +18,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -77,13 +76,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
         }
       };
   @BindView(R.id.searchView) EditText searchView;
-  private final SlideHorizontal.Listener.Default slideAllRayMenuAnimationListener =
-      new SlideHorizontal.Listener.Default() {
-        @Override public void onOutAnimationFinished() {
-          searchView.startAnimation(
-              AnimationUtils.loadAnimation(getActivity(), android.R.anim.slide_in_left));
-        }
-      };
   private MusicRecyclerViewAdapter musicRecyclerViewAdapter;
 
   @OnTextChanged(R.id.searchView) void onSearchTextChanged(CharSequence text) {
