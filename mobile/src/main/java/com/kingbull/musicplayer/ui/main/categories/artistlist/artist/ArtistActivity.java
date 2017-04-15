@@ -59,6 +59,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
       selectionContextOptionsLayout;
   @BindView(R.id.coverRecyclerView) SnappingRecyclerView coverRecyclerView;
   @BindView(R.id.buttonLayout) LinearLayout buttonLayout;
+  @BindView(R.id.totalSongCountView) TextView totalSongsView;
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
   private MusicRecyclerViewAdapter adapter;
@@ -134,7 +135,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     int screenColor = flatTheme.screen().intValue();
     ((View) titleView.getParent()).setBackgroundColor(headerColor);
     ((View) coverRecyclerView.getParent()).setBackgroundColor(screenColor);
-    buttonLayout.setBackgroundColor(flatTheme.screen().transparent(0.1f).intValue());
+    buttonLayout.setBackgroundColor(flatTheme.screen().transparent(0.16f).intValue());
     recyclerView.setBackgroundColor(new ColorTheme.Transparent().header().intValue());
     ((View) recyclerView.getParent()).setBackgroundColor(headerColor);
   }
@@ -175,6 +176,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     songList.clear();
     songList.addAll(songs);
     adapter.notifyDataSetChanged();
+    totalSongsView.setText(songs.size() + " songs");
   }
 
   @Override public void setAlbumPager(List<Album> songs) {
