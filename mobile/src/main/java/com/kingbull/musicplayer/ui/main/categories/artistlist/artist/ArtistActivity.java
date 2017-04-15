@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.ui.main.categories.artistlist.artist;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,14 +13,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
+import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
@@ -31,6 +37,11 @@ import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.base.view.SnappingRecyclerView;
 import com.kingbull.musicplayer.ui.main.categories.all.SelectionContextOptionsLayout;
 import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.SongListRayMenu;
+import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
+import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +59,12 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
       selectionContextOptionsLayout;
   @BindView(R.id.coverRecyclerView) SnappingRecyclerView coverRecyclerView;
   @BindView(R.id.songMenu) SongListRayMenu artistRayMenu;
-  MusicRecyclerViewAdapter adapter;
-  List<Music> songList = new ArrayList<>();
-  com.kingbull.musicplayer.domain.Artist artist;
+  @BindView(R.id.buttonLayout) LinearLayout buttonLayout;
+  @BindView(R.id.sortButton) ImageView sortButton;
+  @BindView(R.id.shuffleButton) ImageView shuffleButton;
+  private MusicRecyclerViewAdapter adapter;
+  private List<Music> songList = new ArrayList<>();
+  private com.kingbull.musicplayer.domain.Artist artist;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -113,6 +127,9 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
       }
     });
     int fillColor = 0;
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, fillColor));
+    shuffleButton.setImageDrawable(
+        new IconDrawable(R.drawable.ic_shuffle_48dp, Color.WHITE, fillColor));
     selectionContextOptionsLayout.updateIconsColor(fillColor);
     selectionContextOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
   }
@@ -122,8 +139,9 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     int headerColor = flatTheme.header().intValue();
     int screenColor = flatTheme.screen().intValue();
     ((View) titleView.getParent()).setBackgroundColor(headerColor);
+    ((View) coverRecyclerView.getParent()).setBackgroundColor(screenColor);
+    buttonLayout.setBackgroundColor(flatTheme.screen().transparent(0.1f).intValue());
     recyclerView.setBackgroundColor(headerColor);
-    coverRecyclerView.setBackgroundColor(screenColor);
     artistRayMenu.setBackgroundColor(screenColor);
   }
 
@@ -133,6 +151,27 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
 
   @Override protected void onPresenterPrepared(Artist.Presenter presenter) {
     presenter.takeView(this);
+  }
+
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
+          @Override public void accept(Object o) throws Exception {
+            if (o instanceof SortEvent) {
+              presenter.onSortEvent((SortEvent) o);
+            }
+          }
+        });
+  }
+
+  @OnClick(R.id.sortButton) void onSortClick() {
+    presenter.onSortMenuClick();
+  }
+
+  @OnClick(R.id.shuffleButton) void onShuffleClick() {
+    presenter.onShuffleMenuClick();
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -208,6 +247,13 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   @Override public void showAddToPlayListDialog() {
     AddToPlayListDialogFragment.newInstance(adapter.getSelectedMusics())
         .show(getSupportFragmentManager(), AddToPlayListDialogFragment.class.getName());
-    adapter.clearSelection();
+  }
+
+  @Override public void showSortMusicListDialog() {
+    new SortDialogFragment().show(getSupportFragmentManager(), SortDialogFragment.class.getName());
+  }
+
+  @Override public void showMusicScreen() {
+    startActivity(new Intent(this, MusicPlayerActivity.class));
   }
 }

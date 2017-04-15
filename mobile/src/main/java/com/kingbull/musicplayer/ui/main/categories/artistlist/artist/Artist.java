@@ -4,6 +4,7 @@ import android.database.Cursor;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
+import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.util.List;
 
@@ -39,6 +40,10 @@ public interface Artist {
     void hideSelectionContextOptions();
 
     void showAddToPlayListDialog();
+
+    void showSortMusicListDialog();
+
+    void showMusicScreen();
   }
 
   interface Model extends Mvp.Model {
@@ -58,5 +63,11 @@ public interface Artist {
     void onDeleteSelectedMusicClick();
 
     void onClearSelection();
+
+    void onSortMenuClick();
+
+    void onShuffleMenuClick();
+
+    void onSortEvent(SortEvent sortEvent);
   }
 }

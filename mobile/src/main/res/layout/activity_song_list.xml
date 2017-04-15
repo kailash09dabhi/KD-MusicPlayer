@@ -36,13 +36,48 @@
       android:visibility="gone" />
   </FrameLayout>
 
-  <com.kingbull.musicplayer.ui.base.view.SnappingRecyclerView
-    android:id="@+id/coverRecyclerView"
+  <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clipToPadding="false"
-    android:fadingEdge="none"
-    android:minHeight="@dimen/cover_size" />
+    android:orientation="horizontal">
+
+    <com.kingbull.musicplayer.ui.base.view.SnappingRecyclerView
+      android:id="@+id/coverRecyclerView"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:fadingEdge="none"
+      android:minHeight="@dimen/cover_size" />
+
+    <LinearLayout
+      android:id="@+id/buttonLayout"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_gravity="right"
+      android:background="@color/transparent_black"
+      android:gravity="center"
+      android:orientation="vertical">
+
+      <ImageView
+        android:id="@+id/sortButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/round_button_selector"
+        android:padding="8dp"
+        android:src="@drawable/ic_sort_48dp" />
+
+      <ImageView
+        android:id="@+id/shuffleButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/round_button_selector"
+        android:padding="8dp"
+        android:src="@drawable/ic_shuffle_48dp" />
+    </LinearLayout>
+  </FrameLayout>
 
   <android.support.v7.widget.RecyclerView
     android:id="@+id/recyclerView"

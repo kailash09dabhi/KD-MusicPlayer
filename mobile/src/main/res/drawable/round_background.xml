@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item>
+    <!--  THIS DOESN'T WORK: <bitmap android:src="@drawable/rounded_box"/>
+            SO I TRY THIS:   -->
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+      android:shape="oval">
+      <solid android:color="@color/transparent_black" />
+    </shape>
+  </item>
+</layer-list>
