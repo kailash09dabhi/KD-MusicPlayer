@@ -33,6 +33,7 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
   private List<Album> albums;
   private CompositeDisposable compositeDisposable;
   private List<Music> songs = new ArrayList<>();
+  private int albumPosition;
 
   @Override public void takeView(@NonNull Genre.View view) {
     super.takeView(view);
@@ -87,6 +88,7 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
 
   @Override public void onAlbumSelected(int position) {
     if (position >= 0) {
+      albumPosition = position;
       view().showSongs(albumMusicsMap.get(albums.get(position)));
     }
   }
@@ -138,6 +140,7 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
   }
 
   @Override public void onSortEvent(SortEvent sortEvent) {
+    List<Music> songs = albumMusicsMap.get(albums.get(albumPosition));
     switch (sortEvent.sortBy()) {
       case SortEvent.SortBy.TITLE:
         Collections.sort(songs, new Comparator<Music>() {

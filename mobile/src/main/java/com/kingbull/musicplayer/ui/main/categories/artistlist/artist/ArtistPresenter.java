@@ -33,6 +33,7 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
   private List<Album> albums;
   private List<Music> songs;
   private CompositeDisposable compositeDisposable;
+  private int albumPosition;
 
   @Override public void takeView(@NonNull Artist.View view) {
     super.takeView(view);
@@ -86,6 +87,7 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
 
   @Override public void onAlbumSelected(int position) {
     if (position >= 0) {
+      albumPosition = position;
       view().showSongs(albumMusicsMap.get(albums.get(position)));
     }
   }
@@ -135,6 +137,7 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
   }
 
   @Override public void onSortEvent(SortEvent sortEvent) {
+    List<Music> songs = albumMusicsMap.get(albums.get(albumPosition));
     switch (sortEvent.sortBy()) {
       case SortEvent.SortBy.TITLE:
         Collections.sort(songs, new Comparator<Music>() {
