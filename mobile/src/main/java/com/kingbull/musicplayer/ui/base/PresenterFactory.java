@@ -53,7 +53,9 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
       PresenterFactory<com.kingbull.musicplayer.ui.main.categories.genreslist.genre.Genre.Presenter> {
     @Override
     public com.kingbull.musicplayer.ui.main.categories.genreslist.genre.Genre.Presenter create() {
-      return new GenresPresenter();
+      GenresPresenter genresPresenter = new GenresPresenter();
+      MusicPlayerApp.instance().component().inject(genresPresenter);
+      return genresPresenter;
     }
   }
 

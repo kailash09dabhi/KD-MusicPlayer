@@ -66,6 +66,14 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   private List<Music> songList = new ArrayList<>();
   private com.kingbull.musicplayer.domain.Artist artist;
 
+  @OnClick(R.id.sortButton) void onSortClick() {
+    presenter.onSortMenuClick();
+  }
+
+  @OnClick(R.id.shuffleButton) void onShuffleClick() {
+    presenter.onShuffleMenuClick();
+  }
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_song_list);
@@ -164,14 +172,6 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
             }
           }
         });
-  }
-
-  @OnClick(R.id.sortButton) void onSortClick() {
-    presenter.onSortMenuClick();
-  }
-
-  @OnClick(R.id.shuffleButton) void onShuffleClick() {
-    presenter.onShuffleMenuClick();
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

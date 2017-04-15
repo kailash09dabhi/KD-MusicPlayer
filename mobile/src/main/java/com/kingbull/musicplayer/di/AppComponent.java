@@ -20,6 +20,7 @@ import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
 import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.ArtistPresenter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesAdapter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
+import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenresPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.AllPlaylistModel;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
@@ -74,6 +75,8 @@ public interface AppComponent {
   void inject(AlbumPresenter presenter);
 
   void inject(ArtistPresenter presenter);
+
+  void inject(GenresPresenter presenter);
 
   //fragments
   void inject(MusicPlayerFragment fragment);

@@ -1,7 +1,10 @@
 package com.kingbull.musicplayer.ui.main.categories.genreslist.genre;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -9,20 +12,35 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
+import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
+import com.kingbull.musicplayer.event.SortEvent;
+import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
-import com.kingbull.musicplayer.ui.base.Color;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
+import com.kingbull.musicplayer.ui.base.animators.Alpha;
+import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.base.view.SnappingRecyclerView;
+import com.kingbull.musicplayer.ui.main.categories.all.SelectionContextOptionsLayout;
+import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
+import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,15 +48,28 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/8/2016.
  */
-
 public final class GenreActivity extends BaseActivity<Genre.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Genre.View {
+  private final Alpha.Animation alphaAnimation = new Alpha.Animation();
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
+  @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
+      selectionContextOptionsLayout;
   @BindView(R.id.coverRecyclerView) SnappingRecyclerView coverRecyclerView;
   @BindView(R.id.songMenu) SongListRayMenu songListRayMenu;
+  @BindView(R.id.buttonLayout) LinearLayout buttonLayout;
+  @BindView(R.id.sortButton) ImageView sortButton;
+  @BindView(R.id.shuffleButton) ImageView shuffleButton;
   MusicRecyclerViewAdapter adapter;
   List<Music> songList = new ArrayList<>();
+
+  @OnClick(R.id.sortButton) void onSortClick() {
+    presenter.onSortMenuClick();
+  }
+
+  @OnClick(R.id.shuffleButton) void onShuffleClick() {
+    presenter.onShuffleMenuClick();
+  }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -54,6 +85,29 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     coverRecyclerView.setHasFixedSize(true);
     initializeWithThemeColors();
     adapter = new MusicRecyclerViewAdapter(songList, this);
+    adapter.addOnSelectionListener(new MusicRecyclerViewAdapter.OnSelectionListener() {
+      @Override public void onClearSelection() {
+        presenter.onClearSelection();
+      }
+
+      @Override public void onMultiSelection(int selectionCount) {
+        presenter.onMultiSelection(selectionCount);
+      }
+    });
+    selectionContextOptionsLayout.addOnContextOptionClickListener(
+        new SelectionContextOptionsLayout.OnContextOptionClickListener() {
+          @Override public void onAddToPlaylistClick() {
+            presenter.onAddToPlayListMenuClick();
+          }
+
+          @Override public void onDeleteSelectedClick() {
+            presenter.onDeleteSelectedMusicClick();
+          }
+
+          @Override public void onClearSelectionClick() {
+            presenter.onClearSelectionClick();
+          }
+        });
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(adapter);
     recyclerView.setHasFixedSize(true);
@@ -64,7 +118,6 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     titleView.setMarqueeRepeatLimit(-1);
     titleView.setSelected(true);
     songListRayMenu.addOnMenuClickListener(new SongListRayMenu.OnMenuClickListener() {
-
       @Override public void onShuffleMenuClick() {
         //presenter.onShuffleMenuClick();
       }
@@ -77,24 +130,47 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
         //presenter.onSortMenuClick();
       }
     });
+    int fillColor = 0;
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, android.graphics.Color.WHITE, fillColor));
+    shuffleButton.setImageDrawable(
+        new IconDrawable(R.drawable.ic_shuffle_48dp, android.graphics.Color.WHITE, fillColor));
+    selectionContextOptionsLayout.updateIconsColor(fillColor);
+    selectionContextOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
   }
 
   private void initializeWithThemeColors() {
     new StatusBarColor(flatTheme.statusBar()).applyOn(getWindow());
-    Color header = flatTheme.header();
-    titleView.setBackgroundColor(header.intValue());
-    recyclerView.setBackgroundColor(header.intValue());
-    Color screen = flatTheme.screen();
-    coverRecyclerView.setBackgroundColor(screen.intValue());
-    songListRayMenu.setBackgroundColor(screen.intValue());
+
+    int headerColor = flatTheme.header().intValue();
+    int screenColor = flatTheme.screen().intValue();
+    ((View) titleView.getParent()).setBackgroundColor(headerColor);
+    recyclerView.setBackgroundColor(headerColor);
+    ((View) coverRecyclerView.getParent()).setBackgroundColor(screenColor);
+    buttonLayout.setBackgroundColor(flatTheme.screen().transparent(0.1f).intValue());
+    songListRayMenu.setBackgroundColor(screenColor);
+
+
   }
 
   @NonNull @Override protected PresenterFactory presenterFactory() {
-    return new PresenterFactory.SongList();
+    return new PresenterFactory.Genre();
   }
 
   @Override protected void onPresenterPrepared(Genre.Presenter presenter) {
     presenter.takeView(this);
+  }
+
+  @Override protected Disposable subscribeEvents() {
+    return RxBus.getInstance()
+        .toObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
+          @Override public void accept(Object o) throws Exception {
+            if (o instanceof SortEvent) {
+              presenter.onSortEvent((SortEvent) o);
+            }
+          }
+        });
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -127,5 +203,56 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     new Snackbar(findViewById(android.R.id.content)).show(
         String.format(getString(R.string.message_empty_due_to_duration_filter),
             new SettingPreferences().filterDurationInSeconds()));
+  }
+
+  @Override public void showSelectionOptions() {
+    alphaAnimation.animateOut(titleView, Alpha.Listener.NONE);
+    alphaAnimation.animateIn(selectionContextOptionsLayout, Alpha.Listener.NONE);
+  }
+
+  @Override public void clearSelection() {
+    adapter.clearSelection();
+  }
+
+  @Override public void hideSelectionOptions() {
+    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
+    alphaAnimation.animateIn(titleView, Alpha.Listener.NONE);
+  }
+
+  @Override public List<SqlMusic> selectedMusicList() {
+    return adapter.getSelectedMusics();
+  }
+
+  @Override public void removeSongFromMediaStore(Music music) {
+    getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+        MediaStore.MediaColumns.DATA + "=?", new String[] { music.media().path() });
+    sendBroadcast(new Intent(Intent.ACTION_DELETE, Uri.fromFile(new File(music.media().path()))));
+  }
+
+  @Override public void removeFromList(Music music) {
+    adapter.notifyItemRemoved(songList.indexOf(music));
+    songList.remove(music);
+  }
+
+  @Override public void showMessage(String message) {
+    new Snackbar(recyclerView).show(message);
+  }
+
+  @Override public void hideSelectionContextOptions() {
+    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
+    alphaAnimation.animateIn(titleView, Alpha.Listener.NONE);
+  }
+
+  @Override public void showAddToPlayListDialog() {
+    AddToPlayListDialogFragment.newInstance(adapter.getSelectedMusics())
+        .show(getSupportFragmentManager(), AddToPlayListDialogFragment.class.getName());
+  }
+
+  @Override public void showSortMusicListDialog() {
+    new SortDialogFragment().show(getSupportFragmentManager(), SortDialogFragment.class.getName());
+  }
+
+  @Override public void showMusicScreen() {
+    startActivity(new Intent(this, MusicPlayerActivity.class));
   }
 }
