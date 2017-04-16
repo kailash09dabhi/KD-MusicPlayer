@@ -2,7 +2,6 @@ package com.kingbull.musicplayer.ui.music.widget;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,7 +14,6 @@ import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.animation.LinearInterpolator;
-import android.widget.ImageView;
 
 /**
  * Created with Android Studio.
@@ -26,7 +24,7 @@ import android.widget.ImageView;
  * Stole from {@link android.support.v4.widget.SwipeRefreshLayout}'s implementation to display beautiful ic_shadow
  * for circle ImageView.
  */
-public final class ShadowImageView extends ImageView {
+public final class ShadowImageView extends android.support.v7.widget.AppCompatImageView {
 
     private static final int KEY_SHADOW_COLOR = 0x1E000000;
     private static final int FILL_SHADOW_COLOR = 0x3D000000;
@@ -55,13 +53,6 @@ public final class ShadowImageView extends ImageView {
 
     public ShadowImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @SuppressWarnings("unused")
-    public ShadowImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
 
@@ -110,6 +101,14 @@ public final class ShadowImageView extends ImageView {
 
     // Animation
 
+    @Override protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mRotateAnimator != null) {
+            mRotateAnimator.cancel();
+            mRotateAnimator = null;
+        }
+    }
+
     public void startRotateAnimation() {
         mRotateAnimator.cancel();
         mRotateAnimator.start();
@@ -130,15 +129,6 @@ public final class ShadowImageView extends ImageView {
         mRotateAnimator.setCurrentPlayTime(mLastAnimationValue);
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (mRotateAnimator != null) {
-            mRotateAnimator.cancel();
-            mRotateAnimator = null;
-        }
-    }
-
     /**
      * Draw oval ic_shadow below ImageView under lollipop.
      */
@@ -153,6 +143,12 @@ public final class ShadowImageView extends ImageView {
             updateRadialGradient((int) rect().width());
         }
 
+        private void updateRadialGradient(int diameter) {
+            mRadialGradient = new RadialGradient(diameter / 2, diameter / 2, mShadowRadius,
+                new int[] { FILL_SHADOW_COLOR, Color.TRANSPARENT }, null, Shader.TileMode.CLAMP);
+            mShadowPaint.setShader(mRadialGradient);
+        }
+
         @Override
         protected void onResize(float width, float height) {
             super.onResize(width, height);
@@ -165,13 +161,6 @@ public final class ShadowImageView extends ImageView {
             final int viewHeight = ShadowImageView.this.getHeight();
             canvas.drawCircle(viewWidth / 2, viewHeight / 2, viewWidth / 2, mShadowPaint);
             canvas.drawCircle(viewWidth / 2, viewHeight / 2, viewWidth / 2 - mShadowRadius, paint);
-        }
-
-        private void updateRadialGradient(int diameter) {
-            mRadialGradient = new RadialGradient(diameter / 2, diameter / 2,
-                    mShadowRadius, new int[]{FILL_SHADOW_COLOR, Color.TRANSPARENT},
-                    null, Shader.TileMode.CLAMP);
-            mShadowPaint.setShader(mRadialGradient);
         }
     }
 }
