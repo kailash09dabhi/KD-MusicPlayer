@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -33,7 +34,6 @@ import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -66,8 +66,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
 
   @Override protected Disposable subscribeEvents() {
     return RxBus.getInstance()
-        .toObservable()
-        .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Object>() {
+        .toObservable().observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof DurationFilterEvent) {
               durationSecondsView.setText(
@@ -138,15 +137,15 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   }
 
   @OnCheckedChanged(R.id.fullScreenCheckbox) void onFullScreenCheckedChange(boolean isChecked) {
+    Window window = getActivity().getWindow();
     if (isChecked) {
       settingPreferences.saveFullScreen(true);
-      getActivity().getWindow()
-          .setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-              WindowManager.LayoutParams.FLAG_FULLSCREEN);
+      window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+      window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     } else {
+      window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+      window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
       settingPreferences.saveFullScreen(false);
-      new Snackbar(getActivity().findViewById(android.R.id.content)).show(
-          "Restart your app to see " + "the effect!");
     }
   }
 
