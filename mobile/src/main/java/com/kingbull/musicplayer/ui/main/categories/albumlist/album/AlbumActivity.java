@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +39,7 @@ import com.kingbull.musicplayer.event.CoverArtDownloadedEvent;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
+import com.kingbull.musicplayer.ui.base.BitmapImage;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
@@ -145,7 +145,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
             Observable.just(bitmap)
                 .map(new Function<Bitmap, BitmapDrawable>() {
                   @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
-                    return new ImagePath("").toBlurredBitmap(bitmap, getResources());
+                    return new BitmapImage(bitmap, getResources()).blurred().asBitmapDrawable();
                   }
                 })
                 .subscribeOn(Schedulers.io())
@@ -168,7 +168,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
             Observable.just(bitmap)
                 .map(new Function<Bitmap, BitmapDrawable>() {
                   @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
-                    return new ImagePath("").toBlurredBitmap(bitmap, getResources());
+                    return new BitmapImage(bitmap, getResources()).blurred().asBitmapDrawable();
                   }
                 })
                 .subscribeOn(Schedulers.io())
@@ -223,7 +223,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
         });
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(adapter);
-    recyclerView.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent_black));
+    recyclerView.setBackgroundColor(flatTheme.header().transparent(0.999f).intValue());
     getSupportLoaderManager().initLoader(0, null, this);
     titleView.setText(album.name());
     titleView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
