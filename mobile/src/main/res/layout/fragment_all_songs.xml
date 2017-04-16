@@ -99,7 +99,8 @@
         android:textColorHint="@color/colorAccent" />
     </LinearLayout>
   </FrameLayout>
-  <com.jaredrummler.fastscrollrecyclerview.FastScrollRecyclerView
+
+  <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
     android:id="@+id/recyclerView"
     android:layout_width="match_parent"
     android:layout_height="0dp"
@@ -110,10 +111,10 @@
     android:overScrollMode="never"
     android:requiresFadingEdge="vertical"
     android:scrollbars="vertical"
-    app:fastScrollAlwaysEnabled="false"
-    app:fastScrollHideDelay="600"
-    app:fastScrollPopupBackgroundColor="?attr/colorAccent"
+    app:fastScrollAutoHide="true"
+    app:fastScrollAutoHideDelay="600"
+    app:fastScrollPopupBgColor="?attr/colorAccent"
     app:fastScrollPopupTextColor="@android:color/white"
-    app:fastScrollThumbActiveColor="?attr/colorAccent"
-    app:fastScrollThumbInactiveColor="?attr/colorAccent" />
+    app:fastScrollThumbColor="?attr/colorAccent"
+    app:fastScrollTrackColor="?attr/colorAccent" />
 </LinearLayout>

@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.jaredrummler.fastscrollrecyclerview.FastScrollRecyclerView;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Milliseconds;
@@ -29,9 +28,11 @@ import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.statistics.StatisticsDialogFragment;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.inject.Inject;
 
 /**
@@ -205,7 +206,8 @@ public final class MusicRecyclerViewAdapter
   }
 
   @NonNull @Override public String getSectionName(int position) {
-    return String.valueOf(songs.get(position).media().title().charAt(0));
+    return String.valueOf(
+        songs.get(position).media().title().substring(0, 1).toUpperCase(Locale.ENGLISH));
   }
 
   public interface OnSelectionListener {

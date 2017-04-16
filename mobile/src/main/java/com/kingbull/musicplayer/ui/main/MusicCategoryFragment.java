@@ -47,7 +47,7 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
     viewPager.setAdapter(musicCategoryPagerAdapter);
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.setOffscreenPageLimit(3);
-    viewPager.setCurrentItem(2);
+    viewPager.setCurrentItem(1);
     pagerTitleStrip.setBackgroundColor(smartColorTheme.screen().intValue());
     setupPagerTitleStrip();
   }

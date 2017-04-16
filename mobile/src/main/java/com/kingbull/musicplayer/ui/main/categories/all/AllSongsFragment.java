@@ -26,7 +26,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import com.jaredrummler.fastscrollrecyclerview.FastScrollRecyclerView;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
@@ -46,6 +45,7 @@ import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.settings.SettingsActivity;
 import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -131,9 +131,9 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   private void applyUiColors() {
     int headerColor = smartColorTheme.header().intValue();
-    recyclerView.setPopupBackgroundColor(Color.WHITE);
-    recyclerView.setThumbActiveColor(Color.WHITE);
-    recyclerView.setTrackInactiveColor(headerColor);
+    recyclerView.setPopupBgColor(Color.WHITE);
+    recyclerView.setThumbColor(Color.WHITE);
+    recyclerView.setTrackColor(headerColor);
     recyclerView.setPopupTextColor(headerColor);
     ((View) totalSongLayout.getParent()).setBackgroundColor(headerColor);
     int screenColor = smartColorTheme.screen().intValue();
