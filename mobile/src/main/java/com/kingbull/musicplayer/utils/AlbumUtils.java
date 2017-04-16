@@ -21,46 +21,42 @@ import java.io.File;
  * TODO To be optimized
  */
 public class AlbumUtils {
+  private static final String TAG = "AlbumUtils";
 
-    private static final String TAG = "AlbumUtils";
+  public static Bitmap parseAlbum(Music song) {
+    return parseAlbum(new File(song.media().path()));
+  }
 
-    public static Bitmap parseAlbum(Music song) {
-        return parseAlbum(new File(song.media().path()));
+  public static Bitmap parseAlbum(File file) {
+    MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
+    try {
+      metadataRetriever.setDataSource(file.getAbsolutePath());
+    } catch (IllegalArgumentException e) {
+      Log.e(TAG, "parseAlbum: ", e);
     }
-
-    public static Bitmap parseAlbum(File file) {
-        MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-        try {
-            metadataRetriever.setDataSource(file.getAbsolutePath());
-        } catch (IllegalArgumentException e) {
-            Log.e(TAG, "parseAlbum: ", e);
-        }
-        byte[] albumData = metadataRetriever.getEmbeddedPicture();
-        if (albumData != null) {
-            return BitmapFactory.decodeByteArray(albumData, 0, albumData.length);
-        }
-        return null;
+    byte[] albumData = metadataRetriever.getEmbeddedPicture();
+    if (albumData != null) {
+      return BitmapFactory.decodeByteArray(albumData, 0, albumData.length);
     }
+    return null;
+  }
 
-    public static Bitmap getCroppedBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
-                bitmap.getWidth() / 2, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
-        //return _bmp;
-        return output;
-    }
+  public static Bitmap circularBitmap(Bitmap bitmap) {
+    int size = bitmap.getWidth() < bitmap.getHeight() ? bitmap.getWidth() : bitmap.getHeight();
+    Bitmap output = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+    Canvas canvas = new Canvas(output);
+    final int color = 0xff424242;
+    final Paint paint = new Paint();
+    final Rect rect = new Rect(0, 0, size, size);
+    paint.setAntiAlias(true);
+    canvas.drawARGB(0, 0, 0, 0);
+    paint.setColor(color);
+    // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+    canvas.drawCircle(size / 2, size / 2, size / 2, paint);
+    paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+    canvas.drawBitmap(bitmap, rect, rect, paint);
+    //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+    //return _bmp;
+    return output;
+  }
 }
