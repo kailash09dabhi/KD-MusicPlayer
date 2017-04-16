@@ -2,7 +2,9 @@ package com.kingbull.musicplayer.ui.music;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
@@ -27,16 +29,22 @@ import com.kingbull.musicplayer.image.AlbumArt;
 import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.player.MusicPlayerEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
+import com.kingbull.musicplayer.ui.base.BitmapImage;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
+import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
 import com.kingbull.musicplayer.ui.music.widget.ShadowImageView;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
 import com.kingbull.musicplayer.utils.AlbumUtils;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presenter>
     implements MusicPlayer.View {
@@ -51,6 +59,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @BindView(R.id.button_play_mode_toggle) PlayModeToggleView playModeToggleView;
   @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
   @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
+  @BindView(R.id.backgroundView) View backgroundView;
   StatusBarColor statusBarColor;
 
   public static MusicPlayerFragment newInstance() {
@@ -94,7 +103,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<MusicEvent>() {
           @Override public void accept(MusicEvent musicEvent) {
-            onSongUpdated(musicEvent.music());
             if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.PLAY
                 || musicEvent.musicPlayerEvent() == MusicPlayerEvent.PAUSE) {
               buttonPlayToggle.setImageResource(
@@ -107,6 +115,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
                 albumImageView.pauseRotateAnimation();
                 seekBarProgress.dontAnimate();
               }
+            } else {
+              onSongUpdated(musicEvent.music());
             }
           }
         });
@@ -139,7 +149,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         .into(new SimpleTarget<Bitmap>() {
           @Override public void onResourceReady(Bitmap bitmap,
               GlideAnimation<? super Bitmap> glideAnimation) {
-            albumImageView.setImageBitmap(AlbumUtils.getCroppedBitmap(bitmap));
+            setAlbumImageAndAnimateBackground(bitmap);
             Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
               public void onGenerated(Palette palette) {
                 if (palette != null) {
@@ -164,12 +174,39 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
           }
 
           @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
-            albumImageView.setImageResource(R.drawable.default_record_album);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.k3);
+            setAlbumImageAndAnimateBackground(bitmap);
           }
         });
     seekBarProgress.updateMusic(song);
     albumImageView.startRotateAnimation();
     seekBarProgress.startProgresssAnimation();
+  }
+
+  private void setAlbumImageAndAnimateBackground(Bitmap bitmap) {
+    albumImageView.setImageBitmap(AlbumUtils.circularBitmap(bitmap));
+    Observable.just(bitmap)
+        .map(new Function<Bitmap, BitmapDrawable>() {
+          @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
+            return new BitmapImage(bitmap, getResources()).blurred(52)
+                .saturated()
+                .asBitmapDrawable();
+          }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new DisposableObserver<BitmapDrawable>() {
+          @Override public void onNext(BitmapDrawable bitmap) {
+            backgroundView.setBackground(bitmap);
+            new Alpha.Animation(2500).animateIn(backgroundView, null);
+          }
+
+          @Override public void onError(Throwable e) {
+          }
+
+          @Override public void onComplete() {
+          }
+        });
   }
 
   @Override public void updatePlayMode(MusicMode musicMode) {
@@ -214,9 +251,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   }
 
   private void applyColorTheme(int darkColor, int lightColor) {
-    statusBarColor = new StatusBarColor(new com.kingbull.musicplayer.ui.base.Color(darkColor));
+    statusBarColor = new StatusBarColor(darkColor);
     statusBarColor.applyOn(getActivity().getWindow());
-    getView().setBackgroundColor(darkColor);
     nameTextView.setTextColor(lightColor);
     textViewArtist.setTextColor(lightColor);
     progressTextView.setTextColor(lightColor);

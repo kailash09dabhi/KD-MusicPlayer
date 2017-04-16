@@ -2,18 +2,13 @@ package com.kingbull.musicplayer.ui.base.animators;
 
 import android.view.View;
 
-/**
- * CardView animation logic abstraction
- *
- * @author Jorge Castillo Pérez
- */
 public interface Alpha {
   interface Listener {
+    Alpha.Listener NONE = new Alpha.Listener.Default();
+
     void onInAnimationFinished();
 
     void onOutAnimationFinished();
-
-    Alpha.Listener NONE = new Alpha.Listener.Default();
 
     class Default implements Alpha.Listener {
       @Override public void onInAnimationFinished() {
@@ -25,18 +20,25 @@ public interface Alpha {
   }
 
   interface Animator {
-
     void animateIn(View view, Listener listener);
 
     void animateOut(View view, Listener listener);
   }
 
   class Animation implements Alpha.Animator {
-    private final int DURATION = 500;
+    private final int duration;
+
+    public Animation() {
+      this(500);
+    }
+
+    public Animation(int duration) {
+      this.duration = duration;
+    }
 
     @Override public void animateIn(final View view, final Listener listener) {
       view.setAlpha(0);
-      view.animate().setDuration(DURATION).alpha(1).withStartAction(new Runnable() {
+      view.animate().setDuration(duration).alpha(1).withStartAction(new Runnable() {
         @Override public void run() {
           view.setAlpha(0);
           view.setVisibility(View.VISIBLE);
@@ -49,7 +51,7 @@ public interface Alpha {
     }
 
     @Override public void animateOut(final View view, final Listener listener) {
-      view.animate().setDuration(DURATION).alpha(0).withEndAction(new Runnable() {
+      view.animate().setDuration(duration).alpha(0).withEndAction(new Runnable() {
         @Override public void run() {
           view.setVisibility(View.GONE);
           if (listener != null) listener.onOutAnimationFinished();

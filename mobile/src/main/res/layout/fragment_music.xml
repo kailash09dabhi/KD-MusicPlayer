@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <View
+    android:id="@+id/backgroundView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/transparent_black" />
+
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
@@ -12,59 +25,57 @@
     android:orientation="vertical"
     android:padding="@dimen/mp.padding.large">
 
-  <RelativeLayout
+    <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      android:layout_weight="1"
-      >
+      android:layout_weight="1">
 
-    <com.kingbull.musicplayer.ui.music.widget.ShadowImageView
+      <com.kingbull.musicplayer.ui.music.widget.ShadowImageView
         android:id="@+id/albumImageView"
         android:layout_width="@dimen/mp.music.album.size"
         android:layout_height="@dimen/mp.music.album.size"
-        android:layout_centerInParent="true"
-        android:src="@drawable/default_record_album"
-        />
-  </RelativeLayout>
+        android:layout_centerInParent="true" />
+    </RelativeLayout>
 
-  <LinearLayout
+    <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
       android:gravity="center"
-      android:orientation="horizontal">
-    <ImageView
+      android:orientation="horizontal"
+      android:paddingTop="8dp">
+
+      <ImageView
         android:id="@+id/equalizerView"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="4dp"
-        app:srcCompat="@drawable/ic_equalizer"/>
+        app:srcCompat="@drawable/ic_equalizer" />
 
-    <ImageView
+      <ImageView
         android:id="@+id/nowPlayingView"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginLeft="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="4dp"
-        app:srcCompat="@drawable/ic_queue_music"/>
-  </LinearLayout>
+        app:srcCompat="@drawable/ic_queue_music" />
+    </LinearLayout>
 
-  <TextView
+    <TextView
       android:id="@+id/nameTextView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/mp.margin.normal"
       android:layout_marginLeft="@dimen/mp.margin.xlarge"
       android:layout_marginRight="@dimen/mp.margin.xlarge"
+      android:layout_marginTop="16dp"
       android:gravity="center"
       android:textColor="?attr/colorAccent"
       android:textSize="18sp"
-      tools:text="Drag me down"
-      />
+      tools:text="Drag me down" />
 
-  <TextView
+    <TextView
       android:id="@+id/text_view_artist"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -73,39 +84,35 @@
       android:gravity="center"
       android:textColor="?attr/colorAccent"
       android:textSize="14sp"
-      tools:text="One Direction"
-      />
+      tools:text="One Direction" />
 
-  <LinearLayout
+    <LinearLayout
       android:id="@+id/layout_progress"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/mp.music.seekBar.marginTop"
       android:gravity="center_vertical"
-      android:minHeight="44dp"
-      >
+      android:minHeight="44dp">
 
-    <TextView
+      <TextView
         android:id="@+id/progressTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:text="@string/mp.music.default_duration"
         android:textColor="?attr/colorAccent"
-        android:textSize="12sp"
-        />
+        android:textSize="12sp" />
 
-    <com.kingbull.musicplayer.ui.music.MusicSeekBar
+      <com.kingbull.musicplayer.ui.music.MusicSeekBar
         android:id="@+id/seekbar"
-      style="@style/Widget.AppCompat.SeekBar"
+        style="@style/Widget.AppCompat.SeekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:max="100"
-        tools:progress="50"
-        />
+        tools:progress="50" />
 
-    <TextView
+      <TextView
         android:id="@+id/durationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -113,11 +120,10 @@
         android:text="@string/mp.music.default_duration"
         android:textColor="?attr/colorAccent"
         android:textSize="12sp"
-        tools:text="03:22"
-        />
-  </LinearLayout>
+        tools:text="03:22" />
+    </LinearLayout>
 
-  <LinearLayout
+    <LinearLayout
       android:id="@+id/layout_play_controls"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -125,48 +131,43 @@
       android:layout_marginTop="@dimen/mp.music.playControls.marginTop"
       android:divider="@drawable/common_divider_xlarge_horizontal"
       android:gravity="center_vertical"
-      android:showDividers="middle"
-      >
+      android:showDividers="middle">
 
-    <com.kingbull.musicplayer.ui.music.PlayModeToggleView
+      <com.kingbull.musicplayer.ui.music.PlayModeToggleView
         android:id="@+id/button_play_mode_toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_play_mode_shuffle"
-        />
+        app:srcCompat="@drawable/ic_play_mode_shuffle" />
 
-    <android.support.v7.widget.AppCompatImageView
+      <android.support.v7.widget.AppCompatImageView
         android:id="@+id/button_play_previous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_play_last"
-        />
+        app:srcCompat="@drawable/ic_play_last" />
 
-    <android.support.v7.widget.AppCompatImageView
+      <android.support.v7.widget.AppCompatImageView
         android:id="@+id/button_play_toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
-      app:srcCompat="@drawable/ic_pause"
-        />
+        app:srcCompat="@drawable/ic_pause" />
 
-    <android.support.v7.widget.AppCompatImageView
+      <android.support.v7.widget.AppCompatImageView
         android:id="@+id/button_play_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_play_next"
-        />
+        app:srcCompat="@drawable/ic_play_next" />
 
-    <android.support.v7.widget.AppCompatImageView
+      <android.support.v7.widget.AppCompatImageView
         android:id="@+id/button_favorite_toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:scaleType="center"
-        app:srcCompat="@drawable/ic_favorite_no"
-        />
+        app:srcCompat="@drawable/ic_favorite_no" />
+    </LinearLayout>
   </LinearLayout>
-</LinearLayout>
+</FrameLayout>
