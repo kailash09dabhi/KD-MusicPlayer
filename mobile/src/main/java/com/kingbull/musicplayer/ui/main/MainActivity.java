@@ -117,6 +117,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
               int color = new ColorTheme.Smart().tab().intValue();
               tabLayout.setBackgroundColor(color);
               new ViewPagerEdgeEffectHack(viewPager).applyColor(color);
+              viewPager.applyBackgroundAccordingToTheme();
             }
           }
         });
