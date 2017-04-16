@@ -48,11 +48,9 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
   @Override public void onPlayToggleClick() {
     if (player == null) return;
     if (player.isPlaying()) {
-      view().pause();
       player.pause();
     } else {
       player.play();
-      view().play();
     }
   }
 
