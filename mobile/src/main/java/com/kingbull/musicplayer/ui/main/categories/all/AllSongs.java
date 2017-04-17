@@ -11,14 +11,11 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/10/2016.
  */
-
 public interface AllSongs {
   interface View extends Mvp.View {
     void showAllSongs(List<Music> songs);
 
     void showMusicScreen();
-
-    void showSettingsScreen();
 
     void showAddToPlayListDialog();
 
@@ -26,13 +23,15 @@ public interface AllSongs {
 
     List<SqlMusic> selectedMusicList();
 
-    void removeFromList(Music music);
+    void notifyItemRemoved(int position);
 
     void clearSelection();
 
     void hideSelectionContextOptions();
 
     void showMessage(String format);
+
+    void refreshSongCount(int size);
   }
 
   interface Model extends Mvp.Model {
@@ -47,12 +46,9 @@ public interface AllSongs {
 
     void onShuffleMenuClick();
 
-    void onSettingsMenuClick();
-
     void onAddToPlayListMenuClick();
 
     void onSortMenuClick();
-
 
     void onSortEvent(SortEvent sortEvent);
 

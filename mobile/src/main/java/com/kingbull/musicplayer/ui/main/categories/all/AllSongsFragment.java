@@ -41,7 +41,6 @@ import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
-import com.kingbull.musicplayer.ui.settings.SettingsActivity;
 import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -208,10 +207,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     startActivity(new Intent(getActivity(), MusicPlayerActivity.class));
   }
 
-  @Override public void showSettingsScreen() {
-    startActivity(new Intent(getActivity(), SettingsActivity.class));
-  }
-
   @Override public void showAddToPlayListDialog() {
     AddToPlayListDialogFragment.newInstance(musicRecyclerViewAdapter.getSelectedMusics())
         .show(getActivity().getSupportFragmentManager(),
@@ -228,9 +223,9 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     return musicRecyclerViewAdapter.getSelectedMusics();
   }
 
-  @Override public void removeFromList(Music music) {
-    musicRecyclerViewAdapter.notifyItemRemoved(musicList.indexOf(music));
-    musicList.remove(music);
+  @Override public void notifyItemRemoved(int position) {
+    musicRecyclerViewAdapter.notifyItemRemoved(position);
+    musicList.remove(position);
   }
 
   @Override public void clearSelection() {
@@ -244,5 +239,9 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public void showMessage(String message) {
     new Snackbar(recyclerView).show(message);
+  }
+
+  @Override public void refreshSongCount(int size) {
+    totalSongCountView.setText(String.valueOf(size));
   }
 }

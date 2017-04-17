@@ -122,10 +122,6 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
     view().showMusicScreen();
   }
 
-  @Override public void onSettingsMenuClick() {
-    view().showSettingsScreen();
-  }
-
   @Override public void onAddToPlayListMenuClick() {
     view().showAddToPlayListDialog();
   }
@@ -213,10 +209,12 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
       String path = music.media().path();
       new File(path).delete();
       androidMediaStoreDatabase.deleteAndBroadcastDeletion(path);
-      view().removeFromList(music);
+      view().notifyItemRemoved(songs.indexOf(music));
+      songs.remove(music);
     }
     view().showMessage(String.format("%d songs deleted successfully!", musicList.size()));
     view().clearSelection();
     view().hideSelectionContextOptions();
+    view().refreshSongCount(songs.size());
   }
 }
