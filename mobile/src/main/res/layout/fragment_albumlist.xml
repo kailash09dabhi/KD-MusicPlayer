@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+  <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+    android:id="@+id/recyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fadingEdgeLength="34dp"
+    android:overScrollMode="never"
+    android:requiresFadingEdge="vertical"
+    app:fastScrollAutoHide="true"
+    app:fastScrollAutoHideDelay="600"
+    app:fastScrollPopupBgColor="?attr/colorAccent"
+    app:fastScrollPopupTextColor="@android:color/white"
+    app:fastScrollThumbColor="?attr/colorAccent"
+    app:fastScrollTrackColor="?attr/colorAccent" />
+</LinearLayout>

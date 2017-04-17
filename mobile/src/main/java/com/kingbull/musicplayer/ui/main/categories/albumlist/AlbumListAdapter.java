@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.ui.main.categories.albumlist;
 
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,16 +17,17 @@ import com.bumptech.glide.signature.StringSignature;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumActivity;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Kailash Dabhi
  * @date 11/8/2016.
  */
-
-public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder> {
-
+public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder>
+    implements FastScrollRecyclerView.SectionedAdapter {
   List<Album> albumItems;
 
   public AlbumListAdapter(List<Album> albumItems) {
@@ -55,6 +57,11 @@ public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapte
 
   @Override public int getItemCount() {
     return albumItems.size();
+  }
+
+  @NonNull @Override public String getSectionName(int position) {
+    return String.valueOf(
+        albumItems.get(position).name().substring(0, 1).toUpperCase(Locale.ENGLISH));
   }
 
   class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
