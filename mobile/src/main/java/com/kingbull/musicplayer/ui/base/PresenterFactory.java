@@ -10,6 +10,7 @@ import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
 import com.kingbull.musicplayer.ui.main.categories.artistlist.ArtistListPresenter;
 import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.ArtistPresenter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
+import com.kingbull.musicplayer.ui.main.categories.genreslist.GenresListPresenter;
 import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenresPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.AllPlayListPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.Members;
@@ -56,6 +57,15 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
       GenresPresenter genresPresenter = new GenresPresenter();
       MusicPlayerApp.instance().component().inject(genresPresenter);
       return genresPresenter;
+    }
+  }
+
+  class GenresList implements
+      PresenterFactory<com.kingbull.musicplayer.ui.main.categories.genreslist.GenresList.Presenter> {
+    @Override
+    public com.kingbull.musicplayer.ui.main.categories.genreslist.GenresList.Presenter create() {
+      GenresListPresenter genresListPresenter = new GenresListPresenter();
+      return genresListPresenter;
     }
   }
 

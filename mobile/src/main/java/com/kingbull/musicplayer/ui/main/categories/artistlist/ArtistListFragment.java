@@ -14,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Artist;
@@ -28,21 +30,20 @@ import java.util.List;
 
 public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, ArtistList.View {
-  ArtistList.Presenter presenter = new ArtistListPresenter();
-  private RecyclerView recyclerView;
+  @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_genres, null);
+    ButterKnife.bind(this, view);
     setupView(view);
-    presenter.takeView(this);
     return view;
   }
 
   private void setupView(View v) {
-    recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     recyclerView.setBackgroundColor(smartColorTheme.screen().intValue());
+    recyclerView.setHasFixedSize(true);
     getLoaderManager().initLoader(0, null, this);
   }
 
@@ -64,6 +65,7 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
   }
 
   @Override protected void onPresenterPrepared(ArtistList.Presenter presenter) {
+    presenter.takeView(this);
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

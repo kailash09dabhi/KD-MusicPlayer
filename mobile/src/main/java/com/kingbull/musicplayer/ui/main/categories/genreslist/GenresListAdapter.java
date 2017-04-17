@@ -16,9 +16,7 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/8/2016.
  */
-
 public final class GenresListAdapter extends RecyclerView.Adapter<GenresListAdapter.ViewHolder> {
-
   List<GenreList> genreLists;
 
   public GenresListAdapter(List<GenreList> genreLists) {
@@ -55,3 +53,4 @@ public final class GenresListAdapter extends RecyclerView.Adapter<GenresListAdap
     }
   }
 }
+
