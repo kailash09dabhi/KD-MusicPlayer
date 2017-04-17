@@ -9,6 +9,7 @@ import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
+import com.kingbull.musicplayer.ui.base.musiclist.AndroidMediaStoreDatabase;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -28,6 +29,8 @@ import javax.inject.Inject;
  * @date 11/9/2016.
  */
 public final class ArtistPresenter extends Presenter<Artist.View> implements Artist.Presenter {
+  private final AndroidMediaStoreDatabase androidMediaStoreDatabase =
+      new AndroidMediaStoreDatabase();
   @Inject Player musicPlayer;
   AlbumMusicsMap albumMusicsMap;
   private List<Album> albums;
@@ -111,8 +114,9 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
   @Override public void onDeleteSelectedMusicClick() {
     List<SqlMusic> musicList = view().selectedMusicList();
     for (Music music : musicList) {
-      new File(music.media().path()).delete();
-      view().removeSongFromMediaStore(music);
+      String path = music.media().path();
+      new File(path).delete();
+      androidMediaStoreDatabase.deleteAndBroadcastDeletion(path);
       view().removeFromList(music);
     }
     view().showMessage(String.format("%d songs deleted successfully!", musicList.size()));

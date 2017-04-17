@@ -8,6 +8,7 @@ import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
+import com.kingbull.musicplayer.ui.base.musiclist.AndroidMediaStoreDatabase;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -31,6 +32,8 @@ import static android.content.ContentValues.TAG;
  */
 public final class AllSongsPresenter extends Presenter<AllSongs.View>
     implements AllSongs.Presenter {
+  private final AndroidMediaStoreDatabase androidMediaStoreDatabase =
+      new AndroidMediaStoreDatabase();
   @Inject Player musicPlayer;
   private List<Music> songs;
 
@@ -49,7 +52,7 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                     do {
                       Music music = new SqlMusic(new Media.Smart(cursor));
                       if (!new File(music.media().path()).exists()) {
-                        view().removeSongFromMediaStore(music);
+                        androidMediaStoreDatabase.deleteAndBroadcastDeletion(music.media().path());
                       } else {
                         songs.add(music);
                       }
@@ -72,19 +75,17 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribeWith(new ResourceSubscriber<List<Music>>() {
+                @Override public void onNext(List<Music> songs) {
+                  AllSongsPresenter.this.songs = songs;
+                  musicPlayer.addToNowPlaylist(songs);
+                  view().showAllSongs(songs);
+                }
+
                 @Override public void onError(Throwable throwable) {
                   Log.e(TAG, "onError: ", throwable);
                 }
 
                 @Override public void onComplete() {
-                }
-
-                @Override public void onNext(List<Music> songs) {
-                  //mView.onLocalMusicLoaded(genres);
-                  //mView.emptyView(genres.isEmpty());
-                  AllSongsPresenter.this.songs = songs;
-                  musicPlayer.addToNowPlaylist(songs);
-                  view().showAllSongs(songs);
                 }
               }));
     }
@@ -209,8 +210,9 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
   @Override public void onDeleteSelectedMusic() {
     List<SqlMusic> musicList = view().selectedMusicList();
     for (Music music : musicList) {
-      new File(music.media().path()).delete();
-      view().removeSongFromMediaStore(music);
+      String path = music.media().path();
+      new File(path).delete();
+      androidMediaStoreDatabase.deleteAndBroadcastDeletion(path);
       view().removeFromList(music);
     }
     view().showMessage(String.format("%d songs deleted successfully!", musicList.size()));

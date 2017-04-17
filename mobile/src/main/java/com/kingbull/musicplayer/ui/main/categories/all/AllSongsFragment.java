@@ -8,9 +8,7 @@ package com.kingbull.musicplayer.ui.main.categories.all;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -49,7 +47,6 @@ import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -238,14 +235,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public void clearSelection() {
     musicRecyclerViewAdapter.clearSelection();
-  }
-
-  @Override public void removeSongFromMediaStore(Music music) {
-    getActivity().getContentResolver()
-        .delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, MediaStore.MediaColumns.DATA + "=?",
-            new String[] { music.media().path() });
-    getActivity().sendBroadcast(
-        new Intent(Intent.ACTION_DELETE, Uri.fromFile(new File(music.media().path()))));
   }
 
   @Override public void hideSelectionContextOptions() {

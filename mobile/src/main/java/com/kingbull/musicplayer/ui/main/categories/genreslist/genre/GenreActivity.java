@@ -2,9 +2,7 @@ package com.kingbull.musicplayer.ui.main.categories.genreslist.genre;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -41,7 +39,6 @@ import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -208,12 +205,6 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
 
   @Override public List<SqlMusic> selectedMusicList() {
     return adapter.getSelectedMusics();
-  }
-
-  @Override public void removeSongFromMediaStore(Music music) {
-    getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-        MediaStore.MediaColumns.DATA + "=?", new String[] { music.media().path() });
-    sendBroadcast(new Intent(Intent.ACTION_DELETE, Uri.fromFile(new File(music.media().path()))));
   }
 
   @Override public void removeFromList(Music music) {

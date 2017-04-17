@@ -31,8 +31,6 @@ public interface Artist {
 
     List<SqlMusic> selectedMusicList();
 
-    void removeSongFromMediaStore(Music music);
-
     void removeFromList(Music music);
 
     void showMessage(String format);

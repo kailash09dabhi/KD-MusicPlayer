@@ -30,8 +30,6 @@ public interface AllSongs {
 
     void clearSelection();
 
-    void removeSongFromMediaStore(Music music);
-
     void hideSelectionContextOptions();
 
     void showMessage(String format);
