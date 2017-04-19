@@ -10,7 +10,10 @@ import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import com.kingbull.musicplayer.ui.base.musiclist.AndroidMediaStoreDatabase;
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import static android.content.ContentValues.TAG;
@@ -204,17 +208,47 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
   }
 
   @Override public void onDeleteSelectedMusic() {
-    List<SqlMusic> musicList = view().selectedMusicList();
-    for (Music music : musicList) {
-      String path = music.media().path();
-      new File(path).delete();
-      androidMediaStoreDatabase.deleteAndBroadcastDeletion(path);
-      view().notifyItemRemoved(songs.indexOf(music));
-      songs.remove(music);
-    }
-    view().showMessage(String.format("%d songs deleted successfully!", musicList.size()));
-    view().clearSelection();
-    view().hideSelectionContextOptions();
-    view().refreshSongCount(songs.size());
+    view().percentage(0);
+    view().showProgressLayout();
+    List<SqlMusic> selectedMusicList = view().selectedMusicList();
+    final int selectedCount = selectedMusicList.size();
+    view().deletedOutOfText(0 + " / " + selectedCount);
+    Observable.zip(Observable.fromIterable(selectedMusicList),
+        Observable.interval(25, TimeUnit.MILLISECONDS), new BiFunction<SqlMusic, Long, SqlMusic>() {
+          @Override public SqlMusic apply(SqlMusic sqlMusic, Long aLong) throws Exception {
+            return sqlMusic;
+          }
+        })
+        .doOnNext(new Consumer<SqlMusic>() {
+          @Override public void accept(SqlMusic music) throws Exception {
+            String path = music.media().path();
+            new File(path).delete();
+            androidMediaStoreDatabase.deleteAndBroadcastDeletion(path);
+          }
+        })
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnNext(new Consumer<SqlMusic>() {
+          int count = 0;
+
+          @Override public void accept(SqlMusic music) throws Exception {
+            ++count;
+            view().notifyItemRemoved(songs.indexOf(music));
+            songs.remove(music);
+            view().percentage((int) (count / (float) selectedCount * 100));
+            view().deletedOutOfText(count + " / " + selectedCount);
+          }
+        })
+        .delay(25, TimeUnit.MILLISECONDS)
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnTerminate(new Action() {
+          @Override public void run() throws Exception {
+            view().showMessage(String.format("%d songs deleted successfully!", selectedCount));
+            view().clearSelection();
+            view().hideSelectionContextOptions();
+            view().refreshSongCount(songs.size());
+            view().showAllSongsLayout();
+          }
+        })
+        .subscribe();
   }
 }

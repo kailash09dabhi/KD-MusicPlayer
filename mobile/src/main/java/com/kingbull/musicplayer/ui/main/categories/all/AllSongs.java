@@ -32,6 +32,14 @@ public interface AllSongs {
     void showMessage(String format);
 
     void refreshSongCount(int size);
+
+    void showProgressLayout();
+
+    void showAllSongsLayout();
+
+    void percentage(int percentage);
+
+    void deletedOutOfText(String s);
   }
 
   interface Model extends Mvp.Model {

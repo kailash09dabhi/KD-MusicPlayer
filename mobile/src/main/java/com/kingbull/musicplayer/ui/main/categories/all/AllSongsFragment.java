@@ -24,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
@@ -54,6 +55,10 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   private final List<Music> musicList = new ArrayList<>();
   private final Alpha.Animation alphaAnimation = new Alpha.Animation();
   private final SlideHorizontal.Animation slideAnimation = new SlideHorizontal.Animation();
+  @BindView(R.id.allSongsLayout) LinearLayout allSongsLayout;
+  @BindView(R.id.progressLayout) LinearLayout progressLayout;
+  @BindView(R.id.deletedOutOfText) TextView deletedOutOfTextView;
+  @BindView(R.id.donutProgress) DonutProgress donutProgress;
   @BindView(R.id.totalSongCountView) TextView totalSongCountView;
   @BindView(R.id.recyclerView) FastScrollRecyclerView recyclerView;
   @BindView(R.id.totalSongLayout) LinearLayout totalSongLayout;
@@ -135,6 +140,8 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     int screenColor = smartColorTheme.screen().intValue();
     recyclerView.setBackgroundColor(screenColor);
     searchView.setHintTextColor(smartColorTheme.bodyText().intValue());
+    donutProgress.setFinishedStrokeColor(Color.WHITE);
+    donutProgress.setUnfinishedStrokeColor(flatTheme.header().intValue());
   }
 
   @Override protected PresenterFactory<AllSongs.Presenter> presenterFactory() {
@@ -243,5 +250,24 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public void refreshSongCount(int size) {
     totalSongCountView.setText(String.valueOf(size));
+  }
+
+  @Override public void showProgressLayout() {
+    alphaAnimation.animateOut(allSongsLayout, Alpha.Listener.NONE);
+    alphaAnimation.animateIn(progressLayout, Alpha.Listener.NONE);
+  }
+
+  @Override public void showAllSongsLayout() {
+    alphaAnimation.animateOut(progressLayout, Alpha.Listener.NONE);
+    alphaAnimation.animateIn(allSongsLayout, Alpha.Listener.NONE);
+  }
+
+  @Override public void percentage(final int percentage) {
+    System.out.println(percentage + "%" + Thread.currentThread().getName());
+    donutProgress.setDonut_progress(String.valueOf(percentage));
+  }
+
+  @Override public void deletedOutOfText(String deleteOutOfText) {
+    deletedOutOfTextView.setText(deleteOutOfText);
   }
 }
