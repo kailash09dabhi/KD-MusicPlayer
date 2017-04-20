@@ -2,7 +2,6 @@ package com.kingbull.musicplayer.ui.music;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.player.MusicMode;
 
@@ -10,8 +9,7 @@ import com.kingbull.musicplayer.player.MusicMode;
  * @author Kailash Dabhi
  * @date 11/11/2016.
  */
-
-public final class PlayModeToggleView extends ImageView {
+public final class PlayModeToggleView extends android.support.v7.widget.AppCompatImageView {
 
   public PlayModeToggleView(Context context) {
     super(context);

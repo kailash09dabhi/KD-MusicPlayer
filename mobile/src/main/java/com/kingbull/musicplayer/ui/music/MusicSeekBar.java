@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.util.AttributeSet;
 import android.widget.SeekBar;
 import com.kingbull.musicplayer.domain.Music;
@@ -13,8 +14,7 @@ import com.kingbull.musicplayer.domain.Music;
  * @author Kailash Dabhi
  * @date 11/11/2016.
  */
-
-public final class MusicSeekBar extends SeekBar {
+public final class MusicSeekBar extends AppCompatSeekBar {
   private final Handler handler = new Handler();
   MusicPlayer.Presenter presenter;
   private Music song;
@@ -60,6 +60,10 @@ public final class MusicSeekBar extends SeekBar {
     });
   }
 
+  public void dontAnimate() {
+    handler.removeCallbacks(progressRunnable);
+  }
+
   @Override public Parcelable onSaveInstanceState() {
     Bundle bundle = new Bundle();
     bundle.putParcelable("song", (Parcelable) song);
@@ -83,10 +87,6 @@ public final class MusicSeekBar extends SeekBar {
     } else {
       setProgress(progress);
     }
-  }
-
-  public void dontAnimate() {
-    handler.removeCallbacks(progressRunnable);
   }
 
   public void startProgresssAnimation() {
