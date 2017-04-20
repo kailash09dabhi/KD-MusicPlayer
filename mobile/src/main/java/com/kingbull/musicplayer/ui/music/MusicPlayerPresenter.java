@@ -3,7 +3,9 @@ package com.kingbull.musicplayer.ui.music;
 import android.support.annotation.NonNull;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
+import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.player.MusicMode;
+import com.kingbull.musicplayer.player.MusicPlayerEvent;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import javax.inject.Inject;
@@ -66,12 +68,8 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     }
   }
 
-  @Override public void seekTo(int duration) {
-    player.seekTo(duration);
-  }
-
   @Override public void onStopTrackingTouch(int progress) {
-    seekTo((int) (getCurrentSongDuration() * ((float) progress / 100)));
+    player.seekTo((int) (getCurrentSongDuration() * ((float) progress / 100)));
     if (player.isPlaying()) {
       view().stopSeekbarProgress();
     }
@@ -79,10 +77,31 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
 
   @Override public void onProgressChanged(int duration) {
     view().updateProgressDurationText(duration);
+    view().updateSeekBar((int) ((duration / (float) getCurrentSongDuration()) * 100));
   }
 
   @Override public void onEqualizerClick() {
     view().showEqualizerScreen();
+  }
+
+  @Override public void onMusicEvent(MusicEvent musicEvent) {
+    if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.PLAY) {
+      view().displayPauseButton();
+      view().startAlbumImageRotationAnimation();
+      view().startProgressAnimation();
+    } else if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.PAUSE) {
+      view().displayPlayButton();
+      view().stopAlbumImageRotationAnimation();
+      view().stopProgressAnimation();
+    } else if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.COMPLETED) {
+      view().stopProgressAnimation();
+      view().updateSeekBar(100);
+      view().updateProgressDurationText((int) musicEvent.music().media().duration());
+      view().displayPlayButton();
+      view().stopAlbumImageRotationAnimation();
+    } else {
+      view().displayNewSongInfo(musicEvent.music());
+    }
   }
 
   public long getCurrentSongDuration() {

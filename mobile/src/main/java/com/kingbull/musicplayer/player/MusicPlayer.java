@@ -35,6 +35,24 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     player.setOnCompletionListener(this);
   }
 
+  @Override public void onCompletion(MediaPlayer mp) {
+    RxBus.getInstance()
+        .post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.COMPLETED));
+    switch (settingPrefs.musicMode()) {
+      case REPEAT_ALL:
+        playNext();
+        break;
+      case REPEAT_SINGLE:
+        play();
+        break;
+      case REPEAT_NONE:
+        if (nowPlayingList.indexOf(nowPlayingList.currentMusic()) < nowPlayingList.size() - 1) {
+          playNext();
+        }
+        break;
+    }
+  }
+
   @Override public boolean play() {
     if (isPaused) {
       time = new Time.Now();
@@ -119,15 +137,11 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     return equalizer;
   }
 
-  @Override public boolean seekTo(int progress) {
+  @Override public boolean seekTo(int millSeconds) {
     if (nowPlayingList.isEmpty()) return false;
     Music currentSong = nowPlayingList.currentMusic();
     if (currentSong != null) {
-      if (currentSong.media().duration() <= progress) {
-        onCompletion(player);
-      } else {
-        player.seekTo(progress);
-      }
+      player.seekTo(millSeconds);
       return true;
     }
     return false;
@@ -154,28 +168,6 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
       virtualizer.setEnabled(true);
     }
     return virtualizer;
-  }
-
-  @Override public void onCompletion(MediaPlayer mp) {
-    switch (settingPrefs.musicMode()) {
-      case REPEAT_ALL:
-        if (nowPlayingList.indexOf(nowPlayingList.currentMusic()) >= nowPlayingList.size() - 1) {
-          nowPlayingList.jumpTo(nowPlayingList.get(0));
-        } else {
-          nowPlayingList.next();
-        }
-        play();
-        break;
-      case REPEAT_SINGLE:
-        play();
-        break;
-      case REPEAT_NONE:
-        if (nowPlayingList.indexOf(nowPlayingList.currentMusic()) < nowPlayingList.size() - 1) {
-          nowPlayingList.next();
-          play();
-        }
-        break;
-    }
   }
 
   @Override public void releasePlayer() {

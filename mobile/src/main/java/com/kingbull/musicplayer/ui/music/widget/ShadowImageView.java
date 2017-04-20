@@ -122,6 +122,7 @@ public final class ShadowImageView extends android.support.v7.widget.AppCompatIm
     public void pauseRotateAnimation() {
         mLastAnimationValue = mRotateAnimator.getCurrentPlayTime();
         mRotateAnimator.cancel();
+        mRotateAnimator.end();
     }
 
     public void resumeRotateAnimation() {

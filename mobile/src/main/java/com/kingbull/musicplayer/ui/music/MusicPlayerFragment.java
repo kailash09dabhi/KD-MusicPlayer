@@ -27,7 +27,6 @@ import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.image.AlbumArt;
 import com.kingbull.musicplayer.player.MusicMode;
-import com.kingbull.musicplayer.player.MusicPlayerEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.BitmapImage;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
@@ -60,7 +59,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
   @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
   @BindView(R.id.backgroundView) View backgroundView;
-  StatusBarColor statusBarColor;
+  private StatusBarColor statusBarColor;
 
   public static MusicPlayerFragment newInstance() {
     MusicPlayerFragment fragment = new MusicPlayerFragment();
@@ -103,21 +102,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<MusicEvent>() {
           @Override public void accept(MusicEvent musicEvent) {
-            if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.PLAY
-                || musicEvent.musicPlayerEvent() == MusicPlayerEvent.PAUSE) {
-              buttonPlayToggle.setImageResource(
-                  musicEvent.musicPlayerEvent() == MusicPlayerEvent.PAUSE ? R.drawable.ic_play
-                      : R.drawable.ic_pause);
-              if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.PLAY) {
-                albumImageView.resumeRotateAnimation();
-                seekBarProgress.startProgresssAnimation();
-              } else {
-                albumImageView.pauseRotateAnimation();
-                seekBarProgress.dontAnimate();
-              }
-            } else {
-              onSongUpdated(musicEvent.music());
-            }
+            presenter.onMusicEvent(musicEvent);
           }
         });
   }
@@ -130,6 +115,39 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     this.presenter.takeView(this);
     seekBarProgress.takePresenter(presenter);
     updatePlayMode(new SettingPreferences().musicMode());
+  }
+
+  private void applyColorTheme(int darkColor, int lightColor) {
+    statusBarColor = new StatusBarColor(darkColor);
+    statusBarColor.applyOn(getActivity().getWindow());
+    nameTextView.setTextColor(lightColor);
+    textViewArtist.setTextColor(lightColor);
+    progressTextView.setTextColor(lightColor);
+    durationTextView.setTextColor(lightColor);
+    equalizerView.setImageDrawable(
+        new IconDrawable(R.drawable.ic_equalizer, Color.WHITE, darkColor));
+    nowPlayingView.setImageDrawable(
+        new IconDrawable(R.drawable.ic_queue_music, Color.WHITE, darkColor));
+  }
+
+  @OnClick(R.id.button_play_toggle) public void onPlayToggleAction(View view) {
+    presenter.onPlayToggleClick();
+  }
+
+  @OnClick(R.id.button_play_mode_toggle) public void onPlayModeToggleAction(View view) {
+    presenter.onPlayModeToggleClick();
+  }
+
+  @OnClick(R.id.button_play_next) public void onPlayNextAction(View view) {
+    presenter.onPlayNextClick();
+  }
+
+  @OnClick(R.id.button_play_previous) public void onPlayPreviousClick() {
+    presenter.onPlayPreviousClick();
+  }
+
+  @OnClick(R.id.button_favorite_toggle) public void onFavoriteToggleAction(View view) {
+    presenter.onFavoriteToggleClick();
   }
 
   @Override public void onSongUpdated(Music song) {
@@ -250,36 +268,31 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.startProgresssAnimation();
   }
 
-  private void applyColorTheme(int darkColor, int lightColor) {
-    statusBarColor = new StatusBarColor(darkColor);
-    statusBarColor.applyOn(getActivity().getWindow());
-    nameTextView.setTextColor(lightColor);
-    textViewArtist.setTextColor(lightColor);
-    progressTextView.setTextColor(lightColor);
-    durationTextView.setTextColor(lightColor);
-    equalizerView.setImageDrawable(
-        new IconDrawable(R.drawable.ic_equalizer, Color.WHITE, darkColor));
-    nowPlayingView.setImageDrawable(
-        new IconDrawable(R.drawable.ic_queue_music, Color.WHITE, darkColor));
+  @Override public void displayPauseButton() {
+    buttonPlayToggle.setImageResource(R.drawable.ic_pause);
   }
 
-  @OnClick(R.id.button_play_toggle) public void onPlayToggleAction(View view) {
-    presenter.onPlayToggleClick();
+  @Override public void displayPlayButton() {
+    buttonPlayToggle.setImageResource(R.drawable.ic_play);
   }
 
-  @OnClick(R.id.button_play_mode_toggle) public void onPlayModeToggleAction(View view) {
-    presenter.onPlayModeToggleClick();
+  @Override public void startAlbumImageRotationAnimation() {
+    albumImageView.resumeRotateAnimation();
   }
 
-  @OnClick(R.id.button_play_next) public void onPlayNextAction(View view) {
-    presenter.onPlayNextClick();
+  @Override public void startProgressAnimation() {
+    seekBarProgress.startProgresssAnimation();
   }
 
-  @OnClick(R.id.button_play_previous) public void onPlayPreviousClick() {
-    presenter.onPlayPreviousClick();
+  @Override public void stopAlbumImageRotationAnimation() {
+    albumImageView.pauseRotateAnimation();
   }
 
-  @OnClick(R.id.button_favorite_toggle) public void onFavoriteToggleAction(View view) {
-    presenter.onFavoriteToggleClick();
+  @Override public void stopProgressAnimation() {
+    seekBarProgress.dontAnimate();
+  }
+
+  @Override public void displayNewSongInfo(Music music) {
+    onSongUpdated(music);
   }
 }
