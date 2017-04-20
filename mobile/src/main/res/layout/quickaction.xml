@@ -18,6 +18,7 @@
     android:background="@drawable/quickaction_slider_background"
     android:fadingEdgeLength="34dip"
     android:paddingLeft="1dip"
+    android:paddingRight="1dip"
     android:scrollbars="none">
 
     <LinearLayout

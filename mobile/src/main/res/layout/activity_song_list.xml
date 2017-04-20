@@ -66,7 +66,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:paddingLeft="5dp"
         tools:text="99" />
 
       <ImageView

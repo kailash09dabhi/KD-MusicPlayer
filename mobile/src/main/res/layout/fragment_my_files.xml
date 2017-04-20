@@ -11,7 +11,8 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft">
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingRight="?android:attr/listPreferredItemPaddingLeft">
 
     <TextView
       style="@style/AppTheme.TextAppearance.Title"

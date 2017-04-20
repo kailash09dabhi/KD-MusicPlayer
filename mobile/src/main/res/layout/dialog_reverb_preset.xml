@@ -10,13 +10,12 @@
 
   <TextView
       android:id="@+id/titleView"
+    style="@style/AppTheme.TextAppearance.Title"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
       android:minHeight="?listPreferredItemHeight"
-      android:paddingLeft="?listPreferredItemPaddingLeft"
-      android:text="Effects"
-      style="@style/AppTheme.TextAppearance.Title"/>
+    android:text="Effects" />
 
   <ListView
       android:id="@+id/listView"
