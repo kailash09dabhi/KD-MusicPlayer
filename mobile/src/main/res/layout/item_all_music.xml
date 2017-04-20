@@ -5,6 +5,7 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:background="@drawable/selector"
+  android:baselineAligned="false"
   android:clickable="true"
   android:gravity="center_vertical"
   android:minHeight="?android:attr/listPreferredItemHeight"
