@@ -44,6 +44,7 @@ public final class MembersRecyclerViewAdapter
   private SparseBooleanArray selectedItems = new SparseBooleanArray();
   private PlayList playList;
   private MemberQuickActionListener memberQuickActionListener;
+  private OnSelectionListener onSelectionListener;
 
   public MembersRecyclerViewAdapter(PlayList playList, List<Music> songs,
       AppCompatActivity activity) {
@@ -54,10 +55,6 @@ public final class MembersRecyclerViewAdapter
     this.playlistQuickAction = new MemberQuickAction(activity, false);
     this.quickActionWithDeleteOption = new MemberQuickAction(activity, true);
     MusicPlayerApp.instance().component().inject(this);
-  }
-
-  public boolean isSelected(int position) {
-    return getSelectedItems().contains(position);
   }
 
   public void toggleSelection(int position) {
@@ -74,6 +71,10 @@ public final class MembersRecyclerViewAdapter
     notifyItemChanged(position);
   }
 
+  public int getSelectedItemCount() {
+    return selectedItems.size();
+  }
+
   public boolean isAnyItemSelected() {
     boolean isAnySelected = false;
     for (int i = 0; i < selectedItems.size(); ++i) {
@@ -81,27 +82,6 @@ public final class MembersRecyclerViewAdapter
       if (isAnySelected) break;
     }
     return isAnySelected;
-  }
-
-  public void clearSelection() {
-    List<Integer> selection = getSelectedItems();
-    selectedItems.clear();
-    for (Integer i : selection) {
-      notifyItemChanged(i);
-    }
-    onSelectionListener.onClearSelection();
-  }
-
-  public int getSelectedItemCount() {
-    return selectedItems.size();
-  }
-
-  public List<Integer> getSelectedItems() {
-    List<Integer> items = new ArrayList<>(selectedItems.size());
-    for (int i = 0; i < selectedItems.size(); ++i) {
-      items.add(selectedItems.keyAt(i));
-    }
-    return items;
   }
 
   public List<SqlMusic> getSelectedMusics() {
@@ -117,7 +97,7 @@ public final class MembersRecyclerViewAdapter
         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_all_music, parent, false));
   }
 
-  @Override public void onBindViewHolder(ViewHolder holder, final int position) {
+  @Override public void onBindViewHolder(final ViewHolder holder, int position) {
     if (isSelected(position)) {
       holder.itemView.setBackgroundColor(
           ContextCompat.getColor(holder.itemView.getContext(), R.color.transparent_strong_black));
@@ -134,35 +114,37 @@ public final class MembersRecyclerViewAdapter
         memberQuickActionListener = new MemberQuickActionListener() {
           @Override public void play() {
             player.addToNowPlaylist(songs);
-            player.play(songs.get(position));
+            player.play(songs.get(holder.getAdapterPosition()));
             activity.startActivity(new Intent(activity, MusicPlayerActivity.class));
           }
 
           @Override public void moveTo() {
             if (playList instanceof PlayList.Smart) {
-              MoveToDialogFragment.newInstance(playList, songs.get(position), position)
+              MoveToDialogFragment.newInstance(playList, songs.get(holder.getAdapterPosition()),
+                  holder.getAdapterPosition())
                   .show(fragmentManager, MoveToDialogFragment.class.getName());
             }
           }
 
           @Override public void editTags() {
-            EditTagsDialogFragment.newInstance(songs.get(position))
+            EditTagsDialogFragment.newInstance(songs.get(holder.getAdapterPosition()))
                 .show(activity.getSupportFragmentManager(), EditTagsDialogFragment.class.getName());
           }
 
           @Override public void ringtone() {
-            new Ringtone(activity, songs.get(position)).set();
+            new Ringtone(activity, songs.get(holder.getAdapterPosition())).set();
           }
 
           @Override public void delete() {
+            int adapterPosition = holder.getAdapterPosition();
             if (playList instanceof PlayList.Smart) {
-              ((PlayList.Smart) playList).remove(songs.get(position));
-              songs.remove(position);
-              notifyItemRemoved(position);
+              ((PlayList.Smart) playList).remove(songs.get(adapterPosition));
+              songs.remove(adapterPosition);
+              notifyItemRemoved(adapterPosition);
             } else if (playList instanceof FavouritesPlayList) {
-              songs.get(position).mediaStat().toggleFavourite();
-              songs.remove(position);
-              notifyItemRemoved(position);
+              songs.get(adapterPosition).mediaStat().toggleFavourite();
+              songs.remove(adapterPosition);
+              notifyItemRemoved(adapterPosition);
             }
           }
 
@@ -170,7 +152,7 @@ public final class MembersRecyclerViewAdapter
             Intent share = new Intent(Intent.ACTION_SEND);
             share.setType("audio/*");
             share.putExtra(Intent.EXTRA_STREAM,
-                Uri.fromFile(new File(songs.get(position).media().path())));
+                Uri.fromFile(new File(songs.get(holder.getAdapterPosition()).media().path())));
             activity.startActivity(Intent.createChooser(share, "Share Sound File"));
           }
         };
@@ -181,6 +163,18 @@ public final class MembersRecyclerViewAdapter
         }
       }
     });
+  }
+
+  public boolean isSelected(int position) {
+    return getSelectedItems().contains(position);
+  }
+
+  public List<Integer> getSelectedItems() {
+    List<Integer> items = new ArrayList<>(selectedItems.size());
+    for (int i = 0; i < selectedItems.size(); ++i) {
+      items.add(selectedItems.keyAt(i));
+    }
+    return items;
   }
 
   @Override public int getItemCount() {
@@ -208,6 +202,25 @@ public final class MembersRecyclerViewAdapter
     songs.removeAll(deletableFiles);
   }
 
+  public void clearSelection() {
+    List<Integer> selection = getSelectedItems();
+    selectedItems.clear();
+    for (Integer i : selection) {
+      notifyItemChanged(i);
+    }
+    onSelectionListener.onClearSelection();
+  }
+
+  public void addOnSelectionListener(OnSelectionListener onSelectionListener) {
+    this.onSelectionListener = onSelectionListener;
+  }
+
+  interface OnSelectionListener {
+    void onClearSelection();
+
+    void onMultiSelection(int selectionCount);
+  }
+
   class ViewHolder extends RecyclerView.ViewHolder
       implements View.OnClickListener, View.OnLongClickListener {
     @BindView(R.id.fileName) TextView fileNameView;
@@ -220,6 +233,13 @@ public final class MembersRecyclerViewAdapter
       ButterKnife.bind(this, itemView);
       itemView.setOnClickListener(this);
       itemView.setOnLongClickListener(this);
+    }
+
+    @Override public boolean onLongClick(View v) {
+      if (playList instanceof PlayList.Smart || playList instanceof FavouritesPlayList) {
+        toggleSelection(getAdapterPosition());
+      }
+      return true;
     }
 
     @Override public void onClick(final View view) {
@@ -240,23 +260,6 @@ public final class MembersRecyclerViewAdapter
       view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
     }
 
-    @Override public boolean onLongClick(View v) {
-      if (playList instanceof PlayList.Smart || playList instanceof FavouritesPlayList) {
-        toggleSelection(getAdapterPosition());
-      }
-      return true;
-    }
-  }
 
-  private OnSelectionListener onSelectionListener;
-
-  public void addOnSelectionListener(OnSelectionListener onSelectionListener) {
-    this.onSelectionListener = onSelectionListener;
-  }
-
-  interface OnSelectionListener {
-    void onClearSelection();
-
-    void onMultiSelection(int selectionCount);
   }
 }
