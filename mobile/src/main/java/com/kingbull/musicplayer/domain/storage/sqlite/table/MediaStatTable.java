@@ -52,7 +52,6 @@ public final class MediaStatTable implements SqlTable {
         + Columns.LAST_TIME_PLAYED
         + ") "
         + "DESC";
-    ;
     Cursor cursor = sqliteDatabase.rawQuery(query, null);
     List<Music> itemList = new ArrayList<>();
     if (cursor != null) {
@@ -84,7 +83,6 @@ public final class MediaStatTable implements SqlTable {
         + " order  by "
         + Columns.NUMBER_OF_TIMES_PLAYED
         + " DESC";
-    ;
     Cursor cursor = sqliteDatabase.rawQuery(query, null);
     List<Music> itemList = new ArrayList<>();
     if (cursor != null) {
@@ -109,12 +107,14 @@ public final class MediaStatTable implements SqlTable {
         + " where "
         + MediaStatTable.Columns.MEDIA_ID
         + " = ?", new String[] { String.valueOf(mediaId) });
-    if (cursor != null && cursor.getCount() > 0) {
-      cursor.moveToFirst();
-      return new MediaStat.Smart(cursor);
+    MediaStat mediaStat;
+    if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+      mediaStat = new MediaStat.Smart(cursor);
+      cursor.close();
     } else {
-      return new MediaStat.Smart(mediaId);
+      mediaStat = new MediaStat.Smart(mediaId);
     }
+    return mediaStat;
   }
 
   public List<Music> favourites() {
@@ -127,7 +127,6 @@ public final class MediaStatTable implements SqlTable {
         + Columns.UPDATED_AT
         + ") "
         + "DESC";
-    ;
     Cursor cursor = sqliteDatabase.rawQuery(query, null);
     List<Music> itemList = new ArrayList<>();
     if (cursor != null) {
