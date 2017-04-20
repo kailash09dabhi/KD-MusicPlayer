@@ -72,7 +72,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_equalizer, null);
+    View view = inflater.inflate(R.layout.fragment_equalizer, container, false);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
     audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);

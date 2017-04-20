@@ -44,7 +44,7 @@ public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presente
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_all_playlist, null);
+    View view = inflater.inflate(R.layout.fragment_all_playlist, container, false);
     ButterKnife.bind(this, view);
     setupView(view);
     return view;

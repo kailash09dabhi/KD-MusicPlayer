@@ -47,7 +47,7 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_now_playing_list, null);
+    View view = inflater.inflate(R.layout.fragment_now_playing_list, container, false);
     ButterKnife.bind(this, view);
     setupView(view);
     return view;

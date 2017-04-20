@@ -54,7 +54,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_settings, null);
+    View view = inflater.inflate(R.layout.fragment_settings, container, false);
     ButterKnife.bind(this, view);
     return view;
   }

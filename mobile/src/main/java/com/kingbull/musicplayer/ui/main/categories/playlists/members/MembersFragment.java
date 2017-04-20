@@ -60,7 +60,7 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_playlist, null);
+    View view = inflater.inflate(R.layout.fragment_playlist, container, false);
     ButterKnife.bind(this, view);
     playList = getArguments().getParcelable("playlist");
     return view;

@@ -58,6 +58,25 @@ public final class PresetDialogFragment extends BaseDialogFragment implements Pr
     showPresetsScreen();
   }
 
+  private void showPresetsScreen() {
+    Log.e("viewFlipper", String.valueOf(viewFlipper.getHeight()));
+    Log.e("createNewPresetView", String.valueOf(createNewPresetView.getMeasuredHeight()));
+    Log.e("presetsView", String.valueOf(presetsView.getMeasuredHeight()));
+    viewFlipper.setInAnimation(getActivity(), R.anim.slide_in_left);
+    viewFlipper.setOutAnimation(getActivity(), R.anim.slide_out_right);
+    viewFlipper.showPrevious();
+    Display display = getDialog().getOwnerActivity().getWindowManager().getDefaultDisplay();
+    Point size = new Point();
+    display.getSize(size);
+    setDialogHeight(size.y * 70 / 100);
+  }
+
+  void setDialogHeight(int height) {
+    ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
+    layoutParams.height = height;
+    getView().setLayoutParams(layoutParams);
+  }
+
   @OnClick(R.id.doneView) void onDoneClick() {
     if (!TextUtils.isEmpty(presetNameView.getText())) {
       RxBus.getInstance()
@@ -71,12 +90,20 @@ public final class PresetDialogFragment extends BaseDialogFragment implements Pr
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.dialog_equalizer_preset, null);
+    return inflater.inflate(R.layout.dialog_equalizer_preset, container, false);
   }
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     MusicPlayerApp.instance().component().inject(this);
+  }
+
+  @Override public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    Display display = getDialog().getOwnerActivity().getWindowManager().getDefaultDisplay();
+    Point size = new Point();
+    display.getSize(size);
+    setDialogHeight(size.y * 70 / 100);
   }
 
   @Override public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
@@ -99,14 +126,6 @@ public final class PresetDialogFragment extends BaseDialogFragment implements Pr
     });
   }
 
-  @Override public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    Display display = getDialog().getOwnerActivity().getWindowManager().getDefaultDisplay();
-    Point size = new Point();
-    display.getSize(size);
-    setDialogHeight(size.y * 70 / 100);
-  }
-
   private List<EqualizerPreset> systemPresets() {
     Equalizer equalizer = player.equalizer();
     ArrayList<EqualizerPreset> equalizerPresets = new ArrayList<>();
@@ -116,29 +135,10 @@ public final class PresetDialogFragment extends BaseDialogFragment implements Pr
     return equalizerPresets;
   }
 
-  private void showPresetsScreen() {
-    Log.e("viewFlipper", String.valueOf(viewFlipper.getHeight()));
-    Log.e("createNewPresetView", String.valueOf(createNewPresetView.getMeasuredHeight()));
-    Log.e("presetsView", String.valueOf(presetsView.getMeasuredHeight()));
-    viewFlipper.setInAnimation(getActivity(), R.anim.slide_in_left);
-    viewFlipper.setOutAnimation(getActivity(), R.anim.slide_out_right);
-    viewFlipper.showPrevious();
-    Display display = getDialog().getOwnerActivity().getWindowManager().getDefaultDisplay();
-    Point size = new Point();
-    display.getSize(size);
-    setDialogHeight(size.y * 70 / 100);
-  }
-
   @Override public void showCreatePresetScreen() {
     viewFlipper.setInAnimation(getActivity(), R.anim.slide_in_right);
     viewFlipper.setOutAnimation(getActivity(), R.anim.slide_out_left);
     viewFlipper.showNext();
     setDialogHeight(createNewPresetView.getMeasuredHeight());
-  }
-
-  void setDialogHeight(int height) {
-    ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
-    layoutParams.height = height;
-    getView().setLayoutParams(layoutParams);
   }
 }

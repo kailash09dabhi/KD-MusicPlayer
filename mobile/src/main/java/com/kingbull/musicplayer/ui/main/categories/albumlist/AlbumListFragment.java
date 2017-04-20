@@ -35,7 +35,7 @@ public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_albumlist, null);
+    View view = inflater.inflate(R.layout.fragment_albumlist, container, false);
     ButterKnife.bind(this, view);
     setupView(view);
     return view;

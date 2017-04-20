@@ -33,7 +33,7 @@ public final class GenresListFragment extends BaseFragment<GenresList.Presenter>
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_genres, null);
+    View view = inflater.inflate(R.layout.fragment_genres, container, false);
     ButterKnife.bind(this, view);
     return view;
   }

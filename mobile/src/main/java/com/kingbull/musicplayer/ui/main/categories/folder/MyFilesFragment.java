@@ -39,7 +39,7 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_my_files, null);
+    View view = inflater.inflate(R.layout.fragment_my_files, container, false);
     ButterKnife.bind(this, view);
     applyUIColors();
     return view;

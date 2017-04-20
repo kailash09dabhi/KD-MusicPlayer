@@ -38,7 +38,7 @@ public final class StatisticsDialogFragment extends BaseDialogFragment implement
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.dialog_statistics, null);
+    return inflater.inflate(R.layout.dialog_statistics, container, false);
   }
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {

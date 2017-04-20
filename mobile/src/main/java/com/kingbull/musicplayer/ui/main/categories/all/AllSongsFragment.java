@@ -99,7 +99,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_all_songs, null);
+    return inflater.inflate(R.layout.fragment_all_songs, container, false);
   }
 
   @Override protected Disposable subscribeEvents() {

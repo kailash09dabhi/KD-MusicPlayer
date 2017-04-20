@@ -46,7 +46,7 @@ public final class MoveToDialogFragment extends BaseDialogFragment {
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.dialog_reverb_preset, null);
+    return inflater.inflate(R.layout.dialog_reverb_preset, container, false);
   }
 
   @Override public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {

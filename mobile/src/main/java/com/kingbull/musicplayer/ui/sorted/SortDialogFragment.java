@@ -57,7 +57,7 @@ public final class SortDialogFragment extends BaseDialogFragment {
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.dialog_sort, null);
+    return inflater.inflate(R.layout.dialog_sort, container, false);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
