@@ -54,28 +54,14 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
         return 1.2f - inner * inner;
       }
     });
-    setRootViewId(R.layout.quickaction);
-    mAnimStyle = ANIM_AUTO;
-    mAnimateTrack = true;
-    mChildPos = 0;
-  }
-
-  /**
-   * Set root view.
-   *
-   * @param id Layout resource id
-   */
-  public void setRootViewId(int id) {
-    rootView = inflater.inflate(id, null);
+    rootView = inflater.inflate(R.layout.quickaction, null);
     mTrack = (ViewGroup) rootView.findViewById(R.id.tracks);
-    //mArrowDown = (ImageView) rootView.findViewById(R.id.arrow_down);
-    //mArrowUp = (ImageView) rootView.findViewById(R.id.arrow_up);
-    //This was previously defined on show() method, moved here to prevent force close that occured
-    //when tapping fastly on a view to show quickaction dialog.
-    //Thanx to zammbi (github.com/zammbi)
     rootView.setLayoutParams(
         new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
     setContentView(rootView);
+    mAnimStyle = ANIM_AUTO;
+    mAnimateTrack = true;
+    mChildPos = 0;
   }
 
   /**
