@@ -107,14 +107,14 @@ public final class MediaStatTable implements SqlTable {
         + " where "
         + MediaStatTable.Columns.MEDIA_ID
         + " = ?", new String[] { String.valueOf(mediaId) });
-    MediaStat mediaStat;
-    if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
-      mediaStat = new MediaStat.Smart(cursor);
+    MediaStat mediaStat = null;
+    if (cursor != null) {
+      if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        mediaStat = new MediaStat.Smart(cursor);
+      }
       cursor.close();
-    } else {
-      mediaStat = new MediaStat.Smart(mediaId);
     }
-    return mediaStat;
+    return mediaStat == null ? new MediaStat.Smart(mediaId) : mediaStat;
   }
 
   public List<Music> favourites() {
