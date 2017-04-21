@@ -1,131 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
   <TextView
-      android:id="@+id/titleView"
+    android:id="@+id/titleView"
     style="@style/AppTheme.TextAppearance.Title"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:gravity="center"
-      android:minHeight="?actionBarSize"
-      tools:ignore="MissingPrefix"
-      />
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:minHeight="?actionBarSize"
+    tools:ignore="MissingPrefix" />
+
   <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
     <Button
-        android:id="@+id/newPresetButton"
+      android:id="@+id/newPresetButton"
       style="@style/AppTheme.TextAppearance.List.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/selector"
-        android:gravity="center"
-        android:minHeight="?listPreferredItemHeightSmall"
-        android:minWidth="100dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:background="@drawable/selector"
+      android:gravity="center"
+      android:minHeight="?listPreferredItemHeightSmall"
+      android:minWidth="100dp"
       android:text="Preset" />
 
     <Button
-        android:id="@+id/effectButton"
+      android:id="@+id/effectButton"
       style="@style/AppTheme.TextAppearance.List.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/selector"
-        android:gravity="center"
-        android:minHeight="?listPreferredItemHeightSmall"
-        android:minWidth="100dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:background="@drawable/selector"
+      android:gravity="center"
+      android:minHeight="?listPreferredItemHeightSmall"
+      android:minWidth="100dp"
       android:text="Effect" />
   </LinearLayout>
 
-
   <com.kingbull.musicplayer.ui.equalizer.EqualizerView
-      android:id="@+id/equalizerView"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1"/>
-
+    android:id="@+id/equalizerView"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1" />
 
   <LinearLayout
-      android:id="@+id/bottomButtonContainer"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
+    android:id="@+id/bottomButtonContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:baselineAligned="false"
-      android:orientation="horizontal"
+    android:orientation="horizontal"
     android:paddingBottom="10dp">
 
     <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:orientation="vertical">
 
       <RelativeLayout
-          android:id="@+id/bassBoostLayout"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:padding="16dp"/>
-
+        android:id="@+id/bassBoostLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp" />
 
       <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          android:text="Bass"
-          android:textColor="@android:color/white"/>
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Bass"
+        android:textColor="@android:color/white" />
     </FrameLayout>
+
     <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:orientation="vertical">
 
       <RelativeLayout
-          android:id="@+id/volumeLayout"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:padding="16dp"/>
-
+        android:id="@+id/volumeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp" />
 
       <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          android:text="Volume"
-          android:textColor="@android:color/white"/>
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Volume"
+        android:textColor="@android:color/white" />
     </FrameLayout>
+
     <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:orientation="vertical">
 
       <RelativeLayout
-          android:id="@+id/virtualizerRoundKnobLayout"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:padding="16dp"/>
-
+        android:id="@+id/virtualizerRoundKnobLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp" />
 
       <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          android:text="Virtualizer"
-          android:textColor="@android:color/white"/>
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Virtualizer"
+        android:textColor="@android:color/white" />
     </FrameLayout>
-
   </LinearLayout>
-
-
 </LinearLayout>
