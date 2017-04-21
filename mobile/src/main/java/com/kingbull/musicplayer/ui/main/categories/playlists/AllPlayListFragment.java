@@ -5,10 +5,7 @@
  */
 package com.kingbull.musicplayer.ui.main.categories.playlists;
 
-import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,14 +26,13 @@ import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
-import com.kingbull.musicplayer.ui.main.categories.all.AllSongsCursorLoader;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.List;
 
 public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presenter>
-    implements LoaderManager.LoaderCallbacks<Cursor>, AllPlaylist.View {
+    implements AllPlaylist.View {
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.headerLayout) LinearLayout headerLayout;
   @BindView(R.id.header) TextView headerView;
@@ -53,7 +49,6 @@ public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presente
   private void setupView(View v) {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     recyclerView.setBackgroundColor(smartColorTheme.screen().intValue());
-    getLoaderManager().initLoader(0, null, this);
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -83,17 +78,6 @@ public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presente
 
   @Override protected void onPresenterPrepared(AllPlaylist.Presenter presenter) {
     presenter.takeView(this);
-  }
-
-  @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    return new AllSongsCursorLoader(getContext());
-  }
-
-  @Override public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-    presenter.onAllPlaylistCursorLoadFinished(cursor);
-  }
-
-  @Override public void onLoaderReset(Loader<Cursor> loader) {
   }
 
   @Override public void showAllPlaylist(List<PlayList> playLists) {

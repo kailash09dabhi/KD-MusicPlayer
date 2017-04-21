@@ -1,6 +1,5 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists;
 
-import android.database.Cursor;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.event.PlaylistRenameEvent;
 import com.kingbull.musicplayer.ui.base.Mvp;
@@ -24,8 +23,6 @@ public interface AllPlaylist {
   }
 
   interface Presenter extends Mvp.Presenter<AllPlaylist.View> {
-    void onAllPlaylistCursorLoadFinished(Cursor cursor);
-
     void onPlaylistCreated(PlayList playlist);
 
     void onPlaylistRename(PlaylistRenameEvent event);
