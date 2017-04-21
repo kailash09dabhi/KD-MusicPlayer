@@ -203,7 +203,7 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
         });
         break;
     }
-    if (!sortEvent.isSortInAscending()) Collections.reverse(songs);
+    if (sortEvent.isSortInDescending()) Collections.reverse(songs);
     view().showAllSongs(songs);
   }
 

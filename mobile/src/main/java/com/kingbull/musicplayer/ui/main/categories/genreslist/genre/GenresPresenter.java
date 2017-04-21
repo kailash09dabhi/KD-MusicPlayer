@@ -213,7 +213,7 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
         });
         break;
     }
-    if (!sortEvent.isSortInAscending()) Collections.reverse(songs);
+    if (sortEvent.isSortInDescending()) Collections.reverse(songs);
     view().showSongs(songs);
   }
 }

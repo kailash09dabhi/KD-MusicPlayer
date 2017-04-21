@@ -210,7 +210,7 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
         });
         break;
     }
-    if (!sortEvent.isSortInAscending()) Collections.reverse(songs);
+    if (sortEvent.isSortInDescending()) Collections.reverse(songs);
     view().showSongs(songs);
   }
 }

@@ -197,7 +197,7 @@ public final class AlbumPresenter extends Presenter<Album.View> implements Album
         });
         break;
     }
-    if (!sortEvent.isSortInAscending()) Collections.reverse(songs);
+    if (sortEvent.isSortInDescending()) Collections.reverse(songs);
     view().showSongs(songs);
   }
 
