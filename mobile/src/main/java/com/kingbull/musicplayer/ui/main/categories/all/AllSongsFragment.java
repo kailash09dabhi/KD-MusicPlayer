@@ -73,7 +73,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
         @Override public void onOutAnimationFinished() {
           selectionContextOptionsLayout.setVisibility(View.GONE);
           searchLayout.setVisibility(View.GONE);
-          alphaAnimation.animateIn(totalSongLayout, Alpha.Listener.NONE);
+          alphaAnimation.fadeIn(totalSongLayout);
         }
       };
   @BindView(R.id.searchView) EditText searchView;
@@ -89,7 +89,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @OnClick(R.id.searchButton) void onSearchClick() {
-    alphaAnimation.animateOut(totalSongLayout, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(totalSongLayout);
     slideAnimation.animateIn(searchLayout, SlideHorizontal.Listener.NONE);
   }
 
@@ -169,8 +169,8 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
           @Override public void onMultiSelection(int selectionCount) {
             if (selectionCount == 1) {
-              alphaAnimation.animateOut(totalSongLayout, Alpha.Listener.NONE);
-              alphaAnimation.animateIn(selectionContextOptionsLayout, Alpha.Listener.NONE);
+              alphaAnimation.fadeOut(totalSongLayout);
+              alphaAnimation.fadeIn(selectionContextOptionsLayout);
             }
           }
         });
@@ -240,8 +240,8 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override public void hideSelectionContextOptions() {
-    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(totalSongLayout, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeIn(totalSongLayout);
   }
 
   @Override public void showMessage(String message) {
@@ -253,13 +253,13 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override public void showProgressLayout() {
-    alphaAnimation.animateOut(allSongsLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(progressLayout, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(allSongsLayout);
+    alphaAnimation.fadeIn(progressLayout);
   }
 
   @Override public void showAllSongsLayout() {
-    alphaAnimation.animateOut(progressLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(allSongsLayout, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(progressLayout);
+    alphaAnimation.fadeIn(allSongsLayout);
   }
 
   @Override public void percentage(final int percentage) {

@@ -190,8 +190,8 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
   }
 
   @Override public void showSelectionOptions() {
-    alphaAnimation.animateOut(titleView, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(selectionContextOptionsLayout, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(titleView);
+    alphaAnimation.fadeIn(selectionContextOptionsLayout);
   }
 
   @Override public void clearSelection() {
@@ -199,8 +199,8 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
   }
 
   @Override public void hideSelectionOptions() {
-    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(titleView, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeIn(titleView);
   }
 
   @Override public List<SqlMusic> selectedMusicList() {
@@ -217,8 +217,8 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
   }
 
   @Override public void hideSelectionContextOptions() {
-    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(titleView, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeIn(titleView);
   }
 
   @Override public void showAddToPlayListDialog() {

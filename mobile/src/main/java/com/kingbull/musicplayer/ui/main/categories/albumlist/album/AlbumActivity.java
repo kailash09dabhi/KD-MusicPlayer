@@ -200,8 +200,8 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
 
       @Override public void onMultiSelection(int selectionCount) {
         if (selectionCount == 1) {
-          alphaAnimation.animateOut(titleView, Alpha.Listener.NONE);
-          alphaAnimation.animateIn(selectionContextOptionsLayout, Alpha.Listener.NONE);
+          alphaAnimation.fadeOut(titleView);
+          alphaAnimation.fadeIn(selectionContextOptionsLayout);
         }
       }
     });
@@ -237,7 +237,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     selectionContextOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
   }
 
-  @NonNull @Override protected PresenterFactory<Album.Presenter> presenterFactory() {
+  @NonNull @Override protected PresenterFactory presenterFactory() {
     return new PresenterFactory.Album();
   }
 
@@ -348,7 +348,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   }
 
   @Override public void hideSelectionContextOptions() {
-    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(titleView, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeIn(titleView);
   }
 }

@@ -38,11 +38,11 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
   private MembersRecyclerViewAdapter.OnSelectionListener onSelectionListener =
       new MembersRecyclerViewAdapter.OnSelectionListener() {
         @Override public void onClearSelection() {
-          alphaAnimation.animateOut(multipleDeleteView, Alpha.Listener.NONE);
+          alphaAnimation.fadeOut(multipleDeleteView);
         }
 
         @Override public void onMultiSelection(int selectionCount) {
-          alphaAnimation.animateIn(multipleDeleteView, Alpha.Listener.NONE);
+          alphaAnimation.fadeIn(multipleDeleteView);
         }
       };
 

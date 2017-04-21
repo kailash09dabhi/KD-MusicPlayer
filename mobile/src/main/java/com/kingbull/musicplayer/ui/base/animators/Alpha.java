@@ -6,37 +6,44 @@ public interface Alpha {
   interface Listener {
     Alpha.Listener NONE = new Alpha.Listener.Default();
 
-    void onInAnimationFinished();
+    void onFadeInAnimationFinished();
 
-    void onOutAnimationFinished();
+    void onFadeOutAnimationFinished();
 
     class Default implements Alpha.Listener {
-      @Override public void onInAnimationFinished() {
+      @Override public void onFadeInAnimationFinished() {
       }
 
-      @Override public void onOutAnimationFinished() {
+      @Override public void onFadeOutAnimationFinished() {
       }
     }
   }
 
   interface Animator {
-    void animateIn(View view, Listener listener);
+    void fadeIn(View view);
 
-    void animateOut(View view, Listener listener);
+    void fadeOut(View view);
   }
 
   class Animation implements Alpha.Animator {
     private final int duration;
+    private final Listener listener;
 
     public Animation() {
-      this(500);
+      this(500, Listener.NONE);
+    }
+
+    public Animation(int duration, Listener listener) {
+      this.duration = duration;
+      this.listener = listener;
     }
 
     public Animation(int duration) {
       this.duration = duration;
+      this.listener = Listener.NONE;
     }
 
-    @Override public void animateIn(final View view, final Listener listener) {
+    @Override public void fadeIn(final View view) {
       view.setAlpha(0);
       view.animate().setDuration(duration).alpha(1).withStartAction(new Runnable() {
         @Override public void run() {
@@ -45,16 +52,16 @@ public interface Alpha {
         }
       }).withEndAction(new Runnable() {
         @Override public void run() {
-          if (listener != null) listener.onInAnimationFinished();
+          listener.onFadeInAnimationFinished();
         }
       }).start();
     }
 
-    @Override public void animateOut(final View view, final Listener listener) {
+    @Override public void fadeOut(final View view) {
       view.animate().setDuration(duration).alpha(0).withEndAction(new Runnable() {
         @Override public void run() {
           view.setVisibility(View.GONE);
-          if (listener != null) listener.onOutAnimationFinished();
+          listener.onFadeOutAnimationFinished();
         }
       }).start();
     }
