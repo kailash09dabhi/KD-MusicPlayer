@@ -36,14 +36,13 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_music_category, null);
+    return inflater.inflate(R.layout.fragment_music_category, container, false);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    musicCategoryPagerAdapter =
-        new MusicCategoryPagerAdapter(getChildFragmentManager(), getActivity(), tabs);
+    musicCategoryPagerAdapter = new MusicCategoryPagerAdapter(getChildFragmentManager(), tabs);
     viewPager.setAdapter(musicCategoryPagerAdapter);
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.setOffscreenPageLimit(3);

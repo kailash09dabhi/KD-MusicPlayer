@@ -1,7 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.Toast;
 import com.kingbull.musicplayer.R;
@@ -14,7 +13,7 @@ import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
  * @author Kailash Dabhi
  * @date 12/8/2016.
  */
-public final class PlaylistQuickAction {
+final class PlaylistQuickAction {
   private final int ID_RENAME = 1;
   private final int ID_DELETE = 5;
   private Activity activity;
@@ -25,15 +24,14 @@ public final class PlaylistQuickAction {
     this.activity = activity;
     int fillColor = new ColorTheme.Flat().header().intValue();
     final ActionItem renameItem = new ActionItem(ID_RENAME, "Rename",
-        new IconDrawable(R.drawable.ic_edit_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_edit_48dp, fillColor));
     final ActionItem deleteItem = new ActionItem(ID_DELETE, "Delete",
-        new IconDrawable(R.drawable.ic_delete_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_delete_48dp, fillColor));
     //use setSticky(true) to disable QuickAction dialog being dismissed after an item is clicked
     quickAction = new QuickAction(activity);
     //setup the action item click listener
     quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
       @Override public void onItemClick(QuickAction quickAction, int pos, int actionId) {
-        ActionItem actionItem = quickAction.getActionItem(pos);
         if (actionId == ID_RENAME) {
           playlistQuickActionListener.rename();
         } else if (actionId == ID_DELETE) {

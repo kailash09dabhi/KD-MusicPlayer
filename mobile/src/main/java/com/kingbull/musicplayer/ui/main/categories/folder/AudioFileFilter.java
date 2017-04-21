@@ -6,19 +6,18 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 
 public final class AudioFileFilter implements FileFilter {
-
-    protected static final String TAG = AudioFileFilter.class.getSimpleName();
+    private static final String TAG = AudioFileFilter.class.getSimpleName();
     /**
      * allows Directories
      */
     private final boolean allowDirectories;
 
-    public AudioFileFilter( boolean allowDirectories) {
-        this.allowDirectories = allowDirectories;
-    }
-
     public AudioFileFilter() {
         this(true);
+    }
+
+    public AudioFileFilter(boolean allowDirectories) {
+        this.allowDirectories = allowDirectories;
     }
 
     @Override
@@ -51,7 +50,7 @@ public final class AudioFileFilter implements FileFilter {
         if ( !allowDirectories ) {
             return false;
         } else {
-            final ArrayList<File> subDirs = new ArrayList<File>();
+          final ArrayList<File> subDirs = new ArrayList<>();
             int songNumb = dir.listFiles( new FileFilter() {
 
                 @Override
@@ -98,16 +97,16 @@ public final class AudioFileFilter implements FileFilter {
         return false; 
     }
 
-    public String getFileExtension( File f ) {
-        return getFileExtension( f.getName() );
-    }
-
     public String getFileExtension( String fileName ) {
         int i = fileName.lastIndexOf('.');
         if (i > 0) {
             return fileName.substring(i+1);
-        } else 
+        } else
             return null;
+    }
+
+    public String getFileExtension(File f) {
+        return getFileExtension(f.getName());
     }
 
     /**
@@ -134,8 +133,7 @@ public final class AudioFileFilter implements FileFilter {
         //MKV("mkv"),
         WAV("wav")
         ;
-
-        private String filesuffix;
+        private final String filesuffix;
 
         SupportedFileFormat( String filesuffix ) {
             this.filesuffix = filesuffix;

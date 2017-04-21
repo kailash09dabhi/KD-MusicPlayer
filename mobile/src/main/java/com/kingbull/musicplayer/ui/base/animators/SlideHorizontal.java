@@ -9,11 +9,11 @@ import android.view.View;
  */
 public interface SlideHorizontal {
   interface Listener {
+    Listener NONE = new Default();
+
     void onInAnimationFinished();
 
     void onOutAnimationFinished();
-
-    Listener NONE = new Default();
 
     class Default implements SlideHorizontal.Listener {
       @Override public void onInAnimationFinished() {
@@ -25,15 +25,20 @@ public interface SlideHorizontal {
   }
 
   interface Animator {
-    void animateIn(View view, SlideHorizontal.Listener listener);
+    void animateIn(View view);
 
-    void animateOut(View view, SlideHorizontal.Listener listener);
+    void animateOut(View view);
   }
 
   class Animation implements SlideHorizontal.Animator {
     private final int DURATION = 700;
+    private final Listener listener;
 
-    @Override public void animateIn(final View view, final SlideHorizontal.Listener listener) {
+    public Animation() {
+      this.listener = Listener.NONE;
+    }
+
+    @Override public void animateIn(final View view) {
       view.animate().withStartAction(new Runnable() {
         @Override public void run() {
           view.setVisibility(View.VISIBLE);
@@ -45,7 +50,7 @@ public interface SlideHorizontal {
       }).start();
     }
 
-    @Override public void animateOut(final View view, final SlideHorizontal.Listener listener) {
+    @Override public void animateOut(final View view) {
       view.animate().withStartAction(new Runnable() {
         @Override public void run() {
           view.setVisibility(View.VISIBLE);

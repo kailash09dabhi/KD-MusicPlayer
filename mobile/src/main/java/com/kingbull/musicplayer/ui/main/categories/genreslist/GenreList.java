@@ -7,10 +7,9 @@ import android.provider.MediaStore;
  * @author Kailash Dabhi
  * @date 11/8/2016.
  */
-
-public final class GenreList {
-  private int _id;
-  private String name;
+final class GenreList {
+  private final int _id;
+  private final String name;
 
   GenreList(Cursor cursor) {
     this._id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Genres._ID));

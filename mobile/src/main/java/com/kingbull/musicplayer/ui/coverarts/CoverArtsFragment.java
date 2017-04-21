@@ -31,7 +31,6 @@ import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,18 +42,18 @@ import java.util.List;
 
 public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
     implements CoverArts.View {
+  private final StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
+  private final List<String> coverArtUrls = new ArrayList<>();
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.searchView) EditText searchView;
   @BindView(R.id.searchLayout) LinearLayout searchLayout;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.progress_overlay) ProgressOverlayLayout progressOverlay;
   @BindView(R.id.noResultFound) LinearLayout noResultFoundView;
-  StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
   private CoverArtsAdapter coverArtsAdapter;
-  private List<String> coverArtUrls = new ArrayList<>();
   private Album album;
 
-  public static final CoverArtsFragment newInstanceOfAlbumCovers(Album album) {
+  public static CoverArtsFragment newInstanceOfAlbumCovers(Album album) {
     CoverArtsFragment coverArtsFragment = new CoverArtsFragment();
     Bundle bundle = new Bundle();
     bundle.putBoolean("isAlbum", true);
@@ -63,7 +62,7 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
     return coverArtsFragment;
   }
 
-  public static final CoverArtsFragment newInstanceOfArtistCovers(String artistName) {
+  public static CoverArtsFragment newInstanceOfArtistCovers(String artistName) {
     CoverArtsFragment coverArtsFragment = new CoverArtsFragment();
     Bundle bundle = new Bundle();
     bundle.putBoolean("isAlbum", false);
@@ -85,7 +84,7 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_coverarts, null);
+    View view = inflater.inflate(R.layout.fragment_coverarts, container, false);
     ButterKnife.bind(this, view);
     setupView(view);
     return view;
@@ -175,8 +174,6 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
           RxBus.getInstance().post(new CoverArtDownloadedEvent());
           new Snackbar(recyclerView).show("Cover art saved successfully!");
           getFragmentManager().popBackStack();
-        } catch (FileNotFoundException e) {
-          new Snackbar(recyclerView).show("Sorry but cover art not saved:(");
         } catch (IOException e) {
           new Snackbar(recyclerView).show("Sorry but cover art not saved:(");
         }

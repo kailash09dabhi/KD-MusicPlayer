@@ -11,8 +11,7 @@ import javax.inject.Inject;
 
 public final class CallReceiver extends BroadcastReceiver {
   @Inject Player musicPlayer;
-
-  Context context;
+  private Context context;
 
   public CallReceiver() {
     MusicPlayerApp.instance().component().inject(this);
@@ -31,7 +30,7 @@ public final class CallReceiver extends BroadcastReceiver {
   }
 
   private class MyPhoneStateListener extends PhoneStateListener {
-    boolean isPaused = false;//paused when call arived then true else false
+    boolean isPaused = false;//paused when call arrived then true else false
 
     public void onCallStateChanged(int state, String incomingNumber) {
       Log.d("MyPhoneListener", state + "   incoming no:" + incomingNumber);

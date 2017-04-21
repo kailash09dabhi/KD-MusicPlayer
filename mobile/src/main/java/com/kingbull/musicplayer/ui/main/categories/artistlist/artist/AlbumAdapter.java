@@ -19,8 +19,7 @@ import java.util.List;
  */
 
 public final class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> {
-
-  private List<Album> albums;
+  private final List<Album> albums;
 
   public AlbumAdapter(List<Album> albums) {
     this.albums = albums;

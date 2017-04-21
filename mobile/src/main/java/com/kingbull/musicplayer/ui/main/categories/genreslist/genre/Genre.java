@@ -9,9 +9,8 @@ import com.kingbull.musicplayer.ui.base.Mvp;
 import java.util.List;
 
 /**
- * Created by Kailash Dabhi on 09-07-2016.
- * You can contact us at kailash09dabhi@gmail.com OR on skype(kailash.09)
- * Copyright (c) 2016 Kingbull Technology. AllPlaylist rights reserved.
+ * @author Kailash Dabhi
+ * @date 10th Nov, 2016
  */
 public interface Genre {
   interface View extends Mvp.View {

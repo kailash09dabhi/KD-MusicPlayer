@@ -34,9 +34,7 @@ import javax.inject.Inject;
  * @author Kailash Dabhi
  * @date 11/27/2016.
  */
-
 public final class PresetDialogFragment extends BaseDialogFragment implements Preset.View {
-  Preset.Presenter presenter = new PresetPresenter();
   @BindView(R.id.createNewPlayListView) LinearLayout createNewPresetView;
   @BindView(R.id.playlistsView) LinearLayout presetsView;
   @BindView(R.id.playlistNameView) EditText presetNameView;
@@ -44,6 +42,7 @@ public final class PresetDialogFragment extends BaseDialogFragment implements Pr
   @BindView(R.id.viewFlipper) ViewFlipper viewFlipper;
   @Inject EqualizerPresetTable equalizerPresetTable;
   @Inject Player player;
+  private Preset.Presenter presenter = new PresetPresenter();
 
   public static PresetDialogFragment newInstance() {
     PresetDialogFragment frag = new PresetDialogFragment();
@@ -56,64 +55,6 @@ public final class PresetDialogFragment extends BaseDialogFragment implements Pr
 
   @OnClick(R.id.cancelView) void onCancelClick() {
     showPresetsScreen();
-  }
-
-  @OnClick(R.id.doneView) void onDoneClick() {
-    if (!TextUtils.isEmpty(presetNameView.getText())) {
-      RxBus.getInstance()
-          .post(new com.kingbull.musicplayer.event.Preset(
-              com.kingbull.musicplayer.event.Preset.Event.NEW,
-              presetNameView.getText().toString()));
-      dismiss();
-    }
-  }
-
-  @Nullable @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.dialog_equalizer_preset, null);
-  }
-
-  @Override public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    MusicPlayerApp.instance().component().inject(this);
-  }
-
-  @Override public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-    ButterKnife.bind(this, view);
-    MusicPlayerApp.instance().component().inject(this);
-    final List<EqualizerPreset> presetList = new ArrayList<>();
-    presetList.addAll(equalizerPresetTable.allPresets());
-    presetList.addAll(systemPresets());
-    presenter.takeView(this);
-    listView.setAdapter(new PresetAdapter(getActivity(), presetList));
-    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-        RxBus.getInstance()
-            .post(new com.kingbull.musicplayer.event.Preset(
-                com.kingbull.musicplayer.event.Preset.Event.CLICK, presetList.get(position)));
-        dismiss();
-      }
-    });
-  }
-
-  @Override public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    Display display = getDialog().getOwnerActivity().getWindowManager().getDefaultDisplay();
-    Point size = new Point();
-    display.getSize(size);
-    setDialogHeight(size.y * 70 / 100);
-  }
-
-  private List<EqualizerPreset> systemPresets() {
-    Equalizer equalizer = player.equalizer();
-    ArrayList<EqualizerPreset> equalizerPresets = new ArrayList<>();
-    for (short i = 0; i < equalizer.getNumberOfPresets(); i++) {
-      equalizerPresets.add(new AudioFxEqualizerPreset(equalizer, i));
-    }
-    return equalizerPresets;
   }
 
   private void showPresetsScreen() {
@@ -129,16 +70,71 @@ public final class PresetDialogFragment extends BaseDialogFragment implements Pr
     setDialogHeight(size.y * 70 / 100);
   }
 
+  void setDialogHeight(int height) {
+    ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
+    layoutParams.height = height;
+    getView().setLayoutParams(layoutParams);
+  }
+
+  @OnClick(R.id.doneView) void onDoneClick() {
+    if (!TextUtils.isEmpty(presetNameView.getText())) {
+      RxBus.getInstance()
+          .post(com.kingbull.musicplayer.event.Preset.New(presetNameView.getText().toString()));
+      dismiss();
+    }
+  }
+
+  @Nullable @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.dialog_equalizer_preset, container, false);
+  }
+
+  @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    MusicPlayerApp.instance().component().inject(this);
+  }
+
+  @Override public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    Display display = getDialog().getOwnerActivity().getWindowManager().getDefaultDisplay();
+    Point size = new Point();
+    display.getSize(size);
+    setDialogHeight(size.y * 70 / 100);
+  }
+
+  @Override public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    ButterKnife.bind(this, view);
+    MusicPlayerApp.instance().component().inject(this);
+    final List<EqualizerPreset> presetList = new ArrayList<>();
+    presetList.addAll(equalizerPresetTable.allPresets());
+    presetList.addAll(systemPresets());
+    presenter.takeView(this);
+    listView.setAdapter(new PresetAdapter(getActivity(), presetList));
+    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+        RxBus.getInstance()
+            .post(com.kingbull.musicplayer.event.Preset.Click(presetList.get(position)));
+        dismiss();
+      }
+    });
+  }
+
+  private List<EqualizerPreset> systemPresets() {
+    Equalizer equalizer = player.equalizer();
+    ArrayList<EqualizerPreset> equalizerPresets = new ArrayList<>();
+    for (short i = 0; i < equalizer.getNumberOfPresets(); i++) {
+      equalizerPresets.add(new AudioFxEqualizerPreset(equalizer, i));
+    }
+    return equalizerPresets;
+  }
+
   @Override public void showCreatePresetScreen() {
     viewFlipper.setInAnimation(getActivity(), R.anim.slide_in_right);
     viewFlipper.setOutAnimation(getActivity(), R.anim.slide_out_left);
     viewFlipper.showNext();
     setDialogHeight(createNewPresetView.getMeasuredHeight());
-  }
-
-  void setDialogHeight(int height) {
-    ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
-    layoutParams.height = height;
-    getView().setLayoutParams(layoutParams);
   }
 }

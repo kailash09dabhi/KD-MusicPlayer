@@ -16,21 +16,21 @@
       android:orientation="vertical">
 
     <TextView
+      style="@style/AppTheme.TextAppearance.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:minHeight="?listPreferredItemHeight"
-        android:paddingLeft="?listPreferredItemPaddingLeft"
-        android:text="Presets"
-        style="@style/AppTheme.TextAppearance.Title"/>
+      android:text="Presets" />
     <TextView
         android:id="@+id/createNewView"
+      style="@style/AppTheme.TextAppearance.List.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?listPreferredItemHeight"
-        android:text="Create New Preset"
         android:paddingLeft="?listPreferredItemPaddingLeft"
-        style="@style/AppTheme.TextAppearance.List.Medium"/>
+      android:paddingRight="?listPreferredItemPaddingLeft"
+      android:text="Create New Preset" />
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
@@ -46,17 +46,17 @@
       android:orientation="vertical">
 
     <TextView
+      style="@style/AppTheme.TextAppearance.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:minHeight="?listPreferredItemHeight"
-        android:text="Save Preset as"
-        style="@style/AppTheme.TextAppearance.Title"/>
+      android:text="Save Preset as" />
     <EditText
         android:id="@+id/playlistNameView"
+      style="@style/AppTheme.TextAppearance.List.Medium"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/AppTheme.TextAppearance.List.Medium"/>
+      android:layout_height="wrap_content" />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -66,6 +66,7 @@
 
       <TextView
           android:id="@+id/cancelView"
+        style="@style/AppTheme.TextAppearance.List.Medium"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_alignParentLeft="true"
@@ -73,10 +74,10 @@
           android:gravity="center"
           android:minHeight="?listPreferredItemHeightSmall"
           android:minWidth="100dp"
-          android:text="Cancel"
-          style="@style/AppTheme.TextAppearance.List.Medium"/>
+        android:text="Cancel" />
       <TextView
           android:id="@+id/doneView"
+        style="@style/AppTheme.TextAppearance.List.Medium"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_alignParentRight="true"
@@ -84,8 +85,7 @@
           android:gravity="center"
           android:minHeight="?listPreferredItemHeightSmall"
           android:minWidth="100dp"
-          android:text="Done"
-          style="@style/AppTheme.TextAppearance.List.Medium"/>
+        android:text="Done" />
     </RelativeLayout>
   </LinearLayout>
 </ViewFlipper>

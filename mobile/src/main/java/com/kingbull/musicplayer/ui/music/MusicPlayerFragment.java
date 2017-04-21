@@ -92,7 +92,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     ButterKnife.bind(this, view);
     com.kingbull.musicplayer.ui.base.Color color =
         new com.kingbull.musicplayer.ui.base.Color(flatTheme.screen().intValue());
-    applyColorTheme(flatTheme.header().intValue(), color.light(5).toDrawable().getColor());
+    applyColorTheme(flatTheme.header().intValue());
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -107,7 +107,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         });
   }
 
-  @Override protected PresenterFactory presenterFactory() {
+  @Override protected PresenterFactory<MusicPlayer.Presenter> presenterFactory() {
     return new PresenterFactory.MusicPlayer();
   }
 
@@ -117,28 +117,26 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     updatePlayMode(new SettingPreferences().musicMode());
   }
 
-  private void applyColorTheme(int darkColor, int lightColor) {
+  private void applyColorTheme(int darkColor) {
     statusBarColor = new StatusBarColor(darkColor);
     statusBarColor.applyOn(getActivity().getWindow());
-    nameTextView.setTextColor(lightColor);
-    textViewArtist.setTextColor(lightColor);
-    progressTextView.setTextColor(lightColor);
-    durationTextView.setTextColor(lightColor);
-    equalizerView.setImageDrawable(
-        new IconDrawable(R.drawable.ic_equalizer, Color.WHITE, darkColor));
-    nowPlayingView.setImageDrawable(
-        new IconDrawable(R.drawable.ic_queue_music, Color.WHITE, darkColor));
+    nameTextView.setTextColor(Color.WHITE);
+    textViewArtist.setTextColor(Color.WHITE);
+    progressTextView.setTextColor(Color.WHITE);
+    durationTextView.setTextColor(Color.WHITE);
+    equalizerView.setImageDrawable(new IconDrawable(R.drawable.ic_equalizer, darkColor));
+    nowPlayingView.setImageDrawable(new IconDrawable(R.drawable.ic_queue_music, darkColor));
   }
 
-  @OnClick(R.id.button_play_toggle) public void onPlayToggleAction(View view) {
+  @OnClick(R.id.button_play_toggle) public void onPlayToggleAction() {
     presenter.onPlayToggleClick();
   }
 
-  @OnClick(R.id.button_play_mode_toggle) public void onPlayModeToggleAction(View view) {
+  @OnClick(R.id.button_play_mode_toggle) public void onPlayModeToggleAction() {
     presenter.onPlayModeToggleClick();
   }
 
-  @OnClick(R.id.button_play_next) public void onPlayNextAction(View view) {
+  @OnClick(R.id.button_play_next) public void onPlayNextAction() {
     presenter.onPlayNextClick();
   }
 
@@ -146,7 +144,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     presenter.onPlayPreviousClick();
   }
 
-  @OnClick(R.id.button_favorite_toggle) public void onFavoriteToggleAction(View view) {
+  @OnClick(R.id.button_favorite_toggle) public void onFavoriteToggleAction() {
     presenter.onFavoriteToggleClick();
   }
 
@@ -178,13 +176,13 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
                   Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();
                   Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
                   if (darkMutedSwatch != null && lightMutedSwatch != null) {
-                    applyColorTheme(darkMutedSwatch.getRgb(), lightMutedSwatch.getRgb());
+                    applyColorTheme(darkMutedSwatch.getRgb());
                   } else if (darkVibrantSwatch != null && lightVibrantSwatch != null) {
-                    applyColorTheme(darkVibrantSwatch.getRgb(), lightVibrantSwatch.getRgb());
+                    applyColorTheme(darkVibrantSwatch.getRgb());
                   } else if (vibrantSwatch != null && mutedSwatch != null) {
-                    applyColorTheme(vibrantSwatch.getRgb(), mutedSwatch.getRgb());
+                    applyColorTheme(vibrantSwatch.getRgb());
                   } else {
-                    applyColorTheme(flatTheme.header().intValue(), flatTheme.bodyText().intValue());
+                    applyColorTheme(flatTheme.header().intValue());
                   }
                 }
               }
@@ -216,7 +214,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         .subscribe(new DisposableObserver<BitmapDrawable>() {
           @Override public void onNext(BitmapDrawable bitmap) {
             backgroundView.setBackground(bitmap);
-            new Alpha.Animation(2500).animateIn(backgroundView, null);
+            new Alpha.Animation(2500).fadeIn(backgroundView);
           }
 
           @Override public void onError(Throwable e) {

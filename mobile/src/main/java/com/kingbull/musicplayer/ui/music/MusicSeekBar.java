@@ -16,13 +16,13 @@ import com.kingbull.musicplayer.domain.Music;
  */
 public final class MusicSeekBar extends AppCompatSeekBar {
   private final Handler handler = new Handler();
-  MusicPlayer.Presenter presenter;
-  private Music song;
-  private Runnable progressRunnable = new Runnable() {
+  private MusicPlayer.Presenter presenter;
+  private final Runnable progressRunnable = new Runnable() {
     @Override public void run() {
       presenter.onSeekbarProgress();
     }
   };
+  private Music song;
 
   public MusicSeekBar(Context context) {
     super(context);

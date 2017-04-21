@@ -46,7 +46,6 @@
       android:id="@+id/coverRecyclerView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_weight="1"
       android:fadingEdge="none"
       android:minHeight="@dimen/cover_size" />
 
@@ -66,7 +65,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:paddingLeft="5dp"
         tools:text="99" />
 
       <ImageView

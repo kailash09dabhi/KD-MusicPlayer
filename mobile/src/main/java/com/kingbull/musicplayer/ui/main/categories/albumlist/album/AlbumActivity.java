@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -56,7 +55,6 @@ import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +67,8 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Album.View {
   private final int PICK_COVER_ART_GALLERY = 9;
   private final Alpha.Animation alphaAnimation = new Alpha.Animation();
+  private final List<Music> songList = new ArrayList<>();
+  private final StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
@@ -81,8 +81,6 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   @BindView(R.id.artistname) TextView artistNameView;
   @BindView(R.id.rootView) View rootView;
   private MusicRecyclerViewAdapter adapter;
-  private List<Music> songList = new ArrayList<>();
-  private StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
   private com.kingbull.musicplayer.domain.Album album;
 
   @OnClick(R.id.albumart) void onCoverArtClick() {
@@ -114,8 +112,6 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
             album = album.saveCoverArt(file.getPath());
             new Snackbar(recyclerView).show("Cover art saved successfully!");
             showAlbumArt();
-          } catch (FileNotFoundException e) {
-            new Snackbar(recyclerView).show("Sorry but cover art not saved:(");
           } catch (IOException e) {
             new Snackbar(recyclerView).show("Sorry but cover art not saved:(");
           }
@@ -200,8 +196,8 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
 
       @Override public void onMultiSelection(int selectionCount) {
         if (selectionCount == 1) {
-          alphaAnimation.animateOut(titleView, Alpha.Listener.NONE);
-          alphaAnimation.animateIn(selectionContextOptionsLayout, Alpha.Listener.NONE);
+          alphaAnimation.fadeOut(titleView);
+          alphaAnimation.fadeIn(selectionContextOptionsLayout);
         }
       }
     });
@@ -230,14 +226,13 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     titleView.setSelected(true);
     showAlbumArt();
     int fillColor = 0;
-    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, fillColor));
-    shuffleButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_shuffle_48dp, Color.WHITE, fillColor));
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
+    shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, fillColor));
     selectionContextOptionsLayout.updateIconsColor(fillColor);
     selectionContextOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
   }
 
-  @NonNull @Override protected PresenterFactory presenterFactory() {
+  @NonNull @Override protected PresenterFactory<Album.Presenter> presenterFactory() {
     return new PresenterFactory.Album();
   }
 
@@ -348,7 +343,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   }
 
   @Override public void hideSelectionContextOptions() {
-    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(titleView, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeIn(titleView);
   }
 }

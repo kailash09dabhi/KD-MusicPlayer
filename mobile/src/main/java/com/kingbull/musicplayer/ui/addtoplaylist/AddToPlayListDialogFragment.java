@@ -22,8 +22,8 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
-import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.PlayListTable;
 import com.kingbull.musicplayer.event.PlaylistCreatedEvent;
 import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
 import java.util.ArrayList;
@@ -37,15 +37,15 @@ import javax.inject.Inject;
 
 public final class AddToPlayListDialogFragment extends BaseDialogFragment
     implements AddToPlayList.View {
-  AddToPlayList.Presenter presenter = new AddToPlayListPresenter();
   @BindView(R.id.createNewPlayListView) LinearLayout createNewPlaylistView;
   @BindView(R.id.playlistsView) LinearLayout playlistsView;
   @BindView(R.id.playlistNameView) EditText playlistNameView;
   @BindView(R.id.listView) ListView listView;
   @BindView(R.id.viewFlipper) ViewFlipper viewFlipper;
   @Inject MediaStatTable mediaStatTable;
-  List<SqlMusic> musics;
-  List<PlayList> playLists;
+  private AddToPlayList.Presenter presenter = new AddToPlayListPresenter();
+  private List<SqlMusic> musics;
+  private List<PlayList> playLists;
 
   public static AddToPlayListDialogFragment newInstance(List<SqlMusic> musicList) {
     AddToPlayListDialogFragment frag = new AddToPlayListDialogFragment();
@@ -63,6 +63,22 @@ public final class AddToPlayListDialogFragment extends BaseDialogFragment
     showPlaylistsScreen();
   }
 
+  private void showPlaylistsScreen() {
+    viewFlipper.setInAnimation(getActivity(), R.anim.slide_in_left);
+    viewFlipper.setOutAnimation(getActivity(), R.anim.slide_out_right);
+    viewFlipper.showPrevious();
+    Display display = getDialog().getOwnerActivity().getWindowManager().getDefaultDisplay();
+    Point size = new Point();
+    display.getSize(size);
+    setDialogHeight(size.y * 70 / 100);
+  }
+
+  private void setDialogHeight(int height) {
+    ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
+    layoutParams.height = height;
+    getView().setLayoutParams(layoutParams);
+  }
+
   @OnClick(R.id.doneView) void onDoneClick() {
     if (!TextUtils.isEmpty(playlistNameView.getText())) {
       List<SqlMusic> musics = getArguments().getParcelableArrayList("music_list");
@@ -77,7 +93,7 @@ public final class AddToPlayListDialogFragment extends BaseDialogFragment
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.dialog_add_to_playlist, null);
+    return inflater.inflate(R.layout.dialog_add_to_playlist, container, false);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -104,26 +120,10 @@ public final class AddToPlayListDialogFragment extends BaseDialogFragment
     setDialogHeight(size.y * 70 / 100);
   }
 
-  private void showPlaylistsScreen() {
-    viewFlipper.setInAnimation(getActivity(), R.anim.slide_in_left);
-    viewFlipper.setOutAnimation(getActivity(), R.anim.slide_out_right);
-    viewFlipper.showPrevious();
-    Display display = getDialog().getOwnerActivity().getWindowManager().getDefaultDisplay();
-    Point size = new Point();
-    display.getSize(size);
-    setDialogHeight(size.y * 70 / 100);
-  }
-
   @Override public void showCreatePlaylistScreen() {
     viewFlipper.setInAnimation(getActivity(), R.anim.slide_in_right);
     viewFlipper.setOutAnimation(getActivity(), R.anim.slide_out_left);
     viewFlipper.showNext();
     setDialogHeight(createNewPlaylistView.getMeasuredHeight());
-  }
-
-  void setDialogHeight(int height) {
-    ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
-    layoutParams.height = height;
-    getView().setLayoutParams(layoutParams);
   }
 }

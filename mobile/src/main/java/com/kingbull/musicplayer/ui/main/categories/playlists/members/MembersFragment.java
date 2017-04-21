@@ -33,18 +33,18 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.multipleDeleteView) ImageView multipleDeleteView;
-  PlayList playList;
-  List<Music> musicList;
-  private MembersRecyclerViewAdapter.OnSelectionListener onSelectionListener =
+  private final MembersRecyclerViewAdapter.OnSelectionListener onSelectionListener =
       new MembersRecyclerViewAdapter.OnSelectionListener() {
         @Override public void onClearSelection() {
-          alphaAnimation.animateOut(multipleDeleteView, Alpha.Listener.NONE);
+          alphaAnimation.fadeOut(multipleDeleteView);
         }
 
         @Override public void onMultiSelection(int selectionCount) {
-          alphaAnimation.animateIn(multipleDeleteView, Alpha.Listener.NONE);
+          alphaAnimation.fadeIn(multipleDeleteView);
         }
       };
+  private PlayList playList;
+  private List<Music> musicList;
 
   public static MembersFragment newInstance(PlayList playList) {
     MembersFragment fragment = new MembersFragment();
@@ -60,7 +60,7 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_playlist, null);
+    View view = inflater.inflate(R.layout.fragment_playlist, container, false);
     ButterKnife.bind(this, view);
     playList = getArguments().getParcelable("playlist");
     return view;
@@ -87,10 +87,10 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
 
   @Override protected void onPresenterPrepared(Members.Presenter presenter) {
     presenter.takeView(this);
-    setupView(getView());
+    setupView();
   }
 
-  private void setupView(View v) {
+  private void setupView() {
     initializeWithThemeColors();
     titleView.setText(playList.name().toUpperCase());
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

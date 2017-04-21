@@ -15,6 +15,6 @@
       android:paddingLeft="16dp"
       android:paddingRight="16dp"
       android:textColor="#999"
-      android:textSize="14dp"/>
+    android:textSize="14sp" />
 
 </LinearLayout>

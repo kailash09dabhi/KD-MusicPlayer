@@ -49,6 +49,7 @@ import java.util.List;
 public final class GenreActivity extends BaseActivity<Genre.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Genre.View {
   private final Alpha.Animation alphaAnimation = new Alpha.Animation();
+  private final List<Music> songList = new ArrayList<>();
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
@@ -59,7 +60,6 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
   private MusicRecyclerViewAdapter adapter;
-  private List<Music> songList = new ArrayList<>();
 
   @OnClick(R.id.sortButton) void onSortClick() {
     presenter.onSortMenuClick();
@@ -116,10 +116,8 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     titleView.setMarqueeRepeatLimit(-1);
     titleView.setSelected(true);
     int fillColor = 0;
-    sortButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_sort_48dp, android.graphics.Color.WHITE, fillColor));
-    shuffleButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_shuffle_48dp, android.graphics.Color.WHITE, fillColor));
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
+    shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, fillColor));
     selectionContextOptionsLayout.updateIconsColor(fillColor);
     selectionContextOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
   }
@@ -135,7 +133,7 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     ((View) recyclerView.getParent()).setBackgroundColor(headerColor);
   }
 
-  @NonNull @Override protected PresenterFactory presenterFactory() {
+  @NonNull @Override protected PresenterFactory<Genre.Presenter> presenterFactory() {
     return new PresenterFactory.Genre();
   }
 
@@ -190,8 +188,8 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
   }
 
   @Override public void showSelectionOptions() {
-    alphaAnimation.animateOut(titleView, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(selectionContextOptionsLayout, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(titleView);
+    alphaAnimation.fadeIn(selectionContextOptionsLayout);
   }
 
   @Override public void clearSelection() {
@@ -199,8 +197,8 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
   }
 
   @Override public void hideSelectionOptions() {
-    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(titleView, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeIn(titleView);
   }
 
   @Override public List<SqlMusic> selectedMusicList() {
@@ -217,8 +215,8 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
   }
 
   @Override public void hideSelectionContextOptions() {
-    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(titleView, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeIn(titleView);
   }
 
   @Override public void showAddToPlayListDialog() {

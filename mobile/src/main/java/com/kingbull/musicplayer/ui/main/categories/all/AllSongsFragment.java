@@ -1,8 +1,3 @@
-/*
- * This is the source code of DMPLayer for Android v. 1.0.0.
- * You should have received a copy of the license in this archive (see LICENSE).
- * Copyright @Dibakar_Mistry, 2015.
- */
 package com.kingbull.musicplayer.ui.main.categories.all;
 
 import android.content.Intent;
@@ -50,6 +45,10 @@ import io.reactivex.functions.Consumer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Kailash Dabhi
+ * @date 8th Nov, 2016
+ */
 public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, AllSongs.View {
   private final List<Music> musicList = new ArrayList<>();
@@ -73,7 +72,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
         @Override public void onOutAnimationFinished() {
           selectionContextOptionsLayout.setVisibility(View.GONE);
           searchLayout.setVisibility(View.GONE);
-          alphaAnimation.animateIn(totalSongLayout, Alpha.Listener.NONE);
+          alphaAnimation.fadeIn(totalSongLayout);
         }
       };
   @BindView(R.id.searchView) EditText searchView;
@@ -84,13 +83,13 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @OnClick(R.id.exitSearchButton) void onExitSearchClick() {
-    slideAnimation.animateOut(searchLayout, slideExitSearchListener);
+    slideAnimation.animateOut(searchLayout);
     presenter.onExitSearchClick();
   }
 
   @OnClick(R.id.searchButton) void onSearchClick() {
-    alphaAnimation.animateOut(totalSongLayout, Alpha.Listener.NONE);
-    slideAnimation.animateIn(searchLayout, SlideHorizontal.Listener.NONE);
+    alphaAnimation.fadeOut(totalSongLayout);
+    slideAnimation.animateIn(searchLayout);
   }
 
   @OnClick(R.id.sortButton) void onSortClick() {
@@ -99,7 +98,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_all_songs, null);
+    return inflater.inflate(R.layout.fragment_all_songs, container, false);
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -122,11 +121,9 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   private void updateDrawableOfButtons(int fillColor) {
-    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, fillColor));
-    searchButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_search_48dp, Color.WHITE, fillColor));
-    exitSearchButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_back_48dp, Color.WHITE, fillColor));
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
+    searchButton.setImageDrawable(new IconDrawable(R.drawable.ic_search_48dp, fillColor));
+    exitSearchButton.setImageDrawable(new IconDrawable(R.drawable.ic_back_48dp, fillColor));
     selectionContextOptionsLayout.updateIconsColor(fillColor);
   }
 
@@ -169,8 +166,8 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
           @Override public void onMultiSelection(int selectionCount) {
             if (selectionCount == 1) {
-              alphaAnimation.animateOut(totalSongLayout, Alpha.Listener.NONE);
-              alphaAnimation.animateIn(selectionContextOptionsLayout, Alpha.Listener.NONE);
+              alphaAnimation.fadeOut(totalSongLayout);
+              alphaAnimation.fadeIn(selectionContextOptionsLayout);
             }
           }
         });
@@ -240,8 +237,8 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override public void hideSelectionContextOptions() {
-    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(totalSongLayout, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeIn(totalSongLayout);
   }
 
   @Override public void showMessage(String message) {
@@ -253,13 +250,13 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override public void showProgressLayout() {
-    alphaAnimation.animateOut(allSongsLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(progressLayout, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(allSongsLayout);
+    alphaAnimation.fadeIn(progressLayout);
   }
 
   @Override public void showAllSongsLayout() {
-    alphaAnimation.animateOut(progressLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(allSongsLayout, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(progressLayout);
+    alphaAnimation.fadeIn(allSongsLayout);
   }
 
   @Override public void percentage(final int percentage) {

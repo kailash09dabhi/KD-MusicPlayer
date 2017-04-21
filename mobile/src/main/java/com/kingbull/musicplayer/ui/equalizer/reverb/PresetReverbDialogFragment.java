@@ -26,17 +26,15 @@ import javax.inject.Inject;
  * @author Kailash Dabhi
  * @date 11/27/2016.
  */
-
 public final class PresetReverbDialogFragment extends BaseDialogFragment
     implements PresetReverb.View {
-  PresetReverb.Presenter presenter = new PresetReverbPresenter();
-
-  @BindView(R.id.listView) ListView listView;
-  @Inject Player player;
-  Reverb[] reverbs = {
+  private final Reverb[] reverbs = {
       Reverb.LARGE_HALL, Reverb.LARGE_ROOM, Reverb.MEDIUM_HALL, Reverb.MEDIUM_ROOM,
       Reverb.SMALL_ROOM, Reverb.PLATE, Reverb.NONE,
   };
+  @BindView(R.id.listView) ListView listView;
+  @Inject Player player;
+  private PresetReverb.Presenter presenter = new PresetReverbPresenter();
 
   public static PresetReverbDialogFragment newInstance() {
     PresetReverbDialogFragment frag = new PresetReverbDialogFragment();
@@ -46,12 +44,26 @@ public final class PresetReverbDialogFragment extends BaseDialogFragment
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.dialog_reverb_preset, null);
+    return inflater.inflate(R.layout.dialog_reverb_preset, container, false);
   }
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     MusicPlayerApp.instance().component().inject(this);
+  }
+
+  @Override public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    Display display = getDialog().getOwnerActivity().getWindowManager().getDefaultDisplay();
+    Point size = new Point();
+    display.getSize(size);
+    setDialogHeight(size.y * 70 / 100);
+  }
+
+  private void setDialogHeight(int height) {
+    ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
+    layoutParams.height = height;
+    getView().setLayoutParams(layoutParams);
   }
 
   @Override public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
@@ -65,23 +77,9 @@ public final class PresetReverbDialogFragment extends BaseDialogFragment
       public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
         player.useEffect(reverbs.get(position));
         new SettingPreferences().saveReverb(reverbs.get(position));
-        RxBus.getInstance().post(new Preset(Preset.Event.REVERB, reverbs.get(position)));
+        RxBus.getInstance().post(Preset.Reverb(reverbs.get(position)));
         dismiss();
       }
     });
-  }
-
-  @Override public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    Display display = getDialog().getOwnerActivity().getWindowManager().getDefaultDisplay();
-    Point size = new Point();
-    display.getSize(size);
-    setDialogHeight(size.y * 70 / 100);
-  }
-
-  void setDialogHeight(int height) {
-    ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
-    layoutParams.height = height;
-    getView().setLayoutParams(layoutParams);
   }
 }

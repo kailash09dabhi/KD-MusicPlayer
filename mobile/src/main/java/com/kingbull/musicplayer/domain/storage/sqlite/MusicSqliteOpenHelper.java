@@ -7,7 +7,7 @@ import com.kingbull.musicplayer.domain.storage.sqlite.table.EqualizerPresetTable
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
 
 public final class MusicSqliteOpenHelper extends SQLiteOpenHelper {
-  public static final String DATABASE_NAME = "Music.db";
+  private static final String DATABASE_NAME = "Music.db";
   private static final int VERSION = 1;
 
   public MusicSqliteOpenHelper(Context context) {

@@ -1,11 +1,6 @@
-/*
- * This is the source code of DMPLayer for Android v. 1.0.0.
- * You should have received a copy of the license in this archive (see LICENSE).
- * Copyright @Dibakar_Mistry, 2015.
- */
+
 package com.kingbull.musicplayer.ui.nowplaying;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +22,10 @@ import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import github.nisrulz.recyclerviewhelper.RVHItemTouchHelperCallback;
 import java.util.List;
 
+/**
+ * @author Kailash Dabhi
+ * @date 23rd Nov, 2016 2:57 PM
+ */
 public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
     implements NowPlaying.View {
   @BindView(R.id.titleView) TextView titleView;
@@ -47,7 +46,7 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_now_playing_list, null);
+    View view = inflater.inflate(R.layout.fragment_now_playing_list, container, false);
     ButterKnife.bind(this, view);
     setupView(view);
     return view;
@@ -58,8 +57,8 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
     com.kingbull.musicplayer.ui.base.Color color =
         new com.kingbull.musicplayer.ui.base.Color(flatTheme.statusBar().intValue());
     v.setBackground(color.light().toDrawable());
-    shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, Color.WHITE,
-        flatTheme.statusBar().intValue()));
+    shuffleButton.setImageDrawable(
+        new IconDrawable(R.drawable.ic_shuffle_48dp, flatTheme.statusBar().intValue()));
     titleView.setBackgroundColor(flatTheme.header().intValue());
     titleView.setText("Now Playing".toUpperCase());
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

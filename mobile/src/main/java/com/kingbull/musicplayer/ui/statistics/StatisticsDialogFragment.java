@@ -38,7 +38,7 @@ public final class StatisticsDialogFragment extends BaseDialogFragment implement
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.dialog_statistics, null);
+    return inflater.inflate(R.layout.dialog_statistics, container, false);
   }
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public final class StatisticsDialogFragment extends BaseDialogFragment implement
     numberOfTimesPlayedView.setText(
         String.format("Number of Times Played :  %d", music.mediaStat().numberOfTimesPlayed()));
     totalListenedTimeView.setText(String.format("Total Listened Time :  %s",
-        new Milliseconds(music.mediaStat().totalListenedTime())).toString());
+        new Milliseconds(music.mediaStat().totalListenedTime()).toString()));
     durationView.setText(
         String.format("duration : %s", new Milliseconds(music.media().duration()).toString()));
     sizeView.setText(String.format("Size :  %.2f Mb", music.media().size() /

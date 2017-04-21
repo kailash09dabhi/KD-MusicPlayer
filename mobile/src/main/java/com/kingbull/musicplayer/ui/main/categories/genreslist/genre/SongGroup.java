@@ -10,8 +10,7 @@ import java.util.Map;
  * @author Kailash Dabhi
  * @date 11/14/2016.
  */
-
-public final class SongGroup {
+final class SongGroup {
   private final List<Music> songs;
 
   SongGroup(List<Music> songs) {

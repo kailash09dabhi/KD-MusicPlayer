@@ -12,9 +12,8 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/9/2016.
  */
-
-public final class Songs {
-  private Cursor cursor;
+final class Songs {
+  private final Cursor cursor;
 
   Songs(Cursor cursor) {
     this.cursor = cursor;

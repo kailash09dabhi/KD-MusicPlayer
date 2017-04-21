@@ -9,7 +9,6 @@ import com.kingbull.musicplayer.domain.Album;
  * @author Kailash Dabhi
  * @date 12/1/2016.
  */
-
 public final class AlbumTable {
   private final String[] projections = new String[] {
       MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM, MediaStore.Audio.Albums.ALBUM_ART,
@@ -22,14 +21,13 @@ public final class AlbumTable {
             MediaStore.Audio.Media._ID + " = " + "?", new String[] {
                 String.valueOf(id)
             }, "");
-    mediaCursor.moveToFirst();
-    Album album;
-    if (mediaCursor != null && mediaCursor.getCount() > 0 && mediaCursor.moveToFirst()) {
-      album = new Album.Smart(mediaCursor);
-    } else {
-      album = Album.NONE;
+    Album album = Album.NONE;
+    if (mediaCursor != null) {
+      if (mediaCursor.getCount() > 0 && mediaCursor.moveToFirst()) {
+        album = new Album.Smart(mediaCursor);
+      }
+      mediaCursor.close();
     }
-    mediaCursor.close();
     return album;
   }
 }

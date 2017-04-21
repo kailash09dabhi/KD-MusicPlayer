@@ -1,6 +1,5 @@
 package com.kingbull.musicplayer.ui.main;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,13 +9,10 @@ import com.kingbull.musicplayer.ui.main.categories.artistlist.ArtistListFragment
 import com.kingbull.musicplayer.ui.main.categories.genreslist.GenresListFragment;
 
 final class MusicCategoryPagerAdapter extends FragmentPagerAdapter {
+  private final String[] tabs;
 
-  Context mContext;
-  private String[] tabs;
-
-  public MusicCategoryPagerAdapter(FragmentManager fm, Context context, String[] tabs) {
+  public MusicCategoryPagerAdapter(FragmentManager fm, String[] tabs) {
     super(fm);
-    mContext = context;
     this.tabs = tabs;
   }
 

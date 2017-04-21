@@ -27,7 +27,7 @@ public class AlbumUtils {
     return parseAlbum(new File(song.media().path()));
   }
 
-  public static Bitmap parseAlbum(File file) {
+  private static Bitmap parseAlbum(File file) {
     MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
     try {
       metadataRetriever.setDataSource(file.getAbsolutePath());

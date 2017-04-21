@@ -15,9 +15,8 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/28/2016.
  */
-
 public final class PlayListAdapter extends ArrayAdapter<PlayList> {
-  LayoutInflater inflater;
+  private final LayoutInflater inflater;
 
   public PlayListAdapter(Context context, List<PlayList> playLists) {
     super(context, 0, playLists);
@@ -26,7 +25,9 @@ public final class PlayListAdapter extends ArrayAdapter<PlayList> {
 
   @NonNull @Override public View getView(int position, View convertView, ViewGroup parent) {
     TextView textView;
-    convertView = inflater.inflate(R.layout.item_now_playling, null);
+    if (convertView == null) {
+      convertView = inflater.inflate(R.layout.item_now_playling, parent, false);
+    }
     textView = (TextView) convertView.findViewById(R.id.nameView);
     textView.setText(getItem(position).name());
     return convertView;

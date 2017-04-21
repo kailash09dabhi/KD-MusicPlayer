@@ -34,12 +34,12 @@ import java.util.List;
 public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> implements MyFiles.View {
   @BindView(R.id.directoryPathView) TextView directoryPathView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
-  MyFilesAdapter myFilesAdapter;
+  private MyFilesAdapter myFilesAdapter;
   private ArrayList<File> files = new ArrayList<>();
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_my_files, null);
+    View view = inflater.inflate(R.layout.fragment_my_files, container, false);
     ButterKnife.bind(this, view);
     applyUIColors();
     return view;
@@ -96,7 +96,7 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
         });
   }
 
-  @NonNull @Override protected PresenterFactory presenterFactory() {
+  @NonNull @Override protected PresenterFactory<MyFiles.Presenter> presenterFactory() {
     return new PresenterFactory.MyFiles();
   }
 

@@ -49,7 +49,7 @@ public final class PlaylistRenameDialogFragment extends BaseDialogFragment {
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.dialoge_playlist_rename, null);
+    return inflater.inflate(R.layout.dialoge_playlist_rename, container, false);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

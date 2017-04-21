@@ -102,8 +102,9 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
     }
   }
 
-  class MyFiles implements PresenterFactory<MyFilesPresenter> {
-    @Override public MyFilesPresenter create() {
+  class MyFiles implements
+      PresenterFactory<com.kingbull.musicplayer.ui.main.categories.folder.MyFiles.Presenter> {
+    @Override public com.kingbull.musicplayer.ui.main.categories.folder.MyFiles.Presenter create() {
       MyFilesPresenter presenter = new MyFilesPresenter();
       MusicPlayerApp.instance().component().inject(presenter);
       return presenter;

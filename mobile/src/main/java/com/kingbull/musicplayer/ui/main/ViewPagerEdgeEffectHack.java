@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
  * @author Kailash Dabhi
  * @date 4/3/2017
  */
-public final class ViewPagerEdgeEffectHack {
+final class ViewPagerEdgeEffectHack {
   private final ViewPager pager;
 
   ViewPagerEdgeEffectHack(ViewPager pager) {

@@ -2,7 +2,6 @@ package com.kingbull.musicplayer.ui.main.categories.artistlist.artist;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
@@ -50,6 +49,7 @@ import java.util.List;
 public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Artist.View {
   private final Alpha.Animation alphaAnimation = new Alpha.Animation();
+  private final List<Music> songList = new ArrayList<>();
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
@@ -60,7 +60,6 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
   private MusicRecyclerViewAdapter adapter;
-  private List<Music> songList = new ArrayList<>();
   private com.kingbull.musicplayer.domain.Artist artist;
 
   @OnClick(R.id.sortButton) void onSortClick() {
@@ -119,9 +118,8 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     titleView.setMarqueeRepeatLimit(-1);
     titleView.setSelected(true);
     int fillColor = 0;
-    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, fillColor));
-    shuffleButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_shuffle_48dp, Color.WHITE, fillColor));
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
+    shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, fillColor));
     selectionContextOptionsLayout.updateIconsColor(fillColor);
     selectionContextOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
   }
@@ -137,7 +135,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     ((View) recyclerView.getParent()).setBackgroundColor(headerColor);
   }
 
-  @NonNull @Override protected PresenterFactory presenterFactory() {
+  @NonNull @Override protected PresenterFactory<Artist.Presenter> presenterFactory() {
     return new PresenterFactory.Artist();
   }
 
@@ -192,8 +190,8 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   }
 
   @Override public void showSelectionOptions() {
-    alphaAnimation.animateOut(titleView, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(selectionContextOptionsLayout, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(titleView);
+    alphaAnimation.fadeIn(selectionContextOptionsLayout);
   }
 
   @Override public void clearSelection() {
@@ -201,8 +199,8 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   }
 
   @Override public void hideSelectionOptions() {
-    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(titleView, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeIn(titleView);
   }
 
   @Override public List<SqlMusic> selectedMusicList() {
@@ -219,8 +217,8 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   }
 
   @Override public void hideSelectionContextOptions() {
-    alphaAnimation.animateOut(selectionContextOptionsLayout, Alpha.Listener.NONE);
-    alphaAnimation.animateIn(titleView, Alpha.Listener.NONE);
+    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeIn(titleView);
   }
 
   @Override public void showAddToPlayListDialog() {

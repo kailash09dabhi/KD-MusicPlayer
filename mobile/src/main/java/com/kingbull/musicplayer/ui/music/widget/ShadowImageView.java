@@ -126,8 +126,8 @@ public final class ShadowImageView extends android.support.v7.widget.AppCompatIm
    * Draw oval ic_shadow below ImageView under lollipop.
    */
   private class OvalShadow extends OvalShape {
+    private final Paint shadowPaint;
     private RadialGradient radialGradient;
-    private Paint shadowPaint;
 
     OvalShadow(int shadowRadius) {
       super();

@@ -1,14 +1,6 @@
-/*
- * This is the source code of DMPLayer for Android v. 1.0.0.
- * You should have received a copy of the license in this archive (see LICENSE).
- * Copyright @Dibakar_Mistry, 2015.
- */
 package com.kingbull.musicplayer.ui.main.categories.playlists;
 
-import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,14 +21,17 @@ import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
-import com.kingbull.musicplayer.ui.main.categories.all.AllSongsCursorLoader;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.List;
 
+/**
+ * @author Kailash Dabhi
+ * @date 8th Nov, 2016 9:09 PM
+ */
 public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presenter>
-    implements LoaderManager.LoaderCallbacks<Cursor>, AllPlaylist.View {
+    implements AllPlaylist.View {
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.headerLayout) LinearLayout headerLayout;
   @BindView(R.id.header) TextView headerView;
@@ -44,16 +39,15 @@ public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presente
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_all_playlist, null);
+    View view = inflater.inflate(R.layout.fragment_all_playlist, container, false);
     ButterKnife.bind(this, view);
-    setupView(view);
+    setupView();
     return view;
   }
 
-  private void setupView(View v) {
+  private void setupView() {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     recyclerView.setBackgroundColor(smartColorTheme.screen().intValue());
-    getLoaderManager().initLoader(0, null, this);
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -83,17 +77,6 @@ public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presente
 
   @Override protected void onPresenterPrepared(AllPlaylist.Presenter presenter) {
     presenter.takeView(this);
-  }
-
-  @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    return new AllSongsCursorLoader(getContext());
-  }
-
-  @Override public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-    presenter.onAllPlaylistCursorLoadFinished(cursor);
-  }
-
-  @Override public void onLoaderReset(Loader<Cursor> loader) {
   }
 
   @Override public void showAllPlaylist(List<PlayList> playLists) {

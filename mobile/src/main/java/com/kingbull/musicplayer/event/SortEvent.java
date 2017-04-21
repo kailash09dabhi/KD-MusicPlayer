@@ -7,19 +7,19 @@ import java.lang.annotation.RetentionPolicy;
 public final class SortEvent {
 
   private final @SortBy int sortBy;
-  private final boolean sortInAscending;
+  private final boolean sortInDescending;
 
-  public SortEvent(@SortBy int sortBy, boolean sortInAscending) {
+  public SortEvent(@SortBy int sortBy, boolean sortInDescending) {
     this.sortBy = sortBy;
-    this.sortInAscending = sortInAscending;
+    this.sortInDescending = sortInDescending;
   }
 
   public int sortBy() {
     return sortBy;
   }
 
-  public boolean isSortInAscending() {
-    return sortInAscending;
+  public boolean isSortInDescending() {
+    return sortInDescending;
   }
 
   @IntDef({

@@ -41,7 +41,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
-    adapter = new MainPagerAdapter(getSupportFragmentManager(), this, tabs);
+    adapter = new MainPagerAdapter(getSupportFragmentManager(), tabs);
     viewPager.setAdapter(adapter);
     viewPager.setOffscreenPageLimit(4);
     viewPager.setCurrentItem(0);
@@ -100,7 +100,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
     }
   }
 
-  @NonNull @Override protected PresenterFactory presenterFactory() {
+  @NonNull @Override protected PresenterFactory<Artist.Presenter> presenterFactory() {
     return new PresenterFactory.Artist();
   }
 

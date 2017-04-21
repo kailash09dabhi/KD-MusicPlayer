@@ -1,6 +1,5 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists;
 
-import android.database.Cursor;
 import android.support.annotation.NonNull;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.event.PlaylistRenameEvent;
@@ -13,16 +12,13 @@ import java.util.List;
  */
 public final class AllPlayListPresenter extends Presenter<AllPlaylist.View>
     implements AllPlaylist.Presenter {
-  AllPlaylist.Model model = new AllPlaylistModel();
-  List<PlayList> listOfPlayList;
+  private final AllPlaylist.Model model = new AllPlaylistModel();
+  private List<PlayList> listOfPlayList;
 
   @Override public void takeView(@NonNull AllPlaylist.View view) {
     super.takeView(view);
     listOfPlayList = model.allPlaylist();
     view().showAllPlaylist(listOfPlayList);
-  }
-
-  @Override public void onAllPlaylistCursorLoadFinished(Cursor cursor) {
   }
 
   @Override public void onPlaylistCreated(PlayList playlist) {

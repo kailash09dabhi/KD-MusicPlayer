@@ -42,7 +42,7 @@ public final class DurationFilterDialogFragment extends BaseDialogFragment {
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.dialoge_duration_filter, null);
+    return inflater.inflate(R.layout.dialoge_duration_filter, container, false);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

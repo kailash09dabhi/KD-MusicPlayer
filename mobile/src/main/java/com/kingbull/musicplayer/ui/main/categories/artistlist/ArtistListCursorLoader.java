@@ -9,11 +9,10 @@ import android.support.v4.content.CursorLoader;
  * @author Kailash Dabhi
  * @date 11/9/2016.
  */
-
-public final class ArtistListCursorLoader extends CursorLoader {
+final class ArtistListCursorLoader extends CursorLoader {
   private static final Uri MEDIA_URI = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
   private static final String ORDER_BY = MediaStore.Audio.Artists.ARTIST_KEY;
-  private static String[] PROJECTIONS = {
+  private static final String[] PROJECTIONS = {
       MediaStore.Audio.Artists._ID, MediaStore.Audio.Artists.ARTIST,
       MediaStore.Audio.Artists.NUMBER_OF_ALBUMS, MediaStore.Audio.Artists.NUMBER_OF_TRACKS
   };

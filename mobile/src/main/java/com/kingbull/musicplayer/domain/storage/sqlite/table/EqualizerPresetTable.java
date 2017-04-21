@@ -46,19 +46,6 @@ public final class EqualizerPresetTable implements SqlTable {
     sqliteDatabase.delete(EqualizerPresetTable.NAME, null, null);
   }
 
-  public EqualizerPreset presetWith(int equalizerSqliteId) {
-    //Cursor cursor = sqliteDatabase.rawQuery(
-    //    "select * from " + EqualizerPresetTable.NAME + " where " + Columns.SQLITE_ID + " = ?",
-    //    new String[] { String.valueOf(position) });
-    //if (cursor != null && cursor.getCount() > 0) {
-    //  cursor.moveToFirst();
-    //  return new EqualizerPreset.Sql(cursor);
-    //} else {
-    //  return new EqualizerPreset.Sql(mediaId);
-    //}
-    return null;
-  }
-
   public List<EqualizerPreset> allPresets() {
     String query = "select * from "
         + EqualizerPresetTable.NAME

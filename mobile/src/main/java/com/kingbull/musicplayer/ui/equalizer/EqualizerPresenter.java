@@ -2,7 +2,6 @@ package com.kingbull.musicplayer.ui.equalizer;
 
 import android.support.annotation.NonNull;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
-import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.ui.base.Presenter;
 
 /**
@@ -12,8 +11,7 @@ import com.kingbull.musicplayer.ui.base.Presenter;
 
 public final class EqualizerPresenter extends Presenter<Equalizer.View>
     implements Equalizer.Presenter {
-  Equalizer.Model model = new EqualizerModel();
-  SettingPreferences settingPreferences = new SettingPreferences();
+  private Equalizer.Model model = new EqualizerModel();
 
   @Override public void takeView(@NonNull Equalizer.View view) {
     super.takeView(view);

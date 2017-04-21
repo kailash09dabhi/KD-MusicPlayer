@@ -17,7 +17,7 @@ import java.util.List;
  * @date 11/8/2016.
  */
 public final class GenresListAdapter extends RecyclerView.Adapter<GenresListAdapter.ViewHolder> {
-  List<GenreList> genreLists;
+  private final List<GenreList> genreLists;
 
   public GenresListAdapter(List<GenreList> genreLists) {
     this.genreLists = genreLists;

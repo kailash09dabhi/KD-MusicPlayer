@@ -16,10 +16,10 @@ public final class EqualizerActivity extends BaseActivity<Equalizer.Presenter> {
     }
   }
 
-  @Override protected void onPresenterPrepared(Equalizer.Presenter presenter) {
+  @NonNull @Override protected PresenterFactory<Equalizer.Presenter> presenterFactory() {
+    return new PresenterFactory.Equalizer();
   }
 
-  @NonNull @Override protected PresenterFactory presenterFactory() {
-    return new PresenterFactory.Equalizer();
+  @Override protected void onPresenterPrepared(Equalizer.Presenter presenter) {
   }
 }

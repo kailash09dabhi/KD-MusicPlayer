@@ -22,8 +22,8 @@ import java.util.List;
  */
 public final class AllPlaylistAdapter extends RecyclerView.Adapter<AllPlaylistAdapter.ViewHolder> {
   private final PlaylistQuickAction playlistQuickAction;
-  private List<PlayList> playLists;
-  private AppCompatActivity activity;
+  private final List<PlayList> playLists;
+  private final AppCompatActivity activity;
 
   public AllPlaylistAdapter(List<PlayList> playLists, AppCompatActivity activity) {
     this.playLists = playLists;

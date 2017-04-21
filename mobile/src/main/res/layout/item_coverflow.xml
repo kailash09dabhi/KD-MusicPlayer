@@ -1,38 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
-  android:padding="8dp">
+  android:background="@color/transparent_strong_black"
+  android:clickable="true"
+  android:clipChildren="false"
+  android:gravity="center"
+  android:orientation="vertical"
+  android:padding="@dimen/mp.padding.large">
 
-  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+  <TextView
+    android:id="@+id/label"
+    style="@style/AppTheme.TextAppearance.List.Small"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/transparent_strong_black"
-    android:clickable="true"
-    android:clipChildren="false"
     android:gravity="center"
-    android:orientation="vertical"
-    android:padding="@dimen/mp.padding.normal">
+    android:maxLines="1"
+    android:paddingBottom="@dimen/mp.padding.small"
+    android:singleLine="true"
+    tools:text="Title" />
 
-    <TextView
-      android:id="@+id/label"
-      style="@style/AppTheme.TextAppearance.List.Small"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:gravity="center"
-      android:maxLines="1"
-      android:paddingBottom="@dimen/mp.padding.small"
-      android:singleLine="true"
-      tools:text="Title" />
-
-    <ImageView
-      android:id="@+id/image"
-      android:layout_width="@dimen/cover_size"
-      android:layout_height="@dimen/cover_size"
-      android:layout_centerHorizontal="true"
-      android:layout_centerVertical="true"
-      android:scaleType="fitXY"
-      tools:src="@drawable/default_record_album" />
-  </LinearLayout>
-</FrameLayout>
+  <ImageView
+    android:id="@+id/image"
+    android:layout_width="@dimen/cover_size"
+    android:layout_height="@dimen/cover_size"
+    android:scaleType="fitXY"
+    tools:src="@drawable/default_record_album" />
+</LinearLayout>

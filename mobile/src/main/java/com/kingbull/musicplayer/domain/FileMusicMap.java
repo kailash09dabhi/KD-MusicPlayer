@@ -1,8 +1,8 @@
 package com.kingbull.musicplayer.domain;
 
 import android.util.Log;
-import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaTable;
 import java.io.File;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,7 +18,7 @@ import javax.inject.Singleton;
  * @date 12/1/2016.
  */
 @Singleton public final class FileMusicMap extends HashMap<File, Music> {
-  private static AtomicInteger counter = new AtomicInteger();
+  private static final AtomicInteger counter = new AtomicInteger();
   @Inject MediaTable mediaTable;
 
   @Inject public FileMusicMap() {

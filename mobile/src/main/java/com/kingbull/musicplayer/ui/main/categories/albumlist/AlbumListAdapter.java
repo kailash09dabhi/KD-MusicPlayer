@@ -28,7 +28,7 @@ import java.util.Locale;
  */
 public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder>
     implements FastScrollRecyclerView.SectionedAdapter {
-  List<Album> albumItems;
+  private final List<Album> albumItems;
 
   public AlbumListAdapter(List<Album> albumItems) {
     this.albumItems = albumItems;

@@ -14,9 +14,8 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/28/2016.
  */
-
-public final class PresetReverbAdapter extends ArrayAdapter<Reverb> {
-  LayoutInflater inflater;
+final class PresetReverbAdapter extends ArrayAdapter<Reverb> {
+  private final LayoutInflater inflater;
 
   public PresetReverbAdapter(Context context, List<Reverb> reverbs) {
     super(context, 0, reverbs);
@@ -25,7 +24,9 @@ public final class PresetReverbAdapter extends ArrayAdapter<Reverb> {
 
   @NonNull @Override public View getView(int position, View convertView, ViewGroup parent) {
     TextView textView;
-    convertView = inflater.inflate(R.layout.item_now_playling, null);
+    if (convertView == null) {
+      convertView = inflater.inflate(R.layout.item_now_playling, parent, false);
+    }
     textView = (TextView) convertView.findViewById(R.id.nameView);
     textView.setText(getItem(position).name());
     return convertView;

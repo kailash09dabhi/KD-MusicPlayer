@@ -8,7 +8,7 @@ public abstract class Presenter<V> implements Mvp.Presenter<V> {
   protected CompositeDisposable compositeDisposable;
   private WeakReference<V> view;
 
-  public Presenter() {
+  protected Presenter() {
     compositeDisposable = new CompositeDisposable();
   }
 

@@ -29,6 +29,7 @@ public final class EqualizerView extends View {
   private final Paint circlePaint = new Paint();
   private final List<Point> equalizerPointList = new ArrayList<>();
   private final List<Point> curvePivotPointList = new ArrayList<>();
+  private final Path curvaturePath = new Path();
   private OnBandValueChangeListener onBandValueChangeListener;
   private RadialGradient radialGradient;
   private Point lastTouchedPoint;
@@ -152,11 +153,11 @@ public final class EqualizerView extends View {
       canvas.drawLine((xMax - (xMax - xMin) / 2), 70, (xMax - (xMax - xMin) / 2), getHeight() - 70,
           linePaint);
       //draw curve now
-      Path localPath1 = new Path();
-      localPath1.moveTo(xMax, yMax);
-      localPath1.cubicTo((xMax - (xMax - xMin) / 2) - 10, yMin, (xMax - (xMax - xMin) / 2) + 10,
+      curvaturePath.reset();
+      curvaturePath.moveTo(xMax, yMax);
+      curvaturePath.cubicTo((xMax - (xMax - xMin) / 2) - 10, yMin, (xMax - (xMax - xMin) / 2) + 10,
           yMin, xMin, yMax);
-      canvas.drawPath(localPath1, paint);
+      canvas.drawPath(curvaturePath, paint);
       canvas.drawCircle(xMax - (xMax - xMin) / 2, yDesired, 10.0f, circlePaint);
     }
   }

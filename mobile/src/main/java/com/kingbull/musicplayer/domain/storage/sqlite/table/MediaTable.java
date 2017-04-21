@@ -11,8 +11,8 @@ import java.io.File;
  * @author Kailash Dabhi
  * @date 12/1/2016.
  */
-
 public final class MediaTable {
+  public final static Uri URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
   private final static String[] PROJECTIONS = new String[] {
       MediaStore.Audio.Media.DATA, // the real path
       MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.DISPLAY_NAME,
@@ -22,9 +22,8 @@ public final class MediaTable {
       MediaStore.Audio.Media.SIZE, MediaStore.Audio.Media._ID, MediaStore.Audio.Media.DURATION,
       MediaStore.Audio.Media.DATE_ADDED, MediaStore.Audio.Media.YEAR
   };
-  public final static Uri URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
-  public final static String[] projections() {
+  public static String[] projections() {
     // Potential security hole! so lets fix it by clone it as per the Effective Java 2(Item 13)
     return PROJECTIONS.clone();
   }
@@ -35,14 +34,13 @@ public final class MediaTable {
         .query(URI, PROJECTIONS, MediaStore.Audio.Media._ID + " = " + "?", new String[] {
             String.valueOf(mediaId)
         }, "");
-    mediaCursor.moveToFirst();
-    Media media;
-    if (mediaCursor != null && mediaCursor.getCount() > 0 && mediaCursor.moveToFirst()) {
-      media = new Media.Smart(mediaCursor);
-    } else {
-      media = Media.NONE;
+    Media media = Media.NONE;
+    if (mediaCursor != null) {
+      if (mediaCursor.getCount() > 0 && mediaCursor.moveToFirst()) {
+        media = new Media.Smart(mediaCursor);
+      }
+      mediaCursor.close();
     }
-    mediaCursor.close();
     return media;
   }
 
@@ -52,14 +50,15 @@ public final class MediaTable {
         .query(URI, PROJECTIONS, MediaStore.Audio.Media.DATA + " = " + "?", new String[] {
             String.valueOf(file.getAbsolutePath())
         }, "");
-    mediaCursor.moveToFirst();
-    Media media;
-    if (mediaCursor != null && mediaCursor.getCount() > 0 && mediaCursor.moveToFirst()) {
-      media = new Media.Smart(mediaCursor);
-    } else {
-      media = new Media.Smart(file);
+    Media media = Media.NONE;
+    if (mediaCursor != null) {
+      if (mediaCursor.getCount() > 0 && mediaCursor.moveToFirst()) {
+        media = new Media.Smart(mediaCursor);
+      } else {
+        media = new Media.Smart(file);
+      }
+      mediaCursor.close();
     }
-    mediaCursor.close();
     return media;
   }
 }

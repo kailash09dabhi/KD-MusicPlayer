@@ -1,8 +1,3 @@
-/*
- * This is the source code of DMPLayer for Android v. 1.0.0.
- * You should have received a copy of the license in this archive (see LICENSE).
- * Copyright @Dibakar_Mistry, 2015.
- */
 package com.kingbull.musicplayer.ui.main.categories.albumlist;
 
 import android.database.Cursor;
@@ -29,19 +24,23 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.List;
 
+/**
+ * @author Kailash Dabhi
+ * @date 8th Nov, 2016
+ */
 public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, AlbumList.View {
   @BindView(R.id.recyclerView) FastScrollRecyclerView recyclerView;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_albumlist, null);
+    View view = inflater.inflate(R.layout.fragment_albumlist, container, false);
     ButterKnife.bind(this, view);
-    setupView(view);
+    setupView();
     return view;
   }
 
-  private void setupView(View v) {
+  private void setupView() {
     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     recyclerView.setPopupBgColor(Color.WHITE);
     recyclerView.setThumbColor(Color.WHITE);

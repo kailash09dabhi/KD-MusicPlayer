@@ -13,7 +13,6 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 12/22/2016.
  */
-
 public final class PlayListTable {
   private final String[] projections = new String[] {
       MediaStore.Audio.Playlists._ID, MediaStore.Audio.Playlists.NAME,
@@ -32,9 +31,10 @@ public final class PlayListTable {
       Cursor cursor = MusicPlayerApp.instance()
           .getContentResolver()
           .query(uri, projections, null, null, MediaStore.Audio.Playlists.DATE_ADDED + " ASC");
-      if (cursor != null && cursor.getCount() > 0) {
-        cursor.moveToLast();
-        playList = new PlayList.Smart(cursor);
+      if (cursor != null) {
+        if (cursor.getCount() > 0 && cursor.moveToLast()) {
+          playList = new PlayList.Smart(cursor);
+        }
         cursor.close();
       }
     }

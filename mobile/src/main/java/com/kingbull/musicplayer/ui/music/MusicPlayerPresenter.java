@@ -104,7 +104,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     }
   }
 
-  public long getCurrentSongDuration() {
+  private long getCurrentSongDuration() {
     Music currentSong = player.getPlayingSong();
     long duration = 0;
     if (currentSong != null) {

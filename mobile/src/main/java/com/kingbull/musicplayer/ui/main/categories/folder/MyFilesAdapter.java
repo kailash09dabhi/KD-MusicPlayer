@@ -23,10 +23,10 @@ import javax.inject.Inject;
  */
 public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
   private final int FOLDER = 0, SONG = 1;
-  List<File> files;
-  MyFiles.Presenter presenter;
+  private final List<File> files;
+  private final ColorTheme colorTheme = new ColorTheme.Smart();
   @Inject FileMusicMap fileMusicMap;
-  private ColorTheme colorTheme = new ColorTheme.Smart();
+  private MyFiles.Presenter presenter;
 
   public MyFilesAdapter(final List<File> files, MyFiles.Presenter presenter) {
     this.files = files;

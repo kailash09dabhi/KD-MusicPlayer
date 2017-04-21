@@ -10,37 +10,43 @@ import java.lang.annotation.RetentionPolicy;
  * @author Kailash Dabhi
  * @date 12/3/2016.
  */
-
 public final class Preset {
-
   private final @Event int event;
   private final EqualizerPreset equalizerPreset;
   private final Reverb reverb;
   private final String presetName;
 
-  public Preset(@Event int event, String presetName) {
-    this.event = event;
+  private Preset(String presetName) {
+    this.event = Event.NEW;
     equalizerPreset = null;
     this.presetName = presetName;
     reverb = null;
   }
 
-  public Preset(@Event int event, EqualizerPreset equalizerPreset) {
-    this.event = event;
+  private Preset(EqualizerPreset equalizerPreset) {
+    this.event = Event.CLICK;
     this.equalizerPreset = equalizerPreset;
     presetName = null;
     reverb = null;
   }
 
-  public Preset(@Event int event, Reverb reverb) {
-    this.event = event;
+  private Preset(Reverb reverb) {
+    this.event = Event.REVERB;
     this.reverb = reverb;
     equalizerPreset = null;
     presetName = null;
   }
 
-  public int event() {
-    return event;
+  public static Preset Click(EqualizerPreset equalizerPreset) {
+    return new Preset(equalizerPreset);
+  }
+
+  public static Preset Reverb(Reverb reverb) {
+    return new Preset(reverb);
+  }
+
+  public static Preset New(String presetName) {
+    return new Preset(presetName);
   }
 
   public Reverb reverb() {
@@ -49,15 +55,18 @@ public final class Preset {
 
   public String presetName() {
     if (event() == Event.CLICK) {
-      throw new RuntimeException(
-          "PresetReverb.Event.CLICK is not allowed to " + "call this method");
+      throw new RuntimeException("Preset.Event.CLICK is not allowed to " + "call this method");
     }
     return presetName;
   }
 
+  public int event() {
+    return event;
+  }
+
   public EqualizerPreset equalizerPreset() {
     if (event() == Event.NEW) {
-      throw new RuntimeException("PresetReverb.Event.NEW is not allowed to " + "call this method");
+      throw new RuntimeException("Preset.Event.NEW is not allowed to " + "call this method");
     }
     return equalizerPreset;
   }

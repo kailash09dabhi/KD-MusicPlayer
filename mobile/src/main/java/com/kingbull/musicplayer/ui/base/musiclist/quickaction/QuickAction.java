@@ -23,19 +23,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class QuickAction extends PopupWindows implements OnDismissListener {
-  public static final int ANIM_GROW_FROM_LEFT = 1;
-  public static final int ANIM_GROW_FROM_RIGHT = 2;
-  public static final int ANIM_GROW_FROM_CENTER = 3;
-  public static final int ANIM_AUTO = 4;
-  Activity activity;
+  private static final int ANIM_GROW_FROM_LEFT = 1;
+  private static final int ANIM_GROW_FROM_RIGHT = 2;
+  private static final int ANIM_GROW_FROM_CENTER = 3;
+  private static final int ANIM_AUTO = 4;
   //private ImageView mArrowUp;
   //private ImageView mArrowDown;
-  private Animation mTrackAnim;
-  private LayoutInflater inflater;
-  private ViewGroup mTrack;
+  private final Animation mTrackAnim;
+  private final LayoutInflater inflater;
+  private final ViewGroup mTrack;
+  private final List<ActionItem> mActionItemList = new ArrayList<>();
+  private Activity activity;
   private OnActionItemClickListener mItemClickListener;
   private OnDismissListener mDismissListener;
-  private List<ActionItem> mActionItemList = new ArrayList<>();
   private boolean mDidAction;
   private boolean mAnimateTrack;
   private int mChildPos;
@@ -54,28 +54,14 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
         return 1.2f - inner * inner;
       }
     });
-    setRootViewId(R.layout.quickaction);
-    mAnimStyle = ANIM_AUTO;
-    mAnimateTrack = true;
-    mChildPos = 0;
-  }
-
-  /**
-   * Set root view.
-   *
-   * @param id Layout resource id
-   */
-  public void setRootViewId(int id) {
-    rootView = inflater.inflate(id, null);
+    rootView = inflater.inflate(R.layout.quickaction, null);
     mTrack = (ViewGroup) rootView.findViewById(R.id.tracks);
-    //mArrowDown = (ImageView) rootView.findViewById(R.id.arrow_down);
-    //mArrowUp = (ImageView) rootView.findViewById(R.id.arrow_up);
-    //This was previously defined on show() method, moved here to prevent force close that occured
-    //when tapping fastly on a view to show quickaction dialog.
-    //Thanx to zammbi (github.com/zammbi)
     rootView.setLayoutParams(
         new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
     setContentView(rootView);
+    mAnimStyle = ANIM_AUTO;
+    mAnimateTrack = true;
+    mChildPos = 0;
   }
 
   /**
@@ -184,7 +170,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
       onTop = false;
     }
     //showArrow(((onTop) ? R.id.arrow_down : R.id.arrow_up), anchorRect.centerX());
-    setAnimationStyle(screenWidth, anchorRect.centerX(), onTop);
+    setAnimationStyle(screenWidth, onTop);
     popupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, xPos, yPos);
     if (mAnimateTrack) mTrack.startAnimation(mTrackAnim);
   }
@@ -193,12 +179,11 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
    * Set animation style
    *
    * @param screenWidth Screen width
-   * @param requestedX distance from left screen
    * @param onTop flag to indicate where the popup should be displayed. Set TRUE if displayed on
    * top
    * of anchor and vice versa
    */
-  private void setAnimationStyle(int screenWidth, int requestedX, boolean onTop) {
+  private void setAnimationStyle(int screenWidth, boolean onTop) {
     int arrowPos = screenWidth;
     switch (mAnimStyle) {
       case ANIM_GROW_FROM_LEFT:
@@ -227,21 +212,6 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
         break;
     }
   }
-  /**
-   * Show arrow
-   *
-   * @param whichArrow arrow type resource id
-   * @param requestedX distance from left screen
-   */
-  //private void showArrow(int whichArrow, int requestedX) {
-  //  final View showArrow = (whichArrow == R.id.arrow_up) ? mArrowUp : mArrowDown;
-  //  final View hideArrow = (whichArrow == R.id.arrow_up) ? mArrowDown : mArrowUp;
-  //  //final int arrowWidth = mArrowUp.getMeasuredWidth();
-  //  showArrow.setVisibility(View.VISIBLE);
-  //  ViewGroup.MarginLayoutParams param = (ViewGroup.MarginLayoutParams) showArrow.getLayoutParams();
-  //  param.leftMargin = requestedX - arrowWidth / 2;
-  //  hideArrow.setVisibility(View.INVISIBLE);
-  //}
 
   /**
    * Set listener for screen dismissed. This listener will only be fired if the quicakction dialog

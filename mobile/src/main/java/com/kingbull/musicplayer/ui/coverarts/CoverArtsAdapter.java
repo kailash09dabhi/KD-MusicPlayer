@@ -17,12 +17,11 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/8/2016.
  */
-
 public final class CoverArtsAdapter extends RecyclerView.Adapter<CoverArtsAdapter.ViewHolder> {
   private static final int NO_POSITION = -1;
   private static int selectedPosition = NO_POSITION;
-  List<String> coverUrls;
-  CoverArts.Presenter presenter;
+  private final List<String> coverUrls;
+  private CoverArts.Presenter presenter;
 
   public CoverArtsAdapter(List<String> imageUrls) {
     this.coverUrls = imageUrls;
@@ -37,7 +36,7 @@ public final class CoverArtsAdapter extends RecyclerView.Adapter<CoverArtsAdapte
         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_coverart, parent, false));
   }
 
-  @Override public void onBindViewHolder(final ViewHolder holder, final int position) {
+  @Override public void onBindViewHolder(final ViewHolder holder, int position) {
     Glide.with(holder.itemView.getContext())
         .load(coverUrls.get(position))
         .placeholder(R.drawable.a1)
@@ -52,13 +51,13 @@ public final class CoverArtsAdapter extends RecyclerView.Adapter<CoverArtsAdapte
     holder.itemView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         notifyItemChanged(selectedPosition);
-        selectedPosition = position;
+        selectedPosition = holder.getAdapterPosition();
         holder.hoverView.setVisibility(View.VISIBLE);
       }
     });
     holder.saveButton.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-        presenter.onSaveCoverArtClick(coverUrls.get(position));
+        presenter.onSaveCoverArtClick(coverUrls.get(holder.getAdapterPosition()));
       }
     });
   }

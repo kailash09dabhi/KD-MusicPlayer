@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.ui.base.drawable;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.support.v4.content.ContextCompat;
@@ -12,6 +13,10 @@ import com.kingbull.musicplayer.MusicPlayerApp;
  * @date 4/4/2017
  */
 public final class IconDrawable extends LayerDrawable {
+  public IconDrawable(int drawableResource, int fillColor) {
+    this(drawableResource, Color.WHITE, fillColor);
+  }
+
   public IconDrawable(int drawableResource, int strokeColor, int fillColor) {
     super(new Drawable[] {
         new FilledOvalDrawable(fillColor),

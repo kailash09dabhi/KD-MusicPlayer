@@ -21,11 +21,10 @@ public final class SettingsActivity extends BaseActivity<Settings.Presenter> {
     }
   }
 
-  @Override protected void onPresenterPrepared(Settings.Presenter presenter) {
+  @NonNull @Override protected PresenterFactory<Settings.Presenter> presenterFactory() {
+    return new PresenterFactory.Settings();
   }
 
-
-  @NonNull @Override protected PresenterFactory presenterFactory() {
-    return new PresenterFactory.Settings();
+  @Override protected void onPresenterPrepared(Settings.Presenter presenter) {
   }
 }

@@ -31,7 +31,7 @@ public final class SortDialogFragment extends BaseDialogFragment {
   @BindView(R.id.sortInDescendingCheckbox) CheckBox sortInDescendingCheckbox;
 
   @OnClick(R.id.doneButton) void onDoneClick() {
-    boolean sortInAscending = !sortInDescendingCheckbox.isChecked();
+    boolean sortInDescending = sortInDescendingCheckbox.isChecked();
     @SortEvent.SortBy int sortBy = 0;
     if (titleRadioButton.isChecked()) {
       sortBy = SortEvent.SortBy.TITLE;
@@ -46,7 +46,7 @@ public final class SortDialogFragment extends BaseDialogFragment {
     } else if (yearRadioButton.isChecked()) {
       sortBy = SortEvent.SortBy.YEAR;
     }
-    RxBus.getInstance().post(new SortEvent(sortBy, sortInAscending));
+    RxBus.getInstance().post(new SortEvent(sortBy, sortInDescending));
     dismiss();
   }
 
@@ -57,7 +57,7 @@ public final class SortDialogFragment extends BaseDialogFragment {
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.dialog_sort, null);
+    return inflater.inflate(R.layout.dialog_sort, container, false);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
