@@ -25,9 +25,9 @@ public interface ColorTheme {
   Color titleText();
 
   class Smart extends AbstractColorTheme {
-    ColorTheme.Transparent transparentTheme = new ColorTheme.Transparent();
-    ColorTheme.Flat flatTheme = new ColorTheme.Flat();
-    SettingPreferences settingPreferences = new SettingPreferences();
+    final ColorTheme.Transparent transparentTheme = new ColorTheme.Transparent();
+    final ColorTheme.Flat flatTheme = new ColorTheme.Flat();
+    final SettingPreferences settingPreferences = new SettingPreferences();
 
     @Override public Color header() {
       return settingPreferences.isFlatTheme() ? flatTheme.header() : transparentTheme.header();

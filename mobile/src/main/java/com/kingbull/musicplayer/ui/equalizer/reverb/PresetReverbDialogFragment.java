@@ -28,13 +28,13 @@ import javax.inject.Inject;
  */
 public final class PresetReverbDialogFragment extends BaseDialogFragment
     implements PresetReverb.View {
-  @BindView(R.id.listView) ListView listView;
-  @Inject Player player;
-  private PresetReverb.Presenter presenter = new PresetReverbPresenter();
-  private Reverb[] reverbs = {
+  private final Reverb[] reverbs = {
       Reverb.LARGE_HALL, Reverb.LARGE_ROOM, Reverb.MEDIUM_HALL, Reverb.MEDIUM_ROOM,
       Reverb.SMALL_ROOM, Reverb.PLATE, Reverb.NONE,
   };
+  @BindView(R.id.listView) ListView listView;
+  @Inject Player player;
+  private PresetReverb.Presenter presenter = new PresetReverbPresenter();
 
   public static PresetReverbDialogFragment newInstance() {
     PresetReverbDialogFragment frag = new PresetReverbDialogFragment();

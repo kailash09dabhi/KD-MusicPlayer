@@ -49,6 +49,7 @@ import java.util.List;
 public final class GenreActivity extends BaseActivity<Genre.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Genre.View {
   private final Alpha.Animation alphaAnimation = new Alpha.Animation();
+  private final List<Music> songList = new ArrayList<>();
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
@@ -59,7 +60,6 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
   private MusicRecyclerViewAdapter adapter;
-  private List<Music> songList = new ArrayList<>();
 
   @OnClick(R.id.sortButton) void onSortClick() {
     presenter.onSortMenuClick();

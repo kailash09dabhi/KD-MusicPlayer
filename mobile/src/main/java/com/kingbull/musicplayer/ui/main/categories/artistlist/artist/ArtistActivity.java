@@ -49,6 +49,7 @@ import java.util.List;
 public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Artist.View {
   private final Alpha.Animation alphaAnimation = new Alpha.Animation();
+  private final List<Music> songList = new ArrayList<>();
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
@@ -59,7 +60,6 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
   private MusicRecyclerViewAdapter adapter;
-  private List<Music> songList = new ArrayList<>();
   private com.kingbull.musicplayer.domain.Artist artist;
 
   @OnClick(R.id.sortButton) void onSortClick() {

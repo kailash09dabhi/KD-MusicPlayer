@@ -29,6 +29,9 @@ import java.io.InputStream;
 
 public final class ViewPagerParallax extends ViewPager {
   private final static String TAG = "ViewPagerParallax";
+  private final Rect src = new Rect();
+  private final Rect dst = new Rect();
+  private final boolean loggable = true;
   private int currentPosition = -1;
   private float currentOffset = 0.0f;
   private Window window;
@@ -45,10 +48,8 @@ public final class ViewPagerParallax extends ViewPager {
   private int imageWidth;
   private float zoomLevel;
   private float overlapLevel;
-  private Rect src = new Rect(), dst = new Rect();
   private boolean pagingEnabled = true;
   private boolean parallaxEnabled = true;
-  private boolean loggable = true;
 
   public ViewPagerParallax(Context context) {
     super(context);

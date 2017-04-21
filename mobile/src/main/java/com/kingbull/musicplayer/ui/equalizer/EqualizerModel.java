@@ -15,9 +15,9 @@ import javax.inject.Inject;
  * @date 11/17/2016.
  */
 public final class EqualizerModel implements Equalizer.Model {
+  private final SettingPreferences settingPreferences = new SettingPreferences();
   @Inject EqualizerPresetTable equalizerPresetTable;
   @Inject Player player;
-  private SettingPreferences settingPreferences = new SettingPreferences();
 
   public EqualizerModel() {
     MusicPlayerApp.instance().component().inject(this);

@@ -68,6 +68,8 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Album.View {
   private final int PICK_COVER_ART_GALLERY = 9;
   private final Alpha.Animation alphaAnimation = new Alpha.Animation();
+  private final List<Music> songList = new ArrayList<>();
+  private final StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
@@ -80,8 +82,6 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   @BindView(R.id.artistname) TextView artistNameView;
   @BindView(R.id.rootView) View rootView;
   private MusicRecyclerViewAdapter adapter;
-  private List<Music> songList = new ArrayList<>();
-  private StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
   private com.kingbull.musicplayer.domain.Album album;
 
   @OnClick(R.id.albumart) void onCoverArtClick() {

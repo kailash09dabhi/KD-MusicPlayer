@@ -7,7 +7,7 @@ import android.view.animation.Transformation;
 final class ResizeAnimation extends Animation {
   final int startHeight;
   final int targetHeight;
-  private View view;
+  private final View view;
 
   public ResizeAnimation(View view, int targetHeight) {
     this.view = view;

@@ -31,11 +31,11 @@ import javax.inject.Inject;
 public final class GenresPresenter extends Presenter<Genre.View> implements Genre.Presenter {
   private final AndroidMediaStoreDatabase androidMediaStoreDatabase =
       new AndroidMediaStoreDatabase();
+  private final List<Music> songs = new ArrayList<>();
   @Inject Player musicPlayer;
   private AlbumMusicsMap albumMusicsMap;
   private List<Album> albums;
   private CompositeDisposable compositeDisposable;
-  private List<Music> songs = new ArrayList<>();
   private int albumPosition;
 
   @Override public void takeView(@NonNull Genre.View view) {

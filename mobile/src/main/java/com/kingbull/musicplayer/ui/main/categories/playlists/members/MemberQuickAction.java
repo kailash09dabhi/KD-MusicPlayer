@@ -20,10 +20,10 @@ final class MemberQuickAction {
   private final int ID_RINGTONE = 4;
   private final int ID_DELETE = 5;
   private final int ID_SEND = 6;
+  private final boolean hasDeleteOption;
   private Activity activity;
   private QuickAction quickAction;
   private MemberQuickActionListener memberQuickActionListener;
-  private boolean hasDeleteOption;
 
   public MemberQuickAction(final Activity activity, boolean hasDeleteOption) {
     this.activity = activity;

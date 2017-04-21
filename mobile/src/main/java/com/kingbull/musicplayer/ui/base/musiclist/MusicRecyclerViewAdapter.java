@@ -42,11 +42,11 @@ import javax.inject.Inject;
 public final class MusicRecyclerViewAdapter
     extends RecyclerView.Adapter<MusicRecyclerViewAdapter.MusicViewHolder>
     implements FastScrollRecyclerView.SectionedAdapter {
+  private final List<Music> songs;
+  private final AppCompatActivity activity;
+  private final MusicQuickAction musicQuickAction;
+  private final SparseBooleanArray selectedItems = new SparseBooleanArray();
   @Inject Player player;
-  private List<Music> songs;
-  private AppCompatActivity activity;
-  private MusicQuickAction musicQuickAction;
-  private SparseBooleanArray selectedItems = new SparseBooleanArray();
   private OnSelectionListener onSelectionListener = new OnSelectionListener() {
     @Override public void onClearSelection() {
     }
@@ -218,11 +218,11 @@ public final class MusicRecyclerViewAdapter
 
   class MusicViewHolder extends RecyclerView.ViewHolder
       implements View.OnClickListener, View.OnLongClickListener {
+    final ColorTheme smartTheme = new ColorTheme.Smart();
     @BindView(R.id.fileName) TextView fileNameView;
     @BindView(R.id.durationView) TextView durationView;
     @BindView(R.id.artistView) TextView albumView;
     @BindView(R.id.moreActionsView) ImageView moreActionsView;
-    ColorTheme smartTheme = new ColorTheme.Smart();
 
     public MusicViewHolder(View itemView) {
       super(itemView);

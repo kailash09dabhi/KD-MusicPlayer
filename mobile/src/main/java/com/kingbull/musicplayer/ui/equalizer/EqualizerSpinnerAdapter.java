@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class EqualizerSpinnerAdapter extends BaseAdapter {
+  private final Activity ctx;
   private List<EqualizerPreset> equalizerPresets = new ArrayList<>();
-  private Activity ctx;
 
   public EqualizerSpinnerAdapter(Activity ctx, List<EqualizerPreset> equalizerPresets) {
     this.equalizerPresets = equalizerPresets;

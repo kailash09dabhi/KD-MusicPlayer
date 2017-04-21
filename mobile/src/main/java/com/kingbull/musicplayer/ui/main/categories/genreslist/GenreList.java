@@ -8,8 +8,8 @@ import android.provider.MediaStore;
  * @date 11/8/2016.
  */
 final class GenreList {
-  private int _id;
-  private String name;
+  private final int _id;
+  private final String name;
 
   GenreList(Cursor cursor) {
     this._id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Genres._ID));

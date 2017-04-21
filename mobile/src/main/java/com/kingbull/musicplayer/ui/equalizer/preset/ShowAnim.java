@@ -5,9 +5,9 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 final class ShowAnim extends Animation {
-  private int targetHeight;
-  private View view;
-  private int currentHeight;
+  private final int targetHeight;
+  private final View view;
+  private final int currentHeight;
 
   public ShowAnim(View view, int targetHeight) {
     this.view = view;

@@ -16,7 +16,7 @@ import java.util.List;
  * @date 11/28/2016.
  */
 final class PresetAdapter extends ArrayAdapter<EqualizerPreset> {
-  private LayoutInflater inflater;
+  private final LayoutInflater inflater;
 
   public PresetAdapter(Context context, List<EqualizerPreset> presets) {
     super(context, 0, presets);

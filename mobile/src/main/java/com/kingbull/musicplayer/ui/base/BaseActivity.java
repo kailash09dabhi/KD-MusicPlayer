@@ -19,8 +19,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatActivity {
   private static final int LOADER_ID = 9;
+  protected final ColorTheme flatTheme = new ColorTheme.Flat();
   protected P presenter;
-  protected ColorTheme flatTheme = new ColorTheme.Flat();
   private CompositeDisposable compositeDisposable;
 
   @Override protected void attachBaseContext(Context newBase) {

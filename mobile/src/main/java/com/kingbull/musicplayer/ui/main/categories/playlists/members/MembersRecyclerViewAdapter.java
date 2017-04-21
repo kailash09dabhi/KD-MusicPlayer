@@ -35,14 +35,14 @@ import javax.inject.Inject;
  */
 public final class MembersRecyclerViewAdapter
     extends RecyclerView.Adapter<MembersRecyclerViewAdapter.ViewHolder> {
+  private final List<Music> songs;
+  private final android.support.v4.app.FragmentManager fragmentManager;
+  private final AppCompatActivity activity;
+  private final MemberQuickAction playlistQuickAction;
+  private final MemberQuickAction quickActionWithDeleteOption;
+  private final SparseBooleanArray selectedItems = new SparseBooleanArray();
+  private final PlayList playList;
   @Inject Player player;
-  private List<Music> songs;
-  private android.support.v4.app.FragmentManager fragmentManager;
-  private AppCompatActivity activity;
-  private MemberQuickAction playlistQuickAction;
-  private MemberQuickAction quickActionWithDeleteOption;
-  private SparseBooleanArray selectedItems = new SparseBooleanArray();
-  private PlayList playList;
   private MemberQuickActionListener memberQuickActionListener;
   private OnSelectionListener onSelectionListener;
 

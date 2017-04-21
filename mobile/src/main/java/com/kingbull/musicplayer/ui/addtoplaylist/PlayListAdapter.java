@@ -16,7 +16,7 @@ import java.util.List;
  * @date 11/28/2016.
  */
 public final class PlayListAdapter extends ArrayAdapter<PlayList> {
-  private LayoutInflater inflater;
+  private final LayoutInflater inflater;
 
   public PlayListAdapter(Context context, List<PlayList> playLists) {
     super(context, 0, playLists);

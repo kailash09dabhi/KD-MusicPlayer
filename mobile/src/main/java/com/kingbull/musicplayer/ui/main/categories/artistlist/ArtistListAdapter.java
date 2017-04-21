@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 public final class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.ViewHolder> {
-  private List<Artist> artists;
+  private final List<Artist> artists;
 
   public ArtistListAdapter(List<Artist> artists) {
     this.artists = artists;

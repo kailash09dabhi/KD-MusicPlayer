@@ -133,8 +133,7 @@ public final class AudioFileFilter implements FileFilter {
         //MKV("mkv"),
         WAV("wav")
         ;
-
-        private String filesuffix;
+        private final String filesuffix;
 
         SupportedFileFormat( String filesuffix ) {
             this.filesuffix = filesuffix;

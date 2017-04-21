@@ -9,7 +9,7 @@ import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module public final class AppModule {
-  private MusicPlayerApp app;
+  private final MusicPlayerApp app;
 
   public AppModule(MusicPlayerApp app) {
     this.app = app;

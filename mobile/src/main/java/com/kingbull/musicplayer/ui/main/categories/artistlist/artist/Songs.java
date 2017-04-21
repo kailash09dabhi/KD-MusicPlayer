@@ -13,7 +13,7 @@ import java.util.List;
  * @date 11/9/2016.
  */
 final class Songs {
-  private Cursor cursor;
+  private final Cursor cursor;
 
   Songs(Cursor cursor) {
     this.cursor = cursor;

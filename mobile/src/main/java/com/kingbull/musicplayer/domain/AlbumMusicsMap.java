@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 public final class AlbumMusicsMap extends HashMap<Album, List<Music>> {
-  private AlbumTable albumTable = new AlbumTable();
+  private final AlbumTable albumTable = new AlbumTable();
 
   public AlbumMusicsMap(List<Music> songs) {
     for (Music music : songs) {

@@ -10,7 +10,7 @@ import com.kingbull.musicplayer.ui.main.categories.playlists.AllPlayListFragment
 import com.kingbull.musicplayer.ui.settings.SettingsFragment;
 
 final class MainPagerAdapter extends FragmentPagerAdapter {
-  private String[] tabs;
+  private final String[] tabs;
 
   public MainPagerAdapter(FragmentManager fm, String[] tabs) {
     super(fm);

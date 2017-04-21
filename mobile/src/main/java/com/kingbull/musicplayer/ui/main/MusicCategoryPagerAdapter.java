@@ -9,8 +9,7 @@ import com.kingbull.musicplayer.ui.main.categories.artistlist.ArtistListFragment
 import com.kingbull.musicplayer.ui.main.categories.genreslist.GenresListFragment;
 
 final class MusicCategoryPagerAdapter extends FragmentPagerAdapter {
-
-  private String[] tabs;
+  private final String[] tabs;
 
   public MusicCategoryPagerAdapter(FragmentManager fm, String[] tabs) {
     super(fm);

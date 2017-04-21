@@ -43,15 +43,15 @@ import java.util.List;
 
 public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
     implements CoverArts.View {
+  private final StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
+  private final List<String> coverArtUrls = new ArrayList<>();
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.searchView) EditText searchView;
   @BindView(R.id.searchLayout) LinearLayout searchLayout;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.progress_overlay) ProgressOverlayLayout progressOverlay;
   @BindView(R.id.noResultFound) LinearLayout noResultFoundView;
-  private StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
   private CoverArtsAdapter coverArtsAdapter;
-  private List<String> coverArtUrls = new ArrayList<>();
   private Album album;
 
   public static CoverArtsFragment newInstanceOfAlbumCovers(Album album) {

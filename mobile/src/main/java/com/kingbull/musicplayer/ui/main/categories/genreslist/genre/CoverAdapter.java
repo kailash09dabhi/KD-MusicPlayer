@@ -19,8 +19,7 @@ import java.util.List;
  */
 
 public final class CoverAdapter extends RecyclerView.Adapter<CoverAdapter.SongFileViewHolder> {
-
-  private List<Album> albums;
+  private final List<Album> albums;
 
   public CoverAdapter(List<Album> albums) {
     this.albums = albums;

@@ -33,9 +33,7 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.multipleDeleteView) ImageView multipleDeleteView;
-  private PlayList playList;
-  private List<Music> musicList;
-  private MembersRecyclerViewAdapter.OnSelectionListener onSelectionListener =
+  private final MembersRecyclerViewAdapter.OnSelectionListener onSelectionListener =
       new MembersRecyclerViewAdapter.OnSelectionListener() {
         @Override public void onClearSelection() {
           alphaAnimation.fadeOut(multipleDeleteView);
@@ -45,6 +43,8 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
           alphaAnimation.fadeIn(multipleDeleteView);
         }
       };
+  private PlayList playList;
+  private List<Music> musicList;
 
   public static MembersFragment newInstance(PlayList playList) {
     MembersFragment fragment = new MembersFragment();

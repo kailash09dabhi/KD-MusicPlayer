@@ -12,7 +12,7 @@ import android.support.v4.content.CursorLoader;
 final class GenresListCursorLoader extends CursorLoader {
   private static final Uri MEDIA_URI = MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI;
   private static final String ORDER_BY = MediaStore.Audio.Genres.NAME + " ASC";
-  private static String[] PROJECTIONS = {
+  private static final String[] PROJECTIONS = {
       MediaStore.Audio.Genres._ID, // the real path
       MediaStore.Audio.Genres.NAME,
   };
