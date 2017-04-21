@@ -42,11 +42,11 @@ public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presente
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_all_playlist, container, false);
     ButterKnife.bind(this, view);
-    setupView(view);
+    setupView();
     return view;
   }
 
-  private void setupView(View v) {
+  private void setupView() {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     recyclerView.setBackgroundColor(smartColorTheme.screen().intValue());
   }

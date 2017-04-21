@@ -127,15 +127,15 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     nowPlayingView.setImageDrawable(new IconDrawable(R.drawable.ic_queue_music, darkColor));
   }
 
-  @OnClick(R.id.button_play_toggle) public void onPlayToggleAction(View view) {
+  @OnClick(R.id.button_play_toggle) public void onPlayToggleAction() {
     presenter.onPlayToggleClick();
   }
 
-  @OnClick(R.id.button_play_mode_toggle) public void onPlayModeToggleAction(View view) {
+  @OnClick(R.id.button_play_mode_toggle) public void onPlayModeToggleAction() {
     presenter.onPlayModeToggleClick();
   }
 
-  @OnClick(R.id.button_play_next) public void onPlayNextAction(View view) {
+  @OnClick(R.id.button_play_next) public void onPlayNextAction() {
     presenter.onPlayNextClick();
   }
 
@@ -143,7 +143,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     presenter.onPlayPreviousClick();
   }
 
-  @OnClick(R.id.button_favorite_toggle) public void onFavoriteToggleAction(View view) {
+  @OnClick(R.id.button_favorite_toggle) public void onFavoriteToggleAction() {
     presenter.onFavoriteToggleClick();
   }
 

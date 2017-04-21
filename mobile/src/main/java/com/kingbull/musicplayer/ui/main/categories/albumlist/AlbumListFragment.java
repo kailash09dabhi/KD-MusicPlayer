@@ -37,11 +37,11 @@ public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_albumlist, container, false);
     ButterKnife.bind(this, view);
-    setupView(view);
+    setupView();
     return view;
   }
 
-  private void setupView(View v) {
+  private void setupView() {
     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
     recyclerView.setPopupBgColor(Color.WHITE);
     recyclerView.setThumbColor(Color.WHITE);

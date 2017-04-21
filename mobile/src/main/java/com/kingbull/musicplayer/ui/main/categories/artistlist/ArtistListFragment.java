@@ -36,11 +36,11 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_genres, container, false);
     ButterKnife.bind(this, view);
-    setupView(view);
+    setupView();
     return view;
   }
 
-  private void setupView(View v) {
+  private void setupView() {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     recyclerView.setBackgroundColor(smartColorTheme.screen().intValue());
     recyclerView.setHasFixedSize(true);

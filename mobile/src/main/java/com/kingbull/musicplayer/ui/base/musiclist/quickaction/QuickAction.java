@@ -170,7 +170,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
       onTop = false;
     }
     //showArrow(((onTop) ? R.id.arrow_down : R.id.arrow_up), anchorRect.centerX());
-    setAnimationStyle(screenWidth, anchorRect.centerX(), onTop);
+    setAnimationStyle(screenWidth, onTop);
     popupWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, xPos, yPos);
     if (mAnimateTrack) mTrack.startAnimation(mTrackAnim);
   }
@@ -179,12 +179,11 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
    * Set animation style
    *
    * @param screenWidth Screen width
-   * @param requestedX distance from left screen
    * @param onTop flag to indicate where the popup should be displayed. Set TRUE if displayed on
    * top
    * of anchor and vice versa
    */
-  private void setAnimationStyle(int screenWidth, int requestedX, boolean onTop) {
+  private void setAnimationStyle(int screenWidth, boolean onTop) {
     int arrowPos = screenWidth;
     switch (mAnimStyle) {
       case ANIM_GROW_FROM_LEFT:

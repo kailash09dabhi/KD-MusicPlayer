@@ -87,10 +87,10 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
 
   @Override protected void onPresenterPrepared(Members.Presenter presenter) {
     presenter.takeView(this);
-    setupView(getView());
+    setupView();
   }
 
-  private void setupView(View v) {
+  private void setupView() {
     initializeWithThemeColors();
     titleView.setText(playList.name().toUpperCase());
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
