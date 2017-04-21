@@ -3,6 +3,7 @@ package com.kingbull.musicplayer.ui.music;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -91,7 +92,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     ButterKnife.bind(this, view);
     com.kingbull.musicplayer.ui.base.Color color =
         new com.kingbull.musicplayer.ui.base.Color(flatTheme.screen().intValue());
-    applyColorTheme(flatTheme.header().intValue(), color.light(5).toDrawable().getColor());
+    applyColorTheme(flatTheme.header().intValue());
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -116,13 +117,13 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     updatePlayMode(new SettingPreferences().musicMode());
   }
 
-  private void applyColorTheme(int darkColor, int lightColor) {
+  private void applyColorTheme(int darkColor) {
     statusBarColor = new StatusBarColor(darkColor);
     statusBarColor.applyOn(getActivity().getWindow());
-    nameTextView.setTextColor(lightColor);
-    textViewArtist.setTextColor(lightColor);
-    progressTextView.setTextColor(lightColor);
-    durationTextView.setTextColor(lightColor);
+    nameTextView.setTextColor(Color.WHITE);
+    textViewArtist.setTextColor(Color.WHITE);
+    progressTextView.setTextColor(Color.WHITE);
+    durationTextView.setTextColor(Color.WHITE);
     equalizerView.setImageDrawable(new IconDrawable(R.drawable.ic_equalizer, darkColor));
     nowPlayingView.setImageDrawable(new IconDrawable(R.drawable.ic_queue_music, darkColor));
   }
@@ -175,13 +176,13 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
                   Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();
                   Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
                   if (darkMutedSwatch != null && lightMutedSwatch != null) {
-                    applyColorTheme(darkMutedSwatch.getRgb(), lightMutedSwatch.getRgb());
+                    applyColorTheme(darkMutedSwatch.getRgb());
                   } else if (darkVibrantSwatch != null && lightVibrantSwatch != null) {
-                    applyColorTheme(darkVibrantSwatch.getRgb(), lightVibrantSwatch.getRgb());
+                    applyColorTheme(darkVibrantSwatch.getRgb());
                   } else if (vibrantSwatch != null && mutedSwatch != null) {
-                    applyColorTheme(vibrantSwatch.getRgb(), mutedSwatch.getRgb());
+                    applyColorTheme(vibrantSwatch.getRgb());
                   } else {
-                    applyColorTheme(flatTheme.header().intValue(), flatTheme.bodyText().intValue());
+                    applyColorTheme(flatTheme.header().intValue());
                   }
                 }
               }
