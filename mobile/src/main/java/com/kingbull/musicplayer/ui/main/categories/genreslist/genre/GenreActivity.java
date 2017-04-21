@@ -116,10 +116,8 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     titleView.setMarqueeRepeatLimit(-1);
     titleView.setSelected(true);
     int fillColor = 0;
-    sortButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_sort_48dp, android.graphics.Color.WHITE, fillColor));
-    shuffleButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_shuffle_48dp, android.graphics.Color.WHITE, fillColor));
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
+    shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, fillColor));
     selectionContextOptionsLayout.updateIconsColor(fillColor);
     selectionContextOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
   }

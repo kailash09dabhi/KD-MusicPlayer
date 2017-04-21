@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -230,9 +229,8 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     titleView.setSelected(true);
     showAlbumArt();
     int fillColor = 0;
-    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, fillColor));
-    shuffleButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_shuffle_48dp, Color.WHITE, fillColor));
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
+    shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, fillColor));
     selectionContextOptionsLayout.updateIconsColor(fillColor);
     selectionContextOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
   }

@@ -51,9 +51,8 @@ public final class SelectionContextOptionsLayout extends LinearLayout {
 
   public void updateIconsColor(int fillColor) {
     addToPlaylistButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_playlist_add_48dp, Color.WHITE, fillColor));
-    deleteButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_delete_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_playlist_add_48dp, fillColor));
+    deleteButton.setImageDrawable(new IconDrawable(R.drawable.ic_delete_48dp, fillColor));
     Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_remote_view_close);
     drawable.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
     clearSelectionsButton.setImageDrawable(drawable);

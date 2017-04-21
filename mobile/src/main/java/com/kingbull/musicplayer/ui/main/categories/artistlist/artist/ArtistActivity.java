@@ -2,7 +2,6 @@ package com.kingbull.musicplayer.ui.main.categories.artistlist.artist;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
@@ -119,9 +118,8 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     titleView.setMarqueeRepeatLimit(-1);
     titleView.setSelected(true);
     int fillColor = 0;
-    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, fillColor));
-    shuffleButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_shuffle_48dp, Color.WHITE, fillColor));
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
+    shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, fillColor));
     selectionContextOptionsLayout.updateIconsColor(fillColor);
     selectionContextOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
   }

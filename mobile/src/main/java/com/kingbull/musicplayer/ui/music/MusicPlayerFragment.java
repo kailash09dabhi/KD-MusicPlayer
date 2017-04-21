@@ -3,7 +3,6 @@ package com.kingbull.musicplayer.ui.music;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -124,10 +123,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     textViewArtist.setTextColor(lightColor);
     progressTextView.setTextColor(lightColor);
     durationTextView.setTextColor(lightColor);
-    equalizerView.setImageDrawable(
-        new IconDrawable(R.drawable.ic_equalizer, Color.WHITE, darkColor));
-    nowPlayingView.setImageDrawable(
-        new IconDrawable(R.drawable.ic_queue_music, Color.WHITE, darkColor));
+    equalizerView.setImageDrawable(new IconDrawable(R.drawable.ic_equalizer, darkColor));
+    nowPlayingView.setImageDrawable(new IconDrawable(R.drawable.ic_queue_music, darkColor));
   }
 
   @OnClick(R.id.button_play_toggle) public void onPlayToggleAction(View view) {

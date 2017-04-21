@@ -1,7 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists.members;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.Toast;
 import com.kingbull.musicplayer.R;
@@ -31,17 +30,17 @@ public final class MemberQuickAction {
     this.hasDeleteOption = hasDeleteOption;
     int fillColor = new ColorTheme.Flat().header().intValue();
     final ActionItem playItem = new ActionItem(ID_PLAY, "Play",
-        new IconDrawable(R.drawable.ic_play_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_play_48dp, fillColor));
     final ActionItem addToPlaylistItem = new ActionItem(ID_MOVE_TO, "Move To",
-        new IconDrawable(R.drawable.ic_playlist_add_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_playlist_add_48dp, fillColor));
     final ActionItem editTagsItem = new ActionItem(ID_EDIT_TAGS, "Edit Tags",
-        new IconDrawable(R.drawable.ic_edit_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_edit_48dp, fillColor));
     final ActionItem setAsRingtoneItem = new ActionItem(ID_RINGTONE, "Set As Ringtone",
-        new IconDrawable(R.drawable.ic_ringtone_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_ringtone_48dp, fillColor));
     final ActionItem deleteItem = new ActionItem(ID_DELETE, "Delete from playlist",
-        new IconDrawable(R.drawable.ic_delete_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_delete_48dp, fillColor));
     final ActionItem sendItem = new ActionItem(ID_SEND, "Send",
-        new IconDrawable(R.drawable.ic_send_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_send_48dp, fillColor));
     //use setSticky(true) to disable QuickAction dialog being dismissed after an item is clicked
     quickAction = new QuickAction(activity);
     //setup the action item click listener

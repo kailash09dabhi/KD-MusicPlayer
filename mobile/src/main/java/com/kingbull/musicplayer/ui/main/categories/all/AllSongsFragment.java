@@ -122,11 +122,9 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   private void updateDrawableOfButtons(int fillColor) {
-    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, Color.WHITE, fillColor));
-    searchButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_search_48dp, Color.WHITE, fillColor));
-    exitSearchButton.setImageDrawable(
-        new IconDrawable(R.drawable.ic_back_48dp, Color.WHITE, fillColor));
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
+    searchButton.setImageDrawable(new IconDrawable(R.drawable.ic_search_48dp, fillColor));
+    exitSearchButton.setImageDrawable(new IconDrawable(R.drawable.ic_back_48dp, fillColor));
     selectionContextOptionsLayout.updateIconsColor(fillColor);
   }
 

@@ -1,7 +1,6 @@
 package com.kingbull.musicplayer.ui.base.musiclist.quickaction;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.view.View;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
@@ -28,19 +27,19 @@ public final class MusicQuickAction {
     this.activity = activity;
     int fillColor = new ColorTheme.Flat().header().intValue();
     final ActionItem playItem = new ActionItem(ID_PLAY, "Play",
-        new IconDrawable(R.drawable.ic_play_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_play_48dp, fillColor));
     final ActionItem addToPlaylistItem = new ActionItem(ID_PLAYLIST, "Add To PlayList",
-        new IconDrawable(R.drawable.ic_playlist_add_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_playlist_add_48dp, fillColor));
     ActionItem editTagsItem = new ActionItem(ID_EDIT_TAGS, "Edit Tags",
-        new IconDrawable(R.drawable.ic_edit_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_edit_48dp, fillColor));
     ActionItem statisticsItem = new ActionItem(ID_STATISTICS, "Statistics",
-        new IconDrawable(R.drawable.ic_info_outline_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_info_outline_48dp, fillColor));
     final ActionItem setAsRingtoneItem = new ActionItem(ID_RINGTONE, "Set As Ringtone",
-        new IconDrawable(R.drawable.ic_ringtone_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_ringtone_48dp, fillColor));
     final ActionItem deleteItem = new ActionItem(ID_DELETE, "Delete",
-        new IconDrawable(R.drawable.ic_delete_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_delete_48dp, fillColor));
     ActionItem sendItem = new ActionItem(ID_SEND, "Send",
-        new IconDrawable(R.drawable.ic_send_48dp, Color.WHITE, fillColor));
+        new IconDrawable(R.drawable.ic_send_48dp, fillColor));
     //use setSticky(true) to disable QuickAction dialog being dismissed after an item is clicked
     quickAction = new QuickAction(activity);
     //setup the action item click listener

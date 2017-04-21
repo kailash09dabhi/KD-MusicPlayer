@@ -5,7 +5,6 @@
  */
 package com.kingbull.musicplayer.ui.nowplaying;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,8 +57,8 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
     com.kingbull.musicplayer.ui.base.Color color =
         new com.kingbull.musicplayer.ui.base.Color(flatTheme.statusBar().intValue());
     v.setBackground(color.light().toDrawable());
-    shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, Color.WHITE,
-        flatTheme.statusBar().intValue()));
+    shuffleButton.setImageDrawable(
+        new IconDrawable(R.drawable.ic_shuffle_48dp, flatTheme.statusBar().intValue()));
     titleView.setBackgroundColor(flatTheme.header().intValue());
     titleView.setText("Now Playing".toUpperCase());
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
