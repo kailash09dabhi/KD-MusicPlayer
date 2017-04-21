@@ -25,7 +25,6 @@
       android:id="@+id/progress_overlay"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_weight="1"
       android:visibility="gone" />
 
     <android.support.v7.widget.RecyclerView
@@ -33,7 +32,6 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_marginBottom="1px"
-      android:layout_weight="1"
       android:clipToPadding="false"
       android:fadeScrollbars="true"
       android:fadingEdgeLength="34dp"
