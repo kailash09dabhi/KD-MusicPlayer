@@ -153,7 +153,7 @@ public final class MusicRecyclerViewAdapter
           }
 
           @Override public void playlist() {
-            List<SqlMusic> musicList = new ArrayList<SqlMusic>();
+            List<SqlMusic> musicList = new ArrayList<>();
             musicList.add((SqlMusic) songs.get(holder.getAdapterPosition()));
             AddToPlayListDialogFragment.newInstance(musicList)
                 .show(activity.getSupportFragmentManager(),

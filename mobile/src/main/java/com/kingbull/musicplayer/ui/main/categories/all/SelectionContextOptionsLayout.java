@@ -15,7 +15,8 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 
 /**
- * Created by KD on 2/10/2017.
+ * @author Kailash Dabhi
+ * @date 2/10/2017
  */
 public final class SelectionContextOptionsLayout extends LinearLayout {
   @BindView(R.id.addToPlaylistButton) ImageView addToPlaylistButton;

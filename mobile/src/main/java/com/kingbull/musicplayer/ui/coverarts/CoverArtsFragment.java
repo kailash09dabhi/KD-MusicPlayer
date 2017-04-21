@@ -31,7 +31,6 @@ import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -175,8 +174,6 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
           RxBus.getInstance().post(new CoverArtDownloadedEvent());
           new Snackbar(recyclerView).show("Cover art saved successfully!");
           getFragmentManager().popBackStack();
-        } catch (FileNotFoundException e) {
-          new Snackbar(recyclerView).show("Sorry but cover art not saved:(");
         } catch (IOException e) {
           new Snackbar(recyclerView).show("Sorry but cover art not saved:(");
         }

@@ -55,7 +55,6 @@ import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,8 +112,6 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
             album = album.saveCoverArt(file.getPath());
             new Snackbar(recyclerView).show("Cover art saved successfully!");
             showAlbumArt();
-          } catch (FileNotFoundException e) {
-            new Snackbar(recyclerView).show("Sorry but cover art not saved:(");
           } catch (IOException e) {
             new Snackbar(recyclerView).show("Sorry but cover art not saved:(");
           }

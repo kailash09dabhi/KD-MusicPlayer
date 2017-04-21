@@ -103,7 +103,7 @@ public final class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdap
       valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
         @Override public void onAnimationUpdate(ValueAnimator animation) {
           Integer value = (Integer) animation.getAnimatedValue();
-          itemView.getLayoutParams().height = value.intValue();
+          itemView.getLayoutParams().height = value;
           itemView.requestLayout();
         }
       });

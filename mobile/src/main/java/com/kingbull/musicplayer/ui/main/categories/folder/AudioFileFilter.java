@@ -50,7 +50,7 @@ public final class AudioFileFilter implements FileFilter {
         if ( !allowDirectories ) {
             return false;
         } else {
-            final ArrayList<File> subDirs = new ArrayList<File>();
+          final ArrayList<File> subDirs = new ArrayList<>();
             int songNumb = dir.listFiles( new FileFilter() {
 
                 @Override
