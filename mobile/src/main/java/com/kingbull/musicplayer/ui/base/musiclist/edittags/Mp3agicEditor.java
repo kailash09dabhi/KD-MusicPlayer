@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.ui.base.musiclist.edittags;
 
 import com.mpatric.mp3agic.ID3v1;
+import com.mpatric.mp3agic.ID3v1Genres;
 import com.mpatric.mp3agic.ID3v1Tag;
 import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.ID3v24Tag;
@@ -41,7 +42,7 @@ final class Mp3agicEditor implements MusicTags.Editor {
     id3v1Tag.setTitle(title);
     id3v1Tag.setArtist(artist);
     id3v1Tag.setAlbum(album);
-    id3v1Tag.setGenre(12);
+    id3v1Tag.setGenre(ID3v1Genres.matchGenreDescription(genre));
     id3v1Tag.setYear(year);
     ID3v2 id3v2Tag;
     if (mp3File.hasId3v2Tag()) {
@@ -53,7 +54,7 @@ final class Mp3agicEditor implements MusicTags.Editor {
     id3v2Tag.setTitle(title);
     id3v2Tag.setArtist(artist);
     id3v2Tag.setAlbum(album);
-    id3v2Tag.setGenre(12);
+    id3v2Tag.setGenre(ID3v1Genres.matchGenreDescription(genre));
     id3v2Tag.setYear(year);
     mp3File.save(title + ".mp3");
   }
@@ -71,18 +72,8 @@ final class Mp3agicEditor implements MusicTags.Editor {
       this.mp3File = mp3File;
     }
 
-    @Override public MusicTags.Editor.Builder title(String title) {
-      this.title = title;
-      return this;
-    }
-
     @Override public MusicTags.Editor.Builder artist(String artist) {
       this.artist = artist;
-      return this;
-    }
-
-    @Override public MusicTags.Editor.Builder album(String album) {
-      this.album = album;
       return this;
     }
 
@@ -93,6 +84,16 @@ final class Mp3agicEditor implements MusicTags.Editor {
 
     @Override public MusicTags.Editor.Builder year(String year) {
       this.year = year;
+      return this;
+    }
+
+    @Override public MusicTags.Editor.Builder title(String title) {
+      this.title = title;
+      return this;
+    }
+
+    @Override public MusicTags.Editor.Builder album(String album) {
+      this.album = album;
       return this;
     }
 
