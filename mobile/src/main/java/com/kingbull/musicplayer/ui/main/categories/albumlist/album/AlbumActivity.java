@@ -237,7 +237,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     selectionContextOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
   }
 
-  @NonNull @Override protected PresenterFactory presenterFactory() {
+  @NonNull @Override protected PresenterFactory<Album.Presenter> presenterFactory() {
     return new PresenterFactory.Album();
   }
 

@@ -22,7 +22,7 @@ public final class MusicPlayerActivity extends BaseActivity<MusicPlayer.Presente
     }
   }
 
-  @NonNull @Override protected PresenterFactory presenterFactory() {
+  @NonNull @Override protected PresenterFactory<MusicPlayer.Presenter> presenterFactory() {
     return new PresenterFactory.MusicPlayer();
   }
 

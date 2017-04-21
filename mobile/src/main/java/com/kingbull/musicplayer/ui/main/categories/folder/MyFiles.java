@@ -9,8 +9,7 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/12/2016.
  */
-
-/*package*/ interface MyFiles {
+public interface MyFiles {
   interface View extends Mvp.View {
     void showFiles(List<File> songs);
 

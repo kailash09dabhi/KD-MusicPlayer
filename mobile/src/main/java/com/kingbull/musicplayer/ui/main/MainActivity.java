@@ -100,7 +100,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
     }
   }
 
-  @NonNull @Override protected PresenterFactory presenterFactory() {
+  @NonNull @Override protected PresenterFactory<Artist.Presenter> presenterFactory() {
     return new PresenterFactory.Artist();
   }
 

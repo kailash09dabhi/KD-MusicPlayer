@@ -96,7 +96,7 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
         });
   }
 
-  @NonNull @Override protected PresenterFactory presenterFactory() {
+  @NonNull @Override protected PresenterFactory<MyFiles.Presenter> presenterFactory() {
     return new PresenterFactory.MyFiles();
   }
 

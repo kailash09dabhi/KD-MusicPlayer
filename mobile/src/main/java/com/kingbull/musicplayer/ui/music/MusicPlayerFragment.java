@@ -107,7 +107,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         });
   }
 
-  @Override protected PresenterFactory presenterFactory() {
+  @Override protected PresenterFactory<MusicPlayer.Presenter> presenterFactory() {
     return new PresenterFactory.MusicPlayer();
   }
 

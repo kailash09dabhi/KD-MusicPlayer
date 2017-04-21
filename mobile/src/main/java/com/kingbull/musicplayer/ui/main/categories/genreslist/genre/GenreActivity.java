@@ -135,7 +135,7 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     ((View) recyclerView.getParent()).setBackgroundColor(headerColor);
   }
 
-  @NonNull @Override protected PresenterFactory presenterFactory() {
+  @NonNull @Override protected PresenterFactory<Genre.Presenter> presenterFactory() {
     return new PresenterFactory.Genre();
   }
 

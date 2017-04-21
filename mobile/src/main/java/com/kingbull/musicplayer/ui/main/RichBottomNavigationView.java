@@ -38,18 +38,6 @@ public class RichBottomNavigationView extends BottomNavigationView {
         init();
     }
 
-    public RichBottomNavigationView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public RichBottomNavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-        ;
-    }
-
-
     private void init() {
 
         //setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
@@ -58,31 +46,38 @@ public class RichBottomNavigationView extends BottomNavigationView {
 
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h + mShadowElevation, oldw, oldh);
-        mWidth = w;
-        mHeight = h;
+  public void setShadowVisible(boolean shadowVisible) {
+    setWillNotDraw(!mShadowVisible);
         updateShadowBounds();
     }
-
 
     private void updateShadowBounds() {
         ViewCompat.postInvalidateOnAnimation(this);
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
+  public RichBottomNavigationView(Context context, AttributeSet attrs) {
+    super(context, attrs);
+    init();
     }
 
-    public void setShadowVisible(boolean shadowVisible) {
-        setWillNotDraw(!mShadowVisible);
+  public RichBottomNavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+    init();
+  }
+
+  @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    super.onSizeChanged(w, h + mShadowElevation, oldw, oldh);
+    mWidth = w;
+    mHeight = h;
         updateShadowBounds();
     }
 
-     public int getShadowElevation() {
-        return mShadowVisible ? mShadowElevation : 0;
+  @Override protected Parcelable onSaveInstanceState() {
+    Parcelable superState = super.onSaveInstanceState();
+    BottomNavigationState state = new BottomNavigationState(superState);
+    mLastSelection = getSelectedItem();
+    state.lastSelection = mLastSelection;
+    return state;
     }
 
     public int getSelectedItem() {
@@ -112,14 +107,16 @@ public class RichBottomNavigationView extends BottomNavigationView {
 
     }
 
-
-    @Override
-    protected Parcelable onSaveInstanceState() {
-        Parcelable superState = super.onSaveInstanceState();
-        BottomNavigationState state = new BottomNavigationState(superState);
-        mLastSelection = getSelectedItem();
-        state.lastSelection = mLastSelection;
-        return state;
+  private int findSelectedItem() {
+    int itemCount = getMenu().size();
+    for (int i = 0; i < itemCount; i++) {
+      View bottomItem = mBottomItemsHolder.getChildAt(i);
+      if (bottomItem instanceof MenuView.ItemView) {
+        MenuItemImpl itemData = ((MenuView.ItemView) bottomItem).getItemData();
+        if (itemData.isChecked()) return i;
+      }
+    }
+    return INVALID_POSITION;
     }
 
     @Override
@@ -133,6 +130,19 @@ public class RichBottomNavigationView extends BottomNavigationView {
         dispatchRestoredState();
         super.onRestoreInstanceState(bottomNavigationState.getSuperState());
     }
+
+  @Override public void draw(Canvas canvas) {
+    super.draw(canvas);
+  }
+
+  @Override protected void onFinishInflate() {
+    super.onFinishInflate();
+    mBottomItemsHolder = (ViewGroup) getChildAt(0);
+    updateShadowBounds();
+    //This sucks.
+    MarginLayoutParams layoutParams = (MarginLayoutParams) mBottomItemsHolder.getLayoutParams();
+    layoutParams.topMargin = (mShadowElevation + 2) / 2;
+  }
 
     private void dispatchRestoredState() {
         if (mLastSelection != 0) { //Since the first item is always selected by the default implementation, dont waste time
@@ -148,29 +158,23 @@ public class RichBottomNavigationView extends BottomNavigationView {
         return null;
     }
 
-    private int findSelectedItem() {
-        int itemCount = getMenu().size();
-        for (int i = 0; i < itemCount; i++) {
-            View bottomItem = mBottomItemsHolder.getChildAt(i);
-            if (bottomItem instanceof MenuView.ItemView) {
-                MenuItemImpl itemData = ((MenuView.ItemView) bottomItem).getItemData();
-                if (itemData.isChecked()) return i;
-            }
-        }
-        return INVALID_POSITION;
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        mBottomItemsHolder = (ViewGroup) getChildAt(0);
-        updateShadowBounds();
-        //This sucks.
-        MarginLayoutParams layoutParams = (MarginLayoutParams) mBottomItemsHolder.getLayoutParams();
-        layoutParams.topMargin = (mShadowElevation + 2) / 2;
+  public int getShadowElevation() {
+    return mShadowVisible ? mShadowElevation : 0;
     }
 
     static class BottomNavigationState extends BaseSavedState {
+      public static final Parcelable.Creator<NavigationView.SavedState> CREATOR =
+          ParcelableCompat.newCreator(
+              new ParcelableCompatCreatorCallbacks<NavigationView.SavedState>() {
+                @Override public NavigationView.SavedState createFromParcel(Parcel parcel,
+                    ClassLoader loader) {
+                  return new NavigationView.SavedState(parcel, loader);
+                }
+
+                @Override public NavigationView.SavedState[] newArray(int size) {
+                  return new NavigationView.SavedState[size];
+                }
+              });
         public int lastSelection;
 
         @RequiresApi(api = Build.VERSION_CODES.N)
@@ -188,18 +192,5 @@ public class RichBottomNavigationView extends BottomNavigationView {
             super.writeToParcel(dest, flags);
             dest.writeInt(lastSelection);
         }
-
-        public static final Parcelable.Creator<NavigationView.SavedState> CREATOR
-                = ParcelableCompat.newCreator(new ParcelableCompatCreatorCallbacks<NavigationView.SavedState>() {
-            @Override
-            public NavigationView.SavedState createFromParcel(Parcel parcel, ClassLoader loader) {
-                return new NavigationView.SavedState(parcel, loader);
-            }
-
-            @Override
-            public NavigationView.SavedState[] newArray(int size) {
-                return new NavigationView.SavedState[size];
-            }
-        });
     }
 }
