@@ -30,8 +30,8 @@ import javax.inject.Inject;
 public final class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.ViewHolder>
     implements RVHAdapter {
 
-  List<Music> songs;
   @Inject Player player;
+  private List<Music> songs;
 
   public NowPlayingAdapter(List<Music> songs) {
     this.songs = songs;

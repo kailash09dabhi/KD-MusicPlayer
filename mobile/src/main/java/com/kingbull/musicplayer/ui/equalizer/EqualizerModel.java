@@ -17,7 +17,7 @@ import javax.inject.Inject;
 public final class EqualizerModel implements Equalizer.Model {
   @Inject EqualizerPresetTable equalizerPresetTable;
   @Inject Player player;
-  SettingPreferences settingPreferences = new SettingPreferences();
+  private SettingPreferences settingPreferences = new SettingPreferences();
 
   public EqualizerModel() {
     MusicPlayerApp.instance().component().inject(this);
@@ -43,8 +43,8 @@ public final class EqualizerModel implements Equalizer.Model {
   @Override public void updateBand(short bandNumber, int percentageValue) {
    android.media.audiofx.Equalizer equalizer= player.equalizer();
     Log.e("onBandValueChange", "band " + bandNumber + " percentage " + percentageValue);
-    final short lowerEqualizerBandLevel = (short) equalizer.getBandLevelRange()[0];
-    final short upperEqualizerBandLevel = (short) equalizer.getBandLevelRange()[1];
+    final short lowerEqualizerBandLevel = equalizer.getBandLevelRange()[0];
+    final short upperEqualizerBandLevel = equalizer.getBandLevelRange()[1];
     final short maxBandLevel = (short) (upperEqualizerBandLevel - lowerEqualizerBandLevel);
     equalizer.setBandLevel(bandNumber,
         (short) (maxBandLevel * percentageValue / 100.0 + lowerEqualizerBandLevel));

@@ -13,8 +13,8 @@ import java.util.List;
  */
 public final class AllPlayListPresenter extends Presenter<AllPlaylist.View>
     implements AllPlaylist.Presenter {
-  AllPlaylist.Model model = new AllPlaylistModel();
-  List<PlayList> listOfPlayList;
+  private AllPlaylist.Model model = new AllPlaylistModel();
+  private List<PlayList> listOfPlayList;
 
   @Override public void takeView(@NonNull AllPlaylist.View view) {
     super.takeView(view);

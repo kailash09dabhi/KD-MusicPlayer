@@ -49,7 +49,7 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.progress_overlay) ProgressOverlayLayout progressOverlay;
   @BindView(R.id.noResultFound) LinearLayout noResultFoundView;
-  StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
+  private StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
   private CoverArtsAdapter coverArtsAdapter;
   private List<String> coverArtUrls = new ArrayList<>();
   private Album album;

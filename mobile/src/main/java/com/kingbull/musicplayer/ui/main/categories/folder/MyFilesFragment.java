@@ -34,7 +34,7 @@ import java.util.List;
 public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> implements MyFiles.View {
   @BindView(R.id.directoryPathView) TextView directoryPathView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
-  MyFilesAdapter myFilesAdapter;
+  private MyFilesAdapter myFilesAdapter;
   private ArrayList<File> files = new ArrayList<>();
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,

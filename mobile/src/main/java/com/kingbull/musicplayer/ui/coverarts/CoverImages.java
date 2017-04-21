@@ -7,8 +7,7 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 12/25/2016.
  */
-
-public interface CoverImages {
+interface CoverImages {
   Observable<List<String>> albums(String albumName);
 
   Observable<List<String>> artists(String artistName);

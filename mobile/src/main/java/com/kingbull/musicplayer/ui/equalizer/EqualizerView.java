@@ -29,7 +29,7 @@ public final class EqualizerView extends View {
   private final Paint circlePaint = new Paint();
   private final List<Point> equalizerPointList = new ArrayList<>();
   private final List<Point> curvePivotPointList = new ArrayList<>();
-  Path curvaturePath = new Path();
+  private Path curvaturePath = new Path();
   private OnBandValueChangeListener onBandValueChangeListener;
   private RadialGradient radialGradient;
   private Point lastTouchedPoint;

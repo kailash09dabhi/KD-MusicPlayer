@@ -40,7 +40,7 @@ public final class StatusBarColor {
     }
   }
 
-  public static Interpolator fastOutSlowInInterpolator(Context context) {
+  private static Interpolator fastOutSlowInInterpolator(Context context) {
     if (fastOutSlowInInterpolator == null) {
       fastOutSlowInInterpolator =
           AnimationUtils.loadInterpolator(context, android.R.interpolator.fast_out_slow_in);

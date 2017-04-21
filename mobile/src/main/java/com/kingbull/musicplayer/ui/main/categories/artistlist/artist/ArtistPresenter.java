@@ -32,7 +32,7 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
   private final AndroidMediaStoreDatabase androidMediaStoreDatabase =
       new AndroidMediaStoreDatabase();
   @Inject Player musicPlayer;
-  AlbumMusicsMap albumMusicsMap;
+  private AlbumMusicsMap albumMusicsMap;
   private List<Album> albums;
   private List<Music> songs;
   private CompositeDisposable compositeDisposable;

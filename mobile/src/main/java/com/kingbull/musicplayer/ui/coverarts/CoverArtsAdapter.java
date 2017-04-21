@@ -20,8 +20,8 @@ import java.util.List;
 public final class CoverArtsAdapter extends RecyclerView.Adapter<CoverArtsAdapter.ViewHolder> {
   private static final int NO_POSITION = -1;
   private static int selectedPosition = NO_POSITION;
-  List<String> coverUrls;
-  CoverArts.Presenter presenter;
+  private List<String> coverUrls;
+  private CoverArts.Presenter presenter;
 
   public CoverArtsAdapter(List<String> imageUrls) {
     this.coverUrls = imageUrls;

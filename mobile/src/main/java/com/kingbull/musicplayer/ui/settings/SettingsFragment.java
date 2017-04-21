@@ -98,7 +98,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     deepChangeTextColor((ViewGroup) getView());
   }
 
-  public void deepChangeTextColor(ViewGroup parentLayout) {
+  private void deepChangeTextColor(ViewGroup parentLayout) {
     for (int count = 0; count < parentLayout.getChildCount(); count++) {
       View view = parentLayout.getChildAt(count);
       if (view instanceof TextView) {

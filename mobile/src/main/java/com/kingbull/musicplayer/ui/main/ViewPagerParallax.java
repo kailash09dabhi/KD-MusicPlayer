@@ -29,10 +29,10 @@ import java.io.InputStream;
 
 public final class ViewPagerParallax extends ViewPager {
   private final static String TAG = "ViewPagerParallax";
-  int currentPosition = -1;
-  float currentOffset = 0.0f;
-  Window window;
-  boolean isFlatTheme = false;
+  private int currentPosition = -1;
+  private float currentOffset = 0.0f;
+  private Window window;
+  private boolean isFlatTheme = false;
   private int backgroundId = -1;
   private int backgroundSavedId = -1;
   private int saved_width = -1;

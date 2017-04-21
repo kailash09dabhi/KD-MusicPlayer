@@ -57,7 +57,7 @@ public final class MembersRecyclerViewAdapter
     MusicPlayerApp.instance().component().inject(this);
   }
 
-  public void toggleSelection(int position) {
+  private void toggleSelection(int position) {
     if (selectedItems.get(position, false)) {
       selectedItems.delete(position);
     } else {
@@ -71,11 +71,11 @@ public final class MembersRecyclerViewAdapter
     notifyItemChanged(position);
   }
 
-  public int getSelectedItemCount() {
+  private int getSelectedItemCount() {
     return selectedItems.size();
   }
 
-  public boolean isAnyItemSelected() {
+  private boolean isAnyItemSelected() {
     boolean isAnySelected = false;
     for (int i = 0; i < selectedItems.size(); ++i) {
       isAnySelected = selectedItems.valueAt(i);
@@ -165,11 +165,11 @@ public final class MembersRecyclerViewAdapter
     });
   }
 
-  public boolean isSelected(int position) {
+  private boolean isSelected(int position) {
     return getSelectedItems().contains(position);
   }
 
-  public List<Integer> getSelectedItems() {
+  private List<Integer> getSelectedItems() {
     List<Integer> items = new ArrayList<>(selectedItems.size());
     for (int i = 0; i < selectedItems.size(); ++i) {
       items.add(selectedItems.keyAt(i));
@@ -202,7 +202,7 @@ public final class MembersRecyclerViewAdapter
     songs.removeAll(deletableFiles);
   }
 
-  public void clearSelection() {
+  private void clearSelection() {
     List<Integer> selection = getSelectedItems();
     selectedItems.clear();
     for (Integer i : selection) {

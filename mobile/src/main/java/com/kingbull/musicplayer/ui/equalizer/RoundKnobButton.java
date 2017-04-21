@@ -43,7 +43,7 @@ import static com.kingbull.musicplayer.R.drawable.rotoron;
  */
 public final class RoundKnobButton extends RelativeLayout implements OnGestureListener {
   ImageView ivBack;
-  int imageRes[] = {
+  private int[] imageRes = {
       R.drawable.stator1, R.drawable.stator2, R.drawable.stator3, R.drawable.stator4,
       R.drawable.stator5, R.drawable.stator6, R.drawable.stator7, R.drawable.stator8,
       R.drawable.stator9, R.drawable.stator10, R.drawable.stator11, R.drawable.stator12,

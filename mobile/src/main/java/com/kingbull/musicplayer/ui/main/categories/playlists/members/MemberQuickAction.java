@@ -13,7 +13,7 @@ import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
  * @author Kailash Dabhi
  * @date 12/8/2016.
  */
-public final class MemberQuickAction {
+final class MemberQuickAction {
   private final int ID_PLAY = 1;
   private final int ID_MOVE_TO = 2;
   private final int ID_EDIT_TAGS = 3;

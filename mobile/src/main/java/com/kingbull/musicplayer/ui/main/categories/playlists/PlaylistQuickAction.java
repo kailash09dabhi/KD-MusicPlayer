@@ -13,7 +13,7 @@ import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
  * @author Kailash Dabhi
  * @date 12/8/2016.
  */
-public final class PlaylistQuickAction {
+final class PlaylistQuickAction {
   private final int ID_RENAME = 1;
   private final int ID_DELETE = 5;
   private Activity activity;

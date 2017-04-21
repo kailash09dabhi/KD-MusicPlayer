@@ -33,8 +33,8 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.multipleDeleteView) ImageView multipleDeleteView;
-  PlayList playList;
-  List<Music> musicList;
+  private PlayList playList;
+  private List<Music> musicList;
   private MembersRecyclerViewAdapter.OnSelectionListener onSelectionListener =
       new MembersRecyclerViewAdapter.OnSelectionListener() {
         @Override public void onClearSelection() {

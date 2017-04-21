@@ -18,10 +18,10 @@ import javax.inject.Inject;
 
 public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListener {
   private static final String TAG = MusicPlayer.class.getSimpleName();
-  SettingPreferences settingPrefs = new SettingPreferences();
-  boolean isAudioSessionIdUpdated = false;
-  BassBoost bassBoost;
-  Virtualizer virtualizer;
+  private SettingPreferences settingPrefs = new SettingPreferences();
+  private boolean isAudioSessionIdUpdated = false;
+  private BassBoost bassBoost;
+  private Virtualizer virtualizer;
   private Time time;
   private MediaPlayer player;
   private NowPlayingList nowPlayingList;

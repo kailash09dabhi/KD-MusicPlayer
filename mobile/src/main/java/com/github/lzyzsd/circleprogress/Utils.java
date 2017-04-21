@@ -5,7 +5,7 @@ import android.content.res.Resources;
 /**
  * Created by bruce on 14-11-6.
  */
-public final class Utils {
+final class Utils {
   private Utils() {
   }
 

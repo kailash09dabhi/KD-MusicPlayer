@@ -35,7 +35,6 @@ import javax.inject.Inject;
  * @date 11/27/2016.
  */
 public final class PresetDialogFragment extends BaseDialogFragment implements Preset.View {
-  Preset.Presenter presenter = new PresetPresenter();
   @BindView(R.id.createNewPlayListView) LinearLayout createNewPresetView;
   @BindView(R.id.playlistsView) LinearLayout presetsView;
   @BindView(R.id.playlistNameView) EditText presetNameView;
@@ -43,6 +42,7 @@ public final class PresetDialogFragment extends BaseDialogFragment implements Pr
   @BindView(R.id.viewFlipper) ViewFlipper viewFlipper;
   @Inject EqualizerPresetTable equalizerPresetTable;
   @Inject Player player;
+  private Preset.Presenter presenter = new PresetPresenter();
 
   public static PresetDialogFragment newInstance() {
     PresetDialogFragment frag = new PresetDialogFragment();

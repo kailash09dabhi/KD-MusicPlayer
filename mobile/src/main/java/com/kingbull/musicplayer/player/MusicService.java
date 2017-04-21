@@ -89,24 +89,6 @@ public final class MusicService extends Service implements Player {
     lockScreenMediaSessionSetup();
   }
 
-  private void lockScreenMediaSessionSetup() {
-    ComponentName receiver = new ComponentName(getPackageName(), RemoteReceiver.class.getName());
-    mediaSession = new MediaSessionCompat(this, "PlayerService", receiver, null);
-    mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
-        | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-    mediaSession.setPlaybackState(
-        new PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_PAUSED, 0, 0)
-            .setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE)
-            .build());
-    AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-    audioManager.requestAudioFocus(new AudioManager.OnAudioFocusChangeListener() {
-      @Override public void onAudioFocusChange(int focusChange) {
-        // Ignore
-      }
-    }, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-    mediaSession.setActive(true);
-  }
-
   @Override public int onStartCommand(Intent intent, int flags, int startId) {
     if (intent != null) {
       String action = intent.getAction();
@@ -130,19 +112,14 @@ public final class MusicService extends Service implements Player {
     return START_STICKY;
   }
 
-  @Nullable @Override public IBinder onBind(Intent intent) {
-    return mBinder;
-  }
-
-  @Override public boolean stopService(Intent name) {
-    stopForeground(true);
-    return super.stopService(name);
-  }
-
   @Override public void onDestroy() {
     releasePlayer();
     if (compositeDisposable != null) compositeDisposable.clear();
     super.onDestroy();
+  }
+
+  @Nullable @Override public IBinder onBind(Intent intent) {
+    return mBinder;
   }
 
   @Override public boolean play() {
@@ -208,6 +185,29 @@ public final class MusicService extends Service implements Player {
 
   @Override public NowPlayingList nowPlayingMusicList() {
     return musicPlayer.nowPlayingMusicList();
+  }
+
+  private void lockScreenMediaSessionSetup() {
+    ComponentName receiver = new ComponentName(getPackageName(), RemoteReceiver.class.getName());
+    mediaSession = new MediaSessionCompat(this, "PlayerService", receiver, null);
+    mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
+        | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+    mediaSession.setPlaybackState(
+        new PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_PAUSED, 0, 0)
+            .setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE)
+            .build());
+    AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+    audioManager.requestAudioFocus(new AudioManager.OnAudioFocusChangeListener() {
+      @Override public void onAudioFocusChange(int focusChange) {
+        // Ignore
+      }
+    }, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+    mediaSession.setActive(true);
+  }
+
+  @Override public boolean stopService(Intent name) {
+    stopForeground(true);
+    return super.stopService(name);
   }
 
   /**
@@ -313,7 +313,7 @@ public final class MusicService extends Service implements Player {
   }
   // PendingIntent
 
-  public class LocalBinder extends Binder {
+  private class LocalBinder extends Binder {
     public MusicService getService() {
       return MusicService.this;
     }

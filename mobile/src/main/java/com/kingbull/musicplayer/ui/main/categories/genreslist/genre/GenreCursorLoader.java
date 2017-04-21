@@ -11,8 +11,7 @@ import java.util.concurrent.TimeUnit;
  * @author Kailash Dabhi
  * @date 11/9/2016.
  */
-
-public final class GenreCursorLoader extends CursorLoader {
+final class GenreCursorLoader extends CursorLoader {
   private static final String ORDER_BY = MediaStore.Audio.Media.DISPLAY_NAME + " ASC";
 
   public GenreCursorLoader(Context context, int id) {

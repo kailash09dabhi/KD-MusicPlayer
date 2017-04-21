@@ -16,7 +16,7 @@ import com.kingbull.musicplayer.domain.Music;
  */
 public final class MusicSeekBar extends AppCompatSeekBar {
   private final Handler handler = new Handler();
-  MusicPlayer.Presenter presenter;
+  private MusicPlayer.Presenter presenter;
   private Music song;
   private Runnable progressRunnable = new Runnable() {
     @Override public void run() {

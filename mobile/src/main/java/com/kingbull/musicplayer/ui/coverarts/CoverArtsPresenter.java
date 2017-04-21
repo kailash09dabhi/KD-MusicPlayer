@@ -12,7 +12,7 @@ import java.util.List;
 
 public final class CoverArtsPresenter extends Presenter<CoverArts.View>
     implements CoverArts.Presenter {
-  CoverImages coverImages = new LastFmCovers();
+  private CoverImages coverImages = new LastFmCovers();
 
   @Override public void onAlbumSearch(String album) {
     view().showProgress();

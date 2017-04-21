@@ -37,15 +37,15 @@ import javax.inject.Inject;
 
 public final class AddToPlayListDialogFragment extends BaseDialogFragment
     implements AddToPlayList.View {
-  AddToPlayList.Presenter presenter = new AddToPlayListPresenter();
   @BindView(R.id.createNewPlayListView) LinearLayout createNewPlaylistView;
   @BindView(R.id.playlistsView) LinearLayout playlistsView;
   @BindView(R.id.playlistNameView) EditText playlistNameView;
   @BindView(R.id.listView) ListView listView;
   @BindView(R.id.viewFlipper) ViewFlipper viewFlipper;
   @Inject MediaStatTable mediaStatTable;
-  List<SqlMusic> musics;
-  List<PlayList> playLists;
+  private AddToPlayList.Presenter presenter = new AddToPlayListPresenter();
+  private List<SqlMusic> musics;
+  private List<PlayList> playLists;
 
   public static AddToPlayListDialogFragment newInstance(List<SqlMusic> musicList) {
     AddToPlayListDialogFragment frag = new AddToPlayListDialogFragment();
@@ -73,7 +73,7 @@ public final class AddToPlayListDialogFragment extends BaseDialogFragment
     setDialogHeight(size.y * 70 / 100);
   }
 
-  void setDialogHeight(int height) {
+  private void setDialogHeight(int height) {
     ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
     layoutParams.height = height;
     getView().setLayoutParams(layoutParams);

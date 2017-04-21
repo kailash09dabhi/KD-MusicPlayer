@@ -42,8 +42,7 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    musicCategoryPagerAdapter =
-        new MusicCategoryPagerAdapter(getChildFragmentManager(), getActivity(), tabs);
+    musicCategoryPagerAdapter = new MusicCategoryPagerAdapter(getChildFragmentManager(), tabs);
     viewPager.setAdapter(musicCategoryPagerAdapter);
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.setOffscreenPageLimit(3);

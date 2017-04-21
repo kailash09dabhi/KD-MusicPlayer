@@ -11,8 +11,7 @@ import javax.inject.Inject;
 
 public final class CallReceiver extends BroadcastReceiver {
   @Inject Player musicPlayer;
-
-  Context context;
+  private Context context;
 
   public CallReceiver() {
     MusicPlayerApp.instance().component().inject(this);

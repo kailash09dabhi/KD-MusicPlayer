@@ -28,10 +28,10 @@ import javax.inject.Inject;
  */
 public final class PresetReverbDialogFragment extends BaseDialogFragment
     implements PresetReverb.View {
-  PresetReverb.Presenter presenter = new PresetReverbPresenter();
   @BindView(R.id.listView) ListView listView;
   @Inject Player player;
-  Reverb[] reverbs = {
+  private PresetReverb.Presenter presenter = new PresetReverbPresenter();
+  private Reverb[] reverbs = {
       Reverb.LARGE_HALL, Reverb.LARGE_ROOM, Reverb.MEDIUM_HALL, Reverb.MEDIUM_ROOM,
       Reverb.SMALL_ROOM, Reverb.PLATE, Reverb.NONE,
   };
@@ -60,7 +60,7 @@ public final class PresetReverbDialogFragment extends BaseDialogFragment
     setDialogHeight(size.y * 70 / 100);
   }
 
-  void setDialogHeight(int height) {
+  private void setDialogHeight(int height) {
     ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
     layoutParams.height = height;
     getView().setLayoutParams(layoutParams);

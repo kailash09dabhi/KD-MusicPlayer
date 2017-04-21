@@ -64,15 +64,6 @@ public final class SnappingRecyclerView extends RecyclerView {
     enableSnapping();
   }
 
-  @Override public void onChildAttachedToWindow(View child) {
-    super.onChildAttachedToWindow(child);
-    if (!scrolling && _scrollState == SCROLL_STATE_IDLE) {
-      scrolling = true;
-      scrollToView(getCenterView());
-      updateViews();
-    }
-  }
-
   private void enableSnapping() {
     getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
       @Override public void onGlobalLayout() {
@@ -80,11 +71,6 @@ public final class SnappingRecyclerView extends RecyclerView {
       }
     });
     addOnScrollListener(new OnScrollListener() {
-      @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-        updateViews();
-        super.onScrolled(recyclerView, dx, dy);
-      }
-
       @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
         /** if scroll is caused by a touch (scroll touch, not any touch) **/
@@ -112,6 +98,11 @@ public final class SnappingRecyclerView extends RecyclerView {
         }
         _scrollState = newState;
       }
+
+      @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        updateViews();
+        super.onScrolled(recyclerView, dx, dy);
+      }
     });
   }
 
@@ -130,7 +121,7 @@ public final class SnappingRecyclerView extends RecyclerView {
    *
    * @param orientation LinearLayoutManager.HORIZONTAL or LinearLayoutManager.VERTICAL
    */
-  public void setOrientation(Orientation orientation) {
+  private void setOrientation(Orientation orientation) {
     this._orientation = orientation;
     _childViewMetrics = new ChildViewMetrics(_orientation);
     setLayoutManager(new LinearLayoutManager(getContext(), _orientation.intValue(), false));
@@ -155,6 +146,68 @@ public final class SnappingRecyclerView extends RecyclerView {
     this._scaleViews = enabled;
   }
 
+  @Override public boolean dispatchTouchEvent(MotionEvent event) {
+    long currentTime = System.currentTimeMillis();
+    /** if touch events are being spammed, this is due to user scrolling right after a tap,
+     * so set userScrolling to true **/
+    if (_scrolling && _scrollState == SCROLL_STATE_TOUCH_SCROLL) {
+      if ((currentTime - _lastScrollTime) < MINIMUM_SCROLL_EVENT_OFFSET_MS) {
+        _userScrolling = true;
+      }
+    }
+    _lastScrollTime = currentTime;
+    int location = _orientation == Orientation.VERTICAL ? (int) event.getY() : (int) event.getX();
+    View targetView = getChildClosestToLocation(location);
+    if (!_userScrolling) {
+      if (event.getAction() == MotionEvent.ACTION_UP) {
+        if (targetView != getCenterView()) {
+          scrollToView(targetView);
+          return true;
+        }
+      }
+    }
+    return super.dispatchTouchEvent(event);
+  }
+
+  @Override public void scrollToPosition(int position) {
+    _childViewMetrics.size(getChildAt(0));
+    smoothScrollBy(_childViewMetrics.size(getChildAt(0)) * position);
+  }
+
+  @Override protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    mHandler.removeCallbacksAndMessages(null);
+  }
+
+  @Override public boolean onInterceptTouchEvent(MotionEvent event) {
+    int location = _orientation == Orientation.VERTICAL ? (int) event.getY() : (int) event.getX();
+    View targetView = getChildClosestToLocation(location);
+    if (targetView != getCenterView()) {
+      return true;
+    }
+    return super.onInterceptTouchEvent(event);
+  }
+
+  @Override public void onChildAttachedToWindow(View child) {
+    super.onChildAttachedToWindow(child);
+    if (!scrolling && _scrollState == SCROLL_STATE_IDLE) {
+      scrolling = true;
+      scrollToView(getCenterView());
+      updateViews();
+    }
+  }
+
+  private void scrollToView(View child) {
+    if (child == null) return;
+    stopScroll();
+    int scrollDistance = getScrollDistance(child);
+    if (scrollDistance != 0) smoothScrollBy(scrollDistance);
+  }
+
+  private View getCenterView() {
+    return getChildClosestToLocation(getCenterLocation());
+  }
+
   private void updateViews() {
     for (int i = 0; i < getChildCount(); i++) {
       View child = getChildAt(i);
@@ -166,6 +219,41 @@ public final class SnappingRecyclerView extends RecyclerView {
         child.setScaleY(scale);
       }
     }
+  }
+
+  private int getScrollDistance(View child) {
+    int childCenterLocation = (int) _childViewMetrics.center(child);
+    return childCenterLocation - getCenterLocation();
+  }
+
+  private void smoothScrollBy(int distance) {
+    if (_orientation == Orientation.VERTICAL) {
+      super.smoothScrollBy(0, distance);
+      return;
+    }
+    super.smoothScrollBy(distance, 0);
+  }
+
+  private View getChildClosestToLocation(int location) {
+    if (getChildCount() <= 0) return null;
+    int closestPos = 9999;
+    View closestChild = null;
+    for (int i = 0; i < getChildCount(); i++) {
+      View child = getChildAt(i);
+      int childCenterLocation = (int) _childViewMetrics.center(child);
+      int distance = childCenterLocation - location;
+      /** if child center is closer than previous closest, set it as closest child  **/
+      if (Math.abs(distance) < Math.abs(closestPos)) {
+        closestPos = distance;
+        closestChild = child;
+      }
+    }
+    return closestChild;
+  }
+
+  private int getCenterLocation() {
+    if (_orientation == Orientation.VERTICAL) return getMeasuredHeight() / 2;
+    return getMeasuredWidth() / 2;
   }
 
   /**
@@ -207,58 +295,12 @@ public final class SnappingRecyclerView extends RecyclerView {
     }
   }
 
-  @Override public boolean dispatchTouchEvent(MotionEvent event) {
-    long currentTime = System.currentTimeMillis();
-    /** if touch events are being spammed, this is due to user scrolling right after a tap,
-     * so set userScrolling to true **/
-    if (_scrolling && _scrollState == SCROLL_STATE_TOUCH_SCROLL) {
-      if ((currentTime - _lastScrollTime) < MINIMUM_SCROLL_EVENT_OFFSET_MS) {
-        _userScrolling = true;
-      }
-    }
-    _lastScrollTime = currentTime;
-    int location = _orientation == Orientation.VERTICAL ? (int) event.getY() : (int) event.getX();
-    View targetView = getChildClosestToLocation(location);
-    if (!_userScrolling) {
-      if (event.getAction() == MotionEvent.ACTION_UP) {
-        if (targetView != getCenterView()) {
-          scrollToView(targetView);
-          return true;
-        }
-      }
-    }
-    return super.dispatchTouchEvent(event);
-  }
-
-  @Override public boolean onInterceptTouchEvent(MotionEvent event) {
-    int location = _orientation == Orientation.VERTICAL ? (int) event.getY() : (int) event.getX();
-    View targetView = getChildClosestToLocation(location);
-    if (targetView != getCenterView()) {
-      return true;
-    }
-    return super.onInterceptTouchEvent(event);
-  }
-
-  @Override public void scrollToPosition(int position) {
-    _childViewMetrics.size(getChildAt(0));
-    smoothScrollBy(_childViewMetrics.size(getChildAt(0)) * position);
-  }
-
-  private View getChildClosestToLocation(int location) {
-    if (getChildCount() <= 0) return null;
-    int closestPos = 9999;
-    View closestChild = null;
-    for (int i = 0; i < getChildCount(); i++) {
-      View child = getChildAt(i);
-      int childCenterLocation = (int) _childViewMetrics.center(child);
-      int distance = childCenterLocation - location;
-      /** if child center is closer than previous closest, set it as closest child  **/
-      if (Math.abs(distance) < Math.abs(closestPos)) {
-        closestPos = distance;
-        closestChild = child;
-      }
-    }
-    return closestChild;
+  private float getPercentageFromCenter(View child) {
+    float center = getCenterLocation();
+    float childCenter = _childViewMetrics.center(child);
+    float offSet = Math.max(center, childCenter) - Math.min(center, childCenter);
+    float maxOffset = (center + _childViewMetrics.size(child));
+    return (offSet / maxOffset);
   }
 
   /**
@@ -272,64 +314,22 @@ public final class SnappingRecyclerView extends RecyclerView {
     return childPosition > (getCenterLocation() - 10) && childPosition < (getCenterLocation() + 10);
   }
 
-  private View getCenterView() {
-    return getChildClosestToLocation(getCenterLocation());
-  }
-
-  private void scrollToView(View child) {
-    if (child == null) return;
-    stopScroll();
-    int scrollDistance = getScrollDistance(child);
-    if (scrollDistance != 0) smoothScrollBy(scrollDistance);
-  }
-
-  private int getScrollDistance(View child) {
-    int childCenterLocation = (int) _childViewMetrics.center(child);
-    return childCenterLocation - getCenterLocation();
-  }
-
-  private float getPercentageFromCenter(View child) {
-    float center = getCenterLocation();
-    float childCenter = _childViewMetrics.center(child);
-    float offSet = Math.max(center, childCenter) - Math.min(center, childCenter);
-    float maxOffset = (center + _childViewMetrics.size(child));
-    return (offSet / maxOffset);
-  }
-
-  private int getCenterLocation() {
-    if (_orientation == Orientation.VERTICAL) return getMeasuredHeight() / 2;
-    return getMeasuredWidth() / 2;
-  }
-
-  public void smoothScrollBy(int distance) {
-    if (_orientation == Orientation.VERTICAL) {
-      super.smoothScrollBy(0, distance);
-      return;
-    }
-    super.smoothScrollBy(distance, 0);
-  }
-
-  public void scrollBy(int distance) {
-    if (_orientation == Orientation.VERTICAL) {
-      super.scrollBy(0, distance);
-      return;
-    }
-    super.scrollBy(distance, 0);
-  }
-
   private void scrollTo(int position) {
     int currentScroll = getScrollOffset();
     scrollBy(position - currentScroll);
   }
 
-  public int getScrollOffset() {
+  private int getScrollOffset() {
     if (_orientation == Orientation.VERTICAL) return computeVerticalScrollOffset();
     return computeHorizontalScrollOffset();
   }
 
-  @Override protected void onDetachedFromWindow() {
-    super.onDetachedFromWindow();
-    mHandler.removeCallbacksAndMessages(null);
+  private void scrollBy(int distance) {
+    if (_orientation == Orientation.VERTICAL) {
+      super.scrollBy(0, distance);
+      return;
+    }
+    super.scrollBy(distance, 0);
   }
 
   public enum Orientation {
@@ -358,9 +358,8 @@ public final class SnappingRecyclerView extends RecyclerView {
       this._orientation = orientation;
     }
 
-    public int size(View view) {
-      if (_orientation == Orientation.VERTICAL) return view.getHeight();
-      return view.getWidth();
+    public float center(View view) {
+      return location(view) + (size(view) / 2);
     }
 
     public float location(View view) {
@@ -368,8 +367,9 @@ public final class SnappingRecyclerView extends RecyclerView {
       return view.getX();
     }
 
-    public float center(View view) {
-      return location(view) + (size(view) / 2);
+    public int size(View view) {
+      if (_orientation == Orientation.VERTICAL) return view.getHeight();
+      return view.getWidth();
     }
   }
 }

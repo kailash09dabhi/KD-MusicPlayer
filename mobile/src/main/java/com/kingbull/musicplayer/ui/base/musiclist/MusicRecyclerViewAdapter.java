@@ -71,7 +71,7 @@ public final class MusicRecyclerViewAdapter
    *
    * @param position Position of the item to toggle the selection status for
    */
-  public final void toggleSelection(int position) {
+  private void toggleSelection(int position) {
     if (selectedItems.get(position, false)) {
       selectedItems.delete(position);
     } else {
@@ -85,7 +85,7 @@ public final class MusicRecyclerViewAdapter
     notifyItemChanged(position);
   }
 
-  public int getSelectedItemCount() {
+  private int getSelectedItemCount() {
     return selectedItems.size();
   }
 
@@ -110,7 +110,7 @@ public final class MusicRecyclerViewAdapter
     onSelectionListener.onClearSelection();
   }
 
-  public List<Integer> getSelectedItems() {
+  private List<Integer> getSelectedItems() {
     List<Integer> items = new ArrayList<>(selectedItems.size());
     for (int i = 0; i < selectedItems.size(); ++i) {
       items.add(selectedItems.keyAt(i));
@@ -197,7 +197,7 @@ public final class MusicRecyclerViewAdapter
     });
   }
 
-  public boolean isSelected(int position) {
+  private boolean isSelected(int position) {
     return getSelectedItems().contains(position);
   }
 

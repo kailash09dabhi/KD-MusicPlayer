@@ -14,8 +14,8 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/28/2016.
  */
-public final class PresetReverbAdapter extends ArrayAdapter<Reverb> {
-  LayoutInflater inflater;
+final class PresetReverbAdapter extends ArrayAdapter<Reverb> {
+  private LayoutInflater inflater;
 
   public PresetReverbAdapter(Context context, List<Reverb> reverbs) {
     super(context, 0, reverbs);
