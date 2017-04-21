@@ -84,13 +84,13 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @OnClick(R.id.exitSearchButton) void onExitSearchClick() {
-    slideAnimation.animateOut(searchLayout, slideExitSearchListener);
+    slideAnimation.animateOut(searchLayout);
     presenter.onExitSearchClick();
   }
 
   @OnClick(R.id.searchButton) void onSearchClick() {
     alphaAnimation.fadeOut(totalSongLayout);
-    slideAnimation.animateIn(searchLayout, SlideHorizontal.Listener.NONE);
+    slideAnimation.animateIn(searchLayout);
   }
 
   @OnClick(R.id.sortButton) void onSortClick() {
