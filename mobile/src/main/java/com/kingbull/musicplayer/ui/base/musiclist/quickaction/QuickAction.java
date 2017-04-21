@@ -212,21 +212,6 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
         break;
     }
   }
-  /**
-   * Show arrow
-   *
-   * @param whichArrow arrow type resource id
-   * @param requestedX distance from left screen
-   */
-  //private void showArrow(int whichArrow, int requestedX) {
-  //  final View showArrow = (whichArrow == R.id.arrow_up) ? mArrowUp : mArrowDown;
-  //  final View hideArrow = (whichArrow == R.id.arrow_up) ? mArrowDown : mArrowUp;
-  //  //final int arrowWidth = mArrowUp.getMeasuredWidth();
-  //  showArrow.setVisibility(View.VISIBLE);
-  //  ViewGroup.MarginLayoutParams param = (ViewGroup.MarginLayoutParams) showArrow.getLayoutParams();
-  //  param.leftMargin = requestedX - arrowWidth / 2;
-  //  hideArrow.setVisibility(View.INVISIBLE);
-  //}
 
   /**
    * Set listener for screen dismissed. This listener will only be fired if the quicakction dialog
