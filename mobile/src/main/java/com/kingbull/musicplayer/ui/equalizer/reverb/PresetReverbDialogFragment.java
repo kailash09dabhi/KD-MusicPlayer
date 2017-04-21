@@ -26,11 +26,9 @@ import javax.inject.Inject;
  * @author Kailash Dabhi
  * @date 11/27/2016.
  */
-
 public final class PresetReverbDialogFragment extends BaseDialogFragment
     implements PresetReverb.View {
   PresetReverb.Presenter presenter = new PresetReverbPresenter();
-
   @BindView(R.id.listView) ListView listView;
   @Inject Player player;
   Reverb[] reverbs = {
@@ -79,7 +77,7 @@ public final class PresetReverbDialogFragment extends BaseDialogFragment
       public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
         player.useEffect(reverbs.get(position));
         new SettingPreferences().saveReverb(reverbs.get(position));
-        RxBus.getInstance().post(new Preset(Preset.Event.REVERB, reverbs.get(position)));
+        RxBus.getInstance().post(Preset.Reverb(reverbs.get(position)));
         dismiss();
       }
     });

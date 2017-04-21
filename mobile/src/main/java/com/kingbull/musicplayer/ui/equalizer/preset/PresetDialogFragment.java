@@ -34,7 +34,6 @@ import javax.inject.Inject;
  * @author Kailash Dabhi
  * @date 11/27/2016.
  */
-
 public final class PresetDialogFragment extends BaseDialogFragment implements Preset.View {
   Preset.Presenter presenter = new PresetPresenter();
   @BindView(R.id.createNewPlayListView) LinearLayout createNewPresetView;
@@ -80,9 +79,7 @@ public final class PresetDialogFragment extends BaseDialogFragment implements Pr
   @OnClick(R.id.doneView) void onDoneClick() {
     if (!TextUtils.isEmpty(presetNameView.getText())) {
       RxBus.getInstance()
-          .post(new com.kingbull.musicplayer.event.Preset(
-              com.kingbull.musicplayer.event.Preset.Event.NEW,
-              presetNameView.getText().toString()));
+          .post(com.kingbull.musicplayer.event.Preset.New(presetNameView.getText().toString()));
       dismiss();
     }
   }
@@ -119,8 +116,7 @@ public final class PresetDialogFragment extends BaseDialogFragment implements Pr
       @Override
       public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
         RxBus.getInstance()
-            .post(new com.kingbull.musicplayer.event.Preset(
-                com.kingbull.musicplayer.event.Preset.Event.CLICK, presetList.get(position)));
+            .post(com.kingbull.musicplayer.event.Preset.Click(presetList.get(position)));
         dismiss();
       }
     });
