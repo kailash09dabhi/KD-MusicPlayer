@@ -1,8 +1,4 @@
-/*
- * This is the source code of DMPLayer for Android v. 1.0.0.
- * You should have received a copy of the license in this archive (see LICENSE).
- * Copyright @Dibakar_Mistry, 2015.
- */
+
 package com.kingbull.musicplayer.ui.nowplaying;
 
 import android.os.Bundle;
@@ -26,6 +22,10 @@ import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import github.nisrulz.recyclerviewhelper.RVHItemTouchHelperCallback;
 import java.util.List;
 
+/**
+ * @author Kailash Dabhi
+ * @date 23rd Nov, 2016 2:57 PM
+ */
 public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
     implements NowPlaying.View {
   @BindView(R.id.titleView) TextView titleView;

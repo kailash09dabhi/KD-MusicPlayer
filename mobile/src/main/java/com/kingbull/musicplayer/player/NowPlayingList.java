@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.player;
 
+import android.support.annotation.NonNull;
 import com.kingbull.musicplayer.domain.Music;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +54,7 @@ public interface NowPlayingList extends List<Music> {
       return get(currentRunningMusicIndex);
     }
 
-    @Override public boolean addAll(Collection<? extends Music> c) {
+    @Override public boolean addAll(@NonNull Collection<? extends Music> c) {
       boolean isChanged = super.addAll(c);
       currentRunningMusicIndex = c.size() > 0 ? 0 : NO_POSITION;
       return isChanged;

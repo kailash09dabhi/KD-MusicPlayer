@@ -1,8 +1,3 @@
-/*
- * This is the source code of DMPLayer for Android v. 1.0.0.
- * You should have received a copy of the license in this archive (see LICENSE).
- * Copyright @Dibakar_Mistry, 2015.
- */
 package com.kingbull.musicplayer.ui.equalizer;
 
 import android.content.Context;
@@ -39,6 +34,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import javax.inject.Inject;
 
+/**
+ * @author Kailash Dabhi
+ * @date 23 Nov, 2016
+ */
 public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     implements Equalizer.View {
   @BindView(R.id.titleView) TextView titleView;

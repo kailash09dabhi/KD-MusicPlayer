@@ -1,8 +1,3 @@
-/*
- * This is the source code of DMPLayer for Android v. 1.0.0.
- * You should have received a copy of the license in this archive (see LICENSE).
- * Copyright @Dibakar_Mistry, 2015.
- */
 package com.kingbull.musicplayer.ui.settings;
 
 import android.app.AlarmManager;
@@ -39,6 +34,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.Calendar;
 
+/**
+ * @author Kailash Dabhi
+ * @date 27th Nov, 2016
+ */
 public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     implements Settings.View {
   private final SettingPreferences settingPreferences = new SettingPreferences();

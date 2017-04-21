@@ -49,7 +49,7 @@ public final class StatisticsDialogFragment extends BaseDialogFragment implement
     artistView.setText(String.format("Artist :  %s", music.media().artist()));
     numberOfTimesPlayedView.setText(
         String.format("Number of Times Played :  %d", music.mediaStat().numberOfTimesPlayed()));
-    totalListenedTimeView.setText(String.format("Total Listened Time :  %d",
+    totalListenedTimeView.setText(String.format("Total Listened Time :  %s",
         new Milliseconds(music.mediaStat().totalListenedTime()).toString()));
     durationView.setText(
         String.format("duration : %s", new Milliseconds(music.media().duration()).toString()));

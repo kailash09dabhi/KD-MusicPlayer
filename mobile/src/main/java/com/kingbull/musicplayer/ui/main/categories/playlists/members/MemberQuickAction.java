@@ -46,7 +46,6 @@ final class MemberQuickAction {
     //setup the action item click listener
     quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
       @Override public void onItemClick(QuickAction quickAction, int pos, int actionId) {
-        ActionItem actionItem = quickAction.getActionItem(pos);
         if (actionId == ID_PLAY) {
           memberQuickActionListener.play();
         } else if (actionId == ID_MOVE_TO) {

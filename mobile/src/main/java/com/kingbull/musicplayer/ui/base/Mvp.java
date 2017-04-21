@@ -1,9 +1,9 @@
 package com.kingbull.musicplayer.ui.base;
 
 /**
- * Created by Kailash Dabhi on 09-07-2016.
- * You can contact us at kailash09dabhi@gmail.com OR on skype(kailash.09)
- * Copyright (c) 2016 Kingbull Technology. All rights reserved.
+ * @author Kailash Dabhi
+ * @date 9th July, 2016 12:37 AM
+ * @From DirectConnect
  */
 public interface Mvp {
   interface View {
@@ -19,7 +19,5 @@ public interface Mvp {
     boolean hasView();
 
     V view();
-
-
   }
 }

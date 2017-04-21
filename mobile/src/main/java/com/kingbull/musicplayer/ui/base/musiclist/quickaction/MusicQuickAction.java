@@ -45,7 +45,6 @@ public final class MusicQuickAction {
     //setup the action item click listener
     quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
       @Override public void onItemClick(QuickAction quickAction, int pos, int actionId) {
-        ActionItem actionItem = quickAction.getActionItem(pos);
         if (actionId == ID_PLAY) {
           musicQuickActionListener.play();
         } else if (actionId == ID_PLAYLIST) {

@@ -32,7 +32,6 @@ final class PlaylistQuickAction {
     //setup the action item click listener
     quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
       @Override public void onItemClick(QuickAction quickAction, int pos, int actionId) {
-        ActionItem actionItem = quickAction.getActionItem(pos);
         if (actionId == ID_RENAME) {
           playlistQuickActionListener.rename();
         } else if (actionId == ID_DELETE) {

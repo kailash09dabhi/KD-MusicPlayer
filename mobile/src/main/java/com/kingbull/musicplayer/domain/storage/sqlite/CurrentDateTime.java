@@ -5,9 +5,8 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by Kailash Dabhi on 04-09-2016.
- * You can contact us at kailash09dabhi@gmail.com OR on skype(kailash.09)
- * Copyright (c) 2016 Kingbull Technology. All rights reserved.
+ * @author Kailash Dabhi
+ * @date 04 Sept, 2016
  */
 public final class CurrentDateTime {
   private final SimpleDateFormat dateFormat =

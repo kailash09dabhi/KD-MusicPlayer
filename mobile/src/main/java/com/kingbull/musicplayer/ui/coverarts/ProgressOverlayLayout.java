@@ -9,9 +9,9 @@ import android.widget.FrameLayout;
 import com.kingbull.musicplayer.R;
 
 /**
- * Created by Kailash Dabhi on 11-07-2016.
- * You can contact us at kailash09dabhi@gmail.com OR on skype(kailash.09)
- * Copyright (c) 2016 Kingbull Technology. All rights reserved.
+ * @author Kailash Dabhi
+ * @date 11th July, 2016
+ * @from DirectConnect
  */
 public final class ProgressOverlayLayout extends FrameLayout {
   public ProgressOverlayLayout(Context context, AttributeSet attrs) {
@@ -25,10 +25,6 @@ public final class ProgressOverlayLayout extends FrameLayout {
 
   public void showProgress() {
     animateView(View.VISIBLE, 0.9f, 0);
-  }
-
-  public void hideProgress() {
-    animateView(View.GONE, 0, 200);
   }
 
   /**
@@ -49,5 +45,9 @@ public final class ProgressOverlayLayout extends FrameLayout {
             setVisibility(toVisibility);
           }
         });
+  }
+
+  public void hideProgress() {
+    animateView(View.GONE, 0, 200);
   }
 }
