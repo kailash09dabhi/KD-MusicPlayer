@@ -54,7 +54,7 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
   private List<String> coverArtUrls = new ArrayList<>();
   private Album album;
 
-  public static final CoverArtsFragment newInstanceOfAlbumCovers(Album album) {
+  public static CoverArtsFragment newInstanceOfAlbumCovers(Album album) {
     CoverArtsFragment coverArtsFragment = new CoverArtsFragment();
     Bundle bundle = new Bundle();
     bundle.putBoolean("isAlbum", true);
@@ -63,7 +63,7 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
     return coverArtsFragment;
   }
 
-  public static final CoverArtsFragment newInstanceOfArtistCovers(String artistName) {
+  public static CoverArtsFragment newInstanceOfArtistCovers(String artistName) {
     CoverArtsFragment coverArtsFragment = new CoverArtsFragment();
     Bundle bundle = new Bundle();
     bundle.putBoolean("isAlbum", false);
