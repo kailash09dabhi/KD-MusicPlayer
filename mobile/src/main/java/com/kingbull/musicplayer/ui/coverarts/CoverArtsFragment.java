@@ -39,7 +39,6 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 12/25/2016.
  */
-
 public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
     implements CoverArts.View {
   private final StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);

@@ -227,7 +227,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         .subscribe(new DisposableObserver<BitmapDrawable>() {
           @Override public void onNext(BitmapDrawable bitmap) {
             backgroundView.setBackground(bitmap);
-            new Alpha.Animation(2500).fadeIn(backgroundView);
+            new Alpha.Animation(0.16f, 2500).fadeIn(backgroundView);
           }
 
           @Override public void onError(Throwable e) {
