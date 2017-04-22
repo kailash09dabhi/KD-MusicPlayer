@@ -48,7 +48,6 @@ import javax.inject.Inject;
  * Desc: PlayService
  */
 public final class MusicService extends Service implements Player {
-
   public static final String ACTION_STOP_SERVICE = "com.kingbull.musicplayer.ACTION_STOP_SERVICE";
   private static final String ACTION_PLAY_TOGGLE = "com.kingbull.musicplayer.ACTION_PLAY_TOGGLE";
   private static final String ACTION_PLAY_LAST = "com.kingbull.musicplayer.ACTION_PLAY_LAST";
@@ -113,7 +112,6 @@ public final class MusicService extends Service implements Player {
   }
 
   @Override public void onDestroy() {
-    releasePlayer();
     if (compositeDisposable != null) compositeDisposable.clear();
     super.onDestroy();
   }
@@ -176,7 +174,6 @@ public final class MusicService extends Service implements Player {
 
   @Override public void releasePlayer() {
     musicPlayer.releasePlayer();
-    super.onDestroy();
   }
 
   @Override public void addToNowPlaylist(List<Music> songs) {
@@ -311,7 +308,6 @@ public final class MusicService extends Service implements Player {
   private PendingIntent getPendingIntent(String action) {
     return PendingIntent.getService(this, 0, new Intent(action), 0);
   }
-  // PendingIntent
 
   private class LocalBinder extends Binder {
     public MusicService getService() {

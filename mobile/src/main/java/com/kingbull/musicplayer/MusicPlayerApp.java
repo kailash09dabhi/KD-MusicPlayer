@@ -48,4 +48,19 @@ public final class MusicPlayerApp extends Application {
         .storageModule(new StorageModule())
         .build();
   }
+
+  @Override public void onTerminate() {
+    super.onTerminate();
+    System.out.println("onTerminate");
+  }
+
+  @Override public void onLowMemory() {
+    super.onLowMemory();
+    System.out.println("onLowMemory");
+  }
+
+  @Override public void onTrimMemory(int level) {
+    super.onTrimMemory(level);
+    System.out.println("onTrimMemory");
+  }
 }
