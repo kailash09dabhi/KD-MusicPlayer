@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +20,15 @@ import butterknife.OnClick;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.signature.StringSignature;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.event.MusicEvent;
-import com.kingbull.musicplayer.image.AlbumArt;
 import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.BitmapImage;
@@ -44,9 +47,11 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import java.io.File;
 
 public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presenter>
     implements MusicPlayer.View {
+  private final AlbumTable albumTable = new AlbumTable();
   @BindView(R.id.equalizerView) ImageView equalizerView;
   @BindView(R.id.nowPlayingView) ImageView nowPlayingView;
   @BindView(R.id.albumImageView) ShadowImageView albumImageView;
@@ -159,9 +164,17 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     // Step 4: Keep these things updated
     // - Album rotation
     // - Progress(progressTextView & seekBarProgress)
+    Album album = albumTable.albumById(song.media().albumId());
+    File file = null;
+    if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
     Glide.with(this)
-        .load(new AlbumArt(song.media().path()))
+        .load(albumTable.albumById(song.media().albumId()).albumArt())
         .asBitmap()
+        .placeholder(R.drawable.a11)
+        .error(R.drawable.a9)
+        .centerCrop()
+        .signature(
+            new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
         .into(new SimpleTarget<Bitmap>() {
           @Override public void onResourceReady(Bitmap bitmap,
               GlideAnimation<? super Bitmap> glideAnimation) {
