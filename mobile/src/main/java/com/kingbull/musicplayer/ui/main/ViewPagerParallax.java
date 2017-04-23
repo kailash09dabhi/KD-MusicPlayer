@@ -18,6 +18,7 @@ import com.commit451.nativestackblur.NativeStackBlur;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.storage.preferences.PalettePreference;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
+import com.kingbull.musicplayer.event.BlurRadiusEvent;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
@@ -32,6 +33,7 @@ public final class ViewPagerParallax extends ViewPager {
   private final Rect src = new Rect();
   private final Rect dst = new Rect();
   private final boolean loggable = true;
+  private final SettingPreferences settingPreferences = new SettingPreferences();
   private int currentPosition = -1;
   private float currentOffset = 0.0f;
   private Window window;
@@ -60,12 +62,14 @@ public final class ViewPagerParallax extends ViewPager {
     applyBackgroundAccordingToTheme();
     RxBus.getInstance()
         .toObservable()
-        .ofType(ThemeEvent.class)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<ThemeEvent>() {
-          @Override public void accept(ThemeEvent themeEvent) throws Exception {
-            applyBackgroundAccordingToTheme();
-            invalidate();
+        .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Object>() {
+      @Override public void accept(Object o) throws Exception {
+        if (o instanceof ThemeEvent) {
+          applyBackgroundAccordingToTheme();
+          invalidate();
+        } else if (o instanceof BlurRadiusEvent) {
+          invalidate();
+        }
           }
         });
   }
@@ -134,7 +138,7 @@ public final class ViewPagerParallax extends ViewPager {
               getWidth() / 2); // how many pixels to shift for each panel
       is.reset();
       Bitmap bitmap = BitmapFactory.decodeStream(is, null, options);
-      savedBitmap = NativeStackBlur.process(bitmap, 45);
+      savedBitmap = NativeStackBlur.process(bitmap, settingPreferences.blurRadius());
       bitmap.recycle();
       if (window != null) {
         Palette.from(savedBitmap).generate(new Palette.PaletteAsyncListener() {

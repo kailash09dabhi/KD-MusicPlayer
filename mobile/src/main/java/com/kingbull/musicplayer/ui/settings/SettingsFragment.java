@@ -51,6 +51,11 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
         DurationFilterDialogFragment.class.getName());
   }
 
+  @OnClick(R.id.blurBackground) void onClickBlurRadius() {
+    new BlurRadiusDialogFragment().show(getActivity().getSupportFragmentManager(),
+        BlurRadiusDialogFragment.class.getName());
+  }
+
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_settings, container, false);

@@ -12,7 +12,6 @@ import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
  * @date 27th Nov, 2016
  */
 public final class SettingPreferences {
-
   private final SharedPreferences settingsPrefs;
 
   public SettingPreferences() {
@@ -54,6 +53,14 @@ public final class SettingPreferences {
 
   public int filterDurationInSeconds() {
     return settingsPrefs.getInt(Key.FILTER_DURATION_IN_SECONDS, 0);
+  }
+
+  public void blurRadius(int blurRadius) {
+    settingsPrefs.edit().putInt(Key.BLUR_RADIUS, blurRadius).apply();
+  }
+
+  public int blurRadius() {
+    return settingsPrefs.getInt(Key.BLUR_RADIUS, 25);
   }
 
   public void saveLastChosenPresetId(int equalizerPreset) {
@@ -99,5 +106,6 @@ public final class SettingPreferences {
     public final static String LAST_CHOSEN_PRESET_ID = "last_chosen_preset_id";
     public final static String REVERB_ID = "reverb_id";
     public final static String FILTER_DURATION_IN_SECONDS = "filter_duration_in_seconds";
+    public final static String BLUR_RADIUS = "blur_radius";
   }
 }
