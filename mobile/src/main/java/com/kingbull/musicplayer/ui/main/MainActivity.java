@@ -25,16 +25,19 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public final class MainActivity extends BaseActivity<Artist.Presenter> {
   private final int arrayBg[] = {
-      R.drawable.a1, R.drawable.a2, R.drawable.a3, R.drawable.a4, R.drawable.a5, R.drawable.a6,
-      R.drawable.a7, R.drawable.a8, R.drawable.a9, R.drawable.a10, R.drawable.a11, R.drawable.a12,
-      R.drawable.a13, R.drawable.a14, R.drawable.a15, R.drawable.a16, R.drawable.a17, R.drawable.a18
+      R.drawable.k1, R.drawable.k2, R.drawable.k3, R.drawable.k4, R.drawable.k5, R.drawable.k6,
+      R.drawable.k7, R.drawable.k8, R.drawable.k9, R.drawable.k10, R.drawable.k11, R.drawable.k12,
+      R.drawable.k13, R.drawable.k14, R.drawable.k15, R.drawable.k16, R.drawable.k17,
+      R.drawable.k18,
   };
   @BindView(R.id.viewPager) ViewPagerParallax viewPager;
   @BindArray(R.array.main_tabs) String[] tabs;
   @BindView(R.id.sliding_tabs) TabLayout tabLayout;
+  Disposable disposable;
   private MainPagerAdapter adapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
     viewPager.setAdapter(adapter);
     viewPager.setOffscreenPageLimit(4);
     viewPager.setCurrentItem(0);
-    viewPager.setBackgroundAsset(arrayBg[new Random().nextInt(18)], getWindow());
+    viewPager.setBackgroundAsset(arrayBg[new Random().nextInt(12)], getWindow());
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
       @Override
@@ -70,34 +73,22 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
             }
           }
         });
-    //io.reactivex.Observable.interval(2, 10, TimeUnit.SECONDS)
-    //    .observeOn(AndroidSchedulers.mainThread())
-    //    .doOnNext(new Consumer<Long>() {
-    //      int i = 18;
-    //
-    //      @Override public void accept(Long aLong) throws Exception {
-    //        viewPager.setBackgroundAsset(arrayBg[i++], getWindow());
-    //        if (i >= arrayBg.length) i = 18;
-    //      }
-    //    })
-    //    .subscribe();
+    disposable = io.reactivex.Observable.interval(2, 20, TimeUnit.SECONDS)
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnNext(new Consumer<Long>() {
+          int i = 0;
+
+          @Override public void accept(Long aLong) throws Exception {
+            viewPager.setBackgroundAsset(arrayBg[i++], getWindow());
+            if (i >= arrayBg.length) i = 0;
+          }
+        })
+        .subscribe();
   }
 
-  private void setupTabLayout() {
-    ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
-    int tabsCount = viewGroup.getChildCount();
-    for (int j = 0; j < tabsCount; j++) {
-      ViewGroup tabViewGroup = (ViewGroup) viewGroup.getChildAt(j);
-      int tabChildsCount = tabViewGroup.getChildCount();
-      for (int i = 0; i < tabChildsCount; i++) {
-        View tabViewChild = tabViewGroup.getChildAt(i);
-        if (tabViewChild instanceof TextView) {
-          ((TextView) tabViewChild).setTypeface(
-              Typeface.createFromAsset(getAssets(), getString(R.string.font_title)),
-              Typeface.BOLD);
-        }
-      }
-    }
+  @Override protected void onDestroy() {
+    disposable.dispose();
+    super.onDestroy();
   }
 
   @NonNull @Override protected PresenterFactory<Artist.Presenter> presenterFactory() {
@@ -121,5 +112,21 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
             }
           }
         });
+  }
+
+  private void setupTabLayout() {
+    ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
+    int tabsCount = viewGroup.getChildCount();
+    for (int j = 0; j < tabsCount; j++) {
+      ViewGroup tabViewGroup = (ViewGroup) viewGroup.getChildAt(j);
+      int tabChildsCount = tabViewGroup.getChildCount();
+      for (int i = 0; i < tabChildsCount; i++) {
+        View tabViewChild = tabViewGroup.getChildAt(i);
+        if (tabViewChild instanceof TextView) {
+          ((TextView) tabViewChild).setTypeface(
+              Typeface.createFromAsset(getAssets(), getString(R.string.font_title)), Typeface.BOLD);
+        }
+      }
+    }
   }
 }

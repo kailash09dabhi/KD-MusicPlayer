@@ -38,8 +38,7 @@ public final class CoverArtsAdapter extends RecyclerView.Adapter<CoverArtsAdapte
 
   @Override public void onBindViewHolder(final ViewHolder holder, int position) {
     Glide.with(holder.itemView.getContext())
-        .load(coverUrls.get(position))
-        .placeholder(R.drawable.a1)
+        .load(coverUrls.get(position)).placeholder(R.drawable.k1)
         .error(R.drawable.default_art)
         .crossFade()
         .into(holder.imageView);

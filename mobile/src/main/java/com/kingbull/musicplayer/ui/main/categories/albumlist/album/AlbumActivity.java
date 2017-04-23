@@ -125,9 +125,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
     Glide.with(this)
         .load(album.albumArt())
-        .asBitmap()
-        .placeholder(R.drawable.a11)
-        .error(R.drawable.a9)
+        .asBitmap().placeholder(R.drawable.k1).error(R.drawable.k9)
         .centerCrop()
         .signature(
             new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))

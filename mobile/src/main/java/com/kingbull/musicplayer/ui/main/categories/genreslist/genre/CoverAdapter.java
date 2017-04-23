@@ -32,9 +32,7 @@ public final class CoverAdapter extends RecyclerView.Adapter<CoverAdapter.SongFi
 
   @Override public void onBindViewHolder(SongFileViewHolder holder, int position) {
     Glide.with(holder.itemView.getContext())
-        .load(albums.get(position).albumArt())
-        .placeholder(R.drawable.a10)
-        .error(R.drawable.a1)
+        .load(albums.get(position).albumArt()).placeholder(R.drawable.k10).error(R.drawable.k1)
         .crossFade()
         .into(holder.imageView);
     holder.labelView.setText(albums.get(position).name());
