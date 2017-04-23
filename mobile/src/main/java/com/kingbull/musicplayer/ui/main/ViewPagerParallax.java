@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Debug;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.graphics.Palette;
 import android.util.AttributeSet;
@@ -24,6 +25,7 @@ import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,26 +54,15 @@ public final class ViewPagerParallax extends ViewPager {
   private float overlapLevel;
   private boolean pagingEnabled = true;
   private boolean parallaxEnabled = true;
+  private Disposable disposable;
 
-  public ViewPagerParallax(Context context) {
-    super(context);
+  public ViewPagerParallax(Context context, AttributeSet attrs) {
+    super(context, attrs);
     init();
   }
 
   private void init() {
     applyBackgroundAccordingToTheme();
-    RxBus.getInstance()
-        .toObservable()
-        .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Object>() {
-      @Override public void accept(Object o) throws Exception {
-        if (o instanceof ThemeEvent) {
-          applyBackgroundAccordingToTheme();
-          invalidate();
-        } else if (o instanceof BlurRadiusEvent) {
-          invalidate();
-        }
-          }
-        });
   }
 
   public void applyBackgroundAccordingToTheme() {
@@ -81,11 +72,6 @@ public final class ViewPagerParallax extends ViewPager {
     } else {
       setBackgroundColor(0);
     }
-  }
-
-  public ViewPagerParallax(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    init();
   }
 
   public void setMaxPages(int numMaxPages) {
@@ -212,11 +198,36 @@ public final class ViewPagerParallax extends ViewPager {
       savedBitmap = null;
     }
     super.onDetachedFromWindow();
+    disposable.dispose();
+  }
+
+  @Override public void setAdapter(PagerAdapter adapter) {
+    super.setAdapter(adapter);
+    if (adapter == null) window = null;
+    if (savedBitmap != null && !savedBitmap.isRecycled()) savedBitmap.recycle();
+    savedBitmap = null;
   }
 
   @Override public void setCurrentItem(int item) {
     super.setCurrentItem(item);
     currentPosition = item;
+  }
+
+  @Override protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+    disposable = RxBus.getInstance()
+        .toObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
+          @Override public void accept(Object o) throws Exception {
+            if (o instanceof ThemeEvent) {
+              applyBackgroundAccordingToTheme();
+              invalidate();
+            } else if (o instanceof BlurRadiusEvent) {
+              invalidate();
+            }
+          }
+        });
   }
 
   @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
