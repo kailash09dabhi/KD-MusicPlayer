@@ -2,6 +2,7 @@ package com.kingbull.musicplayer;
 
 import android.app.Application;
 import android.content.Intent;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatDelegate;
 import com.facebook.stetho.Stetho;
 import com.kingbull.musicplayer.di.AppComponent;
@@ -31,6 +32,18 @@ public final class MusicPlayerApp extends Application {
   @Override public void onCreate() {
     super.onCreate();
     application = this;
+    if (BuildConfig.DEBUG) {
+      StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()
+          .detectDiskWrites()
+          .detectNetwork()   // or .detectAll() for all detectable problems
+          .penaltyLog()
+          .build());
+      StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects()
+          .detectLeakedClosableObjects()
+          .penaltyLog()
+          .penaltyDeath()
+          .build());
+    }
     // Custom fonts
     CalligraphyConfig.initDefault(
         new CalligraphyConfig.Builder().setDefaultFontPath(getString(R.string.font_body))

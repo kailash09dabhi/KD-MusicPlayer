@@ -84,6 +84,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @OnClick(R.id.exitSearchButton) void onExitSearchClick() {
     slideAnimation.animateOut(searchLayout);
+    alphaAnimation.fadeIn(totalSongLayout);
     presenter.onExitSearchClick();
   }
 
