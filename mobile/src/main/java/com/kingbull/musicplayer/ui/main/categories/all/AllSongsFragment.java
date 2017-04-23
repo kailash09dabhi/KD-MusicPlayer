@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import com.github.lzyzsd.circleprogress.DonutProgress;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
@@ -102,6 +103,13 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     return inflater.inflate(R.layout.fragment_all_songs, container, false);
   }
 
+  @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    ButterKnife.bind(this, view);
+    MusicPlayerApp.instance().component().inject(this);
+    setupView();
+  }
+
   @Override protected Disposable subscribeEvents() {
     return RxBus.getInstance()
         .toObservable()
@@ -114,32 +122,11 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
               getLoaderManager().restartLoader(0, null, AllSongsFragment.this);
             } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
               updateDrawableOfButtons(
-                  smartColorTheme.header().dark(0.01f).transparent(0.16f).intValue());
+                  smartTheme.header().dark(0.01f).transparent(0.16f).intValue());
               applyUiColors();
             }
           }
         });
-  }
-
-  private void updateDrawableOfButtons(int fillColor) {
-    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
-    searchButton.setImageDrawable(new IconDrawable(R.drawable.ic_search_48dp, fillColor));
-    exitSearchButton.setImageDrawable(new IconDrawable(R.drawable.ic_back_48dp, fillColor));
-    selectionContextOptionsLayout.updateIconsColor(fillColor);
-  }
-
-  private void applyUiColors() {
-    int headerColor = smartColorTheme.header().intValue();
-    recyclerView.setPopupBgColor(Color.WHITE);
-    recyclerView.setThumbColor(Color.WHITE);
-    recyclerView.setTrackColor(headerColor);
-    recyclerView.setPopupTextColor(headerColor);
-    ((View) totalSongLayout.getParent()).setBackgroundColor(headerColor);
-    int screenColor = smartColorTheme.screen().intValue();
-    recyclerView.setBackgroundColor(screenColor);
-    searchView.setHintTextColor(smartColorTheme.bodyText().intValue());
-    donutProgress.setFinishedStrokeColor(Color.WHITE);
-    donutProgress.setUnfinishedStrokeColor(flatTheme.header().intValue());
   }
 
   @Override protected PresenterFactory<AllSongs.Presenter> presenterFactory() {
@@ -147,8 +134,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {
-    ButterKnife.bind(this, getView());
-    setupView();
     presenter.takeView(this);
   }
 
@@ -188,6 +173,27 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
           }
         });
     updateDrawableOfButtons(Color.BLACK);
+  }
+
+  private void applyUiColors() {
+    int headerColor = smartTheme.header().intValue();
+    recyclerView.setPopupBgColor(Color.WHITE);
+    recyclerView.setThumbColor(Color.WHITE);
+    recyclerView.setTrackColor(headerColor);
+    recyclerView.setPopupTextColor(headerColor);
+    ((View) totalSongLayout.getParent()).setBackgroundColor(headerColor);
+    int screenColor = smartTheme.screen().intValue();
+    recyclerView.setBackgroundColor(screenColor);
+    searchView.setHintTextColor(smartTheme.bodyText().intValue());
+    donutProgress.setFinishedStrokeColor(Color.WHITE);
+    donutProgress.setUnfinishedStrokeColor(flatTheme.header().intValue());
+  }
+
+  private void updateDrawableOfButtons(int fillColor) {
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
+    searchButton.setImageDrawable(new IconDrawable(R.drawable.ic_search_48dp, fillColor));
+    exitSearchButton.setImageDrawable(new IconDrawable(R.drawable.ic_back_48dp, fillColor));
+    selectionContextOptionsLayout.updateIconsColor(fillColor);
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

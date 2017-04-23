@@ -20,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
@@ -60,6 +61,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_settings, container, false);
     ButterKnife.bind(this, view);
+    MusicPlayerApp.instance().component().inject(this);
     return view;
   }
 
@@ -97,8 +99,8 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   }
 
   private void applyUiColors() {
-    scrollView.setBackgroundColor(smartColorTheme.screen().intValue());
-    headerLayout.setBackgroundColor(smartColorTheme.header().intValue());
+    scrollView.setBackgroundColor(smartTheme.screen().intValue());
+    headerLayout.setBackgroundColor(smartTheme.header().intValue());
     deepChangeTextColor((ViewGroup) getView());
   }
 
@@ -106,7 +108,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     for (int count = 0; count < parentLayout.getChildCount(); count++) {
       View view = parentLayout.getChildAt(count);
       if (view instanceof TextView) {
-        ((TextView) view).setTextColor(smartColorTheme.titleText().intValue());
+        ((TextView) view).setTextColor(smartTheme.titleText().intValue());
       } else if (view instanceof ViewGroup) {
         deepChangeTextColor((ViewGroup) view);
       }

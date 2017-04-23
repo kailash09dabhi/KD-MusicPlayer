@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Artist;
@@ -36,13 +37,14 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_genres, container, false);
     ButterKnife.bind(this, view);
+    MusicPlayerApp.instance().component().inject(this);
     setupView();
     return view;
   }
 
   private void setupView() {
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    recyclerView.setBackgroundColor(smartColorTheme.screen().intValue());
+    recyclerView.setBackgroundColor(smartTheme.screen().intValue());
     recyclerView.setHasFixedSize(true);
     getLoaderManager().initLoader(0, null, this);
   }
@@ -54,7 +56,7 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              recyclerView.setBackgroundColor(smartColorTheme.screen().intValue());
+              recyclerView.setBackgroundColor(smartTheme.screen().intValue());
             }
           }
         });

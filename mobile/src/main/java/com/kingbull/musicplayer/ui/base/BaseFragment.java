@@ -6,14 +6,17 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
+import com.kingbull.musicplayer.di.AppModule;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 public abstract class BaseFragment<P extends Mvp.Presenter> extends Fragment {
   private static final int LOADER_ID = 101;
-  protected final ColorTheme smartColorTheme = new ColorTheme.Smart();
-  protected final ColorTheme flatTheme = new ColorTheme.Flat();
+  @Inject @Named(AppModule.SMART_THEME) protected ColorTheme smartTheme;
+  @Inject @Named(AppModule.FLAT_THEME) protected ColorTheme flatTheme;
   protected P presenter;
   private CompositeDisposable compositeDisposable;
 

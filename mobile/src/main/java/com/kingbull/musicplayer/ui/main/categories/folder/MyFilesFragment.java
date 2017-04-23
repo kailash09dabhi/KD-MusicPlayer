@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.PaletteEvent;
@@ -41,14 +42,15 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_my_files, container, false);
     ButterKnife.bind(this, view);
+    MusicPlayerApp.instance().component().inject(this);
     applyUIColors();
     return view;
   }
 
   private void applyUIColors() {
-    recyclerView.setBackgroundColor(smartColorTheme.screen().intValue());
-    ((View) directoryPathView.getParent()).setBackgroundColor(smartColorTheme.tab().intValue());
-    directoryPathView.setTextColor(smartColorTheme.bodyText().intValue());
+    recyclerView.setBackgroundColor(smartTheme.screen().intValue());
+    ((View) directoryPathView.getParent()).setBackgroundColor(smartTheme.tab().intValue());
+    directoryPathView.setTextColor(smartTheme.bodyText().intValue());
   }
 
   @Override public void onViewStateRestored(@Nullable Bundle savedInstanceState) {

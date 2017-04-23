@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.signature.StringSignature;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.di.StorageModule;
@@ -184,6 +185,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     super.onCreate(savedInstanceState);
     setContentView(R.layout.fragment_album);
     ButterKnife.bind(this);
+    MusicPlayerApp.instance().component().inject(this);
     new StatusBarColor(flatTheme.statusBar()).applyOn(getWindow());
     album = getIntent().getParcelableExtra("album");
     adapter = new MusicRecyclerViewAdapter(songList, this);

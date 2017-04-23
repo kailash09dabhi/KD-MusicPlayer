@@ -16,6 +16,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Album;
@@ -74,6 +75,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_song_list);
     ButterKnife.bind(this);
+    MusicPlayerApp.instance().component().inject(this);
     artist = getIntent().getParcelableExtra("artist");
     coverRecyclerView.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));

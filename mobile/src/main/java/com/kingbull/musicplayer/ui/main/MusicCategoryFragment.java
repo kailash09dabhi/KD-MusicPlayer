@@ -12,6 +12,7 @@ import android.widget.TextView;
 import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.PaletteEvent;
@@ -42,12 +43,13 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
+    MusicPlayerApp.instance().component().inject(this);
     musicCategoryPagerAdapter = new MusicCategoryPagerAdapter(getChildFragmentManager(), tabs);
     viewPager.setAdapter(musicCategoryPagerAdapter);
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.setOffscreenPageLimit(3);
     viewPager.setCurrentItem(1);
-    pagerTitleStrip.setBackgroundColor(smartColorTheme.screen().intValue());
+    pagerTitleStrip.setBackgroundColor(smartTheme.screen().intValue());
     setupPagerTitleStrip();
   }
 
@@ -58,7 +60,7 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              pagerTitleStrip.setBackgroundColor(smartColorTheme.header().intValue());
+              pagerTitleStrip.setBackgroundColor(smartTheme.header().intValue());
             }
           }
         });

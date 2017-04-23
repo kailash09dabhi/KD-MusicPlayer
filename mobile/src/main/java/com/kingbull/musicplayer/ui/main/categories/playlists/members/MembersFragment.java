@@ -14,6 +14,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
@@ -62,6 +63,7 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_playlist, container, false);
     ButterKnife.bind(this, view);
+    MusicPlayerApp.instance().component().inject(this);
     playList = getArguments().getParcelable("playlist");
     return view;
   }

@@ -11,22 +11,36 @@ import com.kingbull.musicplayer.player.CallReceiver;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.coverarts.CoverArtsFragment;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerFragment;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerModel;
 import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.PresetReverbDialogFragment;
+import com.kingbull.musicplayer.ui.main.MusicCategoryFragment;
+import com.kingbull.musicplayer.ui.main.categories.albumlist.AlbumListFragment;
+import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumActivity;
 import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumPresenter;
+import com.kingbull.musicplayer.ui.main.categories.all.AllSongsFragment;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsPresenter;
+import com.kingbull.musicplayer.ui.main.categories.artistlist.ArtistListFragment;
+import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.ArtistActivity;
 import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.ArtistPresenter;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesAdapter;
+import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesFragment;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesPresenter;
+import com.kingbull.musicplayer.ui.main.categories.genreslist.GenresListFragment;
+import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenreActivity;
 import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenresPresenter;
+import com.kingbull.musicplayer.ui.main.categories.playlists.AllPlayListFragment;
 import com.kingbull.musicplayer.ui.main.categories.playlists.AllPlaylistModel;
+import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersFragment;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingAdapter;
+import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
+import com.kingbull.musicplayer.ui.settings.SettingsFragment;
 import dagger.Component;
 import javax.inject.Singleton;
 
@@ -78,6 +92,13 @@ public interface AppComponent {
 
   void inject(GenresPresenter presenter);
 
+  //activity
+  void inject(AlbumActivity activity);
+
+  void inject(ArtistActivity activity);
+
+  void inject(GenreActivity activity);
+
   //fragments
   void inject(MusicPlayerFragment fragment);
 
@@ -88,6 +109,28 @@ public interface AppComponent {
   void inject(PresetDialogFragment fragment);
 
   void inject(EqualizerFragment fragment);
+
+  void inject(CoverArtsFragment fragment);
+
+  void inject(AlbumListFragment fragment);
+
+  void inject(AllSongsFragment fragment);
+
+  void inject(MusicCategoryFragment fragment);
+
+  void inject(ArtistListFragment fragment);
+
+  void inject(MyFilesFragment fragment);
+
+  void inject(GenresListFragment fragment);
+
+  void inject(AllPlayListFragment fragment);
+
+  void inject(MembersFragment fragment);
+
+  void inject(NowPlayingFragment fragment);
+
+  void inject(SettingsFragment fragment);
 
   MusicPlayerApp app();
 }

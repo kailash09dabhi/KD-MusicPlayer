@@ -11,15 +11,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import com.kingbull.musicplayer.di.AppModule;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import javax.inject.Inject;
+import javax.inject.Named;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatActivity {
   private static final int LOADER_ID = 9;
-  protected final ColorTheme flatTheme = new ColorTheme.Flat();
+  @Inject @Named(AppModule.FLAT_THEME) protected ColorTheme flatTheme;
   protected P presenter;
   private CompositeDisposable compositeDisposable;
 

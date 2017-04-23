@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.signature.StringSignature;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Album;
@@ -95,8 +96,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    com.kingbull.musicplayer.ui.base.Color color =
-        new com.kingbull.musicplayer.ui.base.Color(flatTheme.screen().intValue());
+    MusicPlayerApp.instance().component().inject(this);
     applyColorTheme(flatTheme.header().intValue());
   }
 
@@ -169,7 +169,9 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
     Glide.with(this)
         .load(albumTable.albumById(song.media().albumId()).albumArt())
-        .asBitmap().placeholder(R.drawable.k1).error(R.drawable.k9)
+        .asBitmap()
+        .placeholder(R.drawable.k1)
+        .error(R.drawable.k9)
         .centerCrop()
         .signature(
             new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))

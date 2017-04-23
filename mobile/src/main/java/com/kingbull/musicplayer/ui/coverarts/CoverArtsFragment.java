@@ -20,6 +20,7 @@ import butterknife.OnClick;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.di.StorageModule;
@@ -85,6 +86,7 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_coverarts, container, false);
     ButterKnife.bind(this, view);
+    MusicPlayerApp.instance().component().inject(this);
     setupView(view);
     return view;
   }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
@@ -48,6 +49,7 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_now_playing_list, container, false);
     ButterKnife.bind(this, view);
+    MusicPlayerApp.instance().component().inject(this);
     setupView(view);
     return view;
   }
