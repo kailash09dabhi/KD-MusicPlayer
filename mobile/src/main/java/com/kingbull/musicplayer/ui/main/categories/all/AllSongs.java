@@ -40,6 +40,10 @@ public interface AllSongs {
     void percentage(int percentage);
 
     void deletedOutOfText(String s);
+
+    void exitSearch();
+
+    void enterSearch();
   }
 
   interface Model extends Mvp.Model {
@@ -61,5 +65,7 @@ public interface AllSongs {
     void onSortEvent(SortEvent sortEvent);
 
     void onDeleteSelectedMusic();
+
+    void onSearchClick();
   }
 }

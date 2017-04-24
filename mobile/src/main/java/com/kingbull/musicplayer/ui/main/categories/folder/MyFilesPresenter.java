@@ -12,7 +12,6 @@ import javax.inject.Inject;
  * @author Kailash Dabhi
  * @date 11/10/2016.
  */
-
 public final class MyFilesPresenter extends Presenter<MyFiles.View> implements MyFiles.Presenter {
   @Inject Player player;
   @Inject FileMusicMap fileMusicMap;

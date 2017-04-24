@@ -25,6 +25,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public final class MainActivity extends BaseActivity<Artist.Presenter> {
   private final int arrayBg[] = {

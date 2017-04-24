@@ -115,7 +115,7 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
   }
 
   @Override public void onExitSearchClick() {
-    view().showAllSongs(songs);
+    view().exitSearch();
   }
 
   @Override public void onShuffleMenuClick() {
@@ -249,5 +249,9 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
           }
         })
         .subscribe();
+  }
+
+  @Override public void onSearchClick() {
+    view().enterSearch();
   }
 }

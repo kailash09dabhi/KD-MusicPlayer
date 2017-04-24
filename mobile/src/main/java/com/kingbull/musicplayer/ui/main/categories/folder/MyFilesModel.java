@@ -14,6 +14,7 @@ import javax.inject.Inject;
  */
 public final class MyFilesModel implements MyFiles.Model {
   private final File topFolder = Environment.getExternalStorageDirectory();
+  private final AudioFileFilter filter = new AudioFileFilter();
   @Inject FileMusicMap fileMusicMap;
   private File currentFolder = topFolder;
 
@@ -40,7 +41,7 @@ public final class MyFilesModel implements MyFiles.Model {
   }
 
   @Override public List<Music> musicListFromDirectory(File directory) {
-    File[] files = directory.listFiles(new AudioFileFilter());
+    File[] files = directory.listFiles(filter);
     List<Music> musicList = new ArrayList<>();
     for (File file : files) {
       if (!file.isDirectory()) musicList.add(fileMusicMap.music(file));

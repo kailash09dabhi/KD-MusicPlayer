@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -53,8 +54,9 @@ import java.util.List;
 public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, AllSongs.View {
   private final List<Music> musicList = new ArrayList<>();
-  private final Alpha.Animation alphaAnimation = new Alpha.Animation();
-  private final SlideHorizontal.Animation slideAnimation = new SlideHorizontal.Animation();
+  private final Alpha.Animation alphaAnimation = new Alpha.Animation(400);
+  private final SlideHorizontal.Animation slideHorizontalAnimation =
+      new SlideHorizontal.Animation(400);
   @BindView(R.id.allSongsLayout) LinearLayout allSongsLayout;
   @BindView(R.id.progressLayout) LinearLayout progressLayout;
   @BindView(R.id.deletedOutOfText) TextView deletedOutOfTextView;
@@ -68,14 +70,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   @BindView(R.id.searchLayout) LinearLayout searchLayout;
   @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
       selectionContextOptionsLayout;
-  private final SlideHorizontal.Listener.Default slideExitSearchListener =
-      new SlideHorizontal.Listener.Default() {
-        @Override public void onOutAnimationFinished() {
-          selectionContextOptionsLayout.setVisibility(View.GONE);
-          searchLayout.setVisibility(View.GONE);
-          alphaAnimation.fadeIn(totalSongLayout);
-        }
-      };
   @BindView(R.id.searchView) EditText searchView;
   private MusicRecyclerViewAdapter musicRecyclerViewAdapter;
 
@@ -84,30 +78,25 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @OnClick(R.id.exitSearchButton) void onExitSearchClick() {
-    slideAnimation.animateOut(searchLayout);
-    alphaAnimation.fadeIn(totalSongLayout);
     presenter.onExitSearchClick();
   }
 
   @OnClick(R.id.searchButton) void onSearchClick() {
-    alphaAnimation.fadeOut(totalSongLayout);
-    slideAnimation.animateIn(searchLayout);
+    presenter.onSearchClick();
   }
 
   @OnClick(R.id.sortButton) void onSortClick() {
     presenter.onSortMenuClick();
   }
 
+  @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    MusicPlayerApp.instance().component().inject(this);
+  }
+
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_all_songs, container, false);
-  }
-
-  @Override public void onViewCreated(View view, Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-    ButterKnife.bind(this, view);
-    MusicPlayerApp.instance().component().inject(this);
-    setupView();
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -134,6 +123,8 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override protected void onPresenterPrepared(AllSongs.Presenter presenter) {
+    ButterKnife.bind(this, getView());
+    setupView();
     presenter.takeView(this);
   }
 
@@ -173,6 +164,19 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
           }
         });
     updateDrawableOfButtons(Color.BLACK);
+    searchLayout.post(new Runnable() {
+      @Override public void run() {
+        //searchLayout.setX(searchLayout.getWidth());
+        searchLayout.setTranslationX(totalSongLayout.getWidth());
+      }
+    });
+  }
+
+  private void updateDrawableOfButtons(int fillColor) {
+    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
+    searchButton.setImageDrawable(new IconDrawable(R.drawable.ic_search_48dp, fillColor));
+    exitSearchButton.setImageDrawable(new IconDrawable(R.drawable.ic_back_48dp, fillColor));
+    selectionContextOptionsLayout.updateIconsColor(fillColor);
   }
 
   private void applyUiColors() {
@@ -187,13 +191,6 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     searchView.setHintTextColor(smartTheme.bodyText().intValue());
     donutProgress.setFinishedStrokeColor(Color.WHITE);
     donutProgress.setUnfinishedStrokeColor(flatTheme.header().intValue());
-  }
-
-  private void updateDrawableOfButtons(int fillColor) {
-    sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
-    searchButton.setImageDrawable(new IconDrawable(R.drawable.ic_search_48dp, fillColor));
-    exitSearchButton.setImageDrawable(new IconDrawable(R.drawable.ic_back_48dp, fillColor));
-    selectionContextOptionsLayout.updateIconsColor(fillColor);
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -226,8 +223,8 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override public void showSortMusicScreen() {
-    SortDialogFragment.newInstance().show(getActivity().getSupportFragmentManager(),
-        SortDialogFragment.class.getName());
+    SortDialogFragment.newInstance()
+        .show(getActivity().getSupportFragmentManager(), SortDialogFragment.class.getName());
   }
 
   @Override public List<SqlMusic> selectedMusicList() {
@@ -273,5 +270,20 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public void deletedOutOfText(String deleteOutOfText) {
     deletedOutOfTextView.setText(deleteOutOfText);
+  }
+
+  @Override public void exitSearch() {
+    searchView.setText("");
+    alphaAnimation.fadeOut(searchLayout);
+    alphaAnimation.fadeIn(totalSongLayout);
+    slideHorizontalAnimation.slide(searchLayout, searchLayout.getWidth());
+    slideHorizontalAnimation.slide(totalSongLayout, 0);
+  }
+
+  @Override public void enterSearch() {
+    alphaAnimation.fadeOut(totalSongLayout);
+    alphaAnimation.fadeIn(searchLayout);
+    slideHorizontalAnimation.slide(totalSongLayout, -totalSongLayout.getWidth());
+    slideHorizontalAnimation.slide(searchLayout, 0);
   }
 }
