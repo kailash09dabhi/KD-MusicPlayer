@@ -12,7 +12,6 @@ import javax.inject.Inject;
  * @author Kailash Dabhi
  * @date 11/12/2016.
  */
-
 public final class MyFilesModel implements MyFiles.Model {
   private final File topFolder = Environment.getExternalStorageDirectory();
   @Inject FileMusicMap fileMusicMap;

@@ -28,8 +28,8 @@ import javax.inject.Singleton;
     return app.getResources();
   }
 
-  @Singleton @Provides Player provideMusicPlayer() {
-    return new MusicPlayer();
+  @Singleton @Provides Player provideMusicPlayer(SettingPreferences settingPreferences) {
+    return new MusicPlayer(settingPreferences);
   }
 
   @Singleton @Provides @Named(SMART_THEME) ColorTheme provideSmartColorTheme(

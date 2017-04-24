@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.di;
 
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.MediaStat;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.domain.storage.sqlite.FavouritesPlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.LastPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.MostPlayedPlayList;
@@ -177,4 +178,6 @@ public interface AppComponent {
   MusicPlayerApp app();
 
   ColorTheme.Smart smartColorTheme();
+
+  SettingPreferences settingPreferences();
 }

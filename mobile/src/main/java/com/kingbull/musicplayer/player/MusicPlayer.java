@@ -14,11 +14,10 @@ import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import java.io.IOException;
 import java.util.List;
-import javax.inject.Inject;
 
 public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListener {
   private static final String TAG = MusicPlayer.class.getSimpleName();
-  @Inject SettingPreferences settingPrefs;
+  SettingPreferences settingPrefs;
   private boolean isAudioSessionIdUpdated = false;
   private BassBoost bassBoost;
   private Virtualizer virtualizer;
@@ -29,8 +28,9 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   private boolean isPaused;
   private android.media.audiofx.Equalizer equalizer;
 
-  @Inject public MusicPlayer() {
+  public MusicPlayer(SettingPreferences settingPreferences) {
     player = new MediaPlayer();
+    settingPrefs = settingPreferences;
     nowPlayingList = new NowPlayingList.Smart();
     player.setOnCompletionListener(this);
   }
