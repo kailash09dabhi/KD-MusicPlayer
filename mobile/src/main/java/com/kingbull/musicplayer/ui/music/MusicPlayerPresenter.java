@@ -15,23 +15,22 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
   private static final long UPDATE_PROGRESS_INTERVAL = 1000;
   @Inject Player player;
   @Inject SettingPreferences settingPreferences;
+  private Music currentPlayingSong;
+  private long currentPlayingSongDuration;
 
   @Override public void takeView(@NonNull MusicPlayer.View view) {
     super.takeView(view);
-    view().onSongUpdated(player.getPlayingSong());
+    currentPlayingSong = player.getPlayingSong();
+    currentPlayingSongDuration = currentPlayingSong.media().duration();
+    view().onSongUpdated(currentPlayingSong);
   }
 
   @Override public void onFavoriteToggleClick() {
-    if (player == null) return;
-    Music currentSong = player.getPlayingSong();
-    if (currentSong != null) {
-      currentSong.mediaStat().toggleFavourite();
-      view().updateFavoriteToggle(currentSong.mediaStat().isFavorite());
-    }
+    currentPlayingSong.mediaStat().toggleFavourite();
+    view().updateFavoriteToggle(currentPlayingSong.mediaStat().isFavorite());
   }
 
   @Override public void onPlayNextClick() {
-    if (player == null) return;
     player.playNext();
   }
 
@@ -40,7 +39,6 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
   }
 
   @Override public void onPlayModeToggleClick() {
-    if (player == null) return;
     MusicMode current = settingPreferences.musicMode();
     MusicMode newMode = MusicMode.switchNextMode(current);
     settingPreferences.saveMusicMode(newMode);
@@ -48,7 +46,6 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
   }
 
   @Override public void onPlayToggleClick() {
-    if (player == null) return;
     if (player.isPlaying()) {
       player.pause();
     } else {
@@ -59,7 +56,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
   @Override public void onSeekbarProgress() {
     if (player.isPlaying()) {
       int progress =
-          (int) (100 * ((float) player.getProgress() / (float) getCurrentSongDuration()));
+          (int) (100 * ((float) player.getProgress() / (float) currentPlayingSongDuration));
       view().updateProgressDurationText(player.getProgress());
       if (progress >= 0 && progress <= 100) {
         view().updateSeekBar(progress);
@@ -69,7 +66,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
   }
 
   @Override public void onStopTrackingTouch(int progress) {
-    player.seekTo((int) (getCurrentSongDuration() * ((float) progress / 100)));
+    player.seekTo((int) (currentPlayingSongDuration * ((float) progress / 100)));
     if (player.isPlaying()) {
       view().stopSeekbarProgress();
     }
@@ -77,7 +74,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
 
   @Override public void onProgressChanged(int duration) {
     view().updateProgressDurationText(duration);
-    view().updateSeekBar((int) ((duration / (float) getCurrentSongDuration()) * 100));
+    view().updateSeekBar((int) ((duration / (float) currentPlayingSongDuration) * 100));
   }
 
   @Override public void onEqualizerClick() {
@@ -85,31 +82,25 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
   }
 
   @Override public void onMusicEvent(MusicEvent musicEvent) {
-    if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.PLAY) {
+    int eventType = musicEvent.musicPlayerEvent();
+    if (eventType == MusicPlayerEvent.PLAY) {
       view().displayPauseButton();
       view().startAlbumImageRotationAnimation();
       view().startProgressAnimation();
-    } else if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.PAUSE) {
+    } else if (eventType == MusicPlayerEvent.PAUSE) {
       view().displayPlayButton();
       view().stopAlbumImageRotationAnimation();
       view().stopProgressAnimation();
-    } else if (musicEvent.musicPlayerEvent() == MusicPlayerEvent.COMPLETED) {
+    } else if (eventType == MusicPlayerEvent.COMPLETED) {
       view().stopProgressAnimation();
       view().updateSeekBar(100);
       view().updateProgressDurationText((int) musicEvent.music().media().duration());
       view().displayPlayButton();
       view().stopAlbumImageRotationAnimation();
-    } else {
-      view().displayNewSongInfo(musicEvent.music());
+    } else if (eventType == MusicPlayerEvent.NEXT || eventType == MusicPlayerEvent.PREVIOUS) {
+      currentPlayingSong = musicEvent.music();
+      currentPlayingSongDuration = currentPlayingSong.media().duration();
+      view().displayNewSongInfo(currentPlayingSong);
     }
-  }
-
-  private long getCurrentSongDuration() {
-    Music currentSong = player.getPlayingSong();
-    long duration = 0;
-    if (currentSong != null) {
-      duration = currentSong.media().duration();
-    }
-    return duration;
   }
 }
