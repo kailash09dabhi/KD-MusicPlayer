@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'android-apt'
-
 android {
   compileSdkVersion 25
   buildToolsVersion "25.0.2"
@@ -80,3 +78,5 @@ dependencies {
     exclude group: 'com.android.support', module: 'recyclerview-v7'
   }
 }
+// make sure this line comes *after* you apply the Android plugin
+apply plugin: 'com.getkeepsafe.dexcount'
