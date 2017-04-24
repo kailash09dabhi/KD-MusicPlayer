@@ -9,6 +9,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.di.AppModule;
 import com.kingbull.musicplayer.domain.FileMusicMap;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Milliseconds;
@@ -16,6 +17,7 @@ import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import java.io.File;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * @author Kailash Dabhi
@@ -24,7 +26,7 @@ import javax.inject.Inject;
 public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
   private final int FOLDER = 0, SONG = 1;
   private final List<File> files;
-  private final ColorTheme colorTheme = new ColorTheme.Smart();
+  @Inject @Named(AppModule.SMART_THEME) ColorTheme colorTheme;
   @Inject FileMusicMap fileMusicMap;
   private MyFiles.Presenter presenter;
 

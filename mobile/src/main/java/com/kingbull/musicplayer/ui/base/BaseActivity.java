@@ -23,7 +23,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatActivity {
   private static final int LOADER_ID = 9;
   @Inject @Named(AppModule.FLAT_THEME) protected ColorTheme flatTheme;
+  @Inject @Named(AppModule.SMART_THEME) protected ColorTheme smartTheme;
   protected P presenter;
+  @Inject protected SettingPreferences settingPreferences;
   private CompositeDisposable compositeDisposable;
 
   @Override protected void attachBaseContext(Context newBase) {
@@ -109,7 +111,7 @@ public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatAct
 
   @Override protected void onResume() {
     super.onResume();
-    if (new SettingPreferences().isFullScreen()) {
+    if (settingPreferences.isFullScreen()) {
       getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
           WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }

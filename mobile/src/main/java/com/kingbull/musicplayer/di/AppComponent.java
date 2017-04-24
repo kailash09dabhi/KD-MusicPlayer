@@ -11,12 +11,19 @@ import com.kingbull.musicplayer.player.CallReceiver;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.base.musiclist.edittags.EditTagsDialogFragment;
+import com.kingbull.musicplayer.ui.base.musiclist.quickaction.QuickAction;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.coverarts.CoverArtsFragment;
+import com.kingbull.musicplayer.ui.equalizer.AudioFxEqualizerPreset;
+import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerFragment;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerModel;
 import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.PresetReverbDialogFragment;
+import com.kingbull.musicplayer.ui.main.MainActivity;
 import com.kingbull.musicplayer.ui.main.MusicCategoryFragment;
+import com.kingbull.musicplayer.ui.main.ViewPagerParallax;
 import com.kingbull.musicplayer.ui.main.categories.albumlist.AlbumListFragment;
 import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumActivity;
 import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumPresenter;
@@ -33,14 +40,21 @@ import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenreActivit
 import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenresPresenter;
 import com.kingbull.musicplayer.ui.main.categories.playlists.AllPlayListFragment;
 import com.kingbull.musicplayer.ui.main.categories.playlists.AllPlaylistModel;
+import com.kingbull.musicplayer.ui.main.categories.playlists.PlaylistRenameDialogFragment;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersFragment;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.main.categories.playlists.members.MoveToDialogFragment;
+import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.music.MusicPlayerFragment;
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingAdapter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
+import com.kingbull.musicplayer.ui.settings.BlurRadiusDialogFragment;
+import com.kingbull.musicplayer.ui.settings.DurationFilterDialogFragment;
 import com.kingbull.musicplayer.ui.settings.SettingsFragment;
+import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
+import com.kingbull.musicplayer.ui.statistics.StatisticsDialogFragment;
 import dagger.Component;
 import javax.inject.Singleton;
 
@@ -64,6 +78,12 @@ public interface AppComponent {
   void inject(MyFilesAdapter adapter);
 
   void inject(MusicRecyclerViewAdapter adapter);
+
+  void inject(MusicRecyclerViewAdapter.MusicViewHolder viewHolder);
+
+  void inject(QuickAction quickAction);
+
+  void inject(AudioFxEqualizerPreset preset);
 
   //playlist
   void inject(FavouritesPlayList playList);
@@ -93,6 +113,12 @@ public interface AppComponent {
   void inject(GenresPresenter presenter);
 
   //activity
+  void inject(MainActivity activity);
+
+  void inject(MusicPlayerActivity activity);
+
+  void inject(EqualizerActivity activity);
+
   void inject(AlbumActivity activity);
 
   void inject(ArtistActivity activity);
@@ -132,5 +158,23 @@ public interface AppComponent {
 
   void inject(SettingsFragment fragment);
 
+  void inject(DurationFilterDialogFragment fragment);
+
+  void inject(BlurRadiusDialogFragment fragment);
+
+  void inject(PlaylistRenameDialogFragment fragment);
+
+  void inject(SortDialogFragment fragment);
+
+  void inject(EditTagsDialogFragment fragment);
+
+  void inject(MoveToDialogFragment fragment);
+
+  void inject(StatisticsDialogFragment fragment);
+
+  void inject(ViewPagerParallax pagerParallax);
+
   MusicPlayerApp app();
+
+  ColorTheme.Smart smartColorTheme();
 }

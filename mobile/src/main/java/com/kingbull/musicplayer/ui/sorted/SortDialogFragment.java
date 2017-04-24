@@ -10,6 +10,7 @@ import android.widget.RadioButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.SortEvent;
@@ -19,7 +20,6 @@ import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
  * @author Kailash Dabhi
  * @date 11/27/2016.
  */
-
 public final class SortDialogFragment extends BaseDialogFragment {
   @BindView(R.id.titleRadioButton) RadioButton titleRadioButton;
   @BindView(R.id.artistRadioButton) RadioButton artistRadioButton;
@@ -27,8 +27,13 @@ public final class SortDialogFragment extends BaseDialogFragment {
   @BindView(R.id.durationRadioButton) RadioButton durationRadioButton;
   @BindView(R.id.dateAddedRadioButton) RadioButton dateAddedRadioButton;
   @BindView(R.id.yearRadioButton) RadioButton yearRadioButton;
-
   @BindView(R.id.sortInDescendingCheckbox) CheckBox sortInDescendingCheckbox;
+
+  public static SortDialogFragment newInstance() {
+    SortDialogFragment frag = new SortDialogFragment();
+    MusicPlayerApp.instance().component().inject(frag);
+    return frag;
+  }
 
   @OnClick(R.id.doneButton) void onDoneClick() {
     boolean sortInDescending = sortInDescendingCheckbox.isChecked();

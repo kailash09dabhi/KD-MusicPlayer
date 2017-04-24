@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.di;
 
 import android.content.res.Resources;
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.player.MusicPlayer;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
@@ -31,8 +32,9 @@ import javax.inject.Singleton;
     return new MusicPlayer();
   }
 
-  @Singleton @Provides @Named(SMART_THEME) ColorTheme provideSmartColorTheme() {
-    return new ColorTheme.Smart();
+  @Singleton @Provides @Named(SMART_THEME) ColorTheme provideSmartColorTheme(
+      SettingPreferences settingPreferences) {
+    return new ColorTheme.Smart(settingPreferences);
   }
 
   @Singleton @Provides @Named(FLAT_THEME) ColorTheme provideFlatColorTheme() {

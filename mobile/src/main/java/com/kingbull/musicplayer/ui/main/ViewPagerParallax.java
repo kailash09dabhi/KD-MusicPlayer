@@ -16,7 +16,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Window;
 import com.commit451.nativestackblur.NativeStackBlur;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.di.AppModule;
 import com.kingbull.musicplayer.domain.storage.preferences.PalettePreference;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.BlurRadiusEvent;
@@ -29,13 +31,16 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 public final class ViewPagerParallax extends ViewPager {
   private final static String TAG = "ViewPagerParallax";
   private final Rect src = new Rect();
   private final Rect dst = new Rect();
   private final boolean loggable = true;
-  private final SettingPreferences settingPreferences = new SettingPreferences();
+  @Inject @Named(AppModule.SMART_THEME) protected ColorTheme smartTheme;
+  @Inject SettingPreferences settingPreferences;
   private int currentPosition = -1;
   private float currentOffset = 0.0f;
   private Window window;
@@ -58,6 +63,7 @@ public final class ViewPagerParallax extends ViewPager {
 
   public ViewPagerParallax(Context context, AttributeSet attrs) {
     super(context, attrs);
+    MusicPlayerApp.instance().component().inject(this);
     init();
   }
 
@@ -66,7 +72,7 @@ public final class ViewPagerParallax extends ViewPager {
   }
 
   public void applyBackgroundAccordingToTheme() {
-    isFlatTheme = new SettingPreferences().isFlatTheme();
+    isFlatTheme = settingPreferences.isFlatTheme();
     if (isFlatTheme) {
       setBackgroundColor(new ColorTheme.Flat().header().light(0.25f).intValue());
     } else {
@@ -131,7 +137,7 @@ public final class ViewPagerParallax extends ViewPager {
           public void onGenerated(Palette palette) {
             if (palette != null) {
               new PalettePreference().save(palette);
-              new StatusBarColor(new ColorTheme.Smart().statusBar()).applyOn(window);
+              new StatusBarColor(smartTheme.statusBar()).applyOn(window);
               RxBus.getInstance().post(new PaletteEvent(palette));
             }
           }

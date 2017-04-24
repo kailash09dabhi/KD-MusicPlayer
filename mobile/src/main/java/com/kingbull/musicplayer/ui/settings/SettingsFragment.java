@@ -23,7 +23,6 @@ import butterknife.OnClick;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
-import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
@@ -41,20 +40,20 @@ import java.util.Calendar;
  */
 public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     implements Settings.View {
-  private final SettingPreferences settingPreferences = new SettingPreferences();
   @BindView(R.id.fullScreenCheckbox) CheckBox fullScreenCheckbox;
   @BindView(R.id.durationSecondsView) TextView durationSecondsView;
   @BindView(R.id.headerLayout) LinearLayout headerLayout;
   @BindView(R.id.scrollView) ScrollView scrollView;
 
   @OnClick(R.id.hideSmallClips) void onClickHideSmallClips() {
-    new DurationFilterDialogFragment().show(getActivity().getSupportFragmentManager(),
-        DurationFilterDialogFragment.class.getName());
+    DurationFilterDialogFragment.newInstance()
+        .show(getActivity().getSupportFragmentManager(),
+            DurationFilterDialogFragment.class.getName());
   }
 
   @OnClick(R.id.blurBackground) void onClickBlurRadius() {
-    new BlurRadiusDialogFragment().show(getActivity().getSupportFragmentManager(),
-        BlurRadiusDialogFragment.class.getName());
+    BlurRadiusDialogFragment.newInstance()
+        .show(getActivity().getSupportFragmentManager(), BlurRadiusDialogFragment.class.getName());
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,11 +71,12 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
 
   @Override protected Disposable subscribeEvents() {
     return RxBus.getInstance()
-        .toObservable().observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Object>() {
+        .toObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof DurationFilterEvent) {
-              durationSecondsView.setText(
-                  new SettingPreferences().filterDurationInSeconds() + " sec");
+              durationSecondsView.setText(settingPreferences.filterDurationInSeconds() + " sec");
             } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
               applyUiColors();
             }

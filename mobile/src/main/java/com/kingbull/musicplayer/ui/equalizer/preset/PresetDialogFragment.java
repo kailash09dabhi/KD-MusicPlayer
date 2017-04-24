@@ -46,6 +46,7 @@ public final class PresetDialogFragment extends BaseDialogFragment implements Pr
 
   public static PresetDialogFragment newInstance() {
     PresetDialogFragment frag = new PresetDialogFragment();
+    MusicPlayerApp.instance().component().inject(frag);
     return frag;
   }
 
@@ -88,11 +89,6 @@ public final class PresetDialogFragment extends BaseDialogFragment implements Pr
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     return inflater.inflate(R.layout.dialog_equalizer_preset, container, false);
-  }
-
-  @Override public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    MusicPlayerApp.instance().component().inject(this);
   }
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {

@@ -13,19 +13,18 @@ import android.widget.TextView;
 import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.Artist;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public final class MainActivity extends BaseActivity<Artist.Presenter> {
   private final int arrayBg[] = {
@@ -44,6 +43,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
+    MusicPlayerApp.instance().component().inject(this);
     adapter = new MainPagerAdapter(getSupportFragmentManager(), tabs);
     viewPager.setAdapter(adapter);
     viewPager.setOffscreenPageLimit(4);
@@ -105,7 +105,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              int color = new ColorTheme.Smart().tab().intValue();
+              int color = smartTheme.tab().intValue();
               tabLayout.setBackgroundColor(color);
               new ViewPagerEdgeEffectHack(viewPager).applyColor(color);
               viewPager.applyBackgroundAccordingToTheme();

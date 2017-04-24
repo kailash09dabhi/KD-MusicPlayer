@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.di.AppModule;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * @author Kailash Dabhi
@@ -216,9 +218,9 @@ public final class MusicRecyclerViewAdapter
     void onMultiSelection(int selectionCount);
   }
 
-  class MusicViewHolder extends RecyclerView.ViewHolder
+  public class MusicViewHolder extends RecyclerView.ViewHolder
       implements View.OnClickListener, View.OnLongClickListener {
-    final ColorTheme smartTheme = new ColorTheme.Smart();
+    @Inject @Named(AppModule.SMART_THEME) ColorTheme smartTheme;
     @BindView(R.id.fileName) TextView fileNameView;
     @BindView(R.id.durationView) TextView durationView;
     @BindView(R.id.artistView) TextView albumView;
@@ -227,6 +229,7 @@ public final class MusicRecyclerViewAdapter
     public MusicViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
+      MusicPlayerApp.instance().component().inject(this);
       fileNameView.setTextColor(smartTheme.titleText().intValue());
       durationView.setTextColor(smartTheme.bodyText().intValue());
       albumView.setTextColor(smartTheme.bodyText().intValue());

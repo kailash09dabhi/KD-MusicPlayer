@@ -49,6 +49,7 @@ public final class AddToPlayListDialogFragment extends BaseDialogFragment
 
   public static AddToPlayListDialogFragment newInstance(List<SqlMusic> musicList) {
     AddToPlayListDialogFragment frag = new AddToPlayListDialogFragment();
+    MusicPlayerApp.instance().component().inject(frag);
     Bundle bundle = new Bundle();
     bundle.putParcelableArrayList("music_list", (ArrayList<? extends Parcelable>) musicList);
     frag.setArguments(bundle);
@@ -99,7 +100,6 @@ public final class AddToPlayListDialogFragment extends BaseDialogFragment
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    MusicPlayerApp.instance().component().inject(this);
     musics = getArguments().getParcelableArrayList("music_list");
     playLists = new PlayListTable().allPlaylists();
     presenter.takeView(this);

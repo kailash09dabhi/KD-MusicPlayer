@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
@@ -29,6 +30,7 @@ public final class StatisticsDialogFragment extends BaseDialogFragment implement
 
   public static StatisticsDialogFragment newInstance(Music music) {
     StatisticsDialogFragment frag = new StatisticsDialogFragment();
+    MusicPlayerApp.instance().component().inject(frag);
     Bundle bundle = new Bundle();
     bundle.putParcelable("music", (Parcelable) music);
     frag.setArguments(bundle);

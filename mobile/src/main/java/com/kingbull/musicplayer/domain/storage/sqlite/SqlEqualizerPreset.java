@@ -19,6 +19,7 @@ public final class SqlEqualizerPreset implements EqualizerPreset, SqlTableRow {
   private final int y5;
   private final String name;
   @Inject SQLiteDatabase sqliteDatabase;
+  @Inject SettingPreferences settingPreferences;
   private long sqliteId = -1;
 
   public SqlEqualizerPreset(Cursor cursor) {
@@ -67,8 +68,8 @@ public final class SqlEqualizerPreset implements EqualizerPreset, SqlTableRow {
   }
 
   @Override public void applyTo(Equalizer equalizer) {
-    final short lowerEqualizerBandLevel = (short) equalizer.getBandLevelRange()[0];
-    final short upperEqualizerBandLevel = (short) equalizer.getBandLevelRange()[1];
+    final short lowerEqualizerBandLevel = equalizer.getBandLevelRange()[0];
+    final short upperEqualizerBandLevel = equalizer.getBandLevelRange()[1];
     final short maxBandLevel = (short) (upperEqualizerBandLevel - lowerEqualizerBandLevel);
     equalizer.setBandLevel((short) 0,
         (short) (maxBandLevel * y1 / 100.0 + lowerEqualizerBandLevel));
@@ -98,14 +99,13 @@ public final class SqlEqualizerPreset implements EqualizerPreset, SqlTableRow {
     values.put(MediaStatTable.Columns.UPDATED_AT, new CurrentDateTime().toString());
     sqliteId = sqliteDatabase.insertWithOnConflict(EqualizerPresetTable.NAME, null, values,
         SQLiteDatabase.CONFLICT_REPLACE);
-    new SettingPreferences().saveLastChosenPresetIsOfSytem(false);
-    new SettingPreferences().saveLastChosenPresetId((int) sqliteId);
+    settingPreferences.saveLastChosenPresetIsOfSytem(false);
+    settingPreferences.saveLastChosenPresetId((int) sqliteId);
     return sqliteId;
   }
 
   @Override public boolean delete() {
     return sqliteDatabase.delete(EqualizerPresetTable.NAME,
-        EqualizerPresetTable.Columns.SQLITE_ID + "=" +
-            sqliteId, null) > 0;
+        EqualizerPresetTable.Columns.SQLITE_ID + "=" + sqliteId, null) > 0;
   }
 }

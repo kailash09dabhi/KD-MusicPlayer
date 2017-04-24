@@ -2,8 +2,6 @@ package com.kingbull.musicplayer.domain.storage.preferences;
 
 import android.content.SharedPreferences;
 import android.media.audiofx.PresetReverb;
-import android.preference.PreferenceManager;
-import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 
@@ -14,8 +12,8 @@ import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 public final class SettingPreferences {
   private final SharedPreferences settingsPrefs;
 
-  public SettingPreferences() {
-    this.settingsPrefs = PreferenceManager.getDefaultSharedPreferences(MusicPlayerApp.instance());
+  public SettingPreferences(SharedPreferences defaultSharedPrefs) {
+    this.settingsPrefs = defaultSharedPrefs;
   }
 
   public MusicMode musicMode() {

@@ -10,9 +10,9 @@ import android.widget.EditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
-import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
 
@@ -20,13 +20,18 @@ import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
  * @author Kailash Dabhi
  * @date 11/27/2016.
  */
-
 public final class DurationFilterDialogFragment extends BaseDialogFragment {
   @BindView(R.id.durationSecondsView) EditText durationSecondsView;
 
+  public static DurationFilterDialogFragment newInstance() {
+    DurationFilterDialogFragment frag = new DurationFilterDialogFragment();
+    MusicPlayerApp.instance().component().inject(frag);
+    return frag;
+  }
+
   @OnClick(R.id.doneButton) void onDoneClick() {
     if (!TextUtils.isEmpty(durationSecondsView.getText())) {
-      new SettingPreferences().saveFilterDurationInSeconds(
+      settingPreferences.saveFilterDurationInSeconds(
           Integer.parseInt(durationSecondsView.getText().toString()));
       RxBus.getInstance()
           .post(new DurationFilterEvent(Long.parseLong(durationSecondsView.getText().toString())));
@@ -48,6 +53,6 @@ public final class DurationFilterDialogFragment extends BaseDialogFragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    durationSecondsView.setText(String.valueOf(new SettingPreferences().filterDurationInSeconds()));
+    durationSecondsView.setText(String.valueOf(settingPreferences.filterDurationInSeconds()));
   }
 }

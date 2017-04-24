@@ -14,17 +14,15 @@ import java.util.concurrent.TimeUnit;
 final class AlbumSongsCursorLoader extends CursorLoader {
   private static final String ORDER_BY = MediaStore.Audio.Media.DISPLAY_NAME + " ASC";
 
-  public AlbumSongsCursorLoader(Context context, long id) {
-    super(context, MediaTable.URI, MediaTable.projections(),
-        MediaStore.Audio.Media.ALBUM_ID
-            + "="
-            + id
-            + " AND "
-            + MediaStore.Audio.Media.IS_MUSIC
-            + "=1 AND "
-            + MediaStore.Audio.Media.DURATION
-            + " >= "
-            + TimeUnit.SECONDS.toMillis(new SettingPreferences().filterDurationInSeconds()), null,
-        ORDER_BY);
+  public AlbumSongsCursorLoader(Context context, long id, SettingPreferences settingPreferences) {
+    super(context, MediaTable.URI, MediaTable.projections(), MediaStore.Audio.Media.ALBUM_ID
+        + "="
+        + id
+        + " AND "
+        + MediaStore.Audio.Media.IS_MUSIC
+        + "=1 AND "
+        + MediaStore.Audio.Media.DURATION
+        + " >= "
+        + TimeUnit.SECONDS.toMillis(settingPreferences.filterDurationInSeconds()), null, ORDER_BY);
   }
 }

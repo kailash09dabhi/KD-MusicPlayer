@@ -3,6 +3,7 @@ package com.kingbull.musicplayer.ui.music;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 
@@ -14,6 +15,7 @@ import com.kingbull.musicplayer.ui.base.PresenterFactory;
 public final class MusicPlayerActivity extends BaseActivity<MusicPlayer.Presenter> {
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    MusicPlayerApp.instance().component().inject(this);
     if (savedInstanceState == null) {
       getSupportFragmentManager().beginTransaction()
           .add(android.R.id.content, MusicPlayerFragment.newInstance(),

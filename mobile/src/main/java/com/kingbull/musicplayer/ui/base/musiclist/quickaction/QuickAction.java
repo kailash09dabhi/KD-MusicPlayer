@@ -16,11 +16,15 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.di.AppModule;
 import com.kingbull.musicplayer.ui.base.Color;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 public final class QuickAction extends PopupWindows implements OnDismissListener {
   private static final int ANIM_GROW_FROM_LEFT = 1;
@@ -33,6 +37,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
   private final LayoutInflater inflater;
   private final ViewGroup mTrack;
   private final List<ActionItem> mActionItemList = new ArrayList<>();
+  @Inject @Named(AppModule.SMART_THEME) protected ColorTheme smartTheme;
   private Activity activity;
   private OnActionItemClickListener mItemClickListener;
   private OnDismissListener mDismissListener;
@@ -40,9 +45,9 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
   private boolean mAnimateTrack;
   private int mChildPos;
   private int mAnimStyle;
-
   public QuickAction(Activity context) {
     super(context);
+    MusicPlayerApp.instance().component().inject(this);
     this.activity = context;
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     mTrackAnim = AnimationUtils.loadAnimation(context, R.anim.rail);
@@ -147,7 +152,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
    * Show popup popupWindow
    */
   public void show(View anchor) {
-    Color color = new Color(new ColorTheme.Smart().quickAction().intValue());
+    Color color = new Color(smartTheme.quickAction().intValue());
     rootView.findViewById(R.id.scroll).setBackground(color.toDrawable());
     preShow();
     int[] location = new int[2];

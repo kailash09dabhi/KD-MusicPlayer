@@ -18,7 +18,7 @@ import javax.inject.Inject;
 
 public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListener {
   private static final String TAG = MusicPlayer.class.getSimpleName();
-  private final SettingPreferences settingPrefs = new SettingPreferences();
+  @Inject SettingPreferences settingPrefs;
   private boolean isAudioSessionIdUpdated = false;
   private BassBoost bassBoost;
   private Virtualizer virtualizer;

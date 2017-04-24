@@ -27,7 +27,6 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.player.MusicMode;
@@ -119,7 +118,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override protected void onPresenterPrepared(MusicPlayer.Presenter presenter) {
     this.presenter.takeView(this);
     seekBarProgress.takePresenter(presenter);
-    updatePlayMode(new SettingPreferences().musicMode());
+    updatePlayMode(settingPreferences.musicMode());
   }
 
   private void applyColorTheme(int darkColor) {

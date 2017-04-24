@@ -20,7 +20,6 @@ import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
-import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.Preset;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
@@ -135,7 +134,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
         }
       }
     });
-    Reverb reverb = new SettingPreferences().reverb();
+    Reverb reverb = settingPreferences.reverb();
     effectButton.setText(reverb.name());
   }
 

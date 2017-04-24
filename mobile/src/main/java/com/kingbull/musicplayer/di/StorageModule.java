@@ -17,8 +17,10 @@ package com.kingbull.musicplayer.di;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.storage.StorageDirectory;
+import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.domain.storage.sqlite.MusicSqliteOpenHelper;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
@@ -53,5 +55,9 @@ import javax.inject.Singleton;
 
   @Named(COVER_ART_DIR) @Provides @Singleton StorageDirectory provideStorageDirectory() {
     return new StorageDirectory(COVER_ART_DIR);
+  }
+
+  @Singleton @Provides SettingPreferences providesSettingPreferences(MusicPlayerApp application) {
+    return new SettingPreferences(PreferenceManager.getDefaultSharedPreferences(application));
   }
 }

@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.ui.base.theme;
 
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.ui.base.Color;
+import javax.inject.Inject;
 
 /**
  * @author Kailash Dabhi
@@ -27,7 +28,11 @@ public interface ColorTheme {
   class Smart extends AbstractColorTheme {
     final ColorTheme.Transparent transparentTheme = new ColorTheme.Transparent();
     final ColorTheme.Flat flatTheme = new ColorTheme.Flat();
-    final SettingPreferences settingPreferences = new SettingPreferences();
+    @Inject SettingPreferences settingPreferences;
+
+    @Inject public Smart(SettingPreferences settingPreferences) {
+      this.settingPreferences = settingPreferences;
+    }
 
     @Override public Color header() {
       return settingPreferences.isFlatTheme() ? flatTheme.header() : transparentTheme.header();

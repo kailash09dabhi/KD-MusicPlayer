@@ -14,10 +14,10 @@ import java.util.concurrent.TimeUnit;
 final class GenreCursorLoader extends CursorLoader {
   private static final String ORDER_BY = MediaStore.Audio.Media.DISPLAY_NAME + " ASC";
 
-  public GenreCursorLoader(Context context, int id) {
+  public GenreCursorLoader(Context context, int id, SettingPreferences settingPreferences) {
     super(context, MediaStore.Audio.Genres.Members.getContentUri("external", id),
         MediaTable.projections(),
         MediaStore.Audio.Media.DURATION + " >= " + TimeUnit.SECONDS.toMillis(
-            new SettingPreferences().filterDurationInSeconds()), null, ORDER_BY);
+            settingPreferences.filterDurationInSeconds()), null, ORDER_BY);
   }
 }

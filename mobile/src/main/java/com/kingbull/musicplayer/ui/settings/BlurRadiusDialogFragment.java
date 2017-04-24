@@ -10,9 +10,9 @@ import android.widget.EditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
-import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.BlurRadiusEvent;
 import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
 
@@ -23,10 +23,15 @@ import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
 public final class BlurRadiusDialogFragment extends BaseDialogFragment {
   @BindView(R.id.blurRadiusValue) EditText blurRadiusValueView;
 
+  public static BlurRadiusDialogFragment newInstance() {
+    BlurRadiusDialogFragment frag = new BlurRadiusDialogFragment();
+    MusicPlayerApp.instance().component().inject(frag);
+    return frag;
+  }
+
   @OnClick(R.id.doneButton) void onDoneClick() {
     if (!TextUtils.isEmpty(blurRadiusValueView.getText())) {
-      new SettingPreferences().blurRadius(
-          Integer.parseInt(blurRadiusValueView.getText().toString()));
+      settingPreferences.blurRadius(Integer.parseInt(blurRadiusValueView.getText().toString()));
       RxBus.getInstance().post(new BlurRadiusEvent());
     } else {
     }
@@ -46,6 +51,6 @@ public final class BlurRadiusDialogFragment extends BaseDialogFragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    blurRadiusValueView.setText(String.valueOf(new SettingPreferences().blurRadius()));
+    blurRadiusValueView.setText(String.valueOf(settingPreferences.blurRadius()));
   }
 }

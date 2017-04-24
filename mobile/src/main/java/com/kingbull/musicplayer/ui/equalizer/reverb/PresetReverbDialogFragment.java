@@ -14,7 +14,6 @@ import butterknife.ButterKnife;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
-import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.Preset;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
@@ -38,6 +37,7 @@ public final class PresetReverbDialogFragment extends BaseDialogFragment
 
   public static PresetReverbDialogFragment newInstance() {
     PresetReverbDialogFragment frag = new PresetReverbDialogFragment();
+    MusicPlayerApp.instance().component().inject(frag);
     return frag;
   }
 
@@ -45,11 +45,6 @@ public final class PresetReverbDialogFragment extends BaseDialogFragment
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     return inflater.inflate(R.layout.dialog_reverb_preset, container, false);
-  }
-
-  @Override public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    MusicPlayerApp.instance().component().inject(this);
   }
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
@@ -76,7 +71,7 @@ public final class PresetReverbDialogFragment extends BaseDialogFragment
       @Override
       public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
         player.useEffect(reverbs.get(position));
-        new SettingPreferences().saveReverb(reverbs.get(position));
+        settingPreferences.saveReverb(reverbs.get(position));
         RxBus.getInstance().post(Preset.Reverb(reverbs.get(position)));
         dismiss();
       }

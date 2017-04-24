@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
@@ -28,13 +29,13 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/27/2016.
  */
-
 public final class MoveToDialogFragment extends BaseDialogFragment {
   @BindView(R.id.titleView) TextView titleView;
   @BindView(R.id.listView) ListView listView;
 
   public static MoveToDialogFragment newInstance(PlayList playList, Music music, int position) {
     MoveToDialogFragment frag = new MoveToDialogFragment();
+    MusicPlayerApp.instance().component().inject(frag);
     Bundle bundle = new Bundle();
     bundle.putParcelable("playlist", (Parcelable) playList);
     bundle.putParcelable("music", (Parcelable) music);

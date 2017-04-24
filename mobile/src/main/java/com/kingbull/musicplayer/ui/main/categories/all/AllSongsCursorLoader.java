@@ -13,12 +13,10 @@ import java.util.concurrent.TimeUnit;
  */
 
 public final class AllSongsCursorLoader extends CursorLoader {
-
-  public AllSongsCursorLoader(Context context) {
+  public AllSongsCursorLoader(Context context, SettingPreferences settingPreferences) {
     super(context, MediaTable.URI, MediaTable.projections(),
         MediaStore.Audio.Media.DURATION + "" + " >= ?", new String[] {
-            String.valueOf(
-                TimeUnit.SECONDS.toMillis(new SettingPreferences().filterDurationInSeconds()))
+            String.valueOf(TimeUnit.SECONDS.toMillis(settingPreferences.filterDurationInSeconds()))
         }, null);
   }
 }

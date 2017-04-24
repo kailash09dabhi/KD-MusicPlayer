@@ -256,7 +256,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    return new AlbumSongsCursorLoader(this, album.albumId());
+    return new AlbumSongsCursorLoader(this, album.albumId(), settingPreferences);
   }
 
   @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -311,7 +311,8 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   }
 
   @Override public void showSortMusicListDialog() {
-    new SortDialogFragment().show(getSupportFragmentManager(), SortDialogFragment.class.getName());
+    SortDialogFragment.newInstance()
+        .show(getSupportFragmentManager(), SortDialogFragment.class.getName());
   }
 
   @Override public void showAddToPlayListDialog() {

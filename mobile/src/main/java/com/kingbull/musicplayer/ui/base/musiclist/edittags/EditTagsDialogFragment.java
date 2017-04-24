@@ -36,6 +36,7 @@ public final class EditTagsDialogFragment extends BaseDialogFragment {
 
   public static EditTagsDialogFragment newInstance(Music music) {
     EditTagsDialogFragment frag = new EditTagsDialogFragment();
+    MusicPlayerApp.instance().component().inject(frag);
     Bundle bundle = new Bundle();
     bundle.putParcelable("music", (Parcelable) music);
     frag.setArguments(bundle);

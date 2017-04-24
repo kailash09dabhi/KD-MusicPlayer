@@ -10,12 +10,12 @@ import android.widget.EditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.event.PlaylistRenameEvent;
 import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
-import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 
 /**
  * @author Kailash Dabhi
@@ -26,6 +26,7 @@ public final class PlaylistRenameDialogFragment extends BaseDialogFragment {
 
   public static PlaylistRenameDialogFragment newInstance(PlayList.Smart playList) {
     PlaylistRenameDialogFragment fragment = new PlaylistRenameDialogFragment();
+    MusicPlayerApp.instance().component().inject(fragment);
     Bundle bundle = new Bundle();
     bundle.putParcelable("playlist", playList);
     fragment.setArguments(bundle);
@@ -55,6 +56,6 @@ public final class PlaylistRenameDialogFragment extends BaseDialogFragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
-    playlistNameView.setHintTextColor(new ColorTheme.Smart().bodyText().intValue());
+    playlistNameView.setHintTextColor(smartTheme.bodyText().intValue());
   }
 }

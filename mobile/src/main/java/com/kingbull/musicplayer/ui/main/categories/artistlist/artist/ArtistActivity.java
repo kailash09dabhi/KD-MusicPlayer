@@ -21,7 +21,6 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
@@ -159,7 +158,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    return new ArtistMusicsCursorLoader(this, artist.artistId());
+    return new ArtistMusicsCursorLoader(this, artist.artistId(), settingPreferences);
   }
 
   @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -188,7 +187,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   @Override public void showEmptyDueToDurationFilterMessage() {
     new Snackbar(findViewById(android.R.id.content)).show(
         String.format(getString(R.string.message_empty_due_to_duration_filter),
-            new SettingPreferences().filterDurationInSeconds()));
+            settingPreferences.filterDurationInSeconds()));
   }
 
   @Override public void showSelectionOptions() {
@@ -229,7 +228,8 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   }
 
   @Override public void showSortMusicListDialog() {
-    new SortDialogFragment().show(getSupportFragmentManager(), SortDialogFragment.class.getName());
+    SortDialogFragment.newInstance()
+        .show(getSupportFragmentManager(), SortDialogFragment.class.getName());
   }
 
   @Override public void showMusicScreen() {

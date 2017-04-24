@@ -96,14 +96,13 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
   }
 
   @Override public void onSearchTextChanged(final String text) {
-    compositeDisposable.add(Flowable.fromIterable(songs)
+    compositeDisposable.add(Flowable.fromIterable(songs).subscribeOn(Schedulers.computation())
         .filter(new Predicate<Music>() {
           @Override public boolean test(Music music) {
             return music.media().title().toLowerCase().contains(text.toLowerCase());
           }
         })
         .toList()
-        .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeWith(new ResourceSingleObserver<List<Music>>() {
           @Override public void onSuccess(List<Music> musicList) {

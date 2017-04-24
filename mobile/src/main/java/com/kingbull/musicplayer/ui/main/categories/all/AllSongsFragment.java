@@ -197,7 +197,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-    return new AllSongsCursorLoader(getContext());
+    return new AllSongsCursorLoader(getContext(), settingPreferences);
   }
 
   @Override public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
@@ -226,7 +226,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override public void showSortMusicScreen() {
-    new SortDialogFragment().show(getActivity().getSupportFragmentManager(),
+    SortDialogFragment.newInstance().show(getActivity().getSupportFragmentManager(),
         SortDialogFragment.class.getName());
   }
 

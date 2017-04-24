@@ -14,6 +14,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     implements MusicPlayer.Presenter {
   private static final long UPDATE_PROGRESS_INTERVAL = 1000;
   @Inject Player player;
+  @Inject SettingPreferences settingPreferences;
 
   @Override public void takeView(@NonNull MusicPlayer.View view) {
     super.takeView(view);
@@ -40,10 +41,9 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
 
   @Override public void onPlayModeToggleClick() {
     if (player == null) return;
-    SettingPreferences prefs = new SettingPreferences();
-    MusicMode current = prefs.musicMode();
+    MusicMode current = settingPreferences.musicMode();
     MusicMode newMode = MusicMode.switchNextMode(current);
-    prefs.saveMusicMode(newMode);
+    settingPreferences.saveMusicMode(newMode);
     view().updatePlayMode(newMode);
   }
 

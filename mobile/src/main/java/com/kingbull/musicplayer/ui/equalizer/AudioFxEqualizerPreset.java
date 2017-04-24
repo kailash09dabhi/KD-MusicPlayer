@@ -1,8 +1,10 @@
 package com.kingbull.musicplayer.ui.equalizer;
 
 import android.media.audiofx.Equalizer;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
+import javax.inject.Inject;
 
 /**
  * @author Kailash Dabhi
@@ -12,8 +14,10 @@ import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 public final class AudioFxEqualizerPreset implements EqualizerPreset {
   private final android.media.audiofx.Equalizer equalizer;
   private final short preset;
+  @Inject SettingPreferences settingPreferences;
 
   public AudioFxEqualizerPreset(Equalizer equalizer, short preset) {
+    MusicPlayerApp.instance().component().inject(this);
     this.equalizer = equalizer;
     this.preset = preset;
   }
@@ -60,8 +64,8 @@ public final class AudioFxEqualizerPreset implements EqualizerPreset {
   }
 
   @Override public long save() {
-    new SettingPreferences().saveLastChosenPresetIsOfSytem(true);
-    new SettingPreferences().saveLastChosenPresetId(preset);
+    settingPreferences.saveLastChosenPresetIsOfSytem(true);
+    settingPreferences.saveLastChosenPresetId(preset);
     return 1;
   }
 
