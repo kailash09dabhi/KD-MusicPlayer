@@ -119,6 +119,7 @@ public interface Media {
       MediaPlayer mediaPlayer = MediaPlayer.create(MusicPlayerApp.instance(), Uri.fromFile(file));
       if (mediaPlayer != null) {
         duration = mediaPlayer.getDuration();
+        mediaPlayer.release();
       } else {
         duration = 0;
       }

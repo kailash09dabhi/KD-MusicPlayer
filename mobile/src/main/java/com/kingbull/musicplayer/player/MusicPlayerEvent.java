@@ -10,13 +10,12 @@ import java.lang.annotation.RetentionPolicy;
  */
 @IntDef({
     MusicPlayerEvent.PLAY, MusicPlayerEvent.PAUSE, MusicPlayerEvent.PREVIOUS, MusicPlayerEvent.NEXT,
-    MusicPlayerEvent.STOP, MusicPlayerEvent.COMPLETED
+    MusicPlayerEvent.COMPLETED
 }) @Retention(RetentionPolicy.SOURCE) public @interface MusicPlayerEvent {
   int PLAY = 0;
   int PAUSE = 1;
   int NEXT = 2;
   int PREVIOUS = 3;
-  int STOP = 4;
   int COMPLETED = 5;
 }
 
