@@ -32,6 +32,7 @@ public final class MusicPlayerApp extends Application {
   @Override public void onCreate() {
     super.onCreate();
     application = this;
+    Stetho.initializeWithDefaults(this);
     if (BuildConfig.DEBUG) {
       StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()
           .detectDiskWrites()
@@ -51,7 +52,6 @@ public final class MusicPlayerApp extends Application {
             .build());
     injectDependencies();
     startService(new Intent(this, MusicService.class));
-    Stetho.initializeWithDefaults(this);
     AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
   }
 

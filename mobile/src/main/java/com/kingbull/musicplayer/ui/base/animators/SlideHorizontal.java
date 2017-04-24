@@ -11,53 +11,43 @@ public interface SlideHorizontal {
   interface Listener {
     Listener NONE = new Default();
 
-    void onInAnimationFinished();
-
-    void onOutAnimationFinished();
+    void onAnimationFinished();
 
     class Default implements SlideHorizontal.Listener {
-      @Override public void onInAnimationFinished() {
-      }
-
-      @Override public void onOutAnimationFinished() {
+      @Override public void onAnimationFinished() {
       }
     }
   }
 
   interface Animator {
-    void animateIn(View view);
-
-    void animateOut(View view);
+    void slide(View view, int translationX);
   }
 
   class Animation implements SlideHorizontal.Animator {
-    private final int DURATION = 700;
+    private final int duration;
     private final Listener listener;
 
     public Animation() {
-      this.listener = Listener.NONE;
+      this(500, Listener.NONE);
     }
 
-    @Override public void animateIn(final View view) {
+    public Animation(int duration, Listener listener) {
+      this.duration = duration;
+      this.listener = listener;
+    }
+
+    public Animation(int duration) {
+      this(duration, Listener.NONE);
+    }
+
+    @Override public void slide(final View view, int translationX) {
       view.animate().withStartAction(new Runnable() {
         @Override public void run() {
           view.setVisibility(View.VISIBLE);
         }
-      }).setDuration(DURATION).translationX(0).withEndAction(new Runnable() {
+      }).setDuration(duration).translationX(translationX).withEndAction(new Runnable() {
         @Override public void run() {
-          if (listener != null) listener.onInAnimationFinished();
-        }
-      }).start();
-    }
-
-    @Override public void animateOut(final View view) {
-      view.animate().withStartAction(new Runnable() {
-        @Override public void run() {
-          view.setVisibility(View.VISIBLE);
-        }
-      }).setDuration(DURATION).translationX(view.getWidth()).withEndAction(new Runnable() {
-        @Override public void run() {
-          if (listener != null) listener.onOutAnimationFinished();
+          if (listener != null) listener.onAnimationFinished();
         }
       }).start();
     }
