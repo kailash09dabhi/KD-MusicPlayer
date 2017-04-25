@@ -38,8 +38,7 @@ public final class QuickActionPopupWindow extends PopupWindows implements OnDism
   private final ViewGroup mTrack;
   private final List<ActionItem> mActionItemList = new ArrayList<>();
   @Inject @Named(AppModule.SMART_THEME) protected ColorTheme smartTheme;
-  private Activity activity;
-  private OnActionItemClickListener mItemClickListener;
+  private OnActionClickListener actionClickListener;
   private OnDismissListener mDismissListener;
   private boolean mDidAction;
   private boolean mAnimateTrack;
@@ -49,7 +48,6 @@ public final class QuickActionPopupWindow extends PopupWindows implements OnDism
   public QuickActionPopupWindow(Activity context) {
     super(context);
     MusicPlayerApp.instance().component().inject(this);
-    this.activity = context;
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     mTrackAnim = AnimationUtils.loadAnimation(context, R.anim.rail);
     mTrackAnim.setInterpolator(new Interpolator() {
@@ -114,8 +112,8 @@ public final class QuickActionPopupWindow extends PopupWindows implements OnDism
     final int actionId = action.actionId();
     container.setOnClickListener(new OnClickListener() {
       @Override public void onClick(View v) {
-        if (mItemClickListener != null) {
-          mItemClickListener.onItemClick(QuickActionPopupWindow.this, pos, actionId);
+        if (actionClickListener != null) {
+          actionClickListener.onActionClick(mActionItemList.get(pos));
         }
         if (!getActionItem(pos).isSticky()) {
           mDidAction = true;
@@ -145,8 +143,8 @@ public final class QuickActionPopupWindow extends PopupWindows implements OnDism
     return mActionItemList.get(index);
   }
 
-  public void setOnActionItemClickListener(OnActionItemClickListener listener) {
-    mItemClickListener = listener;
+  public void addOnActionClickListener(OnActionClickListener listener) {
+    actionClickListener = listener;
   }
 
   /**
@@ -235,16 +233,10 @@ public final class QuickActionPopupWindow extends PopupWindows implements OnDism
     }
   }
 
-  /**
-   * Listener for item click
-   */
-  public interface OnActionItemClickListener {
-    void onItemClick(QuickActionPopupWindow source, int pos, int actionId);
+  public interface OnActionClickListener {
+    void onActionClick(ActionItem actionItem);
   }
 
-  /**
-   * Listener for screen dismiss
-   */
   public interface OnDismissListener {
     void onDismiss();
   }

@@ -13,6 +13,10 @@ import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
+import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
+import com.kingbull.musicplayer.ui.base.musiclist.quickaction.ActionItem;
+import com.kingbull.musicplayer.ui.base.musiclist.quickaction.QuickActionPopupWindow;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersFragment;
 import java.util.List;
 
@@ -21,14 +25,12 @@ import java.util.List;
  * @date 11/8/2016.
  */
 public final class AllPlaylistAdapter extends RecyclerView.Adapter<AllPlaylistAdapter.ViewHolder> {
-  private final PlaylistQuickAction playlistQuickAction;
   private final List<PlayList> playLists;
   private final AppCompatActivity activity;
 
   public AllPlaylistAdapter(List<PlayList> playLists, AppCompatActivity activity) {
     this.playLists = playLists;
     this.activity = activity;
-    this.playlistQuickAction = new PlaylistQuickAction(activity);
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -61,21 +63,37 @@ public final class AllPlaylistAdapter extends RecyclerView.Adapter<AllPlaylistAd
     }
 
     @OnClick(R.id.moreActionsView) void onMoreActionsClick(final View view) {
-      playlistQuickAction.show(view, new PlaylistQuickActionListener() {
-        @Override public void rename() {
-          PlaylistRenameDialogFragment.newInstance(
-              (PlayList.Smart) playLists.get(getAdapterPosition()))
-              .show(activity.getSupportFragmentManager(),
-                  PlaylistRenameDialogFragment.class.getName());
-        }
-
-        @Override public void delete() {
-          PlayList playList = playLists.get(getAdapterPosition());
-          if (playList instanceof PlayList.Smart) ((PlayList.Smart) playList).delete();
-          playLists.remove(getAdapterPosition());
-          notifyItemRemoved(getAdapterPosition());
-        }
-      });
+      QuickActionPopupWindow quickActionPopupWindow = new QuickActionPopupWindow(activity);
+      int fillColor = new ColorTheme.Flat().header().intValue();
+      final ActionItem renameItem =
+          new ActionItem("Rename", new IconDrawable(R.drawable.ic_edit_48dp, fillColor),
+              new ActionItem.OnClickListener() {
+                @Override public void onClick(ActionItem item) {
+                  PlaylistRenameDialogFragment.newInstance(
+                      (PlayList.Smart) playLists.get(getAdapterPosition()))
+                      .show(activity.getSupportFragmentManager(),
+                          PlaylistRenameDialogFragment.class.getName());
+                }
+              });
+      final ActionItem deleteItem =
+          new ActionItem("Delete", new IconDrawable(R.drawable.ic_delete_48dp, fillColor),
+              new ActionItem.OnClickListener() {
+                @Override public void onClick(ActionItem item) {
+                  PlayList playList = playLists.get(getAdapterPosition());
+                  if (playList instanceof PlayList.Smart) ((PlayList.Smart) playList).delete();
+                  playLists.remove(getAdapterPosition());
+                  notifyItemRemoved(getAdapterPosition());
+                }
+              });
+      quickActionPopupWindow.addActionItem(renameItem);
+      quickActionPopupWindow.addActionItem(deleteItem);
+      quickActionPopupWindow.addOnActionClickListener(
+          new QuickActionPopupWindow.OnActionClickListener() {
+            @Override public void onActionClick(ActionItem actionItem) {
+              actionItem.onClickListener().onClick(actionItem);
+            }
+          });
+      quickActionPopupWindow.show(view);
     }
 
     @Override public void onClick(View view) {

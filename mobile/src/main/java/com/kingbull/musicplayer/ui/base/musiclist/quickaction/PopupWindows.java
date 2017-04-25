@@ -15,7 +15,7 @@ import android.widget.PopupWindow;
  *
  * @author Lorensius W. L. T <lorenz@londatiga.net>
  */
-class PopupWindows {
+abstract class PopupWindows {
   protected Context context;
   protected PopupWindow popupWindow;
   protected View rootView;
@@ -27,10 +27,10 @@ class PopupWindows {
    *
    * @param context Context
    */
-   PopupWindows(Context context) {
-     this.context = context;
-     popupWindow = new PopupWindow(context);
-     popupWindow.setTouchInterceptor(new OnTouchListener() {
+  PopupWindows(Context context) {
+    this.context = context;
+    popupWindow = new PopupWindow(context);
+    popupWindow.setTouchInterceptor(new OnTouchListener() {
       @Override public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
           popupWindow.dismiss();
@@ -39,7 +39,7 @@ class PopupWindows {
         return false;
       }
     });
-     windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
   }
 
   /**
