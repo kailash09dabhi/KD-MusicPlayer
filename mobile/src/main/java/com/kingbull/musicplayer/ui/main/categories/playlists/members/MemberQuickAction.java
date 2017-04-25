@@ -2,11 +2,10 @@ package com.kingbull.musicplayer.ui.main.categories.playlists.members;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.Toast;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.quickaction.ActionItem;
-import com.kingbull.musicplayer.ui.base.musiclist.quickaction.QuickAction;
+import com.kingbull.musicplayer.ui.base.musiclist.quickaction.QuickActionPopupWindow;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 
 /**
@@ -22,7 +21,7 @@ final class MemberQuickAction {
   private final int ID_SEND = 6;
   private final boolean hasDeleteOption;
   private Activity activity;
-  private QuickAction quickAction;
+  private QuickActionPopupWindow quickActionPopupWindow;
   private MemberQuickActionListener memberQuickActionListener;
 
   public MemberQuickAction(final Activity activity, boolean hasDeleteOption) {
@@ -41,11 +40,13 @@ final class MemberQuickAction {
         new IconDrawable(R.drawable.ic_delete_48dp, fillColor));
     final ActionItem sendItem = new ActionItem(ID_SEND, "Send",
         new IconDrawable(R.drawable.ic_send_48dp, fillColor));
-    //use setSticky(true) to disable QuickAction dialog being dismissed after an item is clicked
-    quickAction = new QuickAction(activity);
+    //use isSticky(true) to disable QuickActionPopupWindow dialog being dismissed after an item is clicked
+    quickActionPopupWindow = new QuickActionPopupWindow(activity);
     //setup the action item click listener
-    quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
-      @Override public void onItemClick(QuickAction quickAction, int pos, int actionId) {
+    quickActionPopupWindow.setOnActionItemClickListener(
+        new QuickActionPopupWindow.OnActionItemClickListener() {
+          @Override public void onItemClick(QuickActionPopupWindow quickActionPopupWindow, int pos,
+              int actionId) {
         if (actionId == ID_PLAY) {
           memberQuickActionListener.play();
         } else if (actionId == ID_MOVE_TO) {
@@ -61,29 +62,28 @@ final class MemberQuickAction {
         }
       }
     });
-    quickAction.setOnDismissListener(new QuickAction.OnDismissListener() {
+    quickActionPopupWindow.setOnDismissListener(new QuickActionPopupWindow.OnDismissListener() {
       @Override public void onDismiss() {
-        Toast.makeText(activity, "Ups..dismissed", Toast.LENGTH_SHORT).show();
       }
     });
-    quickAction.addActionItem(playItem);
-    quickAction.addActionItem(addToPlaylistItem);
-    quickAction.addActionItem(editTagsItem);
-    quickAction.addActionItem(setAsRingtoneItem);
+    quickActionPopupWindow.addActionItem(playItem);
+    quickActionPopupWindow.addActionItem(addToPlaylistItem);
+    quickActionPopupWindow.addActionItem(editTagsItem);
+    quickActionPopupWindow.addActionItem(setAsRingtoneItem);
     if (hasDeleteOption) {
-      quickAction.addActionItem(deleteItem);
+      quickActionPopupWindow.addActionItem(deleteItem);
     }
-    quickAction.addActionItem(sendItem);
+    quickActionPopupWindow.addActionItem(sendItem);
   }
 
   public void show(View view, MemberQuickActionListener memberQuickActionListener) {
     this.memberQuickActionListener = memberQuickActionListener;
-    quickAction.show(view);
+    quickActionPopupWindow.show(view);
   }
 
   public void release() {
     this.activity = null;
-    this.quickAction = null;
+    this.quickActionPopupWindow = null;
     this.memberQuickActionListener = null;
   }
 }

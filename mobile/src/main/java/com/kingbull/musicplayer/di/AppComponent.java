@@ -13,7 +13,7 @@ import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.musiclist.edittags.EditTagsDialogFragment;
-import com.kingbull.musicplayer.ui.base.musiclist.quickaction.QuickAction;
+import com.kingbull.musicplayer.ui.base.musiclist.quickaction.QuickActionPopupWindow;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.coverarts.CoverArtsFragment;
 import com.kingbull.musicplayer.ui.equalizer.AudioFxEqualizerPreset;
@@ -82,7 +82,7 @@ public interface AppComponent {
 
   void inject(MusicRecyclerViewAdapter.MusicViewHolder viewHolder);
 
-  void inject(QuickAction quickAction);
+  void inject(QuickActionPopupWindow quickActionPopupWindow);
 
   void inject(AudioFxEqualizerPreset preset);
 

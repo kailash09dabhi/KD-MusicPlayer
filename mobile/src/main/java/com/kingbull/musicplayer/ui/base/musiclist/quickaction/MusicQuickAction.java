@@ -20,7 +20,7 @@ public final class MusicQuickAction {
   private final int ID_DELETE = 6;
   private final int ID_SEND = 7;
   private Activity activity;
-  private QuickAction quickAction;
+  private QuickActionPopupWindow quickActionPopupWindow;
   private MusicQuickActionListener musicQuickActionListener;
 
   public MusicQuickAction(final Activity activity) {
@@ -30,21 +30,23 @@ public final class MusicQuickAction {
         new IconDrawable(R.drawable.ic_play_48dp, fillColor));
     final ActionItem addToPlaylistItem = new ActionItem(ID_PLAYLIST, "Add To PlayList",
         new IconDrawable(R.drawable.ic_playlist_add_48dp, fillColor));
-    ActionItem editTagsItem = new ActionItem(ID_EDIT_TAGS, "Edit Tags",
+    final ActionItem editTagsItem = new ActionItem(ID_EDIT_TAGS, "Edit Tags",
         new IconDrawable(R.drawable.ic_edit_48dp, fillColor));
-    ActionItem statisticsItem = new ActionItem(ID_STATISTICS, "Statistics",
+    final ActionItem statisticsItem = new ActionItem(ID_STATISTICS, "Statistics",
         new IconDrawable(R.drawable.ic_info_outline_48dp, fillColor));
     final ActionItem setAsRingtoneItem = new ActionItem(ID_RINGTONE, "Set As Ringtone",
         new IconDrawable(R.drawable.ic_ringtone_48dp, fillColor));
     final ActionItem deleteItem = new ActionItem(ID_DELETE, "Delete",
         new IconDrawable(R.drawable.ic_delete_48dp, fillColor));
-    ActionItem sendItem = new ActionItem(ID_SEND, "Send",
+    final ActionItem sendItem = new ActionItem(ID_SEND, "Send",
         new IconDrawable(R.drawable.ic_send_48dp, fillColor));
-    //use setSticky(true) to disable QuickAction dialog being dismissed after an item is clicked
-    quickAction = new QuickAction(activity);
+    //use isSticky(true) to disable QuickActionPopupWindow dialog being dismissed after an item is clicked
+    quickActionPopupWindow = new QuickActionPopupWindow(activity);
     //setup the action item click listener
-    quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
-      @Override public void onItemClick(QuickAction quickAction, int pos, int actionId) {
+    quickActionPopupWindow.setOnActionItemClickListener(
+        new QuickActionPopupWindow.OnActionItemClickListener() {
+          @Override public void onItemClick(QuickActionPopupWindow quickActionPopupWindow, int pos,
+              int actionId) {
         if (actionId == ID_PLAY) {
           musicQuickActionListener.play();
         } else if (actionId == ID_PLAYLIST) {
@@ -62,28 +64,27 @@ public final class MusicQuickAction {
         }
       }
     });
-    quickAction.setOnDismissListener(new QuickAction.OnDismissListener() {
+    quickActionPopupWindow.setOnDismissListener(new QuickActionPopupWindow.OnDismissListener() {
       @Override public void onDismiss() {
-        //Toast.makeText(activity, "Ups..dismissed", Toast.LENGTH_SHORT)y.show();
       }
     });
-    quickAction.addActionItem(playItem);
-    quickAction.addActionItem(addToPlaylistItem);
-    quickAction.addActionItem(editTagsItem);
-    quickAction.addActionItem(statisticsItem);
-    quickAction.addActionItem(setAsRingtoneItem);
-    quickAction.addActionItem(deleteItem);
-    quickAction.addActionItem(sendItem);
+    quickActionPopupWindow.addActionItem(playItem);
+    quickActionPopupWindow.addActionItem(addToPlaylistItem);
+    quickActionPopupWindow.addActionItem(editTagsItem);
+    quickActionPopupWindow.addActionItem(statisticsItem);
+    quickActionPopupWindow.addActionItem(setAsRingtoneItem);
+    quickActionPopupWindow.addActionItem(deleteItem);
+    quickActionPopupWindow.addActionItem(sendItem);
   }
 
   public void show(View view, MusicQuickActionListener musicQuickActionListener) {
     this.musicQuickActionListener = musicQuickActionListener;
-    quickAction.show(view);
+    quickActionPopupWindow.show(view);
   }
 
   public void release() {
     this.activity = null;
-    this.quickAction = null;
+    this.quickActionPopupWindow = null;
     this.musicQuickActionListener = null;
   }
 }

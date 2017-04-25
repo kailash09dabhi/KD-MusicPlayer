@@ -1,83 +1,91 @@
 package com.kingbull.musicplayer.ui.base.musiclist.quickaction;
 
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import java.util.Objects;
 
 public final class ActionItem {
-  private Drawable icon;
-  private Bitmap thumb;
-  private String title;
-  private int actionId = -1;
-  private boolean selected;
-  private boolean sticky;
+  private final Drawable icon;
+  private final String title;
+  private final int actionId;
+  private final boolean sticky = false;
+  private final OnClickListener onClickListener;
 
   public ActionItem(int actionId, String title, Drawable icon) {
     this.title = title;
     this.icon = icon;
     this.actionId = actionId;
+    this.onClickListener = null;
   }
 
-  public ActionItem() {
-    this(-1, null, null);
+  public ActionItem(int actionId, String title, Drawable icon, OnClickListener onClickListener) {
+    this.title = title;
+    this.icon = icon;
+    this.actionId = actionId;
+    this.onClickListener = onClickListener;
   }
 
-  public ActionItem(int actionId, String title) {
-    this(actionId, title, null);
+  public ActionItem(String title, Drawable icon, OnClickListener onClickListener) {
+    this.title = title;
+    this.icon = icon;
+    this.actionId = -1;
+    this.onClickListener = onClickListener;
   }
 
-  public ActionItem(Drawable icon) {
-    this(-1, null, icon);
-  }
-
-  public ActionItem(int actionId, Drawable icon) {
-    this(actionId, null, icon);
-  }
-
-  public String getTitle() {
+  public String title() {
     return this.title;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public Drawable getIcon() {
+  public Drawable icon() {
     return this.icon;
   }
 
-  public void setIcon(Drawable icon) {
-    this.icon = icon;
-  }
-
-  public int getActionId() {
+  public int actionId() {
     return actionId;
-  }
-
-  public void setActionId(int actionId) {
-    this.actionId = actionId;
   }
 
   public boolean isSticky() {
     return sticky;
   }
 
-  public void setSticky(boolean sticky) {
-    this.sticky = sticky;
+  public OnClickListener onClickListener() {
+    return onClickListener;
   }
 
-  public boolean isSelected() {
-    return this.selected;
+  @Override public int hashCode() {
+    return Objects.hash(icon, title, actionId, sticky, onClickListener);
   }
 
-  public void setSelected(boolean selected) {
-    this.selected = selected;
+  @Override public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ActionItem that = (ActionItem) o;
+    return actionId == that.actionId
+        && sticky == that.sticky
+        && Objects.equals(icon, that.icon)
+        && Objects.equals(title, that.title)
+        && Objects.equals(onClickListener, that.onClickListener);
   }
 
-  public Bitmap getThumb() {
-    return this.thumb;
+  @Override public String toString() {
+    final StringBuilder sb = new StringBuilder("ActionItem{");
+    sb.append("icon=").append(icon);
+    sb.append(", title='").append(title).append('\'');
+    sb.append(", actionId=").append(actionId);
+    sb.append(", sticky=").append(sticky);
+    sb.append(", onClickListener=").append(onClickListener);
+    sb.append('}');
+    return sb.toString();
   }
 
-  public void setThumb(Bitmap thumb) {
-    this.thumb = thumb;
+  /**
+   * Interface definition for a callback to be invoked when a ActionItem is clicked.
+   */
+  public interface OnClickListener {
+    /**
+     * Called when a ActionItem has been clicked.
+     *
+     * @param item The ActionItem that was clicked.
+     */
+    void onClick(ActionItem item);
   }
 }

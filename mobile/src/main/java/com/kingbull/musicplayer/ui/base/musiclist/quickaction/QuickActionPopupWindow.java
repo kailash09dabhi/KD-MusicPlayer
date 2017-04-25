@@ -26,7 +26,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-public final class QuickAction extends PopupWindows implements OnDismissListener {
+public final class QuickActionPopupWindow extends PopupWindows implements OnDismissListener {
   private static final int ANIM_GROW_FROM_LEFT = 1;
   private static final int ANIM_GROW_FROM_RIGHT = 2;
   private static final int ANIM_GROW_FROM_CENTER = 3;
@@ -45,7 +45,8 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
   private boolean mAnimateTrack;
   private int mChildPos;
   private int mAnimStyle;
-  public QuickAction(Activity context) {
+
+  public QuickActionPopupWindow(Activity context) {
     super(context);
     MusicPlayerApp.instance().component().inject(this);
     this.activity = context;
@@ -94,8 +95,8 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
    */
   public void addActionItem(ActionItem action) {
     mActionItemList.add(action);
-    String title = action.getTitle();
-    Drawable icon = action.getIcon();
+    String title = action.title();
+    Drawable icon = action.icon();
     View container = inflater.inflate(R.layout.action_item, null);
     ImageView img = (ImageView) container.findViewById(R.id.iv_icon);
     TextView text = (TextView) container.findViewById(R.id.tv_title);
@@ -110,11 +111,11 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
       text.setVisibility(View.GONE);
     }
     final int pos = mChildPos;
-    final int actionId = action.getActionId();
+    final int actionId = action.actionId();
     container.setOnClickListener(new OnClickListener() {
       @Override public void onClick(View v) {
         if (mItemClickListener != null) {
-          mItemClickListener.onItemClick(QuickAction.this, pos, actionId);
+          mItemClickListener.onItemClick(QuickActionPopupWindow.this, pos, actionId);
         }
         if (!getActionItem(pos).isSticky()) {
           mDidAction = true;
@@ -223,7 +224,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
    * is dismissed
    * by clicking outside the dialog or clicking on sticky item.
    */
-  public void setOnDismissListener(QuickAction.OnDismissListener listener) {
+  public void setOnDismissListener(QuickActionPopupWindow.OnDismissListener listener) {
     setOnDismissListener(this);
     mDismissListener = listener;
   }
@@ -238,7 +239,7 @@ public final class QuickAction extends PopupWindows implements OnDismissListener
    * Listener for item click
    */
   public interface OnActionItemClickListener {
-    void onItemClick(QuickAction source, int pos, int actionId);
+    void onItemClick(QuickActionPopupWindow source, int pos, int actionId);
   }
 
   /**
