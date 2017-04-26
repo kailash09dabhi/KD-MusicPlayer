@@ -26,18 +26,21 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.AppCompatDrawableManager;
 import android.widget.RemoteViews;
+import com.bumptech.glide.Glide;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import com.kingbull.musicplayer.ui.main.MainActivity;
-import com.kingbull.musicplayer.utils.AlbumUtils;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 /**
@@ -54,6 +57,7 @@ public final class MusicService extends Service implements Player {
   private static final String ACTION_PLAY_NEXT = "com.kingbull.musicplayer.ACTION_PLAY_NEXT";
   private static final int NOTIFICATION_ID = 1;
   private final Binder mBinder = new LocalBinder();
+  private final AlbumTable albumTable = new AlbumTable();
   @Inject Player musicPlayer;
   private RemoteViews mContentViewBig, mContentViewSmall;
   private MediaSessionCompat mediaSession;
@@ -66,7 +70,7 @@ public final class MusicService extends Service implements Player {
     compositeDisposable.add(RxBus.getInstance()
         .toObservable()
         .ofType(MusicEvent.class)
-        .observeOn(AndroidSchedulers.mainThread())
+        .observeOn(AndroidSchedulers.mainThread()).delay(1, TimeUnit.SECONDS)
         .subscribeWith(new DisposableObserver<MusicEvent>() {
           @Override public void onNext(MusicEvent musicEvent) {
             showNotification();
@@ -285,13 +289,20 @@ public final class MusicService extends Service implements Player {
     /*
     FIXME: 12/30/2016 Somehow if we use async glide bitmap loading then its not working so  the loading bitmap on main thread let it work properly.!
      */
-    Bitmap album = AlbumUtils.parseAlbum(getPlayingSong());
-    if (album == null) {
-      remoteView.setImageViewResource(R.id.albumImageView, R.mipmap.ic_launcher);
-    } else {
+    try {
+      Bitmap album = Glide.with(this)
+          .load(albumTable.albumById(getPlayingSong().media().albumId()).albumArt())
+          .asBitmap()
+          .error(R.mipmap.ic_launcher)
+          .into(300, 300)
+          .get();
       remoteView.setImageViewBitmap(R.id.albumImageView, album);
+      updateMediaSessionMetaData(music, album);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    } catch (ExecutionException e) {
+      e.printStackTrace();
     }
-    updateMediaSessionMetaData(music, album);
   }
 
   private void updateMediaSessionMetaData(Music music, Bitmap bitmap) {
