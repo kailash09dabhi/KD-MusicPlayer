@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">MusicPlayerApp</string>
+  <string name="app_name">KD Music Player</string>
   <string name="tab_Albums">Albums</string>
   <string name="tab_Artists">Artists</string>
   <string name="tab_Genres">Genres</string>
