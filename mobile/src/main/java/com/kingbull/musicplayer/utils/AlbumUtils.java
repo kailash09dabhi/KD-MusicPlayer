@@ -22,7 +22,6 @@ import java.io.File;
  */
 public class AlbumUtils {
   private static final String TAG = "AlbumUtils";
-
   public static Bitmap parseAlbum(Music song) {
     return parseAlbum(new File(song.media().path()));
   }
@@ -33,11 +32,16 @@ public class AlbumUtils {
       metadataRetriever.setDataSource(file.getAbsolutePath());
     } catch (IllegalArgumentException e) {
       Log.e(TAG, "parseAlbum: ", e);
+    } catch (IllegalStateException e) {
+      Log.e(TAG, "parseAlbum: ", e);
+    } catch (RuntimeException e) {
+      Log.e(TAG, "parseAlbum: ", e);
     }
     byte[] albumData = metadataRetriever.getEmbeddedPicture();
     if (albumData != null) {
       return BitmapFactory.decodeByteArray(albumData, 0, albumData.length);
     }
+    metadataRetriever.release();
     return null;
   }
 

@@ -89,7 +89,11 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
 
   @Override public boolean playPrevious() {
     if (!nowPlayingList.isEmpty()) {
-      nowPlayingList.currentMusic().mediaStat().addToListenedTime(time.difference(new Time.Now()));
+      if (time != null) {
+        nowPlayingList.currentMusic()
+            .mediaStat()
+            .addToListenedTime(time.difference(new Time.Now()));
+      }
       RxBus.getInstance()
           .post(new MusicEvent(nowPlayingList.previous(), MusicPlayerEvent.PREVIOUS));
       play();
@@ -100,7 +104,11 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
 
   @Override public boolean playNext() {
     if (!nowPlayingList.isEmpty()) {
-      nowPlayingList.currentMusic().mediaStat().addToListenedTime(time.difference(new Time.Now()));
+      if (time != null) {
+        nowPlayingList.currentMusic()
+            .mediaStat()
+            .addToListenedTime(time.difference(new Time.Now()));
+      }
       RxBus.getInstance().post(new MusicEvent(nowPlayingList.next(), MusicPlayerEvent.NEXT));
       play();
       return true;
@@ -112,7 +120,11 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     if (player.isPlaying()) {
       player.pause();
       isPaused = true;
-      nowPlayingList.currentMusic().mediaStat().addToListenedTime(time.difference(new Time.Now()));
+      if (time != null) {
+        nowPlayingList.currentMusic()
+            .mediaStat()
+            .addToListenedTime(time.difference(new Time.Now()));
+      }
       RxBus.getInstance()
           .post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.PAUSE));
       return true;
