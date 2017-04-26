@@ -46,16 +46,16 @@
 
       <ImageView
         android:id="@+id/equalizerView"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="@dimen/music.player.round.icon.button.size"
+        android:layout_height="@dimen/music.player.round.icon.button.size"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="4dp"
         app:srcCompat="@drawable/ic_equalizer" />
 
       <ImageView
         android:id="@+id/nowPlayingView"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="@dimen/music.player.round.icon.button.size"
+        android:layout_height="@dimen/music.player.round.icon.button.size"
         android:layout_marginLeft="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="4dp"
@@ -137,38 +137,37 @@
 
       <com.kingbull.musicplayer.ui.music.PlayModeToggleView
         android:id="@+id/button_play_mode_toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/music.player.small.button.size"
+        android:layout_height="@dimen/music.player.small.button.size"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:srcCompat="@drawable/ic_play_mode_shuffle" />
 
       <android.support.v7.widget.AppCompatImageView
         android:id="@+id/button_play_previous"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/music.player.big.button.size"
+        android:layout_height="@dimen/music.player.big.button.size"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:srcCompat="@drawable/ic_play_last" />
 
       <android.support.v7.widget.AppCompatImageView
         android:id="@+id/button_play_toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/music.player.big.button.size"
+        android:layout_height="@dimen/music.player.big.button.size"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:srcCompat="@drawable/ic_pause" />
 
       <android.support.v7.widget.AppCompatImageView
         android:id="@+id/button_play_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/music.player.big.button.size"
+        android:layout_height="@dimen/music.player.big.button.size"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:srcCompat="@drawable/ic_play_next" />
 
       <android.support.v7.widget.AppCompatImageView
         android:id="@+id/button_favorite_toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/music.player.small.button.size"
+        android:layout_height="@dimen/music.player.small.button.size"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="center"
         app:srcCompat="@drawable/ic_favorite_no" />
     </LinearLayout>
   </LinearLayout>

@@ -19,4 +19,7 @@
   <dimen name="margin.button.selectionOption">20dp</dimen>
   <dimen name="padding.button.clear.selectionOption">12dp</dimen>
   <dimen name="pager.title.text.size">22sp</dimen>
+  <dimen name="music.player.big.button.size">52dp</dimen>
+  <dimen name="music.player.small.button.size">32dp</dimen>
+  <dimen name="music.player.round.icon.button.size">36dp</dimen>
 </resources>
