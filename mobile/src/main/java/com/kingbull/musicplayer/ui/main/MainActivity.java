@@ -1,6 +1,5 @@
 package com.kingbull.musicplayer.ui.main;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,7 +7,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindArray;
@@ -124,9 +122,6 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
         if ((tabViewGroup.getChildAt(i) instanceof TextView)) {
           final TextView titleView = ((TextView) tabViewGroup.getChildAt(i));
           titleView.setTypeface(typeface);
-          titleView.setTextColor(Color.WHITE);
-          titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-              getResources().getDimension(R.dimen.pager_title_text_size));
         }
       }
     }

@@ -85,7 +85,7 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
         titleView.setTypeface(typeface);
         titleView.setTextColor(Color.WHITE);
         titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-            getResources().getDimension(R.dimen.pager_title_text_size));
+            getResources().getDimensionPixelSize(R.dimen.pager_title_text_size));
       }
     }
   }
