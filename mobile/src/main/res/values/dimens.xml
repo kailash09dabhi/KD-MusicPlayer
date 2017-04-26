@@ -22,4 +22,7 @@
 
   <dimen name="cover_size">155dp</dimen>
   <dimen name="raymenu_height">40dp</dimen>
+  <dimen name="size.selectionOption">44dp</dimen>
+  <dimen name="margin.button.selectionOption">20dp</dimen>
+  <dimen name="padding.button.clear.selectionOption">12dp</dimen>
 </resources>

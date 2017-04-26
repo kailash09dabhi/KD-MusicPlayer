@@ -7,7 +7,6 @@ package com.kingbull.musicplayer.ui.base;
  */
 public interface Mvp {
   interface View {
-    //void close();
   }
 
   interface Model {

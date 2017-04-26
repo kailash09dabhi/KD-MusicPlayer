@@ -28,7 +28,7 @@
       android:scrollHorizontally="true"
       android:text="shimmer adfsfdasdadf skkkk" />
 
-    <com.kingbull.musicplayer.ui.main.categories.all.SelectionContextOptionsLayout
+    <com.kingbull.musicplayer.ui.base.view.SelectionOptionsLayout
       android:id="@+id/selectionContextOptionsLayout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"

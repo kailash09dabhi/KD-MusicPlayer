@@ -37,6 +37,7 @@ import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.animators.SlideHorizontal;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.base.view.SelectionOptionsLayout;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
@@ -68,8 +69,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   @BindView(R.id.searchButton) ImageView searchButton;
   @BindView(R.id.exitSearchButton) ImageView exitSearchButton;
   @BindView(R.id.searchLayout) LinearLayout searchLayout;
-  @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
-      selectionContextOptionsLayout;
+  @BindView(R.id.selectionContextOptionsLayout) SelectionOptionsLayout selectionOptionsLayout;
   @BindView(R.id.searchView) EditText searchView;
   private MusicRecyclerViewAdapter musicRecyclerViewAdapter;
 
@@ -143,13 +143,14 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
           @Override public void onMultiSelection(int selectionCount) {
             if (selectionCount == 1) {
+              alphaAnimation.fadeOut(searchLayout);
               alphaAnimation.fadeOut(totalSongLayout);
-              alphaAnimation.fadeIn(selectionContextOptionsLayout);
+              alphaAnimation.fadeIn(selectionOptionsLayout);
             }
           }
         });
-    selectionContextOptionsLayout.addOnContextOptionClickListener(
-        new SelectionContextOptionsLayout.OnContextOptionClickListener() {
+    selectionOptionsLayout.addOnContextOptionClickListener(
+        new SelectionOptionsLayout.OnContextOptionClickListener() {
           @Override public void onAddToPlaylistClick() {
             presenter.onAddToPlayListMenuClick();
           }
@@ -176,7 +177,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
     searchButton.setImageDrawable(new IconDrawable(R.drawable.ic_search_48dp, fillColor));
     exitSearchButton.setImageDrawable(new IconDrawable(R.drawable.ic_back_48dp, fillColor));
-    selectionContextOptionsLayout.updateIconsColor(fillColor);
+    selectionOptionsLayout.updateIconsColor(fillColor);
   }
 
   private void applyUiColors() {
@@ -241,7 +242,8 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
   }
 
   @Override public void hideSelectionContextOptions() {
-    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeOut(selectionOptionsLayout);
+    alphaAnimation.fadeIn(searchLayout);
     alphaAnimation.fadeIn(totalSongLayout);
   }
 

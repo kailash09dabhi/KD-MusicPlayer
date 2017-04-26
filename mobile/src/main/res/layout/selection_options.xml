@@ -7,27 +7,19 @@
 
   <ImageView
     android:id="@+id/addToPlaylistButton"
-    android:layout_width="44dp"
-    android:layout_height="44dp"
-    android:background="?android:selectableItemBackgroundBorderless"
-    android:padding="4dp"
+    style="@style/SelectionOption"
     app:srcCompat="@drawable/ic_playlist_add_48dp" />
 
   <ImageView
     android:id="@+id/deleteButton"
-    android:layout_width="44dp"
-    android:layout_height="44dp"
-    android:layout_marginLeft="20dp"
-    android:background="?android:selectableItemBackgroundBorderless"
-    android:padding="4dp"
+    style="@style/SelectionOption"
+    android:layout_marginLeft="@dimen/margin.button.selectionOption"
+    android:layout_marginRight="@dimen/margin.button.selectionOption"
     app:srcCompat="@drawable/ic_delete_48dp" />
 
   <ImageView
     android:id="@+id/clearSelectionsButton"
-    android:layout_width="44dp"
-    android:layout_height="44dp"
-    android:layout_marginLeft="20dp"
-    android:background="?android:selectableItemBackgroundBorderless"
-    android:padding="12dp"
+    style="@style/SelectionOption"
+    android:padding="@dimen/padding.button.clear.selectionOption"
     android:src="@drawable/ic_remote_view_close" />
 </merge>

@@ -31,9 +31,9 @@ import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
+import com.kingbull.musicplayer.ui.base.view.SelectionOptionsLayout;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.base.view.SnappingRecyclerView;
-import com.kingbull.musicplayer.ui.main.categories.all.SelectionContextOptionsLayout;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -52,8 +52,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   private final List<Music> songList = new ArrayList<>();
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
-  @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
-      selectionContextOptionsLayout;
+  @BindView(R.id.selectionContextOptionsLayout) SelectionOptionsLayout selectionOptionsLayout;
   @BindView(R.id.coverRecyclerView) SnappingRecyclerView coverRecyclerView;
   @BindView(R.id.buttonLayout) LinearLayout buttonLayout;
   @BindView(R.id.totalSongCountView) TextView totalSongsView;
@@ -95,8 +94,8 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
         presenter.onMultiSelection(selectionCount);
       }
     });
-    selectionContextOptionsLayout.addOnContextOptionClickListener(
-        new SelectionContextOptionsLayout.OnContextOptionClickListener() {
+    selectionOptionsLayout.addOnContextOptionClickListener(
+        new SelectionOptionsLayout.OnContextOptionClickListener() {
           @Override public void onAddToPlaylistClick() {
             presenter.onAddToPlayListMenuClick();
           }
@@ -121,8 +120,8 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     int fillColor = 0;
     sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
     shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, fillColor));
-    selectionContextOptionsLayout.updateIconsColor(fillColor);
-    selectionContextOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
+    selectionOptionsLayout.updateIconsColor(fillColor);
+    selectionOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
   }
 
   private void initializeWithThemeColors() {
@@ -192,7 +191,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
 
   @Override public void showSelectionOptions() {
     alphaAnimation.fadeOut(titleView);
-    alphaAnimation.fadeIn(selectionContextOptionsLayout);
+    alphaAnimation.fadeIn(selectionOptionsLayout);
   }
 
   @Override public void clearSelection() {
@@ -200,7 +199,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   }
 
   @Override public void hideSelectionOptions() {
-    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeOut(selectionOptionsLayout);
     alphaAnimation.fadeIn(titleView);
   }
 
@@ -218,7 +217,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   }
 
   @Override public void hideSelectionContextOptions() {
-    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeOut(selectionOptionsLayout);
     alphaAnimation.fadeIn(titleView);
   }
 
