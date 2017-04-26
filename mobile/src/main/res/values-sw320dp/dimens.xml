@@ -18,5 +18,5 @@
   <dimen name="size.selectionOption">44dp</dimen>
   <dimen name="margin.button.selectionOption">20dp</dimen>
   <dimen name="padding.button.clear.selectionOption">12dp</dimen>
-  <dimen name="pager.title.text.size">22sp</dimen>
+  <dimen name="pager.title.text.size">18sp</dimen>
 </resources>

@@ -1,10 +1,12 @@
 package com.kingbull.musicplayer.ui.main;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,12 +76,16 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
   }
 
   private void setupPagerTitleStrip() {
-    Typeface localTypeface =
+    Typeface typeface =
         Typeface.createFromAsset(getContext().getAssets(), getString(R.string.font_title));
-    for (int i = 0; i < pagerTitleStrip.getChildCount(); i++) {
+    int childCount = pagerTitleStrip.getChildCount();
+    for (int i = 0; i < childCount; i++) {
       if ((pagerTitleStrip.getChildAt(i) instanceof TextView)) {
         final TextView titleView = ((TextView) pagerTitleStrip.getChildAt(i));
-        titleView.setTypeface(localTypeface);
+        titleView.setTypeface(typeface);
+        titleView.setTextColor(Color.WHITE);
+        titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+            getResources().getDimension(R.dimen.pager_title_text_size));
       }
     }
   }

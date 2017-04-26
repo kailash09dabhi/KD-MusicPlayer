@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.ui.main;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,7 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
+import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindArray;
@@ -19,6 +20,7 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
+import com.kingbull.musicplayer.ui.base.DeviceConfig;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.Artist;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -80,6 +82,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
           }
         })
         .subscribe();
+    new DeviceConfig(getResources()).writeToLogcat();
   }
 
   @Override protected void onDestroy() {
@@ -113,14 +116,17 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
   private void setupTabLayout() {
     ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
     int tabsCount = viewGroup.getChildCount();
+    Typeface typeface = Typeface.createFromAsset(getAssets(), getString(R.string.font_title));
     for (int j = 0; j < tabsCount; j++) {
       ViewGroup tabViewGroup = (ViewGroup) viewGroup.getChildAt(j);
       int tabChildsCount = tabViewGroup.getChildCount();
       for (int i = 0; i < tabChildsCount; i++) {
-        View tabViewChild = tabViewGroup.getChildAt(i);
-        if (tabViewChild instanceof TextView) {
-          ((TextView) tabViewChild).setTypeface(
-              Typeface.createFromAsset(getAssets(), getString(R.string.font_title)), Typeface.BOLD);
+        if ((tabViewGroup.getChildAt(i) instanceof TextView)) {
+          final TextView titleView = ((TextView) tabViewGroup.getChildAt(i));
+          titleView.setTypeface(typeface);
+          titleView.setTextColor(Color.WHITE);
+          titleView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+              getResources().getDimension(R.dimen.pager_title_text_size));
         }
       }
     }
