@@ -6,7 +6,7 @@
 
   <style name="AppTheme.TextAppearance.Title">
     <item name="fontPath">@string/font.title</item>
-    <item name="android:textSize">22sp</item>
+    <item name="android:textSize">24sp</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
