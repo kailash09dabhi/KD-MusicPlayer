@@ -40,5 +40,6 @@
     <item name="android:layout_width">@dimen/size.selectionOption</item>
     <item name="android:layout_height">@dimen/size.selectionOption</item>
     <item name="android:padding">@dimen/mp.padding.small</item>
+    <item name="android:drawable">?android:attr/selectableItemBackgroundBorderless</item>
   </style>
 </resources>
