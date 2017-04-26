@@ -3,6 +3,8 @@ package com.kingbull.musicplayer.ui.base.drawable;
 import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.R;
 
 /**
  * @author Kailash Dabhi
@@ -15,6 +17,7 @@ final class StrokedOvalDrawable extends ShapeDrawable {
     paint.setAntiAlias(true);
     paint.setColor(color);
     paint.setStyle(Paint.Style.STROKE);
-    paint.setStrokeWidth(10);
+    paint.setStrokeWidth(
+        MusicPlayerApp.instance().getResources().getInteger(R.integer.oval_stroke_width));
   }
 }

@@ -72,7 +72,7 @@ public final class EqualizerView extends View {
   private void setupCurvaturePaint() {
     paint.setStyle(Paint.Style.STROKE);
     paint.setAntiAlias(true);
-    paint.setStrokeWidth(10);
+    paint.setStrokeWidth(getResources().getInteger(R.integer.equalizer_curve_stroke_width));
     paint.setStrokeJoin(Paint.Join.ROUND);
     paint.setStrokeCap(Paint.Cap.ROUND);
   }
@@ -80,7 +80,8 @@ public final class EqualizerView extends View {
   private void setupLinePaint() {
     linePaint.setStyle(Paint.Style.STROKE);
     linePaint.setAntiAlias(true);
-    linePaint.setStrokeWidth(6);
+    linePaint.setStrokeWidth(
+        getResources().getInteger(R.integer.equalizer_frequency_line_stroke_width));
     linePaint.setStrokeJoin(Paint.Join.ROUND);
     linePaint.setStrokeCap(Paint.Cap.ROUND);
   }
@@ -89,7 +90,8 @@ public final class EqualizerView extends View {
     circlePaint.setColor(Color.WHITE);
     circlePaint.setStyle(Paint.Style.STROKE);
     circlePaint.setAntiAlias(true);
-    circlePaint.setStrokeWidth(10);
+    circlePaint.setStrokeWidth(
+        getResources().getInteger(R.integer.equalizer_frequency_point_stroke_width));
   }
 
   public EqualizerView(Context context, AttributeSet attrs, int defStyleAttr) {

@@ -72,11 +72,11 @@
         android:padding="16dp" />
 
       <TextView
+        style="@style/AppTheme.TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Bass"
-        android:textColor="@android:color/white" />
+        android:text="Bass" />
     </FrameLayout>
 
     <FrameLayout
@@ -92,11 +92,11 @@
         android:padding="16dp" />
 
       <TextView
+        style="@style/AppTheme.TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Volume"
-        android:textColor="@android:color/white" />
+        android:text="Volume" />
     </FrameLayout>
 
     <FrameLayout
@@ -112,11 +112,11 @@
         android:padding="16dp" />
 
       <TextView
+        style="@style/AppTheme.TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Virtualizer"
-        android:textColor="@android:color/white" />
+        android:text="Virtualizer" />
     </FrameLayout>
   </LinearLayout>
 </LinearLayout>
