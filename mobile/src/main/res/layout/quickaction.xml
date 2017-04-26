@@ -15,7 +15,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@id/header2"
-    android:background="@drawable/quickaction_slider_background"
     android:fadingEdgeLength="34dip"
     android:paddingLeft="1dip"
     android:paddingRight="1dip"

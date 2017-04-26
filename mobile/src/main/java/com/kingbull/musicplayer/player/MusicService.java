@@ -70,7 +70,8 @@ public final class MusicService extends Service implements Player {
     compositeDisposable.add(RxBus.getInstance()
         .toObservable()
         .ofType(MusicEvent.class)
-        .observeOn(AndroidSchedulers.mainThread()).delay(1, TimeUnit.SECONDS)
+        .observeOn(AndroidSchedulers.mainThread())
+        .delay(3, TimeUnit.SECONDS)
         .subscribeWith(new DisposableObserver<MusicEvent>() {
           @Override public void onNext(MusicEvent musicEvent) {
             showNotification();
