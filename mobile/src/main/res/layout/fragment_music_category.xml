@@ -10,6 +10,5 @@
     android:layout_height="wrap_content"
     android:layout_gravity="top"
     android:paddingBottom="4dp"
-    android:paddingTop="16dp"
-    android:textAppearance="@style/AppTheme.TextAppearance.Title.Pager" />
+    android:paddingTop="16dp" />
 </android.support.v4.view.ViewPager>

@@ -4,22 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="?android:listPreferredItemPaddingLeft"
-    android:paddingRight="?android:listPreferredItemPaddingRight"
     android:gravity="center"
     android:minHeight="?listPreferredItemHeight"
-    android:orientation="horizontal">
+  android:orientation="horizontal"
+  android:paddingLeft="?android:listPreferredItemPaddingLeft"
+  android:paddingRight="?android:listPreferredItemPaddingRight">
 
   <TextView
       android:id="@+id/nameView"
+    style="@style/AppTheme.TextAppearance.Medium"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="1"
       android:fontFamily="sans-serif"
       android:lines="1"
       android:singleLine="true"
-      tools:text="afd"
-      style="@style/AppTheme.TextAppearance.List.Medium"/>
+    tools:text="afd" />
   <ImageView
       android:id="@+id/moreActionsView"
       android:layout_width="wrap_content"

@@ -23,7 +23,7 @@
 
     <TextView
       android:id="@+id/directoryPathView"
-      style="@style/AppTheme.TextAppearance.List.Small"
+      style="@style/AppTheme.TextAppearance.Small"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:paddingBottom="9dp"

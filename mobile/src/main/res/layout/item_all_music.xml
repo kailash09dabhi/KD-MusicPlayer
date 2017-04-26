@@ -30,7 +30,7 @@
 
       <TextView
         android:id="@+id/fileName"
-        style="@style/AppTheme.TextAppearance.List.Medium"
+        style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -57,7 +57,7 @@
 
       <TextView
         android:id="@+id/artistView"
-        style="@style/AppTheme.TextAppearance.List.Small"
+        style="@style/AppTheme.TextAppearance.Small"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -67,7 +67,7 @@
 
       <TextView
         android:id="@+id/durationView"
-        style="@style/AppTheme.TextAppearance.List.Small"
+        style="@style/AppTheme.TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lines="1"

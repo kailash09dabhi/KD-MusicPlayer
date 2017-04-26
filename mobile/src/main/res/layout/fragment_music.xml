@@ -64,6 +64,7 @@
 
     <TextView
       android:id="@+id/nameTextView"
+      style="@style/AppTheme.TextAppearance.Medium"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/mp.margin.normal"
@@ -71,19 +72,18 @@
       android:layout_marginRight="@dimen/mp.margin.xlarge"
       android:layout_marginTop="16dp"
       android:gravity="center"
-      android:textColor="?attr/colorAccent"
-      android:textSize="18sp"
-      tools:text="Drag me down" />
+      tools:text="Drag me down"
+      tools:textColor="?attr/colorAccent" />
 
     <TextView
       android:id="@+id/text_view_artist"
+      style="@style/AppTheme.TextAppearance.Small"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginLeft="@dimen/mp.margin.xlarge"
       android:layout_marginRight="@dimen/mp.margin.xlarge"
       android:gravity="center"
       android:textColor="?attr/colorAccent"
-      android:textSize="14sp"
       tools:text="One Direction" />
 
     <LinearLayout
@@ -96,12 +96,13 @@
 
       <TextView
         android:id="@+id/progressTextView"
+        style="@style/AppTheme.TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:singleLine="true"
         android:text="@string/mp.music.default_duration"
-        android:textColor="?attr/colorAccent"
-        android:textSize="12sp" />
+        tools:textColor="?attr/colorAccent" />
 
       <com.kingbull.musicplayer.ui.music.MusicSeekBar
         android:id="@+id/seekbar"
@@ -114,13 +115,14 @@
 
       <TextView
         android:id="@+id/durationTextView"
+        style="@style/AppTheme.TextAppearance.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:singleLine="true"
         android:text="@string/mp.music.default_duration"
-        android:textColor="?attr/colorAccent"
-        android:textSize="12sp"
-        tools:text="03:22" />
+        tools:text="03:22"
+        tools:textColor="?attr/colorAccent" />
     </LinearLayout>
 
     <LinearLayout

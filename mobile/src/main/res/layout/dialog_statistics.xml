@@ -24,42 +24,42 @@
 
     <TextView
         android:id="@+id/title"
-      style="@style/AppTheme.TextAppearance.List.Medium"
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
       android:padding="3dp"
       android:text="title" />
     <TextView
         android:id="@+id/artist"
-      style="@style/AppTheme.TextAppearance.List.Medium"
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="3dp"
       android:text="artist" />
     <TextView
         android:id="@+id/numberOfTimesPlayed"
-      style="@style/AppTheme.TextAppearance.List.Medium"
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
       android:padding="3dp"
       android:text="Number Of Times Played" />
     <TextView
         android:id="@+id/totalListenedTime"
-      style="@style/AppTheme.TextAppearance.List.Medium"
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="3dp"
       android:text="Total Listened Time" />
     <TextView
         android:id="@+id/duration"
-      style="@style/AppTheme.TextAppearance.List.Medium"
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="3dp"
       android:text="Duration" />
     <TextView
         android:id="@+id/size"
-      style="@style/AppTheme.TextAppearance.List.Medium"
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
       android:text="Size" />

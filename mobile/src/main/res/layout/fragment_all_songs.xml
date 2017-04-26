@@ -63,14 +63,14 @@
           android:orientation="vertical">
 
           <TextView
-            style="@style/AppTheme.TextAppearance.Title.Pager"
+            style="@style/AppTheme.TextAppearance.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ALL SONGS" />
 
           <TextView
             android:id="@+id/totalSongCountView"
-            style="@style/AppTheme.TextAppearance.List.Small"
+            style="@style/AppTheme.TextAppearance.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
@@ -123,7 +123,7 @@
 
         <EditText
           android:id="@+id/searchView"
-          style="@style/AppTheme.TextAppearance.List.Medium"
+          style="@style/AppTheme.TextAppearance.Medium"
           android:layout_width="0dp"
           android:layout_height="48dp"
           android:layout_marginLeft="8dp"

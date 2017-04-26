@@ -21,7 +21,7 @@
 
     <Button
       android:id="@+id/newPresetButton"
-      style="@style/AppTheme.TextAppearance.List.Medium"
+      style="@style/AppTheme.TextAppearance.Medium"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_weight="1"
@@ -33,7 +33,7 @@
 
     <Button
       android:id="@+id/effectButton"
-      style="@style/AppTheme.TextAppearance.List.Medium"
+      style="@style/AppTheme.TextAppearance.Medium"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_weight="1"

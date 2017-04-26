@@ -9,7 +9,7 @@
 
   <TextView
       android:id="@+id/nameView"
-    style="@style/AppTheme.TextAppearance.List.Medium"
+    style="@style/AppTheme.TextAppearance.Medium"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:fontFamily="sans-serif"

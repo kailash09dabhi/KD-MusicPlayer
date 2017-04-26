@@ -10,13 +10,13 @@
 
   <TextView
       android:id="@+id/titleView"
+    style="@style/AppTheme.TextAppearance.Title"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginBottom="16dp"
       android:gravity="center"
       android:singleLine="true"
-      android:text="Duration Filter"
-      style="@style/AppTheme.TextAppearance.Title"/>
+    android:text="Duration Filter" />
 
   <LinearLayout
       android:id="@+id/middleContainer"
@@ -26,33 +26,33 @@
       android:orientation="horizontal">
 
     <TextView
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="0.40"
-        android:singleLine="true"
         android:gravity="center"
-        android:text="Duration"
-        style="@style/AppTheme.TextAppearance.List.Medium"/>
+      android:singleLine="true"
+      android:text="Duration" />
 
     <EditText
         android:id="@+id/durationSecondsView"
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="0.40"
         android:gravity="center"
         android:inputType="number"
         android:maxLines="1"
-        android:singleLine="true"
-        style="@style/AppTheme.TextAppearance.List.Medium"/>
+      android:singleLine="true" />
 
     <TextView
+      style="@style/AppTheme.TextAppearance.Small"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="0.20"
         android:maxLines="1"
         android:singleLine="true"
-        android:text="seconds"
-        style="@style/AppTheme.TextAppearance.List.Small"/>
+      android:text="seconds" />
   </LinearLayout>
   <LinearLayout
       android:layout_width="match_parent"

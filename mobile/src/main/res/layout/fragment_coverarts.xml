@@ -83,7 +83,7 @@
 
       <EditText
         android:id="@+id/searchView"
-        style="@style/AppTheme.TextAppearance.List.Medium"
+        style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="album name"

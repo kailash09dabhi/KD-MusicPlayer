@@ -5,67 +5,67 @@
     android:layout_height="match_parent"
     android:background="#55000000"
     android:orientation="vertical"
+  android:paddingBottom="?android:attr/listPreferredItemPaddingLeft"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingLeft"
     android:paddingTop="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingBottom="?android:attr/listPreferredItemPaddingLeft"
     >
 
   <TextView
+    android:id="@+id/textView2"
+    style="@style/AppTheme.TextAppearance.Title"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
       android:minHeight="?listPreferredItemHeight"
-      android:text="Sort"
-      style="@style/AppTheme.TextAppearance.Title"
-      android:id="@+id/textView2"/>
+    android:text="Sort" />
   <RadioGroup
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
     <RadioButton
         android:id="@+id/titleRadioButton"
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title"
-        style="@style/AppTheme.TextAppearance.List.Medium"/>
+      android:text="Title" />
     <RadioButton
         android:id="@+id/artistRadioButton"
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Artist"
-        style="@style/AppTheme.TextAppearance.List.Medium"/>
+      android:text="Artist" />
     <RadioButton
         android:id="@+id/albumRadioButton"
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Album"
-        style="@style/AppTheme.TextAppearance.List.Medium"/>
+      android:text="Album" />
     <RadioButton
         android:id="@+id/durationRadioButton"
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Duration"
-        style="@style/AppTheme.TextAppearance.List.Medium"/>
+      android:text="Duration" />
     <RadioButton
         android:id="@+id/dateAddedRadioButton"
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Date Added"
-        style="@style/AppTheme.TextAppearance.List.Medium"/>
+      android:text="Date Added" />
     <RadioButton
         android:id="@+id/yearRadioButton"
+      style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Year"
-        style="@style/AppTheme.TextAppearance.List.Medium"/>
+      android:text="Year" />
   </RadioGroup>
   <CheckBox
       android:id="@+id/sortInDescendingCheckbox"
+    style="@style/AppTheme.TextAppearance.Medium"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="16dp"
-      android:text="Sort in descending order"
-      style="@style/AppTheme.TextAppearance.List.Medium"/>
+    android:text="Sort in descending order" />
   <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

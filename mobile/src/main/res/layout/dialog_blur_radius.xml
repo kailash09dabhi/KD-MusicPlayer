@@ -27,7 +27,7 @@
     android:orientation="horizontal">
 
     <TextView
-      style="@style/AppTheme.TextAppearance.List.Medium"
+      style="@style/AppTheme.TextAppearance.Medium"
       android:layout_width="0dip"
       android:layout_height="wrap_content"
       android:layout_weight="0.40"
@@ -37,7 +37,7 @@
 
     <EditText
       android:id="@+id/blurRadiusValue"
-      style="@style/AppTheme.TextAppearance.List.Medium"
+      style="@style/AppTheme.TextAppearance.Medium"
       android:layout_width="0dip"
       android:layout_height="wrap_content"
       android:layout_weight="0.40"

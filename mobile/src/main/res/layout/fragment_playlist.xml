@@ -16,7 +16,7 @@
       android:gravity="bottom|center_horizontal"
       android:minHeight="?actionBarSize"
       android:paddingBottom="12dp"
-      android:textAppearance="@style/AppTheme.TextAppearance.Title.Pager" />
+      android:textAppearance="@style/AppTheme.TextAppearance.Title" />
 
     <ImageView
       android:id="@+id/multipleDeleteView"
