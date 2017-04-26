@@ -2,7 +2,6 @@ package com.kingbull.musicplayer.ui.music;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -37,6 +36,7 @@ import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
+import com.kingbull.musicplayer.ui.main.Pictures;
 import com.kingbull.musicplayer.ui.music.widget.ShadowImageView;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
 import com.kingbull.musicplayer.utils.AlbumUtils;
@@ -64,6 +64,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
   @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
   @BindView(R.id.backgroundView) View backgroundView;
+  Pictures pictures = new Pictures();
   private StatusBarColor statusBarColor;
 
   public static MusicPlayerFragment newInstance() {
@@ -168,9 +169,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
     Glide.with(this)
         .load(albumTable.albumById(song.media().albumId()).albumArt())
-        .asBitmap()
-        .placeholder(R.drawable.k1)
-        .error(R.drawable.k9)
+        .asBitmap().placeholder(pictures.random()).error(pictures.random())
         .centerCrop()
         .signature(
             new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
@@ -202,8 +201,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
           }
 
           @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.k3);
-            setAlbumImageAndAnimateBackground(bitmap);
+            setAlbumImageAndAnimateBackground(((BitmapDrawable) errorDrawable).getBitmap());
           }
         });
     seekBarProgress.updateMusic(song);

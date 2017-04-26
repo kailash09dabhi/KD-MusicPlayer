@@ -26,5 +26,5 @@
     android:layout_width="@dimen/cover_size"
     android:layout_height="@dimen/cover_size"
     android:scaleType="fitXY"
-    tools:src="@drawable/default_record_album" />
+    tools:src="@drawable/bass_guitar" />
 </LinearLayout>

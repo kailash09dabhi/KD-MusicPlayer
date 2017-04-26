@@ -43,9 +43,10 @@ import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.base.view.SelectionOptionsLayout;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.coverarts.CoverArtsFragment;
-import com.kingbull.musicplayer.ui.main.categories.all.SelectionContextOptionsLayout;
+import com.kingbull.musicplayer.ui.main.Pictures;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
 import io.reactivex.Observable;
@@ -70,10 +71,10 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   private final Alpha.Animation alphaAnimation = new Alpha.Animation();
   private final List<Music> songList = new ArrayList<>();
   private final StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
+  private final Pictures pictures = new Pictures();
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.titleView) TextView titleView;
-  @BindView(R.id.selectionContextOptionsLayout) SelectionContextOptionsLayout
-      selectionContextOptionsLayout;
+  @BindView(R.id.selectionContextOptionsLayout) SelectionOptionsLayout selectionOptionsLayout;
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
   @BindView(R.id.albumart) ImageView albumArtView;
@@ -125,8 +126,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     File file = null;
     if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
     Glide.with(this)
-        .load(album.albumArt())
-        .asBitmap().placeholder(R.drawable.k1).error(R.drawable.k9)
+        .load(album.albumArt()).asBitmap().placeholder(pictures.random()).error(pictures.random())
         .centerCrop()
         .signature(
             new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
@@ -197,12 +197,12 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
       @Override public void onMultiSelection(int selectionCount) {
         if (selectionCount == 1) {
           alphaAnimation.fadeOut(titleView);
-          alphaAnimation.fadeIn(selectionContextOptionsLayout);
+          alphaAnimation.fadeIn(selectionOptionsLayout);
         }
       }
     });
-    selectionContextOptionsLayout.addOnContextOptionClickListener(
-        new SelectionContextOptionsLayout.OnContextOptionClickListener() {
+    selectionOptionsLayout.addOnContextOptionClickListener(
+        new SelectionOptionsLayout.OnContextOptionClickListener() {
           @Override public void onAddToPlaylistClick() {
             presenter.onAddToPlayListMenuClick();
           }
@@ -228,8 +228,8 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     int fillColor = 0;
     sortButton.setImageDrawable(new IconDrawable(R.drawable.ic_sort_48dp, fillColor));
     shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, fillColor));
-    selectionContextOptionsLayout.updateIconsColor(fillColor);
-    selectionContextOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
+    selectionOptionsLayout.updateIconsColor(fillColor);
+    selectionOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
   }
 
   @NonNull @Override protected PresenterFactory<Album.Presenter> presenterFactory() {
@@ -344,7 +344,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   }
 
   @Override public void hideSelectionContextOptions() {
-    alphaAnimation.fadeOut(selectionContextOptionsLayout);
+    alphaAnimation.fadeOut(selectionOptionsLayout);
     alphaAnimation.fadeIn(titleView);
   }
 }

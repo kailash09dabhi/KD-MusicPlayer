@@ -48,7 +48,7 @@ public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapte
         .load(album.albumArt())
         .signature(
             new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
-        .placeholder(R.drawable.k1)
+        .placeholder(R.drawable.bass_guitar)
         .error(R.drawable.default_art)
         .centerCrop()
         .crossFade()
