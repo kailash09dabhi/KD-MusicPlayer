@@ -1,31 +1,30 @@
 <resources>
 
   <style name="AppTheme.TextAppearance.Tab">
-    <item name="android:textSize">14sp</item>
+    <item name="android:textSize">13sp</item>
   </style>
 
   <style name="AppTheme.TextAppearance.Title">
     <item name="fontPath">@string/font.title</item>
-    <item name="android:textSize">22sp</item>
+    <item name="android:textSize">16sp</item>
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
 
   <style name="AppTheme.TextAppearance.Small">
     <item name="android:textColor">#ffaaaaaa</item>
-    <item name="android:textSize">13.3sp</item>
+    <item name="android:textSize">12sp</item>
   </style>
 
   <style name="AppTheme.TextAppearance.Medium">
     <item name="android:textAllCaps">false</item>
     <item name="android:gravity">center_vertical</item>
-    <item name="android:textSize">16sp</item>
+    <item name="android:textSize">14sp</item>
   </style>
 
   <style name="SelectionOption">
     <item name="android:layout_width">@dimen/size.selectionOption</item>
     <item name="android:layout_height">@dimen/size.selectionOption</item>
     <item name="android:padding">@dimen/mp.padding.small</item>
-    <item name="android:drawable">?android:attr/selectableItemBackgroundBorderless</item>
   </style>
 </resources>

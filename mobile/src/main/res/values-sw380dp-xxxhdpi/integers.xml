@@ -4,4 +4,5 @@
   <integer name="equalizer.curve.stroke.width">22</integer>
   <integer name="equalizer.frequency.line.stroke.width">20</integer>
   <integer name="equalizer.frequency.point.stroke.width">22</integer>
+  <integer name="equalizer.frequency.point.radius">14</integer>
 </resources>

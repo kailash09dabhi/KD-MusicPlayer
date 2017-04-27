@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <integer name="oval.stroke.width">5</integer>
+  <integer name="equalizer.curve.stroke.width">6</integer>
+  <integer name="equalizer.frequency.line.stroke.width">6</integer>
+  <integer name="equalizer.frequency.point.stroke.width">6</integer>
+</resources>
