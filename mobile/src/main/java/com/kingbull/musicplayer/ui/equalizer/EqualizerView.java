@@ -35,6 +35,7 @@ public final class EqualizerView extends View {
   private Point lastTouchedPoint;
   private int maxHeight;
   private int minHeight;
+  private int circleRadius;
 
   public EqualizerView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -42,6 +43,7 @@ public final class EqualizerView extends View {
   }
 
   private void init() {
+    circleRadius = getResources().getInteger(R.integer.equalizer_frequency_point_radius);
     setupCurvaturePaint();
     setupLinePaint();
     setupCirclePaint();
@@ -152,7 +154,7 @@ public final class EqualizerView extends View {
       int xMax = pivotPoint2.x;
       int yMin = getMinY(yMax, yDesired);
       //draw straight faded line for denoting the frequency
-      canvas.drawLine((xMax - (xMax - xMin) / 2), 70, (xMax - (xMax - xMin) / 2), getHeight() - 70,
+      canvas.drawLine((xMax - (xMax - xMin) / 2), minHeight, (xMax - (xMax - xMin) / 2), maxHeight,
           linePaint);
       //draw curve now
       curvaturePath.reset();
@@ -160,7 +162,7 @@ public final class EqualizerView extends View {
       curvaturePath.cubicTo((xMax - (xMax - xMin) / 2) - 10, yMin, (xMax - (xMax - xMin) / 2) + 10,
           yMin, xMin, yMax);
       canvas.drawPath(curvaturePath, paint);
-      canvas.drawCircle(xMax - (xMax - xMin) / 2, yDesired, 10.0f, circlePaint);
+      canvas.drawCircle(xMax - (xMax - xMin) / 2, yDesired, circleRadius, circlePaint);
     }
   }
 
