@@ -1,68 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
   <TextView
-      android:id="@+id/titleView"
+    android:id="@+id/titleView"
     style="@style/AppTheme.TextAppearance.Title"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_centerHorizontal="true"
-      android:gravity="center"
-      android:maxLines="1"
-      android:minHeight="?android:listPreferredItemHeight"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:gravity="center"
+    android:maxLines="1"
+    android:minHeight="?android:listPreferredItemHeight"
     android:text="Statistics" />
 
   <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@id/titleView"
-      android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/titleView"
+    android:orientation="vertical"
     android:paddingBottom="?android:attr/listPreferredItemPaddingLeft"
-      android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight">
 
     <TextView
-        android:id="@+id/title"
+      android:id="@+id/title"
       style="@style/AppTheme.TextAppearance.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
       android:padding="3dp"
       android:text="title" />
+
     <TextView
-        android:id="@+id/artist"
+      android:id="@+id/artist"
       style="@style/AppTheme.TextAppearance.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="3dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:padding="3dp"
       android:text="artist" />
+
     <TextView
-        android:id="@+id/numberOfTimesPlayed"
+      android:id="@+id/numberOfTimesPlayed"
       style="@style/AppTheme.TextAppearance.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
       android:padding="3dp"
       android:text="Number Of Times Played" />
+
     <TextView
-        android:id="@+id/totalListenedTime"
+      android:id="@+id/totalListenedTime"
       style="@style/AppTheme.TextAppearance.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="3dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:padding="3dp"
       android:text="Total Listened Time" />
+
     <TextView
-        android:id="@+id/duration"
+      android:id="@+id/duration"
       style="@style/AppTheme.TextAppearance.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="3dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:padding="3dp"
       android:text="Duration" />
+
     <TextView
-        android:id="@+id/size"
+      android:id="@+id/size"
       style="@style/AppTheme.TextAppearance.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
       android:text="Size" />
   </LinearLayout>
-
 </RelativeLayout>

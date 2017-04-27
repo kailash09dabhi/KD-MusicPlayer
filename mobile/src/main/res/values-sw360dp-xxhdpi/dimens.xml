@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <!-- Used by Nexus 5x(1080x1920),(smallestScreenWidthDp  360) && (densityDpi 480) it is xxhdpi-->
   <dimen name="mp.divider.xlarge">24dp</dimen>
   <dimen name="mp.padding.small">4dp</dimen>
   <dimen name="mp.padding.normal">8dp</dimen>
@@ -10,16 +11,16 @@
   <dimen name="mp.margin.large">16dp</dimen>
   <dimen name="mp.margin.xlarge">24dp</dimen>
   <!-- MediaStatTable -->
-  <dimen name="mp.music.album.size">260dp</dimen>
-  <dimen name="mp.music.seekBar.marginTop">50dp</dimen>
+  <dimen name="mp.music.album.size">250dp</dimen>
+  <dimen name="mp.music.seekBar.marginTop">34dp</dimen>
   <dimen name="mp.music.playControls.marginTop">24dp</dimen>
   <dimen name="mp.music.playControls.marginBottom">8dp</dimen>
   <dimen name="cover_size">155dp</dimen>
   <dimen name="size.selectionOption">44dp</dimen>
   <dimen name="margin.button.selectionOption">20dp</dimen>
   <dimen name="padding.button.clear.selectionOption">12dp</dimen>
-  <dimen name="pager.title.text.size">23sp</dimen>
+  <dimen name="pager.title.text.size">22sp</dimen>
   <dimen name="music.player.big.button.size">48dp</dimen>
-  <dimen name="music.player.small.button.size">25dp</dimen>
+  <dimen name="music.player.small.button.size">27dp</dimen>
   <dimen name="music.player.round.icon.button.size">36dp</dimen>
 </resources>

@@ -39,6 +39,7 @@
     android:fadeScrollbars="true"
     android:fadingEdgeLength="34dp"
     android:overScrollMode="never"
+    android:paddingBottom="16dp"
     android:requiresFadingEdge="vertical"
     android:scrollbars="vertical">
 
