@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- Used by Nexus 4(768x1280),(smallestScreenWidthDp  384) it is xhdpi-->
-  <dimen name="mp.divider.xlarge">24dp</dimen>
+  <dimen name="music.player.button.divider">24dp</dimen>
   <dimen name="mp.padding.small">4dp</dimen>
   <dimen name="mp.padding.normal">8dp</dimen>
   <dimen name="mp.padding.large">16dp</dimen>

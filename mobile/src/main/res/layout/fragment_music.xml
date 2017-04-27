@@ -127,12 +127,12 @@
 
     <LinearLayout
       android:id="@+id/layout_play_controls"
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/music.player.playControls.marginBottom"
       android:layout_marginTop="@dimen/music.player.playControls.marginTop"
       android:divider="@drawable/common_divider_xlarge_horizontal"
-      android:gravity="center_vertical"
+      android:gravity="center"
       android:showDividers="middle">
 
       <com.kingbull.musicplayer.ui.music.PlayModeToggleView
@@ -148,6 +148,7 @@
         android:layout_height="@dimen/music.player.big.button.size"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:srcCompat="@drawable/ic_play_last" />
+
 
       <android.support.v7.widget.AppCompatImageView
         android:id="@+id/button_play_toggle"
