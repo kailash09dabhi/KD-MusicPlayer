@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="music.player.button.divider">24dp</dimen>
+  <!-- LS-5016, LS-5005-->
   <dimen name="mp.padding.small">4dp</dimen>
   <dimen name="mp.padding.normal">8dp</dimen>
   <dimen name="mp.padding.large">16dp</dimen>
@@ -11,7 +11,7 @@
   <dimen name="mp.margin.xlarge">24dp</dimen>
   <!-- MediaStatTable -->
   <dimen name="music.player.album.size">260dp</dimen>
-  <dimen name="music.player.seekBar.marginTop">50dp</dimen>
+  <dimen name="music.player.seekBar.marginTop">40dp</dimen>
   <dimen name="music.player.playControls.marginTop">24dp</dimen>
   <dimen name="music.player.playControls.marginBottom">8dp</dimen>
   <dimen name="cover_size">155dp</dimen>
@@ -22,4 +22,6 @@
   <dimen name="music.player.big.button.size">48dp</dimen>
   <dimen name="music.player.small.button.size">25dp</dimen>
   <dimen name="music.player.round.icon.button.size">36dp</dimen>
+  <dimen name="music.player.button.divider">24dp</dimen>
+  <dimen name="music.player.button.divider.small">16dp</dimen>
 </resources>

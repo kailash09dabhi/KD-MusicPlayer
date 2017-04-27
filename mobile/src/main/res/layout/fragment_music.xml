@@ -56,7 +56,7 @@
         android:id="@+id/nowPlayingView"
         android:layout_width="@dimen/music.player.round.icon.button.size"
         android:layout_height="@dimen/music.player.round.icon.button.size"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="@dimen/music.player.button.divider.small"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="4dp"
         app:srcCompat="@drawable/ic_queue_music" />

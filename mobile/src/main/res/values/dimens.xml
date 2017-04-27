@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="music.player.button.divider">24dp</dimen>
   <dimen name="mp.padding.small">4dp</dimen>
   <dimen name="mp.padding.normal">8dp</dimen>
   <dimen name="mp.padding.large">16dp</dimen>
@@ -14,6 +13,8 @@
   <dimen name="music.player.seekBar.marginTop">50dp</dimen>
   <dimen name="music.player.playControls.marginTop">24dp</dimen>
   <dimen name="music.player.playControls.marginBottom">8dp</dimen>
+  <dimen name="music.player.button.divider">24dp</dimen>
+  <dimen name="music.player.button.divider.small">16dp</dimen>
   <dimen name="cover_size">155dp</dimen>
   <dimen name="size.selectionOption">44dp</dimen>
   <dimen name="margin.button.selectionOption">20dp</dimen>

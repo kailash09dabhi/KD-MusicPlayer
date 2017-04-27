@@ -23,4 +23,5 @@
   <dimen name="music.player.big.button.size">43dp</dimen>
   <dimen name="music.player.small.button.size">25dp</dimen>
   <dimen name="music.player.round.icon.button.size">36dp</dimen>
+  <dimen name="music.player.button.divider.small">16dp</dimen>
 </resources>

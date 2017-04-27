@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- Used by Nexus 6p,(smallestScreenWidthDp  411) && (densityDpi 560) it is xxhdpi-->
-  <dimen name="music.player.button.divider">24dp</dimen>
   <dimen name="mp.padding.small">4dp</dimen>
   <dimen name="mp.padding.normal">8dp</dimen>
   <dimen name="mp.padding.large">16dp</dimen>
@@ -23,4 +22,6 @@
   <dimen name="music.player.small.button.size">32dp</dimen>
   <dimen name="music.player.round.icon.button.size">40dp</dimen>
   <dimen name="pager.title.text.size">23sp</dimen>
+  <dimen name="music.player.button.divider">24dp</dimen>
+  <dimen name="music.player.button.divider.small">16dp</dimen>
 </resources>

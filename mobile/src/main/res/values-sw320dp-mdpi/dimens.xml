@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- Used by 3.7inch_480x854 (hdpi) device (smallestScreenWidthDp  320) && (densityDpi 240)-->
-  <dimen name="music.player.button.divider">24dp</dimen>
   <dimen name="mp.padding.small">4dp</dimen>
   <dimen name="mp.padding.normal">8dp</dimen>
   <dimen name="mp.padding.large">16dp</dimen>
@@ -23,4 +22,6 @@
   <dimen name="music.player.big.button.size">40dp</dimen>
   <dimen name="music.player.small.button.size">24dp</dimen>
   <dimen name="music.player.round.icon.button.size">32dp</dimen>
+  <dimen name="music.player.button.divider">24dp</dimen>
+  <dimen name="music.player.button.divider.small">16dp</dimen>
 </resources>
