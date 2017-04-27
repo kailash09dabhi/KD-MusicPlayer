@@ -52,6 +52,7 @@ import java.io.File;
 public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presenter>
     implements MusicPlayer.View {
   private final AlbumTable albumTable = new AlbumTable();
+  private final Pictures pictures = new Pictures();
   @BindView(R.id.equalizerView) ImageView equalizerView;
   @BindView(R.id.nowPlayingView) ImageView nowPlayingView;
   @BindView(R.id.albumImageView) ShadowImageView albumImageView;
@@ -64,7 +65,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @BindView(R.id.button_play_toggle) ImageView buttonPlayToggle;
   @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
   @BindView(R.id.backgroundView) View backgroundView;
-  Pictures pictures = new Pictures();
   private StatusBarColor statusBarColor;
 
   public static MusicPlayerFragment newInstance() {

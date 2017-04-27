@@ -35,12 +35,14 @@ import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import com.kingbull.musicplayer.ui.main.MainActivity;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 /**
@@ -71,7 +73,6 @@ public final class MusicService extends Service implements Player {
         .toObservable()
         .ofType(MusicEvent.class)
         .observeOn(AndroidSchedulers.mainThread())
-        .delay(3, TimeUnit.SECONDS)
         .subscribeWith(new DisposableObserver<MusicEvent>() {
           @Override public void onNext(MusicEvent musicEvent) {
             showNotification();
@@ -287,23 +288,33 @@ public final class MusicService extends Service implements Player {
     }
     setVectorDrawable(remoteView, R.id.image_view_play_toggle,
         isPlaying() ? R.drawable.ic_remote_view_pause : R.drawable.ic_remote_view_play);
-    /*
-    FIXME: 12/30/2016 Somehow if we use async glide bitmap loading then its not working so  the loading bitmap on main thread let it work properly.!
-     */
-    try {
-      Bitmap album = Glide.with(this)
-          .load(albumTable.albumById(getPlayingSong().media().albumId()).albumArt())
-          .asBitmap()
-          .error(R.mipmap.ic_launcher)
-          .into(300, 300)
-          .get();
-      remoteView.setImageViewBitmap(R.id.albumImageView, album);
-      updateMediaSessionMetaData(music, album);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    }
+    String albumArt = albumTable.albumById(getPlayingSong().media().albumId()).albumArt();
+    albumArt = albumArt == null ? "" : albumArt;
+    Observable.just(albumArt)
+        .subscribeOn(Schedulers.io())
+        .flatMap(new Function<String, ObservableSource<Bitmap>>() {
+          @Override public ObservableSource<Bitmap> apply(String s) throws Exception {
+            return Observable.just(Glide.with(MusicService.this)
+                .load(albumTable.albumById(getPlayingSong().media().albumId()).albumArt())
+                .asBitmap()
+                .error(R.mipmap.ic_launcher)
+                .into(300, 300)
+                .get());
+          }
+        })
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeWith(new DisposableObserver<Bitmap>() {
+          @Override public void onNext(Bitmap album) {
+            remoteView.setImageViewBitmap(R.id.albumImageView, album);
+            updateMediaSessionMetaData(music, album);
+          }
+
+          @Override public void onError(Throwable e) {
+          }
+
+          @Override public void onComplete() {
+          }
+        });
   }
 
   private void updateMediaSessionMetaData(Music music, Bitmap bitmap) {
