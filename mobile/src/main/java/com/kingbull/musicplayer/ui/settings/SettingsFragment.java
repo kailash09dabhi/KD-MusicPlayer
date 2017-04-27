@@ -41,6 +41,7 @@ import java.util.Calendar;
 public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     implements Settings.View {
   @BindView(R.id.fullScreenCheckbox) CheckBox fullScreenCheckbox;
+  @BindView(R.id.flatThemeCheckbox) CheckBox flatThemeCheckbox;
   @BindView(R.id.durationSecondsView) TextView durationSecondsView;
   @BindView(R.id.headerLayout) LinearLayout headerLayout;
   @BindView(R.id.scrollView) ScrollView scrollView;
@@ -94,6 +95,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
 
   private void setupView() {
     fullScreenCheckbox.setChecked(settingPreferences.isFullScreen());
+    flatThemeCheckbox.setChecked(settingPreferences.isFlatTheme());
     durationSecondsView.setText(settingPreferences.filterDurationInSeconds() + " sec");
     applyUiColors();
   }
