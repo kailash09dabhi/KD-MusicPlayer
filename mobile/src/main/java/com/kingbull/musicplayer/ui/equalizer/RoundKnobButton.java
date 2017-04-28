@@ -178,6 +178,7 @@ public final class RoundKnobButton extends RelativeLayout implements OnGestureLi
     int posDegree = percentage * 3 - 150;
     if (posDegree < 0) posDegree = 360 + posDegree;
     setRotorPosAngle(posDegree);
+    ivBack.setImageResource(imageRes[percentage / 5]);
   }
 
   interface RoundKnobButtonListener {

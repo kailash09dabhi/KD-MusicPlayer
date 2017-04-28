@@ -76,7 +76,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Bass" />
+        android:text="Bass"
+        android:textColor="@android:color/white" />
     </FrameLayout>
 
     <FrameLayout
@@ -96,7 +97,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Volume" />
+        android:text="Volume"
+        android:textColor="@android:color/white" />
     </FrameLayout>
 
     <FrameLayout
@@ -116,7 +118,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Virtualizer" />
+        android:text="Virtualizer"
+        android:textColor="@android:color/white" />
     </FrameLayout>
   </LinearLayout>
 </LinearLayout>

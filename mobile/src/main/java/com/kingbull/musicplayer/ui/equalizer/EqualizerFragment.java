@@ -27,7 +27,6 @@ import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.equalizer.preset.PresetDialogFragment;
 import com.kingbull.musicplayer.ui.equalizer.reverb.PresetReverbDialogFragment;
-import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -75,7 +74,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     MusicPlayerApp.instance().component().inject(this);
     audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
     titleView.setText("Equalizer Preset".toUpperCase());
-    setupRoundKnobButton();
+    setupRoundKnobButtonLayouts();
     com.kingbull.musicplayer.ui.base.Color color = flatTheme.screen();
     new StatusBarColor(color).applyOn(getActivity().getWindow());
     view.setBackground(color.toDrawable());
@@ -84,17 +83,27 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
     return view;
   }
 
-  private void setupRoundKnobButton() {
-    Point localPoint = new Point();
-    getActivity().getWindowManager().getDefaultDisplay().getSize(localPoint);
-    virtualizerRoundKnobLayout.getLayoutParams().width = localPoint.x / 3;
-    virtualizerRoundKnobLayout.getLayoutParams().height = localPoint.x / 3;
-    bassBoostRoundKnobLayout.getLayoutParams().width = localPoint.x / 3;
-    bassBoostRoundKnobLayout.getLayoutParams().height = localPoint.x / 3;
-    volumeRoundKnobLayout.getLayoutParams().width = localPoint.x / 3;
-    volumeRoundKnobLayout.getLayoutParams().height = localPoint.x / 3;
+  private void setupRoundKnobButtonLayouts() {
+    bassBoost = player.bassBoost();
+    virtualizer = player.virtualizer();
+    Point point = new Point();
+    getActivity().getWindowManager().getDefaultDisplay().getSize(point);
+    virtualizerRoundKnobLayout.getLayoutParams().width = point.x / 3;
+    virtualizerRoundKnobLayout.getLayoutParams().height = point.x / 3;
+    bassBoostRoundKnobLayout.getLayoutParams().width = point.x / 3;
+    bassBoostRoundKnobLayout.getLayoutParams().height = point.x / 3;
+    volumeRoundKnobLayout.getLayoutParams().width = point.x / 3;
+    volumeRoundKnobLayout.getLayoutParams().height = point.x / 3;
+    setupBassBoostButton();
+    setupVolumeButton();
+    setupVirtualizerButton();
+    effectButton.setText(settingPreferences.reverb().name());
+  }
+
+  private void setupBassBoostButton() {
     final RoundKnobButton bassBoostButton = new RoundKnobButton(getActivity());
     bassBoostRoundKnobLayout.addView(bassBoostButton);
+    //bassBoostButton.setRotorPercentage(bassBoost.getRoundedStrength() / 10);
     bassBoostButton.setRotorPercentage(100);
     bassBoostButton.addRotationListener(new RoundKnobButton.RoundKnobButtonListener() {
       @Override public void onStateChange(boolean newstate) {
@@ -106,10 +115,11 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
         }
       }
     });
+  }
+
+  private void setupVolumeButton() {
     final RoundKnobButton volumeButton = new RoundKnobButton(getActivity());
     volumeRoundKnobLayout.addView(volumeButton);
-    bassBoost = player.bassBoost();
-    virtualizer = player.virtualizer();
     final int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
     volumeButton.addRotationListener(new RoundKnobButton.RoundKnobButtonListener() {
       @Override public void onStateChange(boolean newstate) {
@@ -120,9 +130,15 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
       }
     });
+    //volumeButton.setRotorPercentage(
+    //    audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) / maxVolume * 100);
     volumeButton.setRotorPercentage(100);
+  }
+
+  private void setupVirtualizerButton() {
     final RoundKnobButton virtualizerButton = new RoundKnobButton(getActivity());
     virtualizerRoundKnobLayout.addView(virtualizerButton);
+    //virtualizerButton.setRotorPercentage(virtualizer.getRoundedStrength() / 10);
     virtualizerButton.setRotorPercentage(100);
     virtualizerButton.addRotationListener(new RoundKnobButton.RoundKnobButtonListener() {
       @Override public void onStateChange(boolean newstate) {
@@ -134,8 +150,6 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
         }
       }
     });
-    Reverb reverb = settingPreferences.reverb();
-    effectButton.setText(reverb.name());
   }
 
   @Override protected Disposable subscribeEvents() {

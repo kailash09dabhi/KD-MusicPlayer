@@ -21,7 +21,7 @@
   <dimen name="music.player.big.button.size">104dp</dimen>
   <dimen name="music.player.small.button.size">64dp</dimen>
   <dimen name="music.player.round.icon.button.size">80dp</dimen>
-  <dimen name="pager.title.text.size">23sp</dimen>
   <dimen name="music.player.button.divider">48dp</dimen>
-  <dimen name="music.player.button.divider.small">16dp</dimen>
+  <dimen name="music.player.button.divider.small">48dp</dimen>
+  <dimen name="pager.title.text.size">24sp</dimen>
 </resources>
