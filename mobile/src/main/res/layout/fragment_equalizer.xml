@@ -67,8 +67,9 @@
 
       <RelativeLayout
         android:id="@+id/bassBoostLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/equalizer.knob.button.size"
+        android:layout_height="@dimen/equalizer.knob.button.size"
+        android:layout_gravity="center"
         android:padding="16dp" />
 
       <TextView
@@ -88,8 +89,9 @@
 
       <RelativeLayout
         android:id="@+id/volumeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/equalizer.knob.button.size"
+        android:layout_height="@dimen/equalizer.knob.button.size"
+        android:layout_gravity="center"
         android:padding="16dp" />
 
       <TextView
@@ -109,8 +111,9 @@
 
       <RelativeLayout
         android:id="@+id/virtualizerRoundKnobLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/equalizer.knob.button.size"
+        android:layout_height="@dimen/equalizer.knob.button.size"
+        android:layout_gravity="center"
         android:padding="16dp" />
 
       <TextView

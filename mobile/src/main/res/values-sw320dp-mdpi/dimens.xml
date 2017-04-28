@@ -9,6 +9,7 @@
   <dimen name="mp.margin.normal">8dp</dimen>
   <dimen name="mp.margin.large">16dp</dimen>
   <dimen name="mp.margin.xlarge">24dp</dimen>
+  <dimen name="equalizer.knob.button.size">100dp</dimen>
   <!-- MediaStatTable -->
   <dimen name="music.player.album.size">171dp</dimen>
   <dimen name="music.player.seekBar.marginTop">16dp</dimen>

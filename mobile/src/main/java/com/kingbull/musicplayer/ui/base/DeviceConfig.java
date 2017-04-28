@@ -4,6 +4,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.Toast;
+import com.kingbull.musicplayer.MusicPlayerApp;
 
 /**
  * @author Kailash Dabhi
@@ -19,37 +21,42 @@ public final class DeviceConfig {
 
   public void writeToLogcat() {
     Configuration configuration = resources.getConfiguration();
-    Log.e(TAG, "screenWidthDp " + configuration.screenWidthDp);
-    Log.e(TAG, "smallestScreenWidthDp " + configuration.smallestScreenWidthDp);
     Log.e(TAG, "screenHeightDp " + configuration.screenHeightDp);
+    Log.e(TAG, "screenWidthDp " + configuration.screenWidthDp);
     Log.e(TAG, "densityDpi " + resources.getDisplayMetrics().densityDpi);
-    writeScreenDensityToLogcat();
+    Log.e(TAG, "smallestScreenWidthDp " + configuration.smallestScreenWidthDp);
+    String valueFolder =
+        "values-sw" + configuration.smallestScreenWidthDp + "dp-" + densityBucket();
+    Log.e(TAG, "If the folder exist it will pick this folder: --->  " + valueFolder);
+    Toast.makeText(MusicPlayerApp.instance(), valueFolder, Toast.LENGTH_LONG).show();
   }
 
-  private void writeScreenDensityToLogcat() {
+  private String densityBucket() {
+    String density = "";
     int densityDpi = resources.getDisplayMetrics().densityDpi;
     switch (densityDpi) {
       case DisplayMetrics.DENSITY_LOW:
-        Log.e(TAG, "density ldpi");
+        density = "ldpi";
         break;
       case DisplayMetrics.DENSITY_MEDIUM:
-        Log.e(TAG, "density mdpi");
+        density = "mdpi";
         break;
       case DisplayMetrics.DENSITY_HIGH:
-        Log.e(TAG, "density hdpi");
+        density = "hdpi";
         break;
       case DisplayMetrics.DENSITY_XHIGH:
-        Log.e(TAG, "density xhdpi");
+        density = "xhdpi";
         break;
       case DisplayMetrics.DENSITY_XXHIGH:
-        Log.e(TAG, "density xxhdpi");
+        density = "xxhdpi";
         break;
       case DisplayMetrics.DENSITY_XXXHIGH:
-        Log.e(TAG, "density xxxhdpi");
+        density = "xxxhdpi";
         break;
       case DisplayMetrics.DENSITY_TV:
-        Log.e(TAG, "density tvdpi");
+        density = "tvdpi";
         break;
     }
+    return density;
   }
 }

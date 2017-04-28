@@ -4,4 +4,5 @@
   <integer name="equalizer.curve.stroke.width">10</integer>
   <integer name="equalizer.frequency.line.stroke.width">9</integer>
   <integer name="equalizer.frequency.point.stroke.width">10</integer>
+  <integer name="equalizer.knob.inner.gap">16</integer>
 </resources>

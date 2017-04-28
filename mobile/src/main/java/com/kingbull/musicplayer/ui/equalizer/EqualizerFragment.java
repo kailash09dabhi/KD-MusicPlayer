@@ -1,7 +1,6 @@
 package com.kingbull.musicplayer.ui.equalizer;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.media.AudioManager;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Virtualizer;
@@ -86,14 +85,6 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
   private void setupRoundKnobButtonLayouts() {
     bassBoost = player.bassBoost();
     virtualizer = player.virtualizer();
-    Point point = new Point();
-    getActivity().getWindowManager().getDefaultDisplay().getSize(point);
-    virtualizerRoundKnobLayout.getLayoutParams().width = point.x / 3;
-    virtualizerRoundKnobLayout.getLayoutParams().height = point.x / 3;
-    bassBoostRoundKnobLayout.getLayoutParams().width = point.x / 3;
-    bassBoostRoundKnobLayout.getLayoutParams().height = point.x / 3;
-    volumeRoundKnobLayout.getLayoutParams().width = point.x / 3;
-    volumeRoundKnobLayout.getLayoutParams().height = point.x / 3;
     setupBassBoostButton();
     setupVolumeButton();
     setupVirtualizerButton();

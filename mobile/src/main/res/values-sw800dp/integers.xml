@@ -5,4 +5,5 @@
   <integer name="equalizer.frequency.line.stroke.width">18</integer>
   <integer name="equalizer.frequency.point.stroke.width">22</integer>
   <integer name="equalizer.frequency.point.radius">14</integer>
+  <integer name="equalizer.knob.inner.gap">20</integer>
 </resources>

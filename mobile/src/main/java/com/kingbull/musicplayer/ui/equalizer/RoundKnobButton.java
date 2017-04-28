@@ -64,7 +64,8 @@ public final class RoundKnobButton extends RelativeLayout implements OnGestureLi
     ivBack.setImageResource(R.drawable.stator1);
     RelativeLayout.LayoutParams lp_ivBack =
         new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-    ivBack.setPadding(20, 20, 20, 20);
+    int innerGapPadding = getResources().getInteger(R.integer.equalizer_knob_inner_gap);
+    ivBack.setPadding(innerGapPadding, innerGapPadding, innerGapPadding, innerGapPadding);
     lp_ivBack.addRule(RelativeLayout.CENTER_IN_PARENT);
     addView(ivBack, lp_ivBack);
     // create rotor

@@ -9,20 +9,20 @@
   <dimen name="mp.margin.normal">8dp</dimen>
   <dimen name="mp.margin.large">16dp</dimen>
   <dimen name="mp.margin.xlarge">24dp</dimen>
-  <dimen name="equalizer.knob.button.size">124dp</dimen>
+  <dimen name="equalizer.knob.button.size">161dp</dimen>
   <!-- MediaStatTable -->
-  <dimen name="music.player.album.size">240dp</dimen>
-  <dimen name="music.player.seekBar.marginTop">50dp</dimen>
-  <dimen name="music.player.playControls.marginTop">24dp</dimen>
-  <dimen name="music.player.playControls.marginBottom">8dp</dimen>
+  <dimen name="music.player.album.size">340dp</dimen>
+  <dimen name="music.player.seekBar.marginTop">70dp</dimen>
+  <dimen name="music.player.playControls.marginTop">32dp</dimen>
+  <dimen name="music.player.playControls.marginBottom">32dp</dimen>
   <dimen name="cover_size">155dp</dimen>
   <dimen name="size.selectionOption">44dp</dimen>
   <dimen name="margin.button.selectionOption">20dp</dimen>
   <dimen name="padding.button.clear.selectionOption">12dp</dimen>
-  <dimen name="music.player.big.button.size">52dp</dimen>
-  <dimen name="music.player.small.button.size">32dp</dimen>
-  <dimen name="music.player.round.icon.button.size">40dp</dimen>
-  <dimen name="pager.title.text.size">23sp</dimen>
-  <dimen name="music.player.button.divider">24dp</dimen>
-  <dimen name="music.player.button.divider.small">16dp</dimen>
+  <dimen name="music.player.big.button.size">84dp</dimen>
+  <dimen name="music.player.small.button.size">52dp</dimen>
+  <dimen name="music.player.round.icon.button.size">64dp</dimen>
+  <dimen name="pager.title.text.size">26sp</dimen>
+  <dimen name="music.player.button.divider">36dp</dimen>
+  <dimen name="music.player.button.divider.small">20dp</dimen>
 </resources>
