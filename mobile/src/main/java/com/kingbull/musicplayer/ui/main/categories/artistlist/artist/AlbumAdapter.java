@@ -32,8 +32,7 @@ public final class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHo
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
     Glide.with(holder.itemView.getContext())
-        .load(albums.get(position).albumArt())
-        .placeholder(R.drawable.default_art)
+        .load(albums.get(position).albumArt()).placeholder(R.drawable.ic_music_note)
         .error(R.drawable.bass_guitar)
         .crossFade()
         .into(holder.imageView);
