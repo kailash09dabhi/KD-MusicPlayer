@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "877044606217",
+    "firebase_url": "https://kd-musicplayer.firebaseio.com",
+    "project_id": "kd-musicplayer",
+    "storage_bucket": "kd-musicplayer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877044606217:android:ff6766be7b17034c",
+        "android_client_info": {
+          "package_name": "com.kingbull.musicplayer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "877044606217-88tk7jhpqgp6d3jqk30l91vo86lo1sbt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kingbull.musicplayer",
+            "certificate_hash": "97875aba6c55eae8ca59550b8e27dfaf2b770874"
+          }
+        },
+        {
+          "client_id": "877044606217-9bjqi0tj81bhrufr8675fsdoopk92ljo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClEGsLgmyi2Wf-P8itPjP-Bpg23i-SJaI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "877044606217-9bjqi0tj81bhrufr8675fsdoopk92ljo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

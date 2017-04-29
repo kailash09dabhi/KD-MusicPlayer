@@ -13,6 +13,11 @@ android {
     vectorDrawables {
       useSupportLibrary = false
     }
+    resValue "string", "admob_app_id", "ca-app-pub-1642663068953785~5782766159"
+    resValue "string", "kd_music_player_small_native_banner",
+        "ca-app-pub-1642663068953785/6701096157"
+    resValue "string", "kd_music_player_settings_interstitial",
+        "ca-app-pub-1642663068953785/7259499352"
   }
 
   buildTypes {
@@ -41,6 +46,7 @@ android {
 def supportLibraryVersion = "25.2.0";
 def daggerLibraryVersion = "2.10";
 def butterknifeLibraryVersion = "8.5.1";
+def firebaseVersion = "10.2.0";
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -69,6 +75,7 @@ dependencies {
   compile 'uk.co.chrisjenx:calligraphy:2.2.0'
   compile 'com.facebook.stetho:stetho:1.5.0'
   compile 'com.github.bumptech.glide:glide:3.7.0'
+  compile "com.google.firebase:firebase-ads:$firebaseVersion"
 
   testCompile 'junit:junit:4.12'
   androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {

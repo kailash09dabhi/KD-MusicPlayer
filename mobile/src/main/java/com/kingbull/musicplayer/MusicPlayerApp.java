@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatDelegate;
 import com.facebook.stetho.Stetho;
+import com.google.android.gms.ads.MobileAds;
 import com.kingbull.musicplayer.di.AppComponent;
 import com.kingbull.musicplayer.di.AppModule;
 import com.kingbull.musicplayer.di.DaggerAppComponent;
@@ -33,6 +34,7 @@ public final class MusicPlayerApp extends Application {
     super.onCreate();
     application = this;
     Stetho.initializeWithDefaults(this);
+    MobileAds.initialize(getApplicationContext(), getString(R.string.admob_app_id));
     if (BuildConfig.DEBUG) {
       StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()
           .detectDiskWrites()
@@ -60,20 +62,5 @@ public final class MusicPlayerApp extends Application {
         .appModule(new AppModule(this))
         .storageModule(new StorageModule())
         .build();
-  }
-
-  @Override public void onTerminate() {
-    super.onTerminate();
-    System.out.println("onTerminate");
-  }
-
-  @Override public void onLowMemory() {
-    super.onLowMemory();
-    System.out.println("onLowMemory");
-  }
-
-  @Override public void onTrimMemory(int level) {
-    super.onTrimMemory(level);
-    System.out.println("onTrimMemory");
   }
 }

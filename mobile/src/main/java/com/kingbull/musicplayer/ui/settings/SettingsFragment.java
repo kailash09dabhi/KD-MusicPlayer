@@ -20,15 +20,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import com.google.android.gms.ads.AdListener;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.event.BlurRadiusEvent;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.ads.AdmobInterstitial;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -45,6 +48,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   @BindView(R.id.durationSecondsView) TextView durationSecondsView;
   @BindView(R.id.headerLayout) LinearLayout headerLayout;
   @BindView(R.id.scrollView) ScrollView scrollView;
+  private AdmobInterstitial admobInterstitial;
 
   @OnClick(R.id.hideSmallClips) void onClickHideSmallClips() {
     DurationFilterDialogFragment.newInstance()
@@ -68,6 +72,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     setupView();
+    setupAdmobInterstial();
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -80,6 +85,8 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
               durationSecondsView.setText(settingPreferences.filterDurationInSeconds() + " sec");
             } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
               applyUiColors();
+            } else if (o instanceof BlurRadiusEvent) {
+              admobInterstitial.showIfLoaded();
             }
           }
         });
@@ -155,6 +162,16 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
       window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
       settingPreferences.saveFullScreen(false);
     }
+  }
+
+  private void setupAdmobInterstial() {
+    admobInterstitial = new AdmobInterstitial(getActivity(),
+        getResources().getString(R.string.kd_music_player_settings_interstitial), new AdListener() {
+      @Override public void onAdClosed() {
+        admobInterstitial.load();
+      }
+    });
+    admobInterstitial.load();
   }
 
   @OnCheckedChanged(R.id.flatThemeCheckbox) void onThemeCheckedChange(boolean isChecked) {
