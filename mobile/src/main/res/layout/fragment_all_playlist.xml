@@ -12,7 +12,6 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    android:padding="16dp"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingLeft">
 
@@ -21,6 +20,7 @@
       style="@style/AppTheme.TextAppearance.Title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:paddingTop="20dp"
       android:text="MY PLAYLISTS" />
 
     <TextView
@@ -28,6 +28,7 @@
       style="@style/AppTheme.TextAppearance.Small"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="9dp"
       android:text="Listen your saved playlist" />
   </LinearLayout>
 

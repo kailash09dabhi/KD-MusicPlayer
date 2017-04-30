@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,12 +49,27 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   @BindView(R.id.durationSecondsView) TextView durationSecondsView;
   @BindView(R.id.headerLayout) LinearLayout headerLayout;
   @BindView(R.id.scrollView) ScrollView scrollView;
+  @BindView(R.id.appVersionView) TextView appVersionView;
   private AdmobInterstitial admobInterstitial;
 
   @OnClick(R.id.hideSmallClips) void onClickHideSmallClips() {
     DurationFilterDialogFragment.newInstance()
         .show(getActivity().getSupportFragmentManager(),
             DurationFilterDialogFragment.class.getName());
+  }
+
+  @OnClick(R.id.feedback) void onClickFeedback() {
+    composeEmail(new String[] { "kingbulltechnology@gmail.com" }, "KD MusicPlayer Feedback");
+  }
+
+  private void composeEmail(String[] addresses, String subject) {
+    Intent intent = new Intent(Intent.ACTION_SENDTO);
+    intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+    intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+    intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+      startActivity(intent);
+    }
   }
 
   @OnClick(R.id.blurBackground) void onClickBlurRadius() {
@@ -104,6 +120,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     fullScreenCheckbox.setChecked(settingPreferences.isFullScreen());
     flatThemeCheckbox.setChecked(settingPreferences.isFlatTheme());
     durationSecondsView.setText(settingPreferences.filterDurationInSeconds() + " sec");
+    appVersionView.setText(MusicPlayerApp.instance().versionName() + " (BETA)");
     applyUiColors();
   }
 

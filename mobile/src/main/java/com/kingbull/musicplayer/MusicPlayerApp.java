@@ -2,6 +2,7 @@ package com.kingbull.musicplayer;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatDelegate;
 import com.facebook.stetho.Stetho;
@@ -17,7 +18,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  * @author Kailash Dabhi
  * @date 11/9/2016.
  */
-
 public final class MusicPlayerApp extends Application {
   private static MusicPlayerApp application;
   private AppComponent appComponent;
@@ -62,5 +62,16 @@ public final class MusicPlayerApp extends Application {
         .appModule(new AppModule(this))
         .storageModule(new StorageModule())
         .build();
+  }
+
+  public String versionName() {
+    String versionName = "";
+    String packageName = getPackageName();
+    try {
+      versionName = getPackageManager().getPackageInfo(packageName, 0).versionName;
+    } catch (PackageManager.NameNotFoundException e) {
+      e.printStackTrace();
+    }
+    return versionName;
   }
 }

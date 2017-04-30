@@ -19,7 +19,7 @@
       style="@style/AppTheme.TextAppearance.Title"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingTop="22dp"
+      android:paddingTop="20dp"
       android:text="SETTINGS" />
 
     <TextView
@@ -230,6 +230,59 @@
           android:fontFamily="sans-serif"
           android:text="Set blurring value for your background images."
           tools:text="afd" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:id="@+id/feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?android:attr/listPreferredItemPaddingLeft"
+        android:orientation="vertical">
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Medium"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:fontFamily="sans-serif"
+          android:lines="1"
+          android:maxLines="1"
+          android:paddingBottom="@dimen/mp.padding.small"
+          android:singleLine="true"
+          android:text="Feedback" />
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif"
+          android:text="Provide us with feedback to help us improve the app" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?android:attr/listPreferredItemPaddingLeft"
+        android:orientation="vertical">
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Medium"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:fontFamily="sans-serif"
+          android:lines="1"
+          android:maxLines="1"
+          android:paddingBottom="@dimen/mp.padding.small"
+          android:singleLine="true"
+          android:text="App Version" />
+
+        <TextView
+          android:id="@+id/appVersionView"
+          style="@style/AppTheme.TextAppearance.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif" />
       </LinearLayout>
     </LinearLayout>
   </ScrollView>
