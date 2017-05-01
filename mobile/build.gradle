@@ -10,7 +10,7 @@ android {
     minSdkVersion 16
     targetSdkVersion 25
     versionCode 1
-    versionName "0.7.0.$gitSha"
+    versionName "0.6.1.$gitSha"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     vectorDrawables {
       useSupportLibrary = false
@@ -24,7 +24,7 @@ android {
 
   buildTypes {
     debug {
-      minifyEnabled false
+      minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
     release {
@@ -78,6 +78,7 @@ dependencies {
   compile 'com.facebook.stetho:stetho:1.5.0'
   compile 'com.github.bumptech.glide:glide:3.7.0'
   compile "com.google.firebase:firebase-ads:$firebaseVersion"
+  compile "com.google.firebase:firebase-crash:$firebaseVersion"
 
   testCompile 'junit:junit:4.12'
   androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {

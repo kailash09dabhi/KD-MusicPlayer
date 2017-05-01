@@ -54,3 +54,7 @@
 -keep class android.support.v4.** { *; }
 -keep interface android.support.v4.** { *; }
 
+
+-keep public class com.google.ads.** {
+   public *;
+}
