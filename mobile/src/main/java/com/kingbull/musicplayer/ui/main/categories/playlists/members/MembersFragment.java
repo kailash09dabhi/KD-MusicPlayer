@@ -22,6 +22,7 @@ import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.event.MovedToPlaylistEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.ads.AdmobNativeBannerLoaded;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -61,9 +62,10 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_playlist, container, false);
+    ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_playlist, container, false);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
+    new AdmobNativeBannerLoaded(view);
     playList = getArguments().getParcelable("playlist");
     return view;
   }

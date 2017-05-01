@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
+import com.kingbull.musicplayer.BuildConfig;
 import com.kingbull.musicplayer.MusicPlayerApp;
 
 /**
@@ -20,15 +21,17 @@ public final class DeviceConfig {
   }
 
   public void writeToLogcat() {
-    Configuration configuration = resources.getConfiguration();
-    Log.e(TAG, "screenHeightDp " + configuration.screenHeightDp);
-    Log.e(TAG, "screenWidthDp " + configuration.screenWidthDp);
-    Log.e(TAG, "densityDpi " + resources.getDisplayMetrics().densityDpi);
-    Log.e(TAG, "smallestScreenWidthDp " + configuration.smallestScreenWidthDp);
-    String valueFolder =
-        "values-sw" + configuration.smallestScreenWidthDp + "dp-" + densityBucket();
-    Log.e(TAG, "If the folder exist it will pick this folder: --->  " + valueFolder);
-    Toast.makeText(MusicPlayerApp.instance(), valueFolder, Toast.LENGTH_LONG).show();
+    if (BuildConfig.DEBUG) {
+      Configuration configuration = resources.getConfiguration();
+      Log.e(TAG, "screenHeightDp " + configuration.screenHeightDp);
+      Log.e(TAG, "screenWidthDp " + configuration.screenWidthDp);
+      Log.e(TAG, "densityDpi " + resources.getDisplayMetrics().densityDpi);
+      Log.e(TAG, "smallestScreenWidthDp " + configuration.smallestScreenWidthDp);
+      String valueFolder =
+          "values-sw" + configuration.smallestScreenWidthDp + "dp-" + densityBucket();
+      Log.e(TAG, "If the folder exist it will pick this folder: --->  " + valueFolder);
+      Toast.makeText(MusicPlayerApp.instance(), valueFolder, Toast.LENGTH_LONG).show();
+    }
   }
 
   private String densityBucket() {

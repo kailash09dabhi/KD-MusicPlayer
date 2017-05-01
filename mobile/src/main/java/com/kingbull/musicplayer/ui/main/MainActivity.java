@@ -24,14 +24,12 @@ import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.Artist;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import java.util.concurrent.TimeUnit;
 
 public final class MainActivity extends BaseActivity<Artist.Presenter> {
-  Pictures pictures = new Pictures();
+  private final Pictures pictures = new Pictures();
   @BindView(R.id.viewPager) ViewPagerParallax viewPager;
   @BindArray(R.array.main_tabs) String[] tabs;
   @BindView(R.id.sliding_tabs) TabLayout tabLayout;
-  Disposable disposable;
   private MainPagerAdapter adapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -68,24 +66,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
             }
           }
         });
-    final int arrayBg[] = pictures.toDrawablesId();
-    disposable = io.reactivex.Observable.interval(2, 20, TimeUnit.SECONDS)
-        .observeOn(AndroidSchedulers.mainThread())
-        .doOnNext(new Consumer<Long>() {
-          int i = 18;
-
-          @Override public void accept(Long aLong) throws Exception {
-            viewPager.setBackgroundAsset(arrayBg[i++], getWindow());
-            if (i >= arrayBg.length) i = 0;
-          }
-        })
-        .subscribe();
     new DeviceConfig(getResources()).writeToLogcat();
-  }
-
-  @Override protected void onDestroy() {
-    disposable.dispose();
-    super.onDestroy();
   }
 
   @NonNull @Override protected PresenterFactory<Artist.Presenter> presenterFactory() {

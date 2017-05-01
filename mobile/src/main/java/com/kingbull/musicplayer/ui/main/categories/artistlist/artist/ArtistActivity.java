@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
+import com.kingbull.musicplayer.ui.base.ads.AdmobNativeBannerLoaded;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
@@ -74,6 +76,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     setContentView(R.layout.activity_song_list);
     ButterKnife.bind(this);
     MusicPlayerApp.instance().component().inject(this);
+    new AdmobNativeBannerLoaded((ViewGroup) findViewById(android.R.id.content));
     artist = getIntent().getParcelableExtra("artist");
     coverRecyclerView.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));

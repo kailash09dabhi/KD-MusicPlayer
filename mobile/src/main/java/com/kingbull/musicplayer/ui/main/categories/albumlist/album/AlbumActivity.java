@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -40,6 +41,7 @@ import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.BitmapImage;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
+import com.kingbull.musicplayer.ui.base.ads.AdmobNativeBannerLoaded;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
@@ -126,7 +128,10 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     File file = null;
     if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
     Glide.with(this)
-        .load(album.albumArt()).asBitmap().placeholder(pictures.random()).error(pictures.random())
+        .load(album.albumArt())
+        .asBitmap()
+        .placeholder(pictures.random())
+        .error(pictures.random())
         .centerCrop()
         .signature(
             new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
@@ -186,6 +191,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     setContentView(R.layout.fragment_album);
     ButterKnife.bind(this);
     MusicPlayerApp.instance().component().inject(this);
+    new AdmobNativeBannerLoaded((ViewGroup) findViewById(android.R.id.content));
     new StatusBarColor(flatTheme.statusBar()).applyOn(getWindow());
     album = getIntent().getParcelableExtra("album");
     adapter = new MusicRecyclerViewAdapter(songList, this);
