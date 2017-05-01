@@ -99,6 +99,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
           @Override public void accept(Object o) throws Exception {
             if (o instanceof DurationFilterEvent) {
               durationSecondsView.setText(settingPreferences.filterDurationInSeconds() + " sec");
+              admobInterstitial.showIfLoaded();
             } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
               applyUiColors();
             } else if (o instanceof BlurRadiusEvent) {
