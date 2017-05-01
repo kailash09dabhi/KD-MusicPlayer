@@ -3,12 +3,14 @@ apply plugin: 'android-apt'
 android {
   compileSdkVersion 25
   buildToolsVersion "25.0.2"
+  def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+
   defaultConfig {
-    applicationId "com.kingbull.musicplayer"
+    applicationId "com.kingbull.kdmusicplayer"
     minSdkVersion 16
     targetSdkVersion 25
     versionCode 1
-    versionName "1.0"
+    versionName "0.7.0.$gitSha"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     vectorDrawables {
       useSupportLibrary = false

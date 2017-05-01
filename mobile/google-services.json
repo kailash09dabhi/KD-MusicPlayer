@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "877044606217",
-    "firebase_url": "https://kd-musicplayer.firebaseio.com",
-    "project_id": "kd-musicplayer",
-    "storage_bucket": "kd-musicplayer.appspot.com"
+    "project_number": "113224230756",
+    "firebase_url": "https://kd-music-player.firebaseio.com",
+    "project_id": "kd-music-player",
+    "storage_bucket": "kd-music-player.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:877044606217:android:ff6766be7b17034c",
+        "mobilesdk_app_id": "1:113224230756:android:0afef4e4958a70de",
         "android_client_info": {
-          "package_name": "com.kingbull.musicplayer"
+          "package_name": "com.kingbull.kdmusicplayer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "877044606217-88tk7jhpqgp6d3jqk30l91vo86lo1sbt.apps.googleusercontent.com",
+          "client_id": "113224230756-2rbrmsco1ic8lqvkf020muh19qj0gbhb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.kingbull.musicplayer",
+            "package_name": "com.kingbull.kdmusicplayer",
             "certificate_hash": "97875aba6c55eae8ca59550b8e27dfaf2b770874"
           }
         },
         {
-          "client_id": "877044606217-9bjqi0tj81bhrufr8675fsdoopk92ljo.apps.googleusercontent.com",
+          "client_id": "113224230756-ddens12ome1904pn446419j1jjvfg356.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyClEGsLgmyi2Wf-P8itPjP-Bpg23i-SJaI"
+          "current_key": "AIzaSyAs9a1QNnig0apzWfACwbtfAC025a4ga5E"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "877044606217-9bjqi0tj81bhrufr8675fsdoopk92ljo.apps.googleusercontent.com",
+              "client_id": "113224230756-ddens12ome1904pn446419j1jjvfg356.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
