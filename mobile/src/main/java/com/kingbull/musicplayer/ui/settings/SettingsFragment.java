@@ -80,6 +80,29 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
         .show(getActivity().getSupportFragmentManager(), BlurRadiusDialogFragment.class.getName());
   }
 
+  @OnClick(R.id.share) void onClickShare() {
+    share();
+  }
+
+  public void share() {
+    //create the send intent
+    Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+    //set the type
+    shareIntent.setType("text/plain");
+    //add a subject
+    shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+        getResources().getString(R.string.app_name));
+    String packageName = getActivity().getPackageName();
+    //build the body of the message to be shared
+    String shareMessage =
+        "Hey check this beautiful Music Player! \n\nhttps://play.google.com/store/apps/details?id="
+            + packageName;
+    //add the message
+    shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareMessage);
+    //start the chooser for sharing
+    startActivity(Intent.createChooser(shareIntent, "Share with"));
+  }
+
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_settings, container, false);
@@ -185,7 +208,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
       window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
       settingPreferences.saveFullScreen(false);
     }
-    analytics.logFullScreen(settingPreferences.isFullScreen());
+    analytics.logFullScreen(isChecked);
   }
 
   private void setupAdmobInterstial() {
@@ -201,6 +224,6 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   @OnCheckedChanged(R.id.flatThemeCheckbox) void onThemeCheckedChange(boolean isChecked) {
     settingPreferences.saveFlatTheme(isChecked);
     RxBus.getInstance().post(new ThemeEvent());
-    analytics.logTheme(settingPreferences.isFlatTheme());
+    analytics.logTheme(isChecked);
   }
 }

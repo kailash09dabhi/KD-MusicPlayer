@@ -43,9 +43,7 @@ public final class MusicPlayerApp extends Application {
           .penaltyLog()
           .build());
       StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects()
-          .detectLeakedClosableObjects()
-          .penaltyLog()
-          .penaltyDeath()
+          .detectLeakedClosableObjects().penaltyLog().penaltyLog()
           .build());
     }
     // Custom fonts

@@ -260,6 +260,33 @@
       </LinearLayout>
 
       <LinearLayout
+        android:id="@+id/share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?android:attr/listPreferredItemPaddingLeft"
+        android:orientation="vertical">
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Medium"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:fontFamily="sans-serif"
+          android:lines="1"
+          android:maxLines="1"
+          android:paddingBottom="@dimen/mp.padding.small"
+          android:singleLine="true"
+          android:text="Share KD Music Player" />
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif"
+          android:text="Spread it to your friends and family!" />
+      </LinearLayout>
+
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="?android:attr/listPreferredItemPaddingLeft"
