@@ -42,6 +42,7 @@ import com.kingbull.musicplayer.ui.base.BitmapImage;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.ads.AdmobNativeBannerLoaded;
+import com.kingbull.musicplayer.ui.base.analytics.Analytics;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
@@ -62,6 +63,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * @author Kailash Dabhi
@@ -84,6 +86,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   @BindView(R.id.totaltracks) TextView totalTracks;
   @BindView(R.id.artistname) TextView artistNameView;
   @BindView(R.id.rootView) View rootView;
+  @Inject Analytics analytics;
   private MusicRecyclerViewAdapter adapter;
   private com.kingbull.musicplayer.domain.Album album;
 
@@ -236,6 +239,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, fillColor));
     selectionOptionsLayout.updateIconsColor(fillColor);
     selectionOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
+    analytics.logScreen(AlbumActivity.class.getSimpleName());
   }
 
   @NonNull @Override protected PresenterFactory<Album.Presenter> presenterFactory() {

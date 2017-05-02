@@ -27,6 +27,7 @@ import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
+import com.kingbull.musicplayer.ui.base.analytics.Analytics;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
@@ -41,6 +42,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * @author Kailash Dabhi
@@ -58,6 +60,7 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
   @BindView(R.id.totalSongCountView) TextView totalSongsView;
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
+  @Inject Analytics analytics;
   private MusicRecyclerViewAdapter adapter;
 
   @OnClick(R.id.sortButton) void onSortClick() {
@@ -120,6 +123,7 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, fillColor));
     selectionOptionsLayout.updateIconsColor(fillColor);
     selectionOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
+    analytics.logScreen(GenreActivity.class.getSimpleName());
   }
 
   private void initializeWithThemeColors() {

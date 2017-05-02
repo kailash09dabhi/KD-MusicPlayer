@@ -31,8 +31,9 @@ public final class BlurRadiusDialogFragment extends BaseDialogFragment {
 
   @OnClick(R.id.doneButton) void onDoneClick() {
     if (!TextUtils.isEmpty(blurRadiusValueView.getText())) {
-      settingPreferences.blurRadius(Integer.parseInt(blurRadiusValueView.getText().toString()));
-      RxBus.getInstance().post(new BlurRadiusEvent());
+      int blurRadius = Integer.parseInt(blurRadiusValueView.getText().toString());
+      settingPreferences.blurRadius(blurRadius);
+      RxBus.getInstance().post(new BlurRadiusEvent(blurRadius));
     } else {
     }
     dismiss();

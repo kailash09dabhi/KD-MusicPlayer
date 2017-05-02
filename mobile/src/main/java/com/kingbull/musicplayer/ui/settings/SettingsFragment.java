@@ -33,10 +33,12 @@ import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.ads.AdmobInterstitial;
+import com.kingbull.musicplayer.ui.base.analytics.Analytics;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.Calendar;
+import javax.inject.Inject;
 
 /**
  * @author Kailash Dabhi
@@ -50,6 +52,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   @BindView(R.id.headerLayout) LinearLayout headerLayout;
   @BindView(R.id.scrollView) ScrollView scrollView;
   @BindView(R.id.appVersionView) TextView appVersionView;
+  @Inject Analytics analytics;
   private AdmobInterstitial admobInterstitial;
 
   @OnClick(R.id.hideSmallClips) void onClickHideSmallClips() {
@@ -100,10 +103,12 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
             if (o instanceof DurationFilterEvent) {
               durationSecondsView.setText(settingPreferences.filterDurationInSeconds() + " sec");
               admobInterstitial.showIfLoaded();
+              analytics.logDurationFilter();
             } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
               applyUiColors();
             } else if (o instanceof BlurRadiusEvent) {
               admobInterstitial.showIfLoaded();
+              analytics.logBlurRadius(((BlurRadiusEvent) o).blurRadius());
             }
           }
         });
@@ -180,6 +185,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
       window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
       settingPreferences.saveFullScreen(false);
     }
+    analytics.logFullScreen(settingPreferences.isFullScreen());
   }
 
   private void setupAdmobInterstial() {
@@ -195,5 +201,6 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   @OnCheckedChanged(R.id.flatThemeCheckbox) void onThemeCheckedChange(boolean isChecked) {
     settingPreferences.saveFlatTheme(isChecked);
     RxBus.getInstance().post(new ThemeEvent());
+    analytics.logTheme(settingPreferences.isFlatTheme());
   }
 }

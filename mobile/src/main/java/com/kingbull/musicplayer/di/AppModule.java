@@ -5,6 +5,7 @@ import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.player.MusicPlayer;
 import com.kingbull.musicplayer.player.Player;
+import com.kingbull.musicplayer.ui.base.analytics.Analytics;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import dagger.Module;
 import dagger.Provides;
@@ -39,5 +40,9 @@ import javax.inject.Singleton;
 
   @Singleton @Provides @Named(FLAT_THEME) ColorTheme provideFlatColorTheme() {
     return new ColorTheme.Flat();
+  }
+
+  @Singleton @Provides Analytics provideAnalytics() {
+    return new Analytics.Firebase();
   }
 }

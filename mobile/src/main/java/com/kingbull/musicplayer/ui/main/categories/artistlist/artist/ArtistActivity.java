@@ -29,6 +29,7 @@ import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.ads.AdmobNativeBannerLoaded;
+import com.kingbull.musicplayer.ui.base.analytics.Analytics;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
@@ -43,6 +44,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * @author Kailash Dabhi
@@ -60,6 +62,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   @BindView(R.id.totalSongCountView) TextView totalSongsView;
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
+  @Inject Analytics analytics;
   private MusicRecyclerViewAdapter adapter;
   private com.kingbull.musicplayer.domain.Artist artist;
 
@@ -125,6 +128,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     shuffleButton.setImageDrawable(new IconDrawable(R.drawable.ic_shuffle_48dp, fillColor));
     selectionOptionsLayout.updateIconsColor(fillColor);
     selectionOptionsLayout.updateIconSize(IconDrawable.dpToPx(40));
+    analytics.logScreen(ArtistActivity.class.getSimpleName());
   }
 
   private void initializeWithThemeColors() {
