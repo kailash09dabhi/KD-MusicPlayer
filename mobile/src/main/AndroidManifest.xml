@@ -25,6 +25,7 @@
     </activity>
     <activity
       android:name=".ui.main.MainActivity"
+      android:launchMode="singleTask"
       android:windowSoftInputMode="stateAlwaysHidden" />
     <activity android:name=".ui.main.categories.genreslist.genre.GenreActivity" />
     <activity
