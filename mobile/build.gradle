@@ -32,16 +32,6 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
-  productFlavors {
-    // Define separate dev and prod flavors
-    dev21 {
-      minSdkVersion 21
-    }
-    prod {
-      // The actual minSdkVersion for the production app
-      minSdkVersion 14
-    }
-  }
   compileOptions.incremental = false
 }
 
