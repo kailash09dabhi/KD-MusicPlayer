@@ -20,15 +20,18 @@ android {
         "ca-app-pub-1642663068953785/6701096157"
     resValue "string", "kd_music_player_settings_interstitial",
         "ca-app-pub-1642663068953785/7259499352"
+    resConfigs "en"
   }
 
   buildTypes {
     debug {
       minifyEnabled true
+      shrinkResources true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
     release {
       minifyEnabled true
+      shrinkResources true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
@@ -38,7 +41,7 @@ android {
 def supportLibraryVersion = "25.2.0";
 def daggerLibraryVersion = "2.10";
 def butterknifeLibraryVersion = "8.5.1";
-def firebaseVersion = "10.2.0";
+def firebaseVersion = "10.2.4";
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -51,9 +54,6 @@ dependencies {
   compile "com.android.support:palette-v7:$supportLibraryVersion"
   compile "com.android.support:design:$supportLibraryVersion"
 
-  compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-  compile 'io.reactivex.rxjava2:rxjava:2.0.1'
-  compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
 
   compile "com.jakewharton:butterknife:$butterknifeLibraryVersion"
   apt "com.jakewharton:butterknife-compiler:$butterknifeLibraryVersion"
@@ -62,14 +62,18 @@ dependencies {
   apt "com.google.dagger:dagger-compiler:$daggerLibraryVersion"
 
   compile "com.github.nisrulz:recyclerviewhelper:$supportLibraryVersion"
+  compile "com.google.firebase:firebase-core:$firebaseVersion"
+  compile "com.google.firebase:firebase-ads:$firebaseVersion"
+  compile "com.google.firebase:firebase-crash:$firebaseVersion"
+
+  compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+  compile 'io.reactivex.rxjava2:rxjava:2.0.1'
+  compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
   compile 'com.simplecityapps:recyclerview-fastscroll:1.0.14'
   compile 'com.github.Commit451:NativeStackBlur:1.0.5'
   compile 'uk.co.chrisjenx:calligraphy:2.2.0'
   compile 'com.facebook.stetho:stetho:1.5.0'
   compile 'com.github.bumptech.glide:glide:3.7.0'
-  compile "com.google.firebase:firebase-ads:$firebaseVersion"
-  //  compile "com.google.firebase:firebase-crash:$firebaseVersion"
-
   compile 'com.facebook.android:facebook-android-sdk:4.22.0'
   testCompile 'junit:junit:4.12'
   androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
@@ -81,3 +85,4 @@ dependencies {
 }
 // make sure this line comes *after* you apply the Android plugin
 apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'com.google.gms.google-services'
