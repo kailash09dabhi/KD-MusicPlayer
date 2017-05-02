@@ -20,6 +20,7 @@ import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.DeviceConfig;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.analytics.FbKeyHash;
 import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.Artist;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -67,6 +68,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
           }
         });
     new DeviceConfig(getResources()).writeToLogcat();
+    new FbKeyHash().print(this);
   }
 
   @NonNull @Override protected PresenterFactory<Artist.Presenter> presenterFactory() {
