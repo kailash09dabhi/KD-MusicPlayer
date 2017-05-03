@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- Used by Nexus 6p,(smallestScreenWidthDp  411) && (densityDpi 560) it is xxhdpi-->
+  <!-- Used by Tablet 10.1 inch mdpi,(smallestScreenWidthDp  800) && (densityDpi 160) it is mdpi-->
   <dimen name="mp.padding.small">4dp</dimen>
   <dimen name="mp.padding.normal">8dp</dimen>
   <dimen name="mp.padding.large">16dp</dimen>

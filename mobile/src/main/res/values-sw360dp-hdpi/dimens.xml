@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <!-- Used by MOTO E (smallestScreenWidthDp 360, densityDpi 240, hdpi-->
   <dimen name="mp.padding.small">4dp</dimen>
   <dimen name="mp.padding.normal">8dp</dimen>
   <dimen name="mp.padding.large">16dp</dimen>
@@ -8,16 +9,16 @@
   <dimen name="mp.margin.normal">8dp</dimen>
   <dimen name="mp.margin.large">16dp</dimen>
   <dimen name="mp.margin.xlarge">24dp</dimen>
-  <!-- MediaStatTable -->
-  <dimen name="music.player.album.size">241dp</dimen>
-  <dimen name="music.player.seekBar.marginTop">32dp</dimen>
-  <dimen name="music.player.playControls.marginTop">24dp</dimen>
-  <dimen name="music.player.playControls.marginBottom">8dp</dimen>
   <dimen name="cover_size">155dp</dimen>
   <dimen name="size.selectionOption">44dp</dimen>
   <dimen name="margin.button.selectionOption">20dp</dimen>
   <dimen name="padding.button.clear.selectionOption">12dp</dimen>
   <dimen name="pager.title.text.size">18sp</dimen>
+  <dimen name="equalizer.knob.button.size">115dp</dimen>
+  <dimen name="music.player.album.size">241dp</dimen>
+  <dimen name="music.player.seekBar.marginTop">32dp</dimen>
+  <dimen name="music.player.playControls.marginTop">24dp</dimen>
+  <dimen name="music.player.playControls.marginBottom">8dp</dimen>
   <dimen name="music.player.big.button.size">44dp</dimen>
   <dimen name="music.player.small.button.size">27dp</dimen>
   <dimen name="music.player.round.icon.button.size">36dp</dimen>
