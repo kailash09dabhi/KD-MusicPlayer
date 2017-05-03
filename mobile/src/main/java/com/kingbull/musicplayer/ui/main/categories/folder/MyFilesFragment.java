@@ -84,6 +84,11 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
     startActivity(intent);
   }
 
+  @Override public void refresh() {
+    myFilesAdapter.notifyDataSetChanged();
+    applyUIColors();
+  }
+
   @Override protected Disposable subscribeEvents() {
     return RxBus.getInstance()
         .toObservable()
@@ -91,8 +96,7 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              myFilesAdapter.notifyDataSetChanged();
-              applyUIColors();
+              presenter.onPaletteOrThemeEvent();
             }
           }
         });

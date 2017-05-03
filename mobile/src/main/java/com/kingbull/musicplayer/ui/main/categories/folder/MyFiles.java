@@ -18,6 +18,8 @@ public interface MyFiles {
     void close();
 
     void showMusicPlayer();
+
+    void refresh();
   }
 
   interface Model extends Mvp.Model {
@@ -38,5 +40,7 @@ public interface MyFiles {
     void onBackPressed();
 
     void onMusicClick(File musicFile);
+
+    void onPaletteOrThemeEvent();
   }
 }

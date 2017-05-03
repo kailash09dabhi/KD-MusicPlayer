@@ -45,4 +45,8 @@ public final class MyFilesPresenter extends Presenter<MyFiles.View> implements M
     player.play(fileMusicMap.music(musicFile));
     view().showMusicPlayer();
   }
+
+  @Override public void onPaletteOrThemeEvent() {
+    view().refresh();
+  }
 }
