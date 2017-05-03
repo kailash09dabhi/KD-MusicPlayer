@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <integer name="oval.stroke.width">4</integer>
+  <integer name="equalizer.curve.stroke.width">10</integer>
+  <integer name="equalizer.frequency.line.stroke.width">8</integer>
+  <integer name="equalizer.frequency.point.stroke.width">12</integer>
+  <integer name="equalizer.frequency.point.radius">4</integer>
+  <integer name="equalizer.knob.inner.gap">14</integer>
+</resources>

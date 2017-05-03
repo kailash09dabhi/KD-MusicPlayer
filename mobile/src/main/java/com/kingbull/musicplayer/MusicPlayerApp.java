@@ -35,7 +35,7 @@ public final class MusicPlayerApp extends Application {
     super.onCreate();
     application = this;
     Stetho.initializeWithDefaults(this);
-    MobileAds.initialize(getApplicationContext(), getString(R.string.admob_app_id));
+    MobileAds.initialize(getApplicationContext(), "ca-app-pub-1642663068953785~5782766159");
     if (BuildConfig.DEBUG) {
       StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()
           .detectDiskWrites()
@@ -43,7 +43,9 @@ public final class MusicPlayerApp extends Application {
           .penaltyLog()
           .build());
       StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects()
-          .detectLeakedClosableObjects().penaltyLog().penaltyLog()
+          .detectLeakedClosableObjects()
+          .penaltyLog()
+          .penaltyLog()
           .build());
     }
     // Custom fonts
