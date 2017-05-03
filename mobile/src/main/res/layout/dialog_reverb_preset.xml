@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:background="#55000000"
-    android:orientation="vertical"
-    android:paddingLeft="?listPreferredItemPaddingLeft"
-    android:paddingRight="?listPreferredItemPaddingLeft">
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:background="#55000000"
+  android:orientation="vertical"
+  android:padding="?listPreferredItemPaddingLeft">
 
   <TextView
-      android:id="@+id/titleView"
+    android:id="@+id/titleView"
     style="@style/AppTheme.TextAppearance.Title"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:gravity="center"
-      android:minHeight="?listPreferredItemHeight"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:minHeight="?listPreferredItemHeightSmall"
     android:text="Effects" />
 
   <ListView
-      android:id="@+id/listView"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:scrollbarSize="3dp"
-      android:scrollbarThumbVertical="@drawable/transparent_white">
-  </ListView>
+    android:id="@+id/listView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarSize="3dp"
+    android:scrollbarThumbVertical="@drawable/transparent_white"></ListView>
 </LinearLayout>

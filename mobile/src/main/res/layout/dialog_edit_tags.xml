@@ -1,155 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="#55000000"
-    android:orientation="vertical"
-    android:paddingLeft="?listPreferredItemPaddingLeft"
-    android:paddingRight="?listPreferredItemPaddingLeft">
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:background="#55000000"
+  android:orientation="vertical"
+  android:padding="?android:attr/listPreferredItemPaddingLeft">
 
   <TextView
-      android:id="@+id/title"
+    android:id="@+id/title"
     style="@style/AppTheme.TextAppearance.Title"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:gravity="center"
-      android:minHeight="?listPreferredItemHeight"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:minHeight="?listPreferredItemHeightSmall"
     android:text="Edit Tags" />
+
   <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@id/title"
-      android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/title"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp">
+
       <TextView
-          android:id="@+id/textView"
+        android:id="@+id/textView"
         style="@style/AppTheme.TextAppearance.Medium"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="0.25"
-          android:singleLine="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:singleLine="true"
         android:text="Title" />
+
       <EditText
-          android:id="@+id/titleView"
+        android:id="@+id/titleView"
         style="@style/AppTheme.TextAppearance.Medium"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="0.75"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.75"
         android:singleLine="true" />
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp">
+
       <TextView
         style="@style/AppTheme.TextAppearance.Medium"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="0.25"
-          android:singleLine="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:singleLine="true"
         android:text="Artist" />
+
       <EditText
-          android:id="@+id/artistView"
+        android:id="@+id/artistView"
         style="@style/AppTheme.TextAppearance.Medium"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="0.75"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.75"
         android:singleLine="true" />
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp">
+
       <TextView
         style="@style/AppTheme.TextAppearance.Medium"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="0.25"
-          android:singleLine="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:singleLine="true"
         android:text="Album" />
+
       <EditText
-          android:id="@+id/albumView"
+        android:id="@+id/albumView"
         style="@style/AppTheme.TextAppearance.Medium"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="0.75"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.75"
         android:singleLine="true" />
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp">
+
       <TextView
         style="@style/AppTheme.TextAppearance.Medium"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="0.25"
-          android:singleLine="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:singleLine="true"
         android:text="Genre" />
+
       <EditText
-          android:id="@+id/genreView"
+        android:id="@+id/genreView"
         style="@style/AppTheme.TextAppearance.Medium"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="0.75"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.75"
         android:singleLine="true" />
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp">
+
       <TextView
         style="@style/AppTheme.TextAppearance.Medium"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="0.25"
-          android:singleLine="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:singleLine="true"
         android:text="Year" />
+
       <EditText
-          android:id="@+id/yearView"
+        android:id="@+id/yearView"
         style="@style/AppTheme.TextAppearance.Medium"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="0.75"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.75"
         android:singleLine="true" />
     </LinearLayout>
+
     <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="20dp"
+      android:orientation="horizontal">
+
+      <ImageView
+        android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:padding="8dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
       <ImageView
-          android:id="@+id/cancelButton"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="16dp"
-          android:padding="8dp"
-          android:src="@android:drawable/ic_menu_close_clear_cancel"/>
-
-      <ImageView
-          android:id="@+id/doneButton"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:padding="8dp"
-          android:src="@android:drawable/ic_menu_rotate"/>
+        android:id="@+id/doneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/mp.padding.normal"
+        android:padding="8dp"
+        android:src="@android:drawable/ic_menu_rotate" />
     </LinearLayout>
-
   </LinearLayout>
 </RelativeLayout>

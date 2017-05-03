@@ -15,6 +15,7 @@
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
   </style>
+
   <style name="AppTheme.TextAppearance" parent="TextAppearance.AppCompat">
     <item name="fontPath">@string/font.body</item>
     <item name="android:textColor">@android:color/white</item>
@@ -46,6 +47,11 @@
     <item name="android:layout_width">@dimen/size.selectionOption</item>
     <item name="android:layout_height">@dimen/size.selectionOption</item>
     <item name="android:padding">@dimen/mp.padding.small</item>
-    <item name="android:drawable">?android:attr/selectableItemBackgroundBorderless</item>
+  </style>
+
+  <style name="DialogImageButtons">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:padding">@dimen/mp.padding.normal</item>
   </style>
 </resources>

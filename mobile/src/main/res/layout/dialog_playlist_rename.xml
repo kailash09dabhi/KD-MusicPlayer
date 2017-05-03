@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
+  android:layout_height="wrap_content"
   android:layout_gravity="center"
   android:layout_margin="@dimen/mp.margin.large"
   android:background="@drawable/transparent_strong_black"
   android:orientation="vertical"
-  android:paddingTop="@dimen/mp.padding.xlarge">
+  android:padding="?android:listPreferredItemPaddingLeft">
 
   <TextView
     android:id="@+id/titleView"
@@ -15,6 +15,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
     android:gravity="center"
+    android:minHeight="?listPreferredItemHeightSmall"
     android:singleLine="true"
     android:text="Rename Playlist" />
 
@@ -24,8 +25,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@id/titleView"
-    android:layout_marginLeft="24dp"
-    android:layout_marginRight="24dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
     android:hint="Enter playlist name"
     android:inputType="text"
     android:maxLines="1"
@@ -46,7 +47,6 @@
       android:id="@+id/closeButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="16dp"
       android:padding="8dp"
       android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
@@ -54,6 +54,7 @@
       android:id="@+id/doneButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/mp.padding.normal"
       android:padding="8dp"
       android:src="@android:drawable/ic_menu_rotate" />
   </LinearLayout>

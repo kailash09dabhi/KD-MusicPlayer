@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
+  android:layout_height="wrap_content"
   android:layout_gravity="center"
   android:layout_margin="@dimen/mp.margin.large"
   android:background="@drawable/transparent_strong_black"
@@ -13,12 +13,11 @@
     style="@style/AppTheme.TextAppearance.Title"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentStart="true"
-    android:layout_alignParentTop="true"
+    android:layout_marginBottom="16dp"
     android:gravity="center"
     android:minHeight="?listPreferredItemHeightSmall"
     android:singleLine="true"
-    android:text="Blur Radius" />
+    android:text="Duration Filter" />
 
   <LinearLayout
     android:id="@+id/middleContainer"
@@ -34,10 +33,10 @@
       android:layout_weight="0.40"
       android:gravity="center"
       android:singleLine="true"
-      android:text="Radius" />
+      android:text="Duration" />
 
     <EditText
-      android:id="@+id/blurRadiusValue"
+      android:id="@+id/durationSecondsView"
       style="@style/AppTheme.TextAppearance.Medium"
       android:layout_width="0dip"
       android:layout_height="wrap_content"
@@ -47,10 +46,14 @@
       android:maxLines="1"
       android:singleLine="true" />
 
-    <View
+    <TextView
+      style="@style/AppTheme.TextAppearance.Small"
       android:layout_width="0dip"
-      android:layout_height="1dp"
-      android:layout_weight="0.20" />
+      android:layout_height="wrap_content"
+      android:layout_weight="0.20"
+      android:maxLines="1"
+      android:singleLine="true"
+      android:text="seconds" />
   </LinearLayout>
 
   <LinearLayout
