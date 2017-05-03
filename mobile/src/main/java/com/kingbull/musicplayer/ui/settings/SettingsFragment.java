@@ -160,12 +160,14 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   }
 
   private void deepChangeTextColor(ViewGroup parentLayout) {
-    for (int count = 0; count < parentLayout.getChildCount(); count++) {
-      View view = parentLayout.getChildAt(count);
-      if (view instanceof TextView) {
-        ((TextView) view).setTextColor(smartTheme.titleText().intValue());
-      } else if (view instanceof ViewGroup) {
-        deepChangeTextColor((ViewGroup) view);
+    for (int count = 0; count < parentLayout.getChildCount() - 1; count++) {
+      View viewOne = parentLayout.getChildAt(count);
+      View viewTwo = parentLayout.getChildAt(count + 1);
+      if (viewOne instanceof TextView) {
+        if (viewTwo != null) ((TextView) viewOne).setTextColor(smartTheme.titleText().intValue());
+        ((TextView) viewTwo).setTextColor(smartTheme.bodyText().intValue());
+      } else if (viewOne instanceof ViewGroup) {
+        deepChangeTextColor((ViewGroup) viewOne);
       }
     }
   }
