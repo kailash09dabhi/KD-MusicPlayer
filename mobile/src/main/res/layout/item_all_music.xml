@@ -42,11 +42,11 @@
 
       <ImageView
         android:id="@+id/moreActionsView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/list.more.action.size"
+        android:layout_height="@dimen/list.more.action.size"
         android:adjustViewBounds="true"
         android:background="@drawable/selector"
-        android:padding="8dp"
+        android:padding="@dimen/mp.padding.small"
         app:srcCompat="@drawable/ic_more_horiz" />
     </LinearLayout>
 

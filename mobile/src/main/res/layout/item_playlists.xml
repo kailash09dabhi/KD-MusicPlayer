@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:minHeight="?listPreferredItemHeight"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:gravity="center"
+  android:minHeight="?listPreferredItemHeight"
   android:orientation="horizontal"
   android:paddingLeft="?android:listPreferredItemPaddingLeft"
   android:paddingRight="?android:listPreferredItemPaddingRight">
 
   <TextView
-      android:id="@+id/nameView"
+    android:id="@+id/nameView"
     style="@style/AppTheme.TextAppearance.Medium"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:fontFamily="sans-serif"
-      android:lines="1"
-      android:singleLine="true"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:fontFamily="sans-serif"
+    android:lines="1"
+    android:singleLine="true"
     tools:text="afd" />
+
   <ImageView
-      android:id="@+id/moreActionsView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:background="@drawable/selector"
-      android:padding="8dp"
-      app:srcCompat="@drawable/ic_more_horiz"/>
+    android:id="@+id/moreActionsView"
+    android:layout_width="@dimen/list.more.action.size"
+    android:layout_height="@dimen/list.more.action.size"
+    android:background="@drawable/selector"
+    android:padding="@dimen/mp.padding.small"
+    app:srcCompat="@drawable/ic_more_horiz" />
 </LinearLayout>
