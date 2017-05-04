@@ -24,6 +24,7 @@ import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.ads.AdmobNativeBannerLoaded;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
+import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -99,6 +100,8 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
     titleView.setText(playList.name().toUpperCase());
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     musicList = playList.musicList();
+    multipleDeleteView.setImageDrawable(
+        new IconDrawable(R.drawable.ic_delete_48dp, flatTheme.header().intValue()));
     showPlaylistMembers(musicList);
   }
 
