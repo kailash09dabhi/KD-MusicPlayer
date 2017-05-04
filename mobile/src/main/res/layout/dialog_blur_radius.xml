@@ -66,17 +66,15 @@
 
     <ImageView
       android:id="@+id/closeButton"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="8dp"
+      style="@style/DialogImageButtons"
+      android:background="?attr/selectableItemBackgroundBorderless"
       android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
     <ImageView
       android:id="@+id/doneButton"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      style="@style/DialogImageButtons"
       android:layout_marginLeft="@dimen/mp.padding.normal"
-      android:padding="8dp"
+      android:background="?attr/selectableItemBackgroundBorderless"
       android:src="@android:drawable/ic_menu_rotate" />
   </LinearLayout>
 </RelativeLayout>

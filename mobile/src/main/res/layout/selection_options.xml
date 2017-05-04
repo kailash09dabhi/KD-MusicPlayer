@@ -8,6 +8,7 @@
   <ImageView
     android:id="@+id/addToPlaylistButton"
     style="@style/SelectionOption"
+    android:background="?attr/selectableItemBackgroundBorderless"
     app:srcCompat="@drawable/ic_playlist_add_48dp" />
 
   <ImageView
@@ -15,11 +16,13 @@
     style="@style/SelectionOption"
     android:layout_marginLeft="@dimen/margin.button.selectionOption"
     android:layout_marginRight="@dimen/margin.button.selectionOption"
+    android:background="?attr/selectableItemBackgroundBorderless"
     app:srcCompat="@drawable/ic_delete_48dp" />
 
   <ImageView
     android:id="@+id/clearSelectionsButton"
     style="@style/SelectionOption"
+    android:background="?attr/selectableItemBackgroundBorderless"
     android:padding="@dimen/padding.button.clear.selectionOption"
     android:src="@drawable/ic_remote_view_close" />
 </merge>
