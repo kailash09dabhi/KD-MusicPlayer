@@ -52,10 +52,10 @@
     </receiver>
     <service android:name=".player.MusicService">
       <intent-filter>
-        <action android:name="com.kingbull.musicplayer.ACTION_PLAY_TOGGLE" />
-        <action android:name="com.kingbull.musicplayer.ACTION_PLAY_NEXT" />
-        <action android:name="com.kingbull.musicplayer.ACTION_PLAY_LAST" />
-        <action android:name="com.kingbull.musicplayer.ACTION_STOP_SERVICE" />
+        <action android:name="com.kingbull.kdmusicplayer.ACTION_PLAY_TOGGLE" />
+        <action android:name="com.kingbull.kdmusicplayer.ACTION_PLAY_NEXT" />
+        <action android:name="com.kingbull.kdmusicplayer.ACTION_PLAY_LAST" />
+        <action android:name="com.kingbull.kdmusicplayer.ACTION_STOP_SERVICE" />
       </intent-filter>
     </service>
   </application>

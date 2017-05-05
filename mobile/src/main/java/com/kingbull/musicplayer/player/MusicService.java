@@ -53,10 +53,10 @@ import javax.inject.Inject;
  * Desc: PlayService
  */
 public final class MusicService extends Service implements Player {
-  public static final String ACTION_STOP_SERVICE = "com.kingbull.musicplayer.ACTION_STOP_SERVICE";
-  private static final String ACTION_PLAY_TOGGLE = "com.kingbull.musicplayer.ACTION_PLAY_TOGGLE";
-  private static final String ACTION_PLAY_LAST = "com.kingbull.musicplayer.ACTION_PLAY_LAST";
-  private static final String ACTION_PLAY_NEXT = "com.kingbull.musicplayer.ACTION_PLAY_NEXT";
+  public static final String ACTION_STOP_SERVICE = "com.kingbull.kdmusicplayer.ACTION_STOP_SERVICE";
+  private static final String ACTION_PLAY_TOGGLE = "com.kingbull.kdmusicplayer.ACTION_PLAY_TOGGLE";
+  private static final String ACTION_PLAY_LAST = "com.kingbull.kdmusicplayer.ACTION_PLAY_LAST";
+  private static final String ACTION_PLAY_NEXT = "com.kingbull.kdmusicplayer.ACTION_PLAY_NEXT";
   private static final int NOTIFICATION_ID = 1;
   private final Binder mBinder = new LocalBinder();
   private final AlbumTable albumTable = new AlbumTable();
