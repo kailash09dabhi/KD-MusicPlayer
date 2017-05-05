@@ -11,7 +11,6 @@ import javax.inject.Inject;
 
 public final class CallReceiver extends BroadcastReceiver {
   @Inject Player musicPlayer;
-  private Context context;
 
   public CallReceiver() {
     MusicPlayerApp.instance().component().inject(this);
@@ -19,7 +18,6 @@ public final class CallReceiver extends BroadcastReceiver {
 
   public void onReceive(Context context, Intent intent) {
     try {
-      this.context = context;
       TelephonyManager telephonyManager =
           (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
       MyPhoneStateListener PhoneListener = new MyPhoneStateListener();
@@ -32,14 +30,15 @@ public final class CallReceiver extends BroadcastReceiver {
   private class MyPhoneStateListener extends PhoneStateListener {
     boolean isPaused = false;//paused when call arrived then true else false
 
-    public void onCallStateChanged(int state, String incomingNumber) {
+    @Override public void onCallStateChanged(int state, String incomingNumber) {
       Log.d("MyPhoneListener", state + "   incoming no:" + incomingNumber);
-      if (state == 1) {
+      if (state == TelephonyManager.CALL_STATE_OFFHOOK
+          || state == TelephonyManager.CALL_STATE_RINGING) {
         if (musicPlayer.isPlaying()) {
           musicPlayer.pause();
           isPaused = true;
         }
-      } else if (state == 0) {
+      } else if (state == TelephonyManager.CALL_STATE_IDLE) {
         if (isPaused) musicPlayer.play();
       }
     }
