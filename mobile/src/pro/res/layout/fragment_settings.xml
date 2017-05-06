@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+  <LinearLayout
+    android:id="@+id/headerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+    android:paddingRight="?android:attr/listPreferredItemPaddingLeft">
+
+    <TextView
+      android:id="@+id/titleView"
+      style="@style/AppTheme.TextAppearance.Title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingTop="20dp"
+      android:text="SETTINGS" />
+
+    <TextView
+      android:id="@+id/directoryPathView"
+      style="@style/AppTheme.TextAppearance.Small"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingBottom="9dp"
+      android:text="Configure your settings" />
+  </LinearLayout>
+
+  <ScrollView
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:fadeScrollbars="true"
+    android:fadingEdgeLength="34dp"
+    android:overScrollMode="never"
+    android:paddingBottom="16dp"
+    android:requiresFadingEdge="vertical"
+    android:scrollbars="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingLeft="16dp"
+      android:paddingRight="16dp">
+
+      <TextView
+        android:id="@+id/sleepTimerView"
+        style="@style/AppTheme.TextAppearance.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:lines="1"
+        android:minHeight="?listPreferredItemHeight"
+        android:singleLine="true"
+        android:text="Sleep Timer"
+        tools:text="afd" />
+
+      <TextView
+        android:id="@+id/languageView"
+        style="@style/AppTheme.TextAppearance.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:lines="1"
+        android:minHeight="?listPreferredItemHeight"
+        android:singleLine="true"
+        android:text="Language"
+        android:visibility="gone"
+        tools:text="afd" />
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="?listPreferredItemHeight"
+        android:orientation="horizontal">
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Medium"
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:fontFamily="sans-serif"
+          android:lines="1"
+          android:singleLine="true"
+          android:text="Full Screen"
+          tools:text="afd" />
+
+        <CheckBox
+          android:id="@+id/fullScreenCheckbox"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:padding="8dp" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:id="@+id/hideSmallClips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:paddingBottom="@dimen/mp.padding.small">
+
+          <TextView
+            style="@style/AppTheme.TextAppearance.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="Hide Small Clips"
+            tools:text="afd" />
+
+          <TextView
+            android:id="@+id/durationSecondsView"
+            style="@style/AppTheme.TextAppearance.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="10 sec"
+            tools:text="afd" />
+        </LinearLayout>
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif"
+          android:text="Filter out small audio clips. Set a threshold duration below which the files will not be displayed."
+          tools:text="afd" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="?listPreferredItemHeight"
+        android:orientation="horizontal">
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Medium"
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:fontFamily="sans-serif"
+          android:lines="1"
+          android:singleLine="true"
+          android:text="Flat Theme"
+          tools:text="afd" />
+
+        <CheckBox
+          android:id="@+id/flatThemeCheckbox"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:padding="8dp" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:id="@+id/blurBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:paddingBottom="@dimen/mp.padding.small">
+
+          <TextView
+            style="@style/AppTheme.TextAppearance.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="Blur Background" />
+
+          <TextView
+            android:id="@+id/blurRadiusValue"
+            style="@style/AppTheme.TextAppearance.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="1"
+            android:visibility="gone"
+            tools:text="afd" />
+        </LinearLayout>
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif"
+          android:text="Set blurring value for your background images."
+          tools:text="afd" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:id="@+id/feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?android:attr/listPreferredItemPaddingLeft"
+        android:orientation="vertical">
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Medium"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:fontFamily="sans-serif"
+          android:lines="1"
+          android:maxLines="1"
+          android:paddingBottom="@dimen/mp.padding.small"
+          android:singleLine="true"
+          android:text="Feedback" />
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif"
+          android:text="Provide us with feedback to help us improve the app" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:id="@+id/share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?android:attr/listPreferredItemPaddingLeft"
+        android:orientation="vertical">
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Medium"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:fontFamily="sans-serif"
+          android:lines="1"
+          android:maxLines="1"
+          android:paddingBottom="@dimen/mp.padding.small"
+          android:singleLine="true"
+          android:text="Share KD Music Player" />
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif"
+          android:text="Spread it to your friends and family!" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?android:attr/listPreferredItemPaddingLeft"
+        android:orientation="vertical">
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Medium"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:fontFamily="sans-serif"
+          android:lines="1"
+          android:maxLines="1"
+          android:paddingBottom="@dimen/mp.padding.small"
+          android:singleLine="true"
+          android:text="App Version" />
+
+        <TextView
+          android:id="@+id/appVersionView"
+          style="@style/AppTheme.TextAppearance.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif" />
+      </LinearLayout>
+    </LinearLayout>
+  </ScrollView>
+</LinearLayout>
