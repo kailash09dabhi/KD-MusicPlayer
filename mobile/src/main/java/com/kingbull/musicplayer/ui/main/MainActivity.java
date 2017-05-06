@@ -13,8 +13,10 @@ import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.PiracyGuard;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.SmartPiracyGuard;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
@@ -31,6 +33,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
   @BindView(R.id.viewPager) ViewPagerParallax viewPager;
   @BindArray(R.array.main_tabs) String[] tabs;
   @BindView(R.id.sliding_tabs) TabLayout tabLayout;
+  PiracyGuard piracyGuard;
   private MainPagerAdapter adapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,13 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
         });
     new DeviceConfig(getResources()).writeToLogcat();
     new FbKeyHash().print(this);
+    piracyGuard = new SmartPiracyGuard(this);
+    piracyGuard.check();
+  }
+
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    piracyGuard.free();
   }
 
   @NonNull @Override protected PresenterFactory<Artist.Presenter> presenterFactory() {
