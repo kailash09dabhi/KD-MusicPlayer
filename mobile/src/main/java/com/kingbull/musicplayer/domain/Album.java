@@ -13,11 +13,8 @@ import com.kingbull.musicplayer.MusicPlayerApp;
  * @author Kailash Dabhi
  * @date 12/1/2016.
  */
-
 public interface Album {
-
   Album NONE = new Album() {
-
     @Override public long albumId() {
       return 0;
     }
@@ -44,7 +41,6 @@ public interface Album {
   String albumArt();
 
   class Smart implements Album, Parcelable {
-
     public static final Creator<Smart> CREATOR = new Creator<Smart>() {
       @Override public Smart createFromParcel(Parcel in) {
         return new Smart(in);
@@ -93,6 +89,17 @@ public interface Album {
       dest.writeString(albumArt);
     }
 
+    @Override public int hashCode() {
+      return name != null ? name.hashCode() : 0;
+    }
+
+    @Override public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      Smart smart = (Smart) o;
+      return name != null ? name.equals(smart.name) : smart.name == null;
+    }
+
     @Override public long albumId() {
       return _id;
     }
@@ -115,17 +122,6 @@ public interface Album {
 
     @Override public String albumArt() {
       return albumArt;
-    }
-
-    @Override public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-      Smart smart = (Smart) o;
-      return name != null ? name.equals(smart.name) : smart.name == null;
-    }
-
-    @Override public int hashCode() {
-      return name != null ? name.hashCode() : 0;
     }
   }
 }

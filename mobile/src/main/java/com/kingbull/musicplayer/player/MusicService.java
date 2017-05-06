@@ -1,69 +1,41 @@
 package com.kingbull.musicplayer.player;
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.Virtualizer;
 import android.os.Binder;
-import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.app.NotificationCompat;
-import android.support.v7.widget.AppCompatDrawableManager;
-import android.widget.RemoteViews;
-import com.bumptech.glide.Glide;
 import com.kingbull.musicplayer.MusicPlayerApp;
-import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
-import com.kingbull.musicplayer.ui.main.MainActivity;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
-/**
- * Created with Android Studio.
- * User: ryan.hoo.j@gmail.com
- * Date: 9/12/16
- * Time: 4:27 PM
- * Desc: PlayService
- */
 public final class MusicService extends Service implements Player {
   public static final String ACTION_STOP_SERVICE = "com.kingbull.kdmusicplayer.ACTION_STOP_SERVICE";
-  private static final String ACTION_PLAY_TOGGLE = "com.kingbull.kdmusicplayer.ACTION_PLAY_TOGGLE";
-  private static final String ACTION_PLAY_LAST = "com.kingbull.kdmusicplayer.ACTION_PLAY_LAST";
-  private static final String ACTION_PLAY_NEXT = "com.kingbull.kdmusicplayer.ACTION_PLAY_NEXT";
-  private static final int NOTIFICATION_ID = 1;
+  public static final String ACTION_PLAY_TOGGLE = "com.kingbull.kdmusicplayer.ACTION_PLAY_TOGGLE";
+  public static final String ACTION_PLAY_LAST = "com.kingbull.kdmusicplayer.ACTION_PLAY_LAST";
+  public static final String ACTION_PLAY_NEXT = "com.kingbull.kdmusicplayer.ACTION_PLAY_NEXT";
   private final Binder mBinder = new LocalBinder();
-  private final AlbumTable albumTable = new AlbumTable();
   @Inject Player musicPlayer;
-  private RemoteViews mContentViewBig, mContentViewSmall;
   private MediaSessionCompat mediaSession;
   private CompositeDisposable compositeDisposable;
+  private MusicNotification musicNotification;
 
   @Override public void onCreate() {
     super.onCreate();
@@ -71,11 +43,11 @@ public final class MusicService extends Service implements Player {
     compositeDisposable = new CompositeDisposable();
     compositeDisposable.add(RxBus.getInstance()
         .toObservable()
-        .ofType(MusicEvent.class)
+        .ofType(MusicEvent.class).debounce(151, TimeUnit.MILLISECONDS)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeWith(new DisposableObserver<MusicEvent>() {
           @Override public void onNext(MusicEvent musicEvent) {
-            showNotification();
+            musicNotification.show();
           }
 
           @Override public void onError(Throwable e) {
@@ -92,6 +64,7 @@ public final class MusicService extends Service implements Player {
       }
     }, BIND_AUTO_CREATE);
     lockScreenMediaSessionSetup();
+    musicNotification = new MusicNotification(this, musicPlayer, mediaSession);
   }
 
   @Override public int onStartCommand(Intent intent, int flags, int startId) {
@@ -211,125 +184,6 @@ public final class MusicService extends Service implements Player {
   @Override public boolean stopService(Intent name) {
     stopForeground(true);
     return super.stopService(name);
-  }
-
-  /**
-   * Show a notification while this service is running.
-   */
-  private void showNotification() {
-    // The PendingIntent to launch our activity if the user selects this notification
-    PendingIntent contentIntent =
-        PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class),
-            PendingIntent.FLAG_UPDATE_CURRENT);
-    // Set the info for the views that show in the notification panel.
-    Notification notification = new NotificationCompat.Builder(this).setSmallIcon(
-        R.drawable.ic_notification_app_logo)  // the status icon
-        .setWhen(System.currentTimeMillis())  // the time stamp
-        .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
-        .setCustomContentView(getSmallContentView())
-        .setCustomBigContentView(getBigContentView())
-        .setPriority(NotificationCompat.PRIORITY_MAX)
-        .setOngoing(true)
-        .build();
-    // Send the notification.
-    startForeground(NOTIFICATION_ID, notification);
-  }
-
-  private RemoteViews getSmallContentView() {
-    if (mContentViewSmall == null) {
-      mContentViewSmall =
-          new RemoteViews(getPackageName(), R.layout.remote_view_music_player_small);
-      setUpRemoteView(mContentViewSmall);
-    }
-    updateRemoteViews(mContentViewSmall);
-    return mContentViewSmall;
-  }
-
-  private RemoteViews getBigContentView() {
-    if (mContentViewBig == null) {
-      mContentViewBig = new RemoteViews(getPackageName(), R.layout.remote_view_music_player);
-      setUpRemoteView(mContentViewBig);
-    }
-    updateRemoteViews(mContentViewBig);
-    return mContentViewBig;
-  }
-
-  private void setUpRemoteView(RemoteViews remoteView) {
-    setVectorDrawable(remoteView, R.id.image_view_close, R.drawable.ic_remote_view_close);
-    setVectorDrawable(remoteView, R.id.image_view_play_last, R.drawable.ic_remote_view_play_last);
-    setVectorDrawable(remoteView, R.id.image_view_play_next, R.drawable.ic_remote_view_play_next);
-    remoteView.setOnClickPendingIntent(R.id.button_close, getPendingIntent(ACTION_STOP_SERVICE));
-    remoteView.setOnClickPendingIntent(R.id.button_play_last, getPendingIntent(ACTION_PLAY_LAST));
-    remoteView.setOnClickPendingIntent(R.id.button_play_next, getPendingIntent(ACTION_PLAY_NEXT));
-    remoteView.setOnClickPendingIntent(R.id.button_play_toggle,
-        getPendingIntent(ACTION_PLAY_TOGGLE));
-  }
-
-  private void setVectorDrawable(RemoteViews remoteViews, @IdRes int resId,
-      @DrawableRes int drawableId) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      remoteViews.setImageViewResource(resId, drawableId);
-    } else {
-      Drawable d = AppCompatDrawableManager.get().getDrawable(this, drawableId);
-      Bitmap b = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(),
-          Bitmap.Config.ARGB_8888);
-      Canvas c = new Canvas(b);
-      d.setBounds(0, 0, c.getWidth(), c.getHeight());
-      d.draw(c);
-      remoteViews.setImageViewBitmap(resId, b);
-    }
-  }
-
-  private void updateRemoteViews(final RemoteViews remoteView) {
-    final Music music = musicPlayer.getPlayingSong();
-    if (music != null) {
-      remoteView.setTextViewText(R.id.nameTextView, music.media().title());
-      remoteView.setTextViewText(R.id.text_view_artist, music.media().artist());
-    }
-    setVectorDrawable(remoteView, R.id.image_view_play_toggle,
-        isPlaying() ? R.drawable.ic_remote_view_pause : R.drawable.ic_remote_view_play);
-    String albumArt = albumTable.albumById(getPlayingSong().media().albumId()).albumArt();
-    albumArt = albumArt == null ? "" : albumArt;
-    Observable.just(albumArt)
-        .subscribeOn(Schedulers.io())
-        .flatMap(new Function<String, ObservableSource<Bitmap>>() {
-          @Override public ObservableSource<Bitmap> apply(String s) throws Exception {
-            return Observable.just(Glide.with(MusicService.this)
-                .load(albumTable.albumById(getPlayingSong().media().albumId()).albumArt())
-                .asBitmap()
-                .error(R.mipmap.ic_launcher)
-                .into(300, 300)
-                .get());
-          }
-        })
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribeWith(new DisposableObserver<Bitmap>() {
-          @Override public void onNext(Bitmap album) {
-            remoteView.setImageViewBitmap(R.id.albumImageView, album);
-            updateMediaSessionMetaData(music, album);
-          }
-
-          @Override public void onError(Throwable e) {
-          }
-
-          @Override public void onComplete() {
-          }
-        });
-  }
-
-  private void updateMediaSessionMetaData(Music music, Bitmap bitmap) {
-    mediaSession.setMetadata(
-        new MediaMetadataCompat.Builder().putString(MediaMetadataCompat.METADATA_KEY_ARTIST,
-            music.media().artist())
-            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, music.media().album())
-            .putString(MediaMetadataCompat.METADATA_KEY_TITLE, music.media().title())
-            .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, 10000)
-            .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap)
-            .build());
-  }
-
-  private PendingIntent getPendingIntent(String action) {
-    return PendingIntent.getService(this, 0, new Intent(action), 0);
   }
 
   private class LocalBinder extends Binder {
