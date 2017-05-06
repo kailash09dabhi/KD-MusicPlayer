@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatDelegate;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.stetho.Stetho;
 import com.kingbull.musicplayer.di.AppComponent;
 import com.kingbull.musicplayer.di.AppModule;
@@ -54,7 +53,6 @@ public final class MusicPlayerApp extends Application {
     injectDependencies();
     startService(new Intent(this, MusicService.class));
     AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    AppEventsLogger.activateApp(this);
   }
 
   private void injectDependencies() {
