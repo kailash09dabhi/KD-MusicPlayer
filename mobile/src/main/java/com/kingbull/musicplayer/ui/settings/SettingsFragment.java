@@ -21,7 +21,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-import com.google.android.gms.ads.AdListener;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -215,11 +214,12 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
 
   private void setupAdmobInterstial() {
     admobInterstitial = new AdmobInterstitial(getActivity(),
-        getResources().getString(R.string.kd_music_player_settings_interstitial), new AdListener() {
-      @Override public void onAdClosed() {
-        admobInterstitial.load();
-      }
-    });
+        getResources().getString(R.string.kd_music_player_settings_interstitial),
+        new AdmobInterstitial.AdListener() {
+          @Override public void onAdClosed() {
+            admobInterstitial.load();
+          }
+        });
     admobInterstitial.load();
   }
 

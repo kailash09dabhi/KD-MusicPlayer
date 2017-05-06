@@ -1,7 +1,6 @@
 package com.kingbull.musicplayer.ui.base.ads;
 
 import android.app.Activity;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
@@ -12,10 +11,15 @@ import com.google.android.gms.ads.InterstitialAd;
 public final class AdmobInterstitial {
   private final InterstitialAd interstitialAd;
 
-  public AdmobInterstitial(Activity activity, String interstitialUnitId, AdListener adListener) {
+  public AdmobInterstitial(Activity activity, String interstitialUnitId,
+      final AdListener adListener) {
     interstitialAd = new InterstitialAd(activity);
     interstitialAd.setAdUnitId(interstitialUnitId);
-    interstitialAd.setAdListener(adListener);
+    interstitialAd.setAdListener(new com.google.android.gms.ads.AdListener() {
+      @Override public void onAdClosed() {
+        adListener.onAdClosed();
+      }
+    });
   }
 
   public void load() {
@@ -28,6 +32,10 @@ public final class AdmobInterstitial {
 
   public void showIfLoaded() {
     if (interstitialAd.isLoaded()) interstitialAd.show();
+  }
+
+  public interface AdListener {
+    void onAdClosed();
   }
 }
 
