@@ -4,15 +4,14 @@ import android.support.annotation.NonNull;
 import com.kingbull.musicplayer.domain.Music;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Kailash Dabhi
  * @date 11/25/2016.
  */
-
 public interface NowPlayingList extends List<Music> {
-
   Music currentMusic();
 
   void jumpTo(Music music);
@@ -24,6 +23,10 @@ public interface NowPlayingList extends List<Music> {
   class Smart extends ArrayList<Music> implements NowPlayingList {
     private static final int NO_POSITION = -1;
     private int currentRunningMusicIndex = NO_POSITION;
+
+    public Smart() {
+      Collections.synchronizedList(this);
+    }
 
     @Override public Music currentMusic() {
       if (isEmpty() || currentRunningMusicIndex == NO_POSITION) {
