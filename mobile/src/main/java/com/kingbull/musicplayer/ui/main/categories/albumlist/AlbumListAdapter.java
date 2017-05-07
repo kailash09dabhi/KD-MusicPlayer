@@ -1,7 +1,5 @@
 package com.kingbull.musicplayer.ui.main.categories.albumlist;
 
-import android.content.Intent;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -16,7 +14,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Album;
-import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumActivity;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import java.io.File;
 import java.util.List;
@@ -29,9 +26,11 @@ import java.util.Locale;
 public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.ViewHolder>
     implements FastScrollRecyclerView.SectionedAdapter {
   private final List<Album> albumItems;
+  private final AlbumList.Presenter presenter;
 
-  public AlbumListAdapter(List<Album> albumItems) {
+  public AlbumListAdapter(List<Album> albumItems, AlbumList.Presenter presenter) {
     this.albumItems = albumItems;
+    this.presenter = presenter;
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -75,9 +74,7 @@ public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapte
     }
 
     @Override public void onClick(View view) {
-      Intent intent = new Intent(view.getContext(), AlbumActivity.class);
-      intent.putExtra("album", (Parcelable) albumItems.get(getAdapterPosition()));
-      view.getContext().startActivity(intent);
+      presenter.onAlbumClick(albumItems.get(getAdapterPosition()));
     }
   }
 }

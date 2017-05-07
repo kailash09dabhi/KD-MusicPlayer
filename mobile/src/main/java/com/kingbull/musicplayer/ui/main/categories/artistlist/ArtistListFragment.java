@@ -1,8 +1,9 @@
-
 package com.kingbull.musicplayer.ui.main.categories.artistlist;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,8 @@ import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.ads.AdmobInterstitial;
+import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.ArtistActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -32,6 +35,8 @@ import java.util.List;
 public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, ArtistList.View {
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
+  AdmobInterstitial admobInterstitial;
+  private Artist lastClickedArtist;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
     setupView();
+    setupInterstitial();
     return view;
   }
 
@@ -47,6 +53,24 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
     recyclerView.setBackgroundColor(smartTheme.screen().intValue());
     recyclerView.setHasFixedSize(true);
     getLoaderManager().initLoader(0, null, this);
+  }
+
+  private void setupInterstitial() {
+    admobInterstitial = new AdmobInterstitial(getActivity(),
+        getResources().getString(R.string.kd_music_player_settings_interstitial),
+        new AdmobInterstitial.AdListener() {
+          @Override public void onAdClosed() {
+            admobInterstitial.load();
+            launchArtistActivity(lastClickedArtist);
+          }
+        });
+    admobInterstitial.load();
+  }
+
+  private void launchArtistActivity(Artist artist) {
+    Intent intent = new Intent(getActivity(), ArtistActivity.class);
+    intent.putExtra("artist", (Parcelable) artist);
+    getActivity().startActivity(intent);
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -82,6 +106,15 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
   }
 
   @Override public void showAlbums(List<Artist> songs) {
-    recyclerView.setAdapter(new ArtistListAdapter(songs));
+    recyclerView.setAdapter(new ArtistListAdapter(songs, presenter));
+  }
+
+  @Override public void gotoArtistScreen(Artist artist) {
+    lastClickedArtist = artist;
+    if (admobInterstitial.isLoaded()) {
+      admobInterstitial.show();
+    } else {
+      launchArtistActivity(artist);
+    }
   }
 }

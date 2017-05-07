@@ -13,6 +13,8 @@ import java.util.List;
 public interface AlbumList {
   interface View extends Mvp.View {
     void showAlbums(List<Album> songs);
+
+    void gotoAlbumScreen(Album album);
   }
 
   interface Model extends Mvp.Model {
@@ -20,5 +22,7 @@ public interface AlbumList {
 
   interface Presenter extends Mvp.Presenter<AlbumList.View> {
     void onAlbumCursorLoadFinished(Cursor cursor);
+
+    void onAlbumClick(Album album);
   }
 }

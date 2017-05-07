@@ -1,8 +1,10 @@
 package com.kingbull.musicplayer.ui.main.categories.albumlist;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,6 +21,8 @@ import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.ads.AdmobInterstitial;
+import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumActivity;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -32,6 +36,8 @@ import java.util.List;
 public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, AlbumList.View {
   @BindView(R.id.recyclerView) FastScrollRecyclerView recyclerView;
+  AdmobInterstitial admobInterstitial;
+  private Album lastClickedAlbum;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -39,6 +45,7 @@ public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
     setupView();
+    setupInterstitial();
     return view;
   }
 
@@ -52,6 +59,24 @@ public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
     recyclerView.setBackgroundColor(smartTheme.screen().intValue());
     recyclerView.setHasFixedSize(true);
     getLoaderManager().initLoader(0, null, this);
+  }
+
+  private void setupInterstitial() {
+    admobInterstitial = new AdmobInterstitial(getActivity(),
+        getResources().getString(R.string.kd_music_player_settings_interstitial),
+        new AdmobInterstitial.AdListener() {
+          @Override public void onAdClosed() {
+            admobInterstitial.load();
+            launchAlbumActivity(lastClickedAlbum);
+          }
+        });
+    admobInterstitial.load();
+  }
+
+  private void launchAlbumActivity(Album album) {
+    Intent intent = new Intent(getActivity(), AlbumActivity.class);
+    intent.putExtra("album", (Parcelable) album);
+    getActivity().startActivity(intent);
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -88,6 +113,15 @@ public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
   }
 
   @Override public void showAlbums(List<Album> songs) {
-    recyclerView.setAdapter(new AlbumListAdapter(songs));
+    recyclerView.setAdapter(new AlbumListAdapter(songs, presenter));
+  }
+
+  @Override public void gotoAlbumScreen(Album album) {
+    lastClickedAlbum = album;
+    if (admobInterstitial.isLoaded()) {
+      admobInterstitial.show();
+    } else {
+      launchAlbumActivity(album);
+    }
   }
 }

@@ -23,9 +23,8 @@ import static android.content.ContentValues.TAG;
  * @author Kailash Dabhi
  * @date 11/10/2016.
  */
-
-public final class AlbumListPresenter extends Presenter<AlbumList.View> implements AlbumList.Presenter {
-
+public final class AlbumListPresenter extends Presenter<AlbumList.View>
+    implements AlbumList.Presenter {
   private CompositeDisposable compositeDisposable;
 
   @Override public void takeView(@NonNull AlbumList.View view) {
@@ -62,6 +61,11 @@ public final class AlbumListPresenter extends Presenter<AlbumList.View> implemen
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(new ResourceSubscriber<List<Album>>() {
+              @Override public void onNext(List<Album> songs) {
+                //mView.onLocalMusicLoaded(genres);
+                //mView.emptyView(genres.isEmpty());
+                view().showAlbums(songs);
+              }
 
               @Override public void onError(Throwable throwable) {
                 //mView.hideProgress();
@@ -70,12 +74,10 @@ public final class AlbumListPresenter extends Presenter<AlbumList.View> implemen
 
               @Override public void onComplete() {
               }
-
-              @Override public void onNext(List<Album> songs) {
-                //mView.onLocalMusicLoaded(genres);
-                //mView.emptyView(genres.isEmpty());
-                view().showAlbums(songs);
-              }
             }));
+  }
+
+  @Override public void onAlbumClick(Album album) {
+    view().gotoAlbumScreen(album);
   }
 }

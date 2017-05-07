@@ -19,6 +19,7 @@ import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.ads.AdmobInterstitial;
 import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenreActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -32,13 +33,35 @@ import java.util.List;
 public final class GenresListFragment extends BaseFragment<GenresList.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, GenresList.View {
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
+  AdmobInterstitial admobInterstitial;
+  Genre lastClickedGenre;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_genres, container, false);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
+    setupInterstitial();
     return view;
+  }
+
+  private void setupInterstitial() {
+    admobInterstitial = new AdmobInterstitial(getActivity(),
+        getResources().getString(R.string.kd_music_player_settings_interstitial),
+        new AdmobInterstitial.AdListener() {
+          @Override public void onAdClosed() {
+            admobInterstitial.load();
+            launchGenreActivity(lastClickedGenre);
+          }
+        });
+    admobInterstitial.load();
+  }
+
+  private void launchGenreActivity(Genre genre) {
+    Intent intent = new Intent(getActivity(), GenreActivity.class);
+    intent.putExtra("genre_id", genre.id());
+    intent.putExtra("title", genre.name());
+    getActivity().startActivity(intent);
   }
 
   @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -86,9 +109,11 @@ public final class GenresListFragment extends BaseFragment<GenresList.Presenter>
   }
 
   @Override public void gotoGenreScreen(Genre genre) {
-    Intent intent = new Intent(getActivity(), GenreActivity.class);
-    intent.putExtra("genre_id", genre.id());
-    intent.putExtra("title", genre.name());
-    getActivity().startActivity(intent);
+    lastClickedGenre = genre;
+    if (admobInterstitial.isLoaded()) {
+      admobInterstitial.show();
+    } else {
+      launchGenreActivity(genre);
+    }
   }
 }

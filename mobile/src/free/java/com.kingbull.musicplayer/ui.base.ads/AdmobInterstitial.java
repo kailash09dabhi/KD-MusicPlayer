@@ -31,7 +31,15 @@ public final class AdmobInterstitial {
   }
 
   public void showIfLoaded() {
-    if (interstitialAd.isLoaded()) interstitialAd.show();
+    if (isLoaded()) interstitialAd.show();
+  }
+
+  public boolean isLoaded() {
+    return interstitialAd.isLoaded();
+  }
+
+  public void show() {
+    interstitialAd.show();
   }
 
   public interface AdListener {

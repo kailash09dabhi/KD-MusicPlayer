@@ -59,6 +59,11 @@ public final class ArtistListPresenter extends Presenter<ArtistList.View>
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(new ResourceSubscriber<List<Artist>>() {
+              @Override public void onNext(List<Artist> songs) {
+                //mView.onLocalMusicLoaded(genres);
+                //mView.emptyView(genres.isEmpty());
+                view().showAlbums(songs);
+              }
 
               @Override public void onError(Throwable throwable) {
                 //mView.hideProgress();
@@ -67,12 +72,10 @@ public final class ArtistListPresenter extends Presenter<ArtistList.View>
 
               @Override public void onComplete() {
               }
-
-              @Override public void onNext(List<Artist> songs) {
-                //mView.onLocalMusicLoaded(genres);
-                //mView.emptyView(genres.isEmpty());
-                view().showAlbums(songs);
-              }
             }));
+  }
+
+  @Override public void onArtistClick(Artist artist) {
+    view().gotoArtistScreen(artist);
   }
 }
