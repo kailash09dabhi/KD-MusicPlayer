@@ -60,6 +60,17 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
             DurationFilterDialogFragment.class.getName());
   }
 
+  @OnClick(R.id.removeAdsView) void onClickRemoveAds() {
+    final String appPackageName = getActivity().getPackageName() + ".pro";
+    try {
+      startActivity(
+          new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+    } catch (android.content.ActivityNotFoundException anfe) {
+      startActivity(new Intent(Intent.ACTION_VIEW,
+          Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+    }
+  }
+
   @OnClick(R.id.feedback) void onClickFeedback() {
     composeEmail(new String[] { "kingbulltechnology@gmail.com" }, "KD MusicPlayer Feedback");
   }

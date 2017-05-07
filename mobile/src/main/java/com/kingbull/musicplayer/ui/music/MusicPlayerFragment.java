@@ -350,6 +350,4 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
       launchNowPlayingListScreen();
     }
   }
-
-
 }
