@@ -52,6 +52,19 @@
       android:paddingRight="16dp">
 
       <TextView
+        android:id="@+id/removeAdsView"
+        style="@style/AppTheme.TextAppearance.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:lines="1"
+        android:maxLines="1"
+        android:minHeight="?listPreferredItemHeight"
+        android:singleLine="true"
+        android:text="Remove Ads"
+        tools:text="afd" />
+
+      <TextView
         android:id="@+id/sleepTimerView"
         style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="match_parent"
@@ -73,6 +86,7 @@
         android:minHeight="?listPreferredItemHeight"
         android:singleLine="true"
         android:text="Language"
+        android:visibility="gone"
         tools:text="afd" />
 
       <LinearLayout
@@ -100,19 +114,6 @@
           android:gravity="center"
           android:padding="8dp" />
       </LinearLayout>
-
-      <TextView
-        android:id="@+id/removeAdsView"
-        style="@style/AppTheme.TextAppearance.Medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:lines="1"
-        android:maxLines="1"
-        android:minHeight="?listPreferredItemHeight"
-        android:singleLine="true"
-        android:text="Remove Ads"
-        tools:text="afd" />
 
       <LinearLayout
         android:id="@+id/hideSmallClips"

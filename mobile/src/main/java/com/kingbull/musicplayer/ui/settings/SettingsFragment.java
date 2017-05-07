@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import com.kingbull.musicplayer.BuildConfig;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -51,6 +52,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   @BindView(R.id.headerLayout) LinearLayout headerLayout;
   @BindView(R.id.scrollView) ScrollView scrollView;
   @BindView(R.id.appVersionView) TextView appVersionView;
+  @BindView(R.id.removeAdsView) TextView removeAdsView;
   @Inject Analytics analytics;
   private AdmobInterstitial admobInterstitial;
 
@@ -125,6 +127,9 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     super.onViewCreated(view, savedInstanceState);
     setupView();
     setupAdmobInterstial();
+    if (BuildConfig.FLAVOR.equals("pro")) {
+      removeAdsView.setVisibility(View.GONE);
+    }
   }
 
   @Override protected Disposable subscribeEvents() {
