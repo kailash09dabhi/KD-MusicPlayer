@@ -60,7 +60,7 @@ public final class RecentlyAddedPlayList implements PlayList, Parcelable {
   @Override public void writeToParcel(Parcel dest, int flags) {
   }
 
-  private final class RecentlyAddedComparator implements Comparator<Music> {
+  private static final class RecentlyAddedComparator implements Comparator<Music> {
 
     @Override public int compare(Music song1, Music song2) {
       long dateAddedSong1 = song1.media().dateAdded();
