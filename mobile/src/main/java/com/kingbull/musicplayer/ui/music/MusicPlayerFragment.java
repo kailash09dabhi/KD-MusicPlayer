@@ -33,6 +33,7 @@ import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.BitmapImage;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
+import com.kingbull.musicplayer.ui.base.ads.AdmobInterstitial;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
@@ -66,6 +67,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @BindView(R.id.button_favorite_toggle) ImageView buttonFavoriteToggle;
   @BindView(R.id.backgroundView) View backgroundView;
   private StatusBarColor statusBarColor;
+  private AdmobInterstitial equalizerInterstitial;
+  private AdmobInterstitial nowPlayingListInterstitial;
 
   public static MusicPlayerFragment newInstance() {
     MusicPlayerFragment fragment = new MusicPlayerFragment();
@@ -77,10 +80,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   }
 
   @OnClick(R.id.nowPlayingView) void onNowPlayingClick() {
-    getFragmentManager().beginTransaction()
-        .add(android.R.id.content, NowPlayingFragment.newInstance(statusBarColor.intValue()))
-        .addToBackStack(NowPlayingFragment.class.getSimpleName())
-        .commit();
+    presenter.onNowPlayingClick();
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,6 +98,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
     applyColorTheme(flatTheme.header().intValue());
+    setupInterstitial();
   }
 
   @Override protected Disposable subscribeEvents() {
@@ -131,6 +132,39 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     durationTextView.setTextColor(Color.WHITE);
     equalizerView.setImageDrawable(new IconDrawable(R.drawable.ic_equalizer, darkColor));
     nowPlayingView.setImageDrawable(new IconDrawable(R.drawable.ic_queue_music, darkColor));
+  }
+
+  private void setupInterstitial() {
+    equalizerInterstitial = new AdmobInterstitial(getActivity(),
+        getResources().getString(R.string.kd_music_player_settings_interstitial),
+        new AdmobInterstitial.AdListener() {
+          @Override public void onAdClosed() {
+            equalizerInterstitial.load();
+            launchEqualizerScreen();
+          }
+        });
+    equalizerInterstitial.load();
+    nowPlayingListInterstitial = new AdmobInterstitial(getActivity(),
+        getResources().getString(R.string.kd_music_player_settings_interstitial),
+        new AdmobInterstitial.AdListener() {
+          @Override public void onAdClosed() {
+            nowPlayingListInterstitial.load();
+            launchNowPlayingListScreen();
+          }
+        });
+    nowPlayingListInterstitial.load();
+  }
+
+  private void launchEqualizerScreen() {
+    Intent intent = new Intent(getActivity(), EqualizerActivity.class);
+    startActivity(intent);
+  }
+
+  private void launchNowPlayingListScreen() {
+    getFragmentManager().beginTransaction()
+        .add(android.R.id.content, NowPlayingFragment.newInstance(statusBarColor.intValue()))
+        .addToBackStack(NowPlayingFragment.class.getSimpleName())
+        .commitAllowingStateLoss();
   }
 
   @OnClick(R.id.button_play_toggle) public void onPlayToggleAction() {
@@ -169,7 +203,9 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
     Glide.with(this)
         .load(albumTable.albumById(song.media().albumId()).albumArt())
-        .asBitmap().placeholder(pictures.random()).error(pictures.random())
+        .asBitmap()
+        .placeholder(pictures.random())
+        .error(pictures.random())
         .centerCrop()
         .signature(
             new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
@@ -261,9 +297,12 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.startProgresssAnimation();
   }
 
-  @Override public void showEqualizerScreen() {
-    Intent intent = new Intent(getActivity(), EqualizerActivity.class);
-    startActivity(intent);
+  @Override public void gotoShowEqualizerScreen() {
+    if (equalizerInterstitial.isLoaded()) {
+      equalizerInterstitial.show();
+    } else {
+      launchEqualizerScreen();
+    }
   }
 
   @Override public void pause() {
@@ -303,4 +342,14 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override public void displayNewSongInfo(Music music) {
     onSongUpdated(music);
   }
+
+  @Override public void gotoNowPlayingListScreen() {
+    if (nowPlayingListInterstitial.isLoaded()) {
+      nowPlayingListInterstitial.show();
+    } else {
+      launchNowPlayingListScreen();
+    }
+  }
+
+
 }

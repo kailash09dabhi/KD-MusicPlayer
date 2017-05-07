@@ -31,7 +31,7 @@ public interface MusicPlayer {
 
     void stopSeekbarProgress();
 
-    void showEqualizerScreen();
+    void gotoShowEqualizerScreen();
 
     void pause();
 
@@ -50,6 +50,8 @@ public interface MusicPlayer {
     void stopProgressAnimation();
 
     void displayNewSongInfo(Music music);
+
+    void gotoNowPlayingListScreen();
   }
 
   interface Presenter extends Mvp.Presenter<MusicPlayer.View> {
@@ -73,5 +75,7 @@ public interface MusicPlayer {
     void onEqualizerClick();
 
     void onMusicEvent(MusicEvent musicEvent);
+
+    void onNowPlayingClick();
   }
 }

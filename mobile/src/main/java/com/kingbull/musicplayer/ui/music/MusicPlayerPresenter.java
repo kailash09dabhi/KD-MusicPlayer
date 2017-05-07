@@ -78,7 +78,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
   }
 
   @Override public void onEqualizerClick() {
-    view().showEqualizerScreen();
+    view().gotoShowEqualizerScreen();
   }
 
   @Override public void onMusicEvent(MusicEvent musicEvent) {
@@ -102,5 +102,9 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
       currentPlayingSongDuration = currentPlayingSong.media().duration();
       view().displayNewSongInfo(currentPlayingSong);
     }
+  }
+
+  @Override public void onNowPlayingClick() {
+    view().gotoNowPlayingListScreen();
   }
 }
