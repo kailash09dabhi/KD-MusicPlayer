@@ -32,8 +32,8 @@ public final class MusicPlayerApp extends Application {
   @Override public void onCreate() {
     super.onCreate();
     application = this;
-    Stetho.initializeWithDefaults(this);
     if (BuildConfig.DEBUG) {
+      Stetho.initializeWithDefaults(this);
       StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()
           .detectDiskWrites()
           .detectNetwork()   // or .detectAll() for all detectable problems
