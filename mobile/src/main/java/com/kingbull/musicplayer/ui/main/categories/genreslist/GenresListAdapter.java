@@ -1,6 +1,5 @@
 package com.kingbull.musicplayer.ui.main.categories.genreslist;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenreActivity;
 import java.util.List;
 
 /**
@@ -17,10 +15,12 @@ import java.util.List;
  * @date 11/8/2016.
  */
 public final class GenresListAdapter extends RecyclerView.Adapter<GenresListAdapter.ViewHolder> {
-  private final List<GenreList> genreLists;
+  private final List<Genre> genres;
+  private final GenresList.Presenter presenter;
 
-  public GenresListAdapter(List<GenreList> genreLists) {
-    this.genreLists = genreLists;
+  public GenresListAdapter(List<Genre> genres, GenresList.Presenter presenter) {
+    this.genres = genres;
+    this.presenter = presenter;
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -29,11 +29,11 @@ public final class GenresListAdapter extends RecyclerView.Adapter<GenresListAdap
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    holder.textView.setText(genreLists.get(position).name());
+    holder.textView.setText(genres.get(position).name());
   }
 
   @Override public int getItemCount() {
-    return genreLists.size();
+    return genres.size();
   }
 
   class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -46,10 +46,7 @@ public final class GenresListAdapter extends RecyclerView.Adapter<GenresListAdap
     }
 
     @Override public void onClick(View view) {
-      Intent intent = new Intent(view.getContext(), GenreActivity.class);
-      intent.putExtra("genre_id", genreLists.get(getAdapterPosition()).id());
-      intent.putExtra("title", genreLists.get(getAdapterPosition()).name());
-      view.getContext().startActivity(intent);
+      presenter.onGenreClick(genres.get(getAdapterPosition()));
     }
   }
 }

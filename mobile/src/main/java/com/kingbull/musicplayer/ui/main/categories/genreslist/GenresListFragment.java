@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.genreslist;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -18,6 +19,7 @@ import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenreActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -79,7 +81,14 @@ public final class GenresListFragment extends BaseFragment<GenresList.Presenter>
     getLoaderManager().initLoader(0, null, this);
   }
 
-  @Override public void showGenres(List<GenreList> songs) {
-    recyclerView.setAdapter(new GenresListAdapter(songs));
+  @Override public void showGenres(List<Genre> songs) {
+    recyclerView.setAdapter(new GenresListAdapter(songs, presenter));
+  }
+
+  @Override public void gotoGenreScreen(Genre genre) {
+    Intent intent = new Intent(getActivity(), GenreActivity.class);
+    intent.putExtra("genre_id", genre.id());
+    intent.putExtra("title", genre.name());
+    getActivity().startActivity(intent);
   }
 }

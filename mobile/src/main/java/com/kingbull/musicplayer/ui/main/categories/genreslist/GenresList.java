@@ -8,10 +8,11 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/10/2016.
  */
-
 public interface GenresList {
   interface View extends Mvp.View {
-    void showGenres(List<GenreList> songs);
+    void showGenres(List<Genre> songs);
+
+    void gotoGenreScreen(Genre genre);
   }
 
   interface Model extends Mvp.Model {
@@ -19,5 +20,7 @@ public interface GenresList {
 
   interface Presenter extends Mvp.Presenter<GenresList.View> {
     void onGenresCursorLoadFinished(Cursor cursor);
+
+    void onGenreClick(Genre genre);
   }
 }

@@ -21,9 +21,8 @@ import static android.content.ContentValues.TAG;
  * @author Kailash Dabhi
  * @date 11/10/2016.
  */
-
-public final class GenresListPresenter extends Presenter<GenresList.View> implements GenresList.Presenter {
-
+public final class GenresListPresenter extends Presenter<GenresList.View>
+    implements GenresList.Presenter {
   @Override public void takeView(@NonNull GenresList.View view) {
     super.takeView(view);
   }
@@ -31,24 +30,24 @@ public final class GenresListPresenter extends Presenter<GenresList.View> implem
   @Override public void onGenresCursorLoadFinished(Cursor cursor) {
     compositeDisposable.add(
         Flowable.just(cursor)
-            .flatMap(new Function<Cursor, Flowable<List<GenreList>>>() {
-              @Override public Flowable<List<GenreList>> apply(Cursor cursor) {
-                List<GenreList> genreLists = new ArrayList<>();
+            .flatMap(new Function<Cursor, Flowable<List<Genre>>>() {
+              @Override public Flowable<List<Genre>> apply(Cursor cursor) {
+                List<Genre> genres = new ArrayList<>();
                 if (cursor != null && cursor.getCount() > 0) {
                   cursor.moveToFirst();
                   do {
-                    GenreList genreList = new GenreList(cursor);
-                    genreLists.add(genreList);
+                    Genre genre = new Genre(cursor);
+                    genres.add(genre);
                   } while (cursor.moveToNext());
                 }
-                return Flowable.just(genreLists);
+                return Flowable.just(genres);
               }
             })
-            .doOnNext(new Consumer<List<GenreList>>() {
-              @Override public void accept(List<GenreList> songs) {
+            .doOnNext(new Consumer<List<Genre>>() {
+              @Override public void accept(List<Genre> songs) {
                 Log.d(TAG, "onLoadFinished: " + songs.size());
-                Collections.sort(songs, new Comparator<GenreList>() {
-                  @Override public int compare(GenreList left, GenreList right) {
+                Collections.sort(songs, new Comparator<Genre>() {
+                  @Override public int compare(Genre left, Genre right) {
                     return left.name().compareTo(right.name());
                   }
                 });
@@ -56,10 +55,9 @@ public final class GenresListPresenter extends Presenter<GenresList.View> implem
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(new ResourceSubscriber<List<GenreList>>() {
-
-              @Override public void onNext(List<GenreList> genreLists) {
-                view().showGenres(genreLists);
+            .subscribeWith(new ResourceSubscriber<List<Genre>>() {
+              @Override public void onNext(List<Genre> genres) {
+                view().showGenres(genres);
               }
 
               @Override public void onError(Throwable throwable) {
@@ -70,5 +68,9 @@ public final class GenresListPresenter extends Presenter<GenresList.View> implem
               @Override public void onComplete() {
               }
             }));
+  }
+
+  @Override public void onGenreClick(Genre genre) {
+    view().gotoGenreScreen(genre);
   }
 }
