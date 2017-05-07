@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
 android {
   compileSdkVersion 25
   buildToolsVersion "25.0.2"
@@ -62,10 +61,10 @@ dependencies {
 
 
   compile "com.jakewharton:butterknife:$butterknifeLibraryVersion"
-  apt "com.jakewharton:butterknife-compiler:$butterknifeLibraryVersion"
+  annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeLibraryVersion"
 
   compile "com.google.dagger:dagger:$daggerLibraryVersion"
-  apt "com.google.dagger:dagger-compiler:$daggerLibraryVersion"
+  annotationProcessor "com.google.dagger:dagger-compiler:$daggerLibraryVersion"
 
   compile "com.github.nisrulz:recyclerviewhelper:$supportLibraryVersion"
   compile "com.google.firebase:firebase-core:$firebaseVersion"
