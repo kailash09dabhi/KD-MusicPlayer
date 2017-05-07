@@ -110,7 +110,7 @@ public final class MusicNotification {
             String albumArt = albumTable.albumById(music.media().albumId()).albumArt();
             if (albumArt == null) {
               return Observable.just(new Pair<>(music, Glide.with(context)
-                  .load(R.mipmap.ic_launcher)
+                  .load(R.drawable.bass_guitar)
                   .asBitmap()
                   .skipMemoryCache(false)
                   .into(205, 205)
@@ -119,8 +119,7 @@ public final class MusicNotification {
               return Observable.just(new Pair<>(music, Glide.with(context)
                   .load(albumArt)
                   .asBitmap()
-                  .skipMemoryCache(false)
-                  .error(R.mipmap.ic_launcher)
+                  .skipMemoryCache(false).error(R.drawable.bass_guitar)
                   .into(205, 205)
                   .get()));
             }
@@ -134,7 +133,7 @@ public final class MusicNotification {
             updateRemoteViews(smallRemoteView(), music, album);
             updateRemoteViews(bigRemoteView(), music, album);
             updateMediaSessionMetaData(music,
-                new BitmapImage(album, context.getResources()).blurred(68).saturated().bitmap());
+                new BitmapImage(album, context.getResources()).blurred(25).saturated().bitmap());
             // The PendingIntent to launch our activity if the user selects this notification
             PendingIntent contentIntent =
                 PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class),
