@@ -34,4 +34,8 @@ public final class AllPlayListPresenter extends Presenter<AllPlaylist.View>
     listOfPlayList.add(index, playList);
     view().refreshListOfPlaylist();
   }
+
+  @Override public void onPlaylistClick(PlayList playList) {
+    view().showPlaylist(playList);
+  }
 }

@@ -12,12 +12,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.PlayList;
-import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.quickaction.ActionItem;
 import com.kingbull.musicplayer.ui.base.musiclist.quickaction.QuickActionPopupWindow;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
-import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersFragment;
 import java.util.List;
 
 /**
@@ -27,10 +25,13 @@ import java.util.List;
 public final class AllPlaylistAdapter extends RecyclerView.Adapter<AllPlaylistAdapter.ViewHolder> {
   private final List<PlayList> playLists;
   private final AppCompatActivity activity;
+  private final AllPlaylist.Presenter presenter;
 
-  public AllPlaylistAdapter(List<PlayList> playLists, AppCompatActivity activity) {
+  public AllPlaylistAdapter(List<PlayList> playLists, AppCompatActivity activity,
+      AllPlaylist.Presenter presenter) {
     this.playLists = playLists;
     this.activity = activity;
+    this.presenter = presenter;
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -97,13 +98,7 @@ public final class AllPlaylistAdapter extends RecyclerView.Adapter<AllPlaylistAd
     }
 
     @Override public void onClick(View view) {
-      ((BaseActivity) view.getContext()).getSupportFragmentManager()
-          .beginTransaction()
-          .add(android.R.id.content,
-              MembersFragment.newInstance(playLists.get(getAdapterPosition())),
-              MembersFragment.class.getSimpleName())
-          .addToBackStack(MembersFragment.class.getSimpleName())
-          .commit();
+      presenter.onPlaylistClick(playLists.get(getAdapterPosition()));
     }
   }
 }

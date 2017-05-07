@@ -16,6 +16,8 @@ public interface AllPlaylist {
     void refreshListOfPlaylist();
 
     void showMessage(String message);
+
+    void showPlaylist(PlayList playList);
   }
 
   interface Model extends Mvp.Model {
@@ -26,5 +28,7 @@ public interface AllPlaylist {
     void onPlaylistCreated(PlayList playlist);
 
     void onPlaylistRename(PlaylistRenameEvent event);
+
+    void onPlaylistClick(PlayList playList);
   }
 }

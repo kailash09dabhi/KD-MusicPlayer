@@ -22,6 +22,7 @@ import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
+import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -82,7 +83,8 @@ public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presente
   }
 
   @Override public void showAllPlaylist(List<PlayList> playLists) {
-    recyclerView.setAdapter(new AllPlaylistAdapter(playLists, (AppCompatActivity) getActivity()));
+    recyclerView.setAdapter(
+        new AllPlaylistAdapter(playLists, (AppCompatActivity) getActivity(), presenter));
   }
 
   @Override public void refreshListOfPlaylist() {
@@ -91,5 +93,14 @@ public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presente
 
   @Override public void showMessage(String message) {
     new Snackbar(recyclerView).show(message);
+  }
+
+  @Override public void showPlaylist(PlayList playList) {
+    getActivity().getSupportFragmentManager()
+        .beginTransaction()
+        .add(android.R.id.content, MembersFragment.newInstance(playList),
+            MembersFragment.class.getSimpleName())
+        .addToBackStack(MembersFragment.class.getSimpleName())
+        .commit();
   }
 }
