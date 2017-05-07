@@ -15,6 +15,14 @@ public final class AdmobInterstitial {
 
   public void showIfLoaded() {
   }
+
+  public boolean isLoaded() {
+    return false;
+  }
+
+  public void show() {
+  }
+
   public interface AdListener {
     void onAdClosed();
   }
