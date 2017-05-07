@@ -105,7 +105,7 @@ public interface Media {
       path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
       duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
       size = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE));
-      dateAdded = new File(path()).lastModified();
+      dateAdded = new File(path).lastModified();
       year = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR));
       albumId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
     }
@@ -124,7 +124,7 @@ public interface Media {
         duration = 0;
       }
       size = file.length();
-      dateAdded = new File(path()).lastModified();
+      dateAdded = new File(path).lastModified();
       year = 0;
       albumId = 0;
     }
@@ -235,7 +235,7 @@ public interface Media {
       duration =
           cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Playlists.Members.DURATION));
       size = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Playlists.Members.SIZE));
-      dateAdded = new File(path()).lastModified();
+      dateAdded = new File(path).lastModified();
       year = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Playlists.Members.YEAR));
       albumId =
           cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Playlists.Members.ALBUM_ID));
