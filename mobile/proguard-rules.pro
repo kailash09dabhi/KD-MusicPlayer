@@ -1,3 +1,4 @@
+-keepattributes LineNumberTable
 -dontwarn sun.misc.**
 
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
