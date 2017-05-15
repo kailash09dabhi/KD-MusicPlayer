@@ -33,6 +33,7 @@ public final class ShadowImageView extends android.support.v7.widget.AppCompatIm
   private static final float SHADOW_RADIUS = 24f;
   private static final int SHADOW_ELEVATION = 16;
   private static final int DEFAULT_BACKGROUND_COLOR = 0xFF3C5F78;
+  //Disposable disposable;
   private int shadowRadius;
   // Animation
   private ObjectAnimator rotateAnimator;
@@ -83,6 +84,7 @@ public final class ShadowImageView extends android.support.v7.widget.AppCompatIm
   private boolean elevationSupported() {
     return Build.VERSION.SDK_INT >= 21;
   }
+  // Animation
 
   @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -91,7 +93,6 @@ public final class ShadowImageView extends android.support.v7.widget.AppCompatIm
           getMeasuredHeight() + shadowRadius * 2);
     }
   }
-  // Animation
 
   @Override protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
@@ -106,20 +107,36 @@ public final class ShadowImageView extends android.support.v7.widget.AppCompatIm
     rotateAnimator.start();
   }
 
-  public void cancelRotateAnimation() {
-    lastAnimationValue = 0;
-    rotateAnimator.cancel();
-  }
-
   public void pauseRotateAnimation() {
     lastAnimationValue = rotateAnimator.getCurrentPlayTime();
-    rotateAnimator.cancel();
-    rotateAnimator.end();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      rotateAnimator.pause();
+    } else {
+      rotateAnimator.cancel();
+      rotateAnimator.end();
+    }
+    //rotateAnimator.end();
+    //if (disposable != null && !disposable.isDisposed()) disposable.dispose();
   }
 
   public void resumeRotateAnimation() {
-    rotateAnimator.start();
     rotateAnimator.setCurrentPlayTime(lastAnimationValue);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      rotateAnimator.resume();
+    } else {
+      rotateAnimator.start();
+    }
+    //if (disposable!=null && !disposable.isDisposed()) disposable.dispose();
+    //disposable = Observable.interval(16, TimeUnit.MILLISECONDS)
+    //    .observeOn(AndroidSchedulers.mainThread())
+    //    .subscribe(new Consumer<Long>() {
+    //      int rotation = 0;
+    //
+    //      @Override public void accept(Long aLong) throws Exception {
+    //        setRotation(rotation++);
+    //        if (rotation > 360) rotation = 0;
+    //      }
+    //    });
   }
 
   /**

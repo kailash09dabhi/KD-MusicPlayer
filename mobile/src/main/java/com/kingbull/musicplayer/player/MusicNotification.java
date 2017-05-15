@@ -118,8 +118,7 @@ public final class MusicNotification {
             } else {
               return Observable.just(new Pair<>(music, Glide.with(context)
                   .load(albumArt)
-                  .asBitmap()
-                  .skipMemoryCache(false).error(R.drawable.bass_guitar)
+                  .asBitmap().skipMemoryCache(false).error(R.drawable.bass_guitar)
                   .into(205, 205)
                   .get()));
             }
