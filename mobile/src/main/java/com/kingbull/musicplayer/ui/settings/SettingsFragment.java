@@ -139,9 +139,10 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof DurationFilterEvent) {
-              durationSecondsView.setText(settingPreferences.filterDurationInSeconds() + " sec");
+              int durationInSeconds = settingPreferences.filterDurationInSeconds();
+              durationSecondsView.setText(durationInSeconds + " sec");
+              analytics.logDurationFilter(durationInSeconds);
               admobInterstitial.showIfLoaded();
-              analytics.logDurationFilter();
             } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
               applyUiColors();
             } else if (o instanceof BlurRadiusEvent) {

@@ -9,7 +9,7 @@ import com.kingbull.musicplayer.MusicPlayerApp;
  * @date 10/14/2016.
  */
 public interface Analytics {
-  void logDurationFilter();
+  void logDurationFilter(int durationInSeconds);
 
   void logBlurRadius(int radius);
 
@@ -24,20 +24,26 @@ public interface Analytics {
         FirebaseAnalytics.getInstance(MusicPlayerApp.instance());
     private final Bundle bundle = new Bundle();
 
-    @Override public void logDurationFilter() {
+    @Override public void logDurationFilter(int durationInSeconds) {
       firebaseAnalytics.logEvent("duration_filter", bundle);
+      firebaseAnalytics.setUserProperty("duration_filter", String.valueOf(durationInSeconds));
     }
 
     @Override public void logBlurRadius(int radius) {
       firebaseAnalytics.logEvent("blur_radius_" + radius, bundle);
+      firebaseAnalytics.setUserProperty("blur_radius", String.valueOf(radius));
     }
 
     @Override public void logTheme(boolean isFlatTheme) {
-      firebaseAnalytics.logEvent("theme_" + (isFlatTheme ? "flat" : "glassy"), bundle);
+      String theme = isFlatTheme ? "flat" : "glassy";
+      firebaseAnalytics.logEvent("theme_" + theme, bundle);
+      firebaseAnalytics.setUserProperty("theme", theme);
     }
 
     @Override public void logFullScreen(boolean isFullScreen) {
-      firebaseAnalytics.logEvent(isFullScreen ? "full_screen" : "normal_screen", bundle);
+      String screenMode = isFullScreen ? "full_screen" : "normal_screen";
+      firebaseAnalytics.logEvent(screenMode, bundle);
+      firebaseAnalytics.setUserProperty("screen_mode", screenMode);
     }
 
     @Override public void logScreen(String name) {
