@@ -21,8 +21,8 @@ android {
   productFlavors {
     free {
       applicationId "com.kingbull.kdmusicplayer"
-      versionCode 3
-      versionName "0.6.28.$gitSha"
+      versionCode 4
+      versionName "0.6.37.$gitSha"
     }
     pro {
       applicationId "com.kingbull.kdmusicplayer.pro"
