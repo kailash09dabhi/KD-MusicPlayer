@@ -2,11 +2,11 @@ package com.kingbull.musicplayer.ui.settings;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -15,6 +15,10 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.BlurRadiusEvent;
 import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 
 /**
  * @author Kailash Dabhi
@@ -30,12 +34,32 @@ public final class BlurRadiusDialogFragment extends BaseDialogFragment {
   }
 
   @OnClick(R.id.doneButton) void onDoneClick() {
-    if (!TextUtils.isEmpty(blurRadiusValueView.getText())) {
-      int blurRadius = Integer.parseInt(blurRadiusValueView.getText().toString());
-      settingPreferences.blurRadius(blurRadius);
-      RxBus.getInstance().post(new BlurRadiusEvent(blurRadius));
-    } else {
-    }
+    Observable.just(blurRadiusValueView.getText().toString()).filter(new Predicate<String>() {
+      @Override public boolean test(String text) throws Exception {
+        return !text.isEmpty();
+      }
+    }).map(new Function<String, Integer>() {
+      @Override public Integer apply(String text) throws Exception {
+        return Integer.parseInt(text);
+      }
+    }).filter(new Predicate<Integer>() {
+      @Override public boolean test(Integer integer) throws Exception {
+        if (integer < 255) {
+          return true;
+        } else {
+          throw new IllegalArgumentException("Blur value is too large!");
+        }
+      }
+    }).subscribe(new Consumer<Integer>() {
+      @Override public void accept(Integer blurRadius) throws Exception {
+        settingPreferences.blurRadius(blurRadius);
+        RxBus.getInstance().post(new BlurRadiusEvent(blurRadius));
+      }
+    }, new Consumer<Throwable>() {
+      @Override public void accept(Throwable throwable) throws Exception {
+        Toast.makeText(getActivity(), "Blur value is too large!", Toast.LENGTH_SHORT).show();
+      }
+    });
     dismiss();
   }
 
