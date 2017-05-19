@@ -1,8 +1,14 @@
 apply plugin: 'com.android.application'
+
+apply from: "$project.rootDir/tools/script-git-version.gradle"
+apply from: "$project.rootDir/tools/script-findbugs.gradle"
+apply from: "$project.rootDir/tools/script-lint.gradle"
+apply from: "$project.rootDir/tools/script-pmd.gradle"
+apply from: "$project.rootDir/tools/script-java-code-coverage.gradle"
+
 android {
   compileSdkVersion 25
   buildToolsVersion "25.0.2"
-  def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 
   defaultConfig {
     minSdkVersion 16
@@ -21,13 +27,13 @@ android {
   productFlavors {
     free {
       applicationId "com.kingbull.kdmusicplayer"
-      versionCode 4
-      versionName "0.6.37.$gitSha"
+      versionCode gitVersionCode
+      versionName gitVersionName
     }
     pro {
       applicationId "com.kingbull.kdmusicplayer.pro"
-      versionCode 1
-      versionName "0.6.28.$gitSha"
+      versionCode gitVersionCode
+      versionName gitVersionName
     }
   }
 
@@ -93,6 +99,7 @@ dependencies {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
 }
+
 // make sure this line comes *after* you apply the Android plugin
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'com.google.gms.google-services'
