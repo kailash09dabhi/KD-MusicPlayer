@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.google.firebase.crash.FirebaseCrash;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -96,7 +97,12 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              presenter.onPaletteOrThemeEvent();
+              if (presenter != null) {
+                presenter.onPaletteOrThemeEvent();
+              } else {
+                FirebaseCrash.report(new NullPointerException(
+                    "presenter is null! this is weird as MyFilesFragment receiving events means onDestroy() is not called yet, then why should presenter becomes null"));
+              }
             }
           }
         });
