@@ -22,7 +22,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     super.takeView(view);
     currentPlayingSong = player.getPlayingSong();
     currentPlayingSongDuration = currentPlayingSong.media().duration();
-    view().onSongUpdated(currentPlayingSong);
+    view().displayNewSongInfo(currentPlayingSong);
   }
 
   @Override public void onFavoriteToggleClick() {

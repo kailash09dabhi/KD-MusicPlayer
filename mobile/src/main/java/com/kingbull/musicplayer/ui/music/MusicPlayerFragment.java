@@ -123,154 +123,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     updatePlayMode(settingPreferences.musicMode());
   }
 
-  private void applyColorTheme(int darkColor) {
-    statusBarColor = new StatusBarColor(darkColor);
-    statusBarColor.applyOn(getActivity().getWindow());
-    nameTextView.setTextColor(Color.WHITE);
-    textViewArtist.setTextColor(Color.WHITE);
-    progressTextView.setTextColor(Color.WHITE);
-    durationTextView.setTextColor(Color.WHITE);
-    equalizerView.setImageDrawable(new IconDrawable(R.drawable.ic_equalizer, darkColor));
-    nowPlayingView.setImageDrawable(new IconDrawable(R.drawable.ic_queue_music, darkColor));
-  }
-
-  private void setupInterstitial() {
-    equalizerInterstitial = new AdmobInterstitial(getActivity(),
-        getResources().getString(R.string.kd_music_player_settings_interstitial),
-        new AdmobInterstitial.AdListener() {
-          @Override public void onAdClosed() {
-            equalizerInterstitial.load();
-            launchEqualizerScreen();
-          }
-        });
-    equalizerInterstitial.load();
-    nowPlayingListInterstitial = new AdmobInterstitial(getActivity(),
-        getResources().getString(R.string.kd_music_player_settings_interstitial),
-        new AdmobInterstitial.AdListener() {
-          @Override public void onAdClosed() {
-            nowPlayingListInterstitial.load();
-            launchNowPlayingListScreen();
-          }
-        });
-    nowPlayingListInterstitial.load();
-  }
-
-  private void launchEqualizerScreen() {
-    Intent intent = new Intent(getActivity(), EqualizerActivity.class);
-    startActivity(intent);
-  }
-
-  private void launchNowPlayingListScreen() {
-    getFragmentManager().beginTransaction()
-        .add(android.R.id.content, NowPlayingFragment.newInstance(statusBarColor.intValue()))
-        .addToBackStack(NowPlayingFragment.class.getSimpleName())
-        .commitAllowingStateLoss();
-  }
-
-  @OnClick(R.id.button_play_toggle) public void onPlayToggleAction() {
-    presenter.onPlayToggleClick();
-  }
-
-  @OnClick(R.id.button_play_mode_toggle) public void onPlayModeToggleAction() {
-    presenter.onPlayModeToggleClick();
-  }
-
-  @OnClick(R.id.button_play_next) public void onPlayNextAction() {
-    presenter.onPlayNextClick();
-  }
-
-  @OnClick(R.id.button_play_previous) public void onPlayPreviousClick() {
-    presenter.onPlayPreviousClick();
-  }
-
-  @OnClick(R.id.button_favorite_toggle) public void onFavoriteToggleAction() {
-    presenter.onFavoriteToggleClick();
-  }
-
-  @Override public void onSongUpdated(Music song) {
-    nameTextView.setText(song.media().title());
-    textViewArtist.setText(song.media().artist());
-    // Step 2: favorite
-    buttonFavoriteToggle.setImageResource(
-        song.mediaStat().isFavorite() ? R.drawable.ic_favorite_yes : R.drawable.ic_favorite_no);
-    // Step 3: Duration
-    durationTextView.setText(new Milliseconds(song.media().duration()).toString());
-    // Step 4: Keep these things updated
-    // - Album rotation
-    // - Progress(progressTextView & seekBarProgress)
-    Album album = albumTable.albumById(song.media().albumId());
-    File file = null;
-    if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
-    Glide.with(this)
-        .load(albumTable.albumById(song.media().albumId()).albumArt())
-        .asBitmap()
-        .placeholder(pictures.random())
-        .error(pictures.random())
-        .centerCrop()
-        .signature(
-            new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
-        .into(new SimpleTarget<Bitmap>() {
-          @Override public void onResourceReady(Bitmap bitmap,
-              GlideAnimation<? super Bitmap> glideAnimation) {
-            setAlbumImageAndAnimateBackground(bitmap);
-            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-              public void onGenerated(Palette palette) {
-                if (palette != null) {
-                  Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
-                  Palette.Swatch mutedSwatch = palette.getMutedSwatch();
-                  Palette.Swatch lightMutedSwatch = palette.getLightMutedSwatch();
-                  Palette.Swatch lightVibrantSwatch = palette.getLightVibrantSwatch();
-                  Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();
-                  Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
-                  if (darkMutedSwatch != null && lightMutedSwatch != null) {
-                    applyColorTheme(darkMutedSwatch.getRgb());
-                  } else if (darkVibrantSwatch != null && lightVibrantSwatch != null) {
-                    applyColorTheme(darkVibrantSwatch.getRgb());
-                  } else if (vibrantSwatch != null && mutedSwatch != null) {
-                    applyColorTheme(vibrantSwatch.getRgb());
-                  } else {
-                    applyColorTheme(flatTheme.header().intValue());
-                  }
-                }
-              }
-            });
-          }
-
-          @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
-            setAlbumImageAndAnimateBackground(((BitmapDrawable) errorDrawable).getBitmap());
-          }
-        });
-    seekBarProgress.updateMusic(song);
-    albumImageView.startRotateAnimation();
-    seekBarProgress.startProgresssAnimation();
-  }
-
-  private void setAlbumImageAndAnimateBackground(Bitmap bitmap) {
-    albumImageView.setImageBitmap(AlbumUtils.circularBitmap(bitmap));
-    Observable.just(bitmap)
-        .map(new Function<Bitmap, BitmapDrawable>() {
-          @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
-            return new BitmapImage(bitmap, getResources()).blurred(52)
-                .saturated()
-                .asBitmapDrawable();
-          }
-        })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new DisposableObserver<BitmapDrawable>() {
-          @Override public void onNext(BitmapDrawable bitmap) {
-            backgroundView.setBackground(bitmap);
-            new Alpha.Animation(0.16f, 2500).fadeIn(backgroundView);
-          }
-
-          @Override public void onError(Throwable e) {
-          }
-
-          @Override public void onComplete() {
-          }
-        });
-  }
-
   @Override public void updatePlayMode(MusicMode musicMode) {
     playModeToggleView.takePlayMode(musicMode);
   }
@@ -339,8 +191,83 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.dontAnimate();
   }
 
-  @Override public void displayNewSongInfo(Music music) {
-    onSongUpdated(music);
+  @Override public void displayNewSongInfo(Music song) {
+    nameTextView.setText(song.media().title());
+    textViewArtist.setText(song.media().artist());
+    buttonFavoriteToggle.setImageResource(
+        song.mediaStat().isFavorite() ? R.drawable.ic_favorite_yes : R.drawable.ic_favorite_no);
+    durationTextView.setText(new Milliseconds(song.media().duration()).toString());
+    seekBarProgress.updateMusic(song);
+    albumImageView.startRotateAnimation();
+    seekBarProgress.startProgresssAnimation();
+    final Album album = albumTable.albumById(song.media().albumId());
+    File file = null;
+    if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
+    Glide.with(this)
+        .load(albumTable.albumById(song.media().albumId()).albumArt())
+        .asBitmap()
+        .placeholder(pictures.random())
+        .error(pictures.random())
+        .centerCrop()
+        .signature(
+            new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
+        .into(new SimpleTarget<Bitmap>() {
+          @Override public void onResourceReady(Bitmap bitmap,
+              GlideAnimation<? super Bitmap> glideAnimation) {
+            setAlbumImageAndAnimateBackground(bitmap);
+            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+              public void onGenerated(Palette palette) {
+                if (palette != null && getView() != null) {
+                  Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
+                  Palette.Swatch mutedSwatch = palette.getMutedSwatch();
+                  Palette.Swatch lightMutedSwatch = palette.getLightMutedSwatch();
+                  Palette.Swatch lightVibrantSwatch = palette.getLightVibrantSwatch();
+                  Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();
+                  Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
+                  if (darkMutedSwatch != null && lightMutedSwatch != null) {
+                    applyColorTheme(darkMutedSwatch.getRgb());
+                  } else if (darkVibrantSwatch != null && lightVibrantSwatch != null) {
+                    applyColorTheme(darkVibrantSwatch.getRgb());
+                  } else if (vibrantSwatch != null && mutedSwatch != null) {
+                    applyColorTheme(vibrantSwatch.getRgb());
+                  } else {
+                    applyColorTheme(flatTheme.header().intValue());
+                  }
+                }
+              }
+            });
+          }
+
+          @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
+            setAlbumImageAndAnimateBackground(((BitmapDrawable) errorDrawable).getBitmap());
+          }
+        });
+  }
+
+  private void setAlbumImageAndAnimateBackground(Bitmap bitmap) {
+    albumImageView.setImageBitmap(AlbumUtils.circularBitmap(bitmap));
+    Observable.just(bitmap)
+        .map(new Function<Bitmap, BitmapDrawable>() {
+          @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
+            return new BitmapImage(bitmap, getResources()).blurred(52)
+                .saturated()
+                .asBitmapDrawable();
+          }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new DisposableObserver<BitmapDrawable>() {
+          @Override public void onNext(BitmapDrawable bitmap) {
+            backgroundView.setBackground(bitmap);
+            new Alpha.Animation(0.16f, 2500).fadeIn(backgroundView);
+          }
+
+          @Override public void onError(Throwable e) {
+          }
+
+          @Override public void onComplete() {
+          }
+        });
   }
 
   @Override public void gotoNowPlayingListScreen() {
@@ -349,5 +276,69 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     } else {
       launchNowPlayingListScreen();
     }
+  }
+
+  private void applyColorTheme(int darkColor) {
+    statusBarColor = new StatusBarColor(darkColor);
+    statusBarColor.applyOn(getActivity().getWindow());
+    nameTextView.setTextColor(Color.WHITE);
+    textViewArtist.setTextColor(Color.WHITE);
+    progressTextView.setTextColor(Color.WHITE);
+    durationTextView.setTextColor(Color.WHITE);
+    equalizerView.setImageDrawable(new IconDrawable(R.drawable.ic_equalizer, darkColor));
+    nowPlayingView.setImageDrawable(new IconDrawable(R.drawable.ic_queue_music, darkColor));
+  }
+
+  private void setupInterstitial() {
+    equalizerInterstitial = new AdmobInterstitial(getActivity(),
+        getResources().getString(R.string.kd_music_player_settings_interstitial),
+        new AdmobInterstitial.AdListener() {
+          @Override public void onAdClosed() {
+            equalizerInterstitial.load();
+            launchEqualizerScreen();
+          }
+        });
+    equalizerInterstitial.load();
+    nowPlayingListInterstitial = new AdmobInterstitial(getActivity(),
+        getResources().getString(R.string.kd_music_player_settings_interstitial),
+        new AdmobInterstitial.AdListener() {
+          @Override public void onAdClosed() {
+            nowPlayingListInterstitial.load();
+            launchNowPlayingListScreen();
+          }
+        });
+    nowPlayingListInterstitial.load();
+  }
+
+  private void launchEqualizerScreen() {
+    Intent intent = new Intent(getActivity(), EqualizerActivity.class);
+    startActivity(intent);
+  }
+
+  private void launchNowPlayingListScreen() {
+    getFragmentManager().beginTransaction()
+        .add(android.R.id.content, NowPlayingFragment.newInstance(statusBarColor.intValue()))
+        .addToBackStack(NowPlayingFragment.class.getSimpleName())
+        .commitAllowingStateLoss();
+  }
+
+  @OnClick(R.id.button_play_toggle) public void onPlayToggleAction() {
+    presenter.onPlayToggleClick();
+  }
+
+  @OnClick(R.id.button_play_mode_toggle) public void onPlayModeToggleAction() {
+    presenter.onPlayModeToggleClick();
+  }
+
+  @OnClick(R.id.button_play_next) public void onPlayNextAction() {
+    presenter.onPlayNextClick();
+  }
+
+  @OnClick(R.id.button_play_previous) public void onPlayPreviousClick() {
+    presenter.onPlayPreviousClick();
+  }
+
+  @OnClick(R.id.button_favorite_toggle) public void onFavoriteToggleAction() {
+    presenter.onFavoriteToggleClick();
   }
 }

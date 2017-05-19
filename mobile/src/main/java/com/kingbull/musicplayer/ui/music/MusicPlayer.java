@@ -1,6 +1,5 @@
 package com.kingbull.musicplayer.ui.music;
 
-import android.support.annotation.Nullable;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.player.MusicMode;
@@ -16,8 +15,6 @@ import com.kingbull.musicplayer.ui.base.Mvp;
 public interface MusicPlayer {
 
   interface View extends Mvp.View {
-
-    void onSongUpdated(@Nullable Music song);
 
     void updatePlayMode(MusicMode musicMode);
 
