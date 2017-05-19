@@ -29,7 +29,12 @@ public interface NowPlayingList extends List<Music> {
     }
 
     @Override public Music currentMusic() {
-      if (isEmpty() || currentRunningMusicIndex == NO_POSITION) {
+      if (isEmpty()) {
+        throw new IllegalStateException(
+            String.format("NowPlayingList is empty, though current running music index is %d, ",
+                currentRunningMusicIndex));
+      }
+      if (currentRunningMusicIndex == NO_POSITION) {
         throw new IllegalStateException("current running music index is -1");
       }
       return get(currentRunningMusicIndex);
