@@ -97,7 +97,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
-    applyColorTheme(flatTheme.header().intValue());
     setupInterstitial();
   }
 
@@ -111,6 +110,11 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
             presenter.onMusicEvent(musicEvent);
           }
         });
+  }
+
+  @Override public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    applyColorTheme(flatTheme.header().intValue());
   }
 
   @Override protected PresenterFactory<MusicPlayer.Presenter> presenterFactory() {
