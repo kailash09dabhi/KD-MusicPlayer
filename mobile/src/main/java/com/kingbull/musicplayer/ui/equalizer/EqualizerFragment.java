@@ -15,6 +15,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.google.firebase.crash.FirebaseCrash;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -102,7 +103,11 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
 
       @Override public void onRotate(int percentage) {
         if (bassBoost.getStrengthSupported()) {
-          bassBoost.setStrength((short) (percentage * 10));
+          try {
+            bassBoost.setStrength((short) (percentage * 10));
+          } catch (Exception e) {
+            FirebaseCrash.report(new RuntimeException("percentage is " + percentage, e));
+          }
         }
       }
     });
@@ -137,7 +142,11 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
 
       @Override public void onRotate(int percentage) {
         if (virtualizer.getStrengthSupported()) {
-          virtualizer.setStrength((short) (percentage * 10));
+          try {
+            virtualizer.setStrength((short) (percentage * 10));
+          } catch (Exception e) {
+            FirebaseCrash.report(new RuntimeException("percentage is " + percentage, e));
+          }
         }
       }
     });
