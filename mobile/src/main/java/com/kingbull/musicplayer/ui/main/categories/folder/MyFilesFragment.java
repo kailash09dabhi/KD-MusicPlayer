@@ -97,7 +97,7 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              if (presenter != null) {
+              if (presenter != null && presenter.hasView()) {
                 presenter.onPaletteOrThemeEvent();
               } else {
                 FirebaseCrash.report(new NullPointerException(
