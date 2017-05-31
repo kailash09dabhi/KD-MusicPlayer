@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -40,7 +42,6 @@ import com.kingbull.musicplayer.ui.equalizer.EqualizerActivity;
 import com.kingbull.musicplayer.ui.main.Pictures;
 import com.kingbull.musicplayer.ui.music.widget.ShadowImageView;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
-import com.kingbull.musicplayer.utils.AlbumUtils;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -249,7 +250,10 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   }
 
   private void setAlbumImageAndAnimateBackground(Bitmap bitmap) {
-    albumImageView.setImageBitmap(AlbumUtils.circularBitmap(bitmap));
+    RoundedBitmapDrawable circularBitmapDrawable =
+        RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+    circularBitmapDrawable.setCircular(true);
+    albumImageView.setImageDrawable(circularBitmapDrawable);
     Observable.just(bitmap)
         .map(new Function<Bitmap, BitmapDrawable>() {
           @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
