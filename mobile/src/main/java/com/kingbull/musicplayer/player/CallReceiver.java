@@ -39,7 +39,10 @@ public final class CallReceiver extends BroadcastReceiver {
           isPaused = true;
         }
       } else if (state == TelephonyManager.CALL_STATE_IDLE) {
-        if (isPaused) musicPlayer.play();
+        if (isPaused) {
+          musicPlayer.play();
+          isPaused = false;
+        }
       }
     }
   }
