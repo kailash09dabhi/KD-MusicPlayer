@@ -6,7 +6,7 @@ import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.module.GlideModule;
 import java.io.InputStream;
 
-public class AlbumArtModule implements GlideModule {
+public final class AlbumArtModule implements GlideModule {
   @Override public void applyOptions(Context context, GlideBuilder builder) {
   }
 

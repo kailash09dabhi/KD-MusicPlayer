@@ -8,7 +8,7 @@ import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.stream.StreamModelLoader;
 import java.io.InputStream;
 
-class AlbumArtLoader implements StreamModelLoader<AlbumArt> {
+final class AlbumArtLoader implements StreamModelLoader<AlbumArt> {
   @Override
   public DataFetcher<InputStream> getResourceFetcher(AlbumArt model, int width, int height) {
     return new AlbumArtFetcher(model);

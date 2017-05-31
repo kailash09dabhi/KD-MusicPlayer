@@ -11,7 +11,7 @@ import android.support.annotation.FloatRange;
  * Time: 10:13 PM
  * Desc: GradientUtils
  */
-public class GradientUtils {
+public final class GradientUtils {
 
     public static GradientDrawable create(@ColorInt int startColor, @ColorInt int endColor, int radius,
                                           @FloatRange(from = 0f, to = 1f) float centerX,

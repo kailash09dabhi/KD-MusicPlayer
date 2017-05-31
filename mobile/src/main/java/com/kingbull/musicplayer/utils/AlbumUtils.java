@@ -15,7 +15,7 @@ import java.io.File;
  * Desc: BitmapUtils
  * TODO To be optimized
  */
-public class AlbumUtils {
+public final class AlbumUtils {
   private static final String TAG = "AlbumUtils";
 
   public static Bitmap parseAlbum(Music song) {
