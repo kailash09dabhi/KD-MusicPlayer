@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <com.google.android.gms.ads.NativeExpressAdView
+    android:id="@+id/adView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:adSize="300x80"
+    app:adUnitId="@string/kd_music_player_small_native_banner" />
+</merge>

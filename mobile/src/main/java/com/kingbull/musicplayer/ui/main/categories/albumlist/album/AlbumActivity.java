@@ -41,7 +41,7 @@ import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.BitmapImage;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
-import com.kingbull.musicplayer.ui.base.ads.AdmobNativeBannerLoaded;
+import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
 import com.kingbull.musicplayer.ui.base.analytics.Analytics;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
@@ -194,7 +194,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     setContentView(R.layout.fragment_album);
     ButterKnife.bind(this);
     MusicPlayerApp.instance().component().inject(this);
-    new AdmobNativeBannerLoaded((ViewGroup) findViewById(android.R.id.content));
+    new AdmobBannerLoaded((ViewGroup) findViewById(android.R.id.content));
     new StatusBarColor(flatTheme.statusBar()).applyOn(getWindow());
     album = getIntent().getParcelableExtra("album");
     adapter = new MusicRecyclerViewAdapter(songList, this);

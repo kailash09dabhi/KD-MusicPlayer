@@ -22,7 +22,7 @@ import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.event.MovedToPlaylistEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.base.ads.AdmobNativeBannerLoaded;
+import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
@@ -66,7 +66,7 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
     ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_playlist, container, false);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
-    new AdmobNativeBannerLoaded(view);
+    new AdmobBannerLoaded(view);
     playList = getArguments().getParcelable("playlist");
     return view;
   }
