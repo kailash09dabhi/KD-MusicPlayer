@@ -34,7 +34,8 @@
         android:id="@+id/albumImageView"
         android:layout_width="@dimen/music.player.album.size"
         android:layout_height="@dimen/music.player.album.size"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop" />
     </RelativeLayout>
 
     <LinearLayout
