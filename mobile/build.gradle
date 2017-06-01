@@ -20,6 +20,8 @@ android {
     resValue "string", "admob_app_id", "ca-app-pub-1642663068953785~5782766159"
     resValue "string", "kd_music_player_small_native_banner",
         "ca-app-pub-1642663068953785/6701096157"
+    resValue "string", "kd_music_player_banner",
+        "ca-app-pub-1642663068953785/7201696550"
     resValue "string", "kd_music_player_settings_interstitial",
         "ca-app-pub-1642663068953785/7259499352"
     resConfigs "en"
@@ -76,7 +78,9 @@ dependencies {
   compile "com.google.firebase:firebase-core:$firebaseVersion"
   compile "com.google.firebase:firebase-crash:$firebaseVersion"
   freeCompile "com.google.firebase:firebase-ads:$firebaseVersion"
-  freeCompile 'com.facebook.android:facebook-android-sdk:4.22.0'
+  freeCompile 'com.facebook.android:facebook-android-sdk:4.22.1'
+  freeCompile 'com.facebook.android:audience-network-sdk:4.22.1'
+  freeCompile 'com.google.ads.mediation:facebook:4.22.1.0'
 
   compile 'com.github.javiersantos:PiracyChecker:1.1'
 
