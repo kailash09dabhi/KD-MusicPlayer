@@ -9,7 +9,6 @@ import android.widget.AlphabetIndexer;
  * name are stripped of some prefixes such as "a", "an", "the" and some symbols.
  */
 final class MusicAlphabetIndexer extends AlphabetIndexer {
-
   public MusicAlphabetIndexer(Cursor cursor, int sortedColumnIndex, CharSequence alphabet) {
     super(cursor, sortedColumnIndex, alphabet);
   }

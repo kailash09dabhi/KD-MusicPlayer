@@ -9,7 +9,6 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 11/14/2016.
  */
-
 public final class AlbumMusicsMap extends HashMap<Album, List<Music>> {
   private final AlbumTable albumTable = new AlbumTable();
 

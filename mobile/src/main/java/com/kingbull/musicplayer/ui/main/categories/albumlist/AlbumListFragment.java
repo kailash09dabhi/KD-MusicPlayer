@@ -36,7 +36,7 @@ import java.util.List;
 public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, AlbumList.View {
   @BindView(R.id.recyclerView) FastScrollRecyclerView recyclerView;
-  AdmobInterstitial admobInterstitial;
+  private AdmobInterstitial admobInterstitial;
   private Album lastClickedAlbum;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,

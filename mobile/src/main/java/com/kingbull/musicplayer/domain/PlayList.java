@@ -79,10 +79,6 @@ public interface PlayList {
       return new PlayList.Smart(playlistId, name);
     }
 
-    @Override public String name() {
-      return name;
-    }
-
     @Override public int describeContents() {
       return 0;
     }
@@ -90,30 +86,6 @@ public interface PlayList {
     @Override public void writeToParcel(Parcel dest, int flags) {
       dest.writeLong(playlistId);
       dest.writeString(name);
-    }
-
-    @Override public List<Music> musicList() {
-      Cursor cursor = MusicPlayerApp.instance()
-          .getContentResolver()
-          .query(MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId),
-              projections, MediaStore.Audio.Playlists.Members.DURATION + ">=" + "?", new String[] {
-                  String.valueOf(playlistId)
-              }, "");
-      List<Music> musicList = new ArrayList<>();
-      if (cursor != null) {
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-          do {
-            SqlMusic song = new SqlMusic(new Media.PlaylistMember(cursor));
-            if (song.media() == Media.NONE) {
-              song.mediaStat().delete();
-            } else {
-              musicList.add(song);
-            }
-          } while (cursor.moveToNext());
-        }
-        cursor.close();
-      }
-      return musicList;
     }
 
     public void addAll(List<? extends Music> musicList) {
@@ -175,6 +147,34 @@ public interface PlayList {
       Smart smart = (Smart) o;
       if (playlistId != smart.playlistId) return false;
       return name.equals(smart.name);
+    }
+
+    @Override public String name() {
+      return name;
+    }
+
+    @Override public List<Music> musicList() {
+      Cursor cursor = MusicPlayerApp.instance()
+          .getContentResolver()
+          .query(MediaStore.Audio.Playlists.Members.getContentUri("external", playlistId),
+              projections, MediaStore.Audio.Playlists.Members.DURATION + ">=" + "?", new String[] {
+                  String.valueOf(playlistId)
+              }, "");
+      List<Music> musicList = new ArrayList<>();
+      if (cursor != null) {
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+          do {
+            SqlMusic song = new SqlMusic(new Media.PlaylistMember(cursor));
+            if (song.media() == Media.NONE) {
+              song.mediaStat().delete();
+            } else {
+              musicList.add(song);
+            }
+          } while (cursor.moveToNext());
+        }
+        cursor.close();
+      }
+      return musicList;
     }
   }
 }

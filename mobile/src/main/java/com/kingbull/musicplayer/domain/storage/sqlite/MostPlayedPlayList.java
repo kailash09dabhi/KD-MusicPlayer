@@ -10,7 +10,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 public final class MostPlayedPlayList implements PlayList, Parcelable {
-
   public static final Creator<MostPlayedPlayList> CREATOR = new Creator<MostPlayedPlayList>() {
     @Override public MostPlayedPlayList createFromParcel(Parcel in) {
       return new MostPlayedPlayList(in);

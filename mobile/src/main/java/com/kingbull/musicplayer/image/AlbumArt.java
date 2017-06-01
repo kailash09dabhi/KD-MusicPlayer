@@ -5,9 +5,13 @@ package com.kingbull.musicplayer.image;
  * @date 12/13/2016.
  */
 public final class AlbumArt {
-  final String path;
+  private final String path;
 
   public AlbumArt(String path) {
     this.path = path;
+  }
+
+  public String path() {
+    return path;
   }
 }

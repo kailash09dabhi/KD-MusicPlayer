@@ -5,7 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public final class SortEvent {
-
   private final @SortBy int sortBy;
   private final boolean sortInDescending;
 

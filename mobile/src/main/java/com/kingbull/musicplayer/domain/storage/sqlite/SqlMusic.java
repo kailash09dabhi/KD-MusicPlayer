@@ -13,7 +13,6 @@ import javax.inject.Inject;
  * @author Kailash Dabhi
  * @date 11/17/2016.
  */
-
 public final class SqlMusic implements com.kingbull.musicplayer.domain.Music, Parcelable {
   public static final Parcelable.Creator<SqlMusic> CREATOR = new Parcelable.Creator<SqlMusic>() {
     @Override public SqlMusic createFromParcel(Parcel source) {
@@ -24,7 +23,6 @@ public final class SqlMusic implements com.kingbull.musicplayer.domain.Music, Pa
       return new SqlMusic[size];
     }
   };
-
   private final Media media;
   private final MediaStat mediaStat;
   @Inject MediaStatTable mediaStatTable;
@@ -55,10 +53,7 @@ public final class SqlMusic implements com.kingbull.musicplayer.domain.Music, Pa
   }
 
   @Override public String toString() {
-    return "SqlMusic{" +
-        "media=" + media.toString() +
-        ", mediaStat=" + mediaStat.toString() +
-        '}';
+    return "SqlMusic{" + "media=" + media.toString() + ", mediaStat=" + mediaStat.toString() + '}';
   }
 
   @Override public int describeContents() {

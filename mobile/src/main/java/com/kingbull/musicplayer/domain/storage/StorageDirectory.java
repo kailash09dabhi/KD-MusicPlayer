@@ -10,7 +10,6 @@ import javax.inject.Inject;
  * @author Kailash Dabhi
  * @date 12/27/2016.
  */
-
 public final class StorageDirectory {
   private final String directoryName;
 

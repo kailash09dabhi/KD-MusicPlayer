@@ -22,12 +22,12 @@ final class AlbumArtFetcher implements DataFetcher<InputStream> {
   @Override public InputStream loadData(Priority priority) throws Exception {
     MediaMetadataRetriever retriever = new MediaMetadataRetriever();
     try {
-      retriever.setDataSource(model.path);
+      retriever.setDataSource(model.path());
       byte[] picture = retriever.getEmbeddedPicture();
       if (picture != null) {
         return new ByteArrayInputStream(picture);
       } else {
-        return fallback(model.path);
+        return fallback(model.path());
       }
     } finally {
       retriever.release();
@@ -59,7 +59,7 @@ final class AlbumArtFetcher implements DataFetcher<InputStream> {
   }
 
   @Override public String getId() {
-    return model.path;
+    return model.path();
   }
 
   @Override public void cancel() {

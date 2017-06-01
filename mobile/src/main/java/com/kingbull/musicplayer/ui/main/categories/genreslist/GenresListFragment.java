@@ -33,8 +33,8 @@ import java.util.List;
 public final class GenresListFragment extends BaseFragment<GenresList.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, GenresList.View {
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
-  AdmobInterstitial admobInterstitial;
-  Genre lastClickedGenre;
+  private AdmobInterstitial admobInterstitial;
+  private Genre lastClickedGenre;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {

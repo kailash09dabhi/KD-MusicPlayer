@@ -35,7 +35,7 @@ import java.util.List;
 public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, ArtistList.View {
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
-  AdmobInterstitial admobInterstitial;
+  private AdmobInterstitial admobInterstitial;
   private Artist lastClickedArtist;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,

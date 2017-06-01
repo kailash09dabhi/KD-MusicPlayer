@@ -13,7 +13,6 @@
  *  limitations under the License.
  *
  */
-
 package com.kingbull.musicplayer.domain;
 
 import java.util.concurrent.TimeUnit;
@@ -23,6 +22,14 @@ public final class Milliseconds {
 
   public Milliseconds(long milliSeconds) {
     this.milliSeconds = milliSeconds;
+  }
+
+  public String toString() {
+    if (milliSeconds >= TimeUnit.HOURS.toMillis(1)) {
+      return toHhMmSs();
+    } else {
+      return toMmSs();
+    }
   }
 
   public String toHhMmSs() {
@@ -41,14 +48,6 @@ public final class Milliseconds {
         - TimeUnit.HOURS.toSeconds(hours)
         - TimeUnit.MINUTES.toSeconds(minutes);
     return String.format("%02d:%02d", minutes, seconds);
-  }
-
-  public String toString() {
-    if (milliSeconds >= TimeUnit.HOURS.toMillis(1)) {
-      return toHhMmSs();
-    } else {
-      return toMmSs();
-    }
   }
 
   public long asLong() {

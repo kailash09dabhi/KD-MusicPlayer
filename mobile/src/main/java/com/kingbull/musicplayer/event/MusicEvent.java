@@ -4,7 +4,6 @@ import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.player.MusicPlayerEvent;
 
 public final class MusicEvent {
-
   private final Music song;
   private final @MusicPlayerEvent int playerEvent;
 

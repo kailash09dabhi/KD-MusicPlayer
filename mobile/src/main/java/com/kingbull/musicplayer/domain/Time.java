@@ -4,9 +4,7 @@ package com.kingbull.musicplayer.domain;
  * @author Kailash Dabhi
  * @date 1/27/2017.
  */
-
 public interface Time {
-
   Milliseconds milliSeconds();
 
   long difference(Time time);

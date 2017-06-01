@@ -33,7 +33,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
   @BindView(R.id.viewPager) ViewPagerParallax viewPager;
   @BindArray(R.array.main_tabs) String[] tabs;
   @BindView(R.id.sliding_tabs) TabLayout tabLayout;
-  PiracyGuard piracyGuard;
+  private PiracyGuard piracyGuard;
   private MainPagerAdapter adapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {

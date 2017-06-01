@@ -10,7 +10,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 public final class FavouritesPlayList implements PlayList, Parcelable {
-
   public static final Creator<FavouritesPlayList> CREATOR = new Creator<FavouritesPlayList>() {
     @Override public FavouritesPlayList createFromParcel(Parcel in) {
       return new FavouritesPlayList(in);

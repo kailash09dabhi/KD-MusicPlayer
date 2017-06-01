@@ -5,11 +5,8 @@ import com.jakewharton.rxrelay2.Relay;
 import io.reactivex.Observable;
 
 public final class RxBus {
-
   private static final String TAG = "RxBus";
-
   private static volatile RxBus sInstance;
-
   private final Relay<Object> bus = PublishRelay.create().toSerialized();
 
   public static RxBus getInstance() {

@@ -9,6 +9,4 @@ interface SqlTable {
    * remove all row from the table and make it empty
    */
   void clear();
-
-
 }

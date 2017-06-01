@@ -9,9 +9,7 @@ import java.io.IOException;
  * @author Kailash Dabhi
  * @date 12/27/2016.
  */
-
 public final class ImageFile {
-
   private final File file;
 
   public ImageFile(File file) {

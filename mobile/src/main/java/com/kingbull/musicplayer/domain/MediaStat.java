@@ -15,9 +15,7 @@ import javax.inject.Inject;
  * @author Kailash Dabhi
  * @date 12/1/2016.
  */
-
 public interface MediaStat extends SqlTableRow {
-
   boolean isFavorite();
 
   long mediaId();
@@ -110,18 +108,6 @@ public interface MediaStat extends SqlTableRow {
       return totalListenedTime;
     }
 
-    @Override public int describeContents() {
-      return 0;
-    }
-
-    @Override public void writeToParcel(Parcel dest, int flags) {
-      dest.writeByte((byte) (isFavourite ? 1 : 0));
-      dest.writeLong(numberOfTimesPlayed);
-      dest.writeLong(lastTimePlayed);
-      dest.writeLong(mediaId);
-      dest.writeLong(totalListenedTime);
-    }
-
     @Override public long save() {
       ContentValues values = new ContentValues();
       values.put(MediaStatTable.Columns.MEDIA_ID, mediaId);
@@ -135,8 +121,20 @@ public interface MediaStat extends SqlTableRow {
     }
 
     @Override public boolean delete() {
-      return sqliteDatabase.delete(MediaStatTable.NAME, MediaStatTable.Columns.MEDIA_ID + "=" +
-          mediaId, null) > 0;
+      return sqliteDatabase.delete(MediaStatTable.NAME,
+          MediaStatTable.Columns.MEDIA_ID + "=" + mediaId, null) > 0;
+    }
+
+    @Override public int describeContents() {
+      return 0;
+    }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+      dest.writeByte((byte) (isFavourite ? 1 : 0));
+      dest.writeLong(numberOfTimesPlayed);
+      dest.writeLong(lastTimePlayed);
+      dest.writeLong(mediaId);
+      dest.writeLong(totalListenedTime);
     }
   }
 }

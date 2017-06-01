@@ -10,7 +10,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 public final class LastPlayedPlayList implements PlayList, Parcelable {
-
   public static final Creator<LastPlayedPlayList> CREATOR = new Creator<LastPlayedPlayList>() {
     @Override public LastPlayedPlayList createFromParcel(Parcel in) {
       return new LastPlayedPlayList(in);

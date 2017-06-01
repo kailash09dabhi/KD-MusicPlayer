@@ -61,7 +61,6 @@ public final class RecentlyAddedPlayList implements PlayList, Parcelable {
   }
 
   private static final class RecentlyAddedComparator implements Comparator<Music> {
-
     @Override public int compare(Music song1, Music song2) {
       long dateAddedSong1 = song1.media().dateAdded();
       long dateAddedSong2 = song2.media().dateAdded();

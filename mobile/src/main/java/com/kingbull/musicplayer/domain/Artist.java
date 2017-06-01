@@ -9,11 +9,8 @@ import android.provider.MediaStore;
  * @author Kailash Dabhi
  * @date 12/1/2016.
  */
-
 public interface Artist {
-
   Artist NONE = new Artist() {
-
     @Override public long artistId() {
       return 0;
     }
@@ -28,7 +25,6 @@ public interface Artist {
   String name();
 
   class Smart implements Artist, Parcelable {
-
     public static final Creator<Smart> CREATOR = new Creator<Smart>() {
       @Override public Smart createFromParcel(Parcel in) {
         return new Smart(in);
