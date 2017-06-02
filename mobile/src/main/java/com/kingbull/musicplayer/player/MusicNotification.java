@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.ui.base.BitmapImage;
@@ -146,9 +147,9 @@ public final class MusicNotification {
   private void updateNotification(Pair<Music, Bitmap> pair) {
     Music music = pair.first;
     Bitmap album = pair.second;
-    updateRemoteViews(smallRemoteView(), music, album);
-    updateRemoteViews(bigRemoteView(), music, album);
-    updateMediaSessionMetaData(music,
+    updateRemoteViews(smallRemoteView(), music.media(), album);
+    updateRemoteViews(bigRemoteView(), music.media(), album);
+    updateMediaSessionMetaData(music.media(),
         new BitmapImage(album, context.getResources()).blurred(25).saturated().bitmap());
     // The PendingIntent to launch our activity if the user selects this notification
     PendingIntent contentIntent =
@@ -167,21 +168,21 @@ public final class MusicNotification {
     context.startForeground(NOTIFICATION_ID, notification);
   }
 
-  private void updateRemoteViews(final RemoteViews remoteView, Music music, Bitmap album) {
-    remoteView.setTextViewText(R.id.nameTextView, music.media().title());
-    remoteView.setTextViewText(R.id.text_view_artist, music.media().artist());
+  private void updateRemoteViews(final RemoteViews remoteView, Media media, Bitmap album) {
+    remoteView.setTextViewText(R.id.nameTextView, media.title());
+    remoteView.setTextViewText(R.id.text_view_artist, media.artist());
     setVectorDrawable(remoteView, R.id.image_view_play_toggle,
         musicPlayer.isPlaying() ? R.drawable.ic_remote_view_pause : R.drawable.ic_remote_view_play);
     remoteView.setImageViewBitmap(R.id.albumImageView, album);
   }
 
-  private void updateMediaSessionMetaData(Music music, Bitmap bitmap) {
+  private void updateMediaSessionMetaData(Media media, Bitmap bitmap) {
     mediaSessionCompat.setMetadata(
         new MediaMetadataCompat.Builder().putString(MediaMetadataCompat.METADATA_KEY_ARTIST,
-            music.media().artist())
-            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, music.media().album())
-            .putString(MediaMetadataCompat.METADATA_KEY_TITLE, music.media().title())
-            .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, 10000)
+            media.artist())
+            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, media.album())
+            .putString(MediaMetadataCompat.METADATA_KEY_TITLE, media.title())
+            .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, media.duration())
             .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap)
             .build());
   }
