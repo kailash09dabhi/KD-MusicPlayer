@@ -25,7 +25,7 @@ import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.ui.base.BitmapImage;
-import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
+import com.kingbull.musicplayer.ui.main.MainActivity;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -152,9 +152,10 @@ public final class MusicNotification {
     updateMediaSessionMetaData(music.media(),
         new BitmapImage(album, context.getResources()).blurred(25).saturated().bitmap());
     // The PendingIntent to launch our activity if the user selects this notification
+    Intent intent = new Intent(context, MainActivity.class);
+    intent.putExtra("from", "notification");
     PendingIntent contentIntent =
-        PendingIntent.getActivity(context, 0, new Intent(context, MusicPlayerActivity.class),
-            PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     Notification notification = new NotificationCompat.Builder(context).setSmallIcon(
         R.drawable.ic_notification_app_logo)  // the status icon
         .setWhen(System.currentTimeMillis())  // the time stamp

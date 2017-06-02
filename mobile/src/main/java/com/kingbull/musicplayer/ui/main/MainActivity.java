@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.ui.main;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,20 +20,24 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.SmartPiracyGuard;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
+import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.DeviceConfig;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.analytics.FbKeyHash;
 import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.Artist;
+import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import javax.inject.Inject;
 
 public final class MainActivity extends BaseActivity<Artist.Presenter> {
   private final Pictures pictures = new Pictures();
   @BindView(R.id.viewPager) ViewPagerParallax viewPager;
   @BindArray(R.array.main_tabs) String[] tabs;
   @BindView(R.id.sliding_tabs) TabLayout tabLayout;
+  @Inject Player player;
   private PiracyGuard piracyGuard;
   private MainPagerAdapter adapter;
 
@@ -41,6 +46,11 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
     MusicPlayerApp.instance().component().inject(this);
+    new DeviceConfig(getResources()).writeToLogcat();
+    new FbKeyHash().print(this);
+    piracyGuard = new SmartPiracyGuard(this);
+    piracyGuard.check();
+    if (player.isPlaying()) startActivity(new Intent(this, MusicPlayerActivity.class));
     adapter = new MainPagerAdapter(getSupportFragmentManager(), tabs);
     viewPager.setAdapter(adapter);
     viewPager.setOffscreenPageLimit(4);
@@ -70,10 +80,6 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
             }
           }
         });
-    new DeviceConfig(getResources()).writeToLogcat();
-    new FbKeyHash().print(this);
-    piracyGuard = new SmartPiracyGuard(this);
-    piracyGuard.check();
   }
 
   @Override protected void onDestroy() {
@@ -116,6 +122,15 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
           final TextView titleView = ((TextView) tabViewGroup.getChildAt(i));
           titleView.setTypeface(typeface);
         }
+      }
+    }
+  }
+
+  @Override protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    if (intent.getExtras() != null) {
+      if (intent.getStringExtra("from").equals("notification")) {
+        if (player.isPlaying()) startActivity(new Intent(this, MusicPlayerActivity.class));
       }
     }
   }
