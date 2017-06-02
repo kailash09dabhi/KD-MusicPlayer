@@ -32,8 +32,8 @@ public final class MusicPlayerActivity extends BaseActivity<MusicPlayer.Presente
   @Override protected void onPresenterPrepared(MusicPlayer.Presenter presenter) {
   }
 
-  @Override public void onBackPressed() {
+  @Override public void finish() {
     startActivity(new Intent(this, MainActivity.class));
-    super.onBackPressed();
+    super.finish();
   }
 }

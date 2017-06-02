@@ -286,6 +286,10 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     }
   }
 
+  @Override public void close() {
+    getActivity().finish();
+  }
+
   private void applyColorTheme(int darkColor) {
     statusBarColor = new StatusBarColor(darkColor);
     statusBarColor.applyOn(getActivity().getWindow());

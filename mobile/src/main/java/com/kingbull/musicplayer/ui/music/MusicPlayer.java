@@ -49,6 +49,8 @@ public interface MusicPlayer {
     void displayNewSongInfo(Music music);
 
     void gotoNowPlayingListScreen();
+
+    void close();
   }
 
   interface Presenter extends Mvp.Presenter<MusicPlayer.View> {

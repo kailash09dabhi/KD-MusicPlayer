@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.ui.music;
 
 import android.support.annotation.NonNull;
+import com.google.firebase.crash.FirebaseCrash;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.MusicEvent;
@@ -20,9 +21,15 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
 
   @Override public void takeView(@NonNull MusicPlayer.View view) {
     super.takeView(view);
-    currentPlayingSong = player.getPlayingSong();
-    currentPlayingSongDuration = currentPlayingSong.media().duration();
-    view().displayNewSongInfo(currentPlayingSong);
+    if (!player.nowPlayingMusicList().isEmpty()) {
+      currentPlayingSong = player.getPlayingSong();
+      currentPlayingSongDuration = currentPlayingSong.media().duration();
+      view().displayNewSongInfo(currentPlayingSong);
+    } else {
+      FirebaseCrash.report(new RuntimeException("How we get into this state? "
+          + "We are in MusicPlayer screen and NowPlayingList is empty! Just go back to Main screen!"));
+      view().close();
+    }
   }
 
   @Override public void onFavoriteToggleClick() {
