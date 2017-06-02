@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
@@ -17,6 +18,8 @@ import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.AppCompatDrawableManager;
 import android.widget.RemoteViews;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
@@ -104,50 +107,32 @@ public final class MusicNotification {
   public void show() {
     Observable.just(musicPlayer.getPlayingSong())
         .subscribeOn(Schedulers.io())
-        .flatMap(new Function<Music, ObservableSource<Pair<Music, Bitmap>>>() {
-          @Override public ObservableSource<Pair<Music, Bitmap>> apply(Music music)
+        .flatMap(new Function<Music, ObservableSource<Pair<Music, String>>>() {
+          @Override public ObservableSource<Pair<Music, String>> apply(Music music)
               throws Exception {
             String albumArt = albumTable.albumById(music.media().albumId()).albumArt();
-            if (albumArt == null) {
-              return Observable.just(new Pair<>(music, Glide.with(context)
-                  .load(R.drawable.bass_guitar)
-                  .asBitmap()
-                  .skipMemoryCache(false)
-                  .into(205, 205)
-                  .get()));
-            } else {
-              return Observable.just(new Pair<>(music, Glide.with(context)
-                  .load(albumArt)
-                  .asBitmap().skipMemoryCache(false).error(R.drawable.bass_guitar)
-                  .into(205, 205)
-                  .get()));
-            }
+            return Observable.just(new Pair<>(music, albumArt));
           }
         })
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribeWith(new DisposableObserver<Pair<Music, Bitmap>>() {
-          @Override public void onNext(Pair<Music, Bitmap> pair) {
-            Music music = pair.first;
-            Bitmap album = pair.second;
-            updateRemoteViews(smallRemoteView(), music, album);
-            updateRemoteViews(bigRemoteView(), music, album);
-            updateMediaSessionMetaData(music,
-                new BitmapImage(album, context.getResources()).blurred(25).saturated().bitmap());
-            // The PendingIntent to launch our activity if the user selects this notification
-            PendingIntent contentIntent =
-                PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class),
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-            Notification notification = new NotificationCompat.Builder(context).setSmallIcon(
-                R.drawable.ic_notification_app_logo)  // the status icon
-                .setWhen(System.currentTimeMillis())  // the time stamp
-                .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
-                .setCustomContentView(smallRemoteView())
-                .setCustomBigContentView(bigRemoteView())
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setOngoing(true)
-                .build();
-            // Send the notification.
-            context.startForeground(NOTIFICATION_ID, notification);
+        .subscribeWith(new DisposableObserver<Pair<Music, String>>() {
+          @Override public void onNext(final Pair<Music, String> value) {
+            Glide.with(context)
+                .load(value.second)
+                .asBitmap()
+                .error(R.drawable.bass_guitar)
+                .skipMemoryCache(false)
+                .into(new SimpleTarget<Bitmap>(205, 205) {
+                  @Override public void onResourceReady(Bitmap resource,
+                      GlideAnimation<? super Bitmap> glideAnimation) {
+                    updateNotification(new Pair<Music, Bitmap>(value.first, resource));
+                  }
+
+                  @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                    updateNotification(new Pair<Music, Bitmap>(value.first,
+                        ((BitmapDrawable) errorDrawable).getBitmap()));
+                  }
+                });
           }
 
           @Override public void onError(Throwable e) {
@@ -156,6 +141,30 @@ public final class MusicNotification {
           @Override public void onComplete() {
           }
         });
+  }
+
+  private void updateNotification(Pair<Music, Bitmap> pair) {
+    Music music = pair.first;
+    Bitmap album = pair.second;
+    updateRemoteViews(smallRemoteView(), music, album);
+    updateRemoteViews(bigRemoteView(), music, album);
+    updateMediaSessionMetaData(music,
+        new BitmapImage(album, context.getResources()).blurred(25).saturated().bitmap());
+    // The PendingIntent to launch our activity if the user selects this notification
+    PendingIntent contentIntent =
+        PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class),
+            PendingIntent.FLAG_UPDATE_CURRENT);
+    Notification notification = new NotificationCompat.Builder(context).setSmallIcon(
+        R.drawable.ic_notification_app_logo)  // the status icon
+        .setWhen(System.currentTimeMillis())  // the time stamp
+        .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
+        .setCustomContentView(smallRemoteView())
+        .setCustomBigContentView(bigRemoteView())
+        .setPriority(NotificationCompat.PRIORITY_MAX)
+        .setOngoing(true)
+        .build();
+    // Send the notification.
+    context.startForeground(NOTIFICATION_ID, notification);
   }
 
   private void updateRemoteViews(final RemoteViews remoteView, Music music, Bitmap album) {
