@@ -31,6 +31,7 @@
     <activity android:name=".ui.main.categories.genreslist.genre.GenreActivity" />
     <activity
       android:name=".ui.music.MusicPlayerActivity"
+      android:launchMode="singleTask"
       android:screenOrientation="portrait" />
     <activity
       android:name=".ui.equalizer.EqualizerActivity"
