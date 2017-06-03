@@ -32,6 +32,7 @@ public final class MusicService extends Service implements Player {
   public static final String ACTION_PLAY_LAST = "com.kingbull.kdmusicplayer.ACTION_PLAY_LAST";
   public static final String ACTION_PLAY_NEXT = "com.kingbull.kdmusicplayer.ACTION_PLAY_NEXT";
   private final Binder mBinder = new LocalBinder();
+  private final HeadsetPlugReceiver headsetPlugReceiver = new HeadsetPlugReceiver();
   @Inject Player musicPlayer;
   private MediaSessionCompat mediaSession;
   private CompositeDisposable compositeDisposable;
@@ -40,9 +41,12 @@ public final class MusicService extends Service implements Player {
   @Override public void onCreate() {
     super.onCreate();
     MusicPlayerApp.instance().component().inject(this);
+    registerReceiver(headsetPlugReceiver, headsetPlugReceiver.intentFilter());
     compositeDisposable = new CompositeDisposable();
     compositeDisposable.add(RxBus.getInstance()
-        .toObservable().ofType(MusicEvent.class).debounce(151, TimeUnit.MILLISECONDS)
+        .toObservable()
+        .ofType(MusicEvent.class)
+        .debounce(151, TimeUnit.MILLISECONDS)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeWith(new DisposableObserver<MusicEvent>() {
           @Override public void onNext(MusicEvent musicEvent) {
@@ -91,6 +95,7 @@ public final class MusicService extends Service implements Player {
 
   @Override public void onDestroy() {
     if (compositeDisposable != null) compositeDisposable.clear();
+    unregisterReceiver(headsetPlugReceiver);
     super.onDestroy();
   }
 

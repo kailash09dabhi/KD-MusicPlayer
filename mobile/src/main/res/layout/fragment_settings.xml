@@ -61,8 +61,7 @@
         android:maxLines="1"
         android:minHeight="?listPreferredItemHeight"
         android:singleLine="true"
-        android:text="Remove Ads"
-        tools:text="afd" />
+        android:text="Remove Ads" />
 
       <TextView
         android:id="@+id/sleepTimerView"
@@ -73,8 +72,7 @@
         android:lines="1"
         android:minHeight="?listPreferredItemHeight"
         android:singleLine="true"
-        android:text="Sleep Timer"
-        tools:text="afd" />
+        android:text="Sleep Timer" />
 
       <TextView
         android:id="@+id/languageView"
@@ -86,8 +84,7 @@
         android:minHeight="?listPreferredItemHeight"
         android:singleLine="true"
         android:text="Language"
-        android:visibility="gone"
-        tools:text="afd" />
+        android:visibility="gone" />
 
       <LinearLayout
         android:layout_width="match_parent"
@@ -104,8 +101,7 @@
           android:fontFamily="sans-serif"
           android:lines="1"
           android:singleLine="true"
-          android:text="Full Screen"
-          tools:text="afd" />
+          android:text="Full Screen" />
 
         <CheckBox
           android:id="@+id/fullScreenCheckbox"
@@ -136,8 +132,7 @@
             android:lines="1"
             android:maxLines="1"
             android:singleLine="true"
-            android:text="Hide Small Clips"
-            tools:text="afd" />
+            android:text="Hide Small Clips" />
 
           <TextView
             android:id="@+id/durationSecondsView"
@@ -157,8 +152,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fontFamily="sans-serif"
-          android:text="Filter out small audio clips. Set a threshold duration below which the files will not be displayed."
-          tools:text="afd" />
+          android:text="Filter out small audio clips. Set a threshold duration below which the files will not be displayed." />
       </LinearLayout>
 
       <LinearLayout
@@ -169,6 +163,7 @@
         android:orientation="horizontal">
 
         <TextView
+          android:id="@+id/textView3"
           style="@style/AppTheme.TextAppearance.Medium"
           android:layout_width="0dp"
           android:layout_height="match_parent"
@@ -176,11 +171,90 @@
           android:fontFamily="sans-serif"
           android:lines="1"
           android:singleLine="true"
-          android:text="Flat Theme"
-          tools:text="afd" />
+          android:text="Flat Theme" />
 
         <CheckBox
           android:id="@+id/flatThemeCheckbox"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:padding="8dp" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?listPreferredItemHeight"
+        android:orientation="horizontal">
+
+        <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:orientation="vertical"
+          android:paddingBottom="@dimen/mp.padding.small">
+
+          <TextView
+            style="@style/AppTheme.TextAppearance.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="Pause on Headset unplugged" />
+
+          <TextView
+            style="@style/AppTheme.TextAppearance.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="Pauses playback when headset is unplugged" />
+        </LinearLayout>
+
+        <CheckBox
+          android:id="@+id/pauseOnHeadsetUnplugged"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:padding="8dp" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?listPreferredItemHeight"
+        android:orientation="horizontal">
+
+        <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:orientation="vertical"
+          android:paddingBottom="@dimen/mp.padding.small">
+
+          <TextView
+            style="@style/AppTheme.TextAppearance.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="Resume on Headset plugged" />
+
+          <TextView
+            style="@style/AppTheme.TextAppearance.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="Resumes playback when headset is plugged" />
+        </LinearLayout>
+
+        <CheckBox
+          android:id="@+id/resumeOnHeadsetPlugged"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:gravity="center"
@@ -229,8 +303,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:fontFamily="sans-serif"
-          android:text="Set blurring value for your background images."
-          tools:text="afd" />
+          android:text="Set blurring value for your background images." />
       </LinearLayout>
 
       <LinearLayout
@@ -277,7 +350,7 @@
           android:maxLines="1"
           android:paddingBottom="@dimen/mp.padding.small"
           android:singleLine="true"
-          android:text="Share KD Music Player" />
+          android:text="Share KDabhi Music Player" />
 
         <TextView
           style="@style/AppTheme.TextAppearance.Small"

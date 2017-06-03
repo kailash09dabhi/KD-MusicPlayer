@@ -9,6 +9,7 @@ import com.kingbull.musicplayer.domain.storage.sqlite.MostPlayedPlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlEqualizerPreset;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.player.CallReceiver;
+import com.kingbull.musicplayer.player.HeadsetPlugReceiver;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
@@ -70,6 +71,8 @@ public interface AppComponent {
   void inject(MediaStat.Smart mediaStat);
 
   void inject(CallReceiver receiver);
+
+  void inject(HeadsetPlugReceiver receiver);
 
   //adapter
   void inject(MembersRecyclerViewAdapter adapter);

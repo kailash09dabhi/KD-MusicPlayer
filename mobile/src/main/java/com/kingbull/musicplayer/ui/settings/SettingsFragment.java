@@ -53,6 +53,8 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   @BindView(R.id.scrollView) ScrollView scrollView;
   @BindView(R.id.appVersionView) TextView appVersionView;
   @BindView(R.id.removeAdsView) TextView removeAdsView;
+  @BindView(R.id.pauseOnHeadsetUnplugged) CheckBox pauseOnHeadsetUnplugged;
+  @BindView(R.id.resumeOnHeadsetPlugged) CheckBox resumeOnHeadsetPlugged;
   @Inject Analytics analytics;
   private AdmobInterstitial admobInterstitial;
 
@@ -164,6 +166,8 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   private void setupView() {
     fullScreenCheckbox.setChecked(settingPreferences.isFullScreen());
     flatThemeCheckbox.setChecked(settingPreferences.isFlatTheme());
+    pauseOnHeadsetUnplugged.setChecked(settingPreferences.pauseOnHeadsetUnplugged());
+    resumeOnHeadsetPlugged.setChecked(settingPreferences.resumeOnHeadsetPlugged());
     durationSecondsView.setText(settingPreferences.filterDurationInSeconds() + " sec");
     appVersionView.setText(MusicPlayerApp.instance().versionName() + " (BETA)");
     applyUiColors();
@@ -217,16 +221,25 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
 
   @OnCheckedChanged(R.id.fullScreenCheckbox) void onFullScreenCheckedChange(boolean isChecked) {
     Window window = getActivity().getWindow();
+    settingPreferences.saveFullScreen(isChecked);
     if (isChecked) {
-      settingPreferences.saveFullScreen(true);
       window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
       window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     } else {
       window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
       window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-      settingPreferences.saveFullScreen(false);
     }
     analytics.logFullScreen(isChecked);
+  }
+
+  @OnCheckedChanged(R.id.pauseOnHeadsetUnplugged) void onPauseOnHeadsetUnpluggedCheckedChange(
+      boolean isChecked) {
+    settingPreferences.pauseOnHeadsetUnplugged(isChecked);
+  }
+
+  @OnCheckedChanged(R.id.resumeOnHeadsetPlugged) void onResumeOnHeadsetPluggedCheckedChange(
+      boolean isChecked) {
+    settingPreferences.resumeOnHeadsetPlugged(isChecked);
   }
 
   private void setupAdmobInterstial() {
