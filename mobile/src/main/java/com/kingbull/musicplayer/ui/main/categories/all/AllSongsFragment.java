@@ -32,6 +32,7 @@ import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
+import com.kingbull.musicplayer.ui.base.Keyboard;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.animators.SlideHorizontal;
@@ -55,9 +56,10 @@ import java.util.List;
 public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, AllSongs.View {
   private final List<Music> musicList = new ArrayList<>();
-  private final Alpha.Animation alphaAnimation = new Alpha.Animation(400);
   private final SlideHorizontal.Animation slideHorizontalAnimation =
       new SlideHorizontal.Animation(400);
+  private final Alpha.Animation alphaAnimation = new Alpha.Animation(400);
+  private final Keyboard keyboard = new Keyboard();
   @BindView(R.id.allSongsLayout) LinearLayout allSongsLayout;
   @BindView(R.id.progressLayout) LinearLayout progressLayout;
   @BindView(R.id.deletedOutOfText) TextView deletedOutOfTextView;
@@ -276,7 +278,11 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public void exitSearch() {
     searchView.setText("");
-    alphaAnimation.fadeOut(searchLayout);
+    alphaAnimation.fadeOut(searchLayout, new Alpha.FadeOutListener() {
+      @Override public void onFadeOutAnimationFinished() {
+        keyboard.hide(getActivity());
+      }
+    });
     alphaAnimation.fadeIn(totalSongLayout);
     slideHorizontalAnimation.slide(searchLayout, searchLayout.getWidth());
     slideHorizontalAnimation.slide(totalSongLayout, 0);
@@ -284,7 +290,11 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public void enterSearch() {
     alphaAnimation.fadeOut(totalSongLayout);
-    alphaAnimation.fadeIn(searchLayout);
+    alphaAnimation.fadeIn(searchLayout, new Alpha.FadeInListener() {
+      @Override public void onFadeInAnimationFinished() {
+        keyboard.show(searchView);
+      }
+    });
     slideHorizontalAnimation.slide(totalSongLayout, -totalSongLayout.getWidth());
     slideHorizontalAnimation.slide(searchLayout, 0);
   }
