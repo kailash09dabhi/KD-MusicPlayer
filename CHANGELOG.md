@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+Version 0.6.46 (4 June 2017) 
+----------------------------
+- Show keyboard implicitly where needed
+- Play/pause player on Headset plugged in-out
+- Display Player on click of notification 
+- Display player on resuming app from recent task if music is running
+- Fix crashes related to Play list, equalizer, folder, OutOfMemory & many others
+- Fix : Music notification not appears sometimes!
+- Fix: Player Auto start after disconnecting call
+- Display less ads & meditation
+- Several improvement & optimization in code base
 
 Version 0.6.37 (15 May 2017) 
 ----------------------------
