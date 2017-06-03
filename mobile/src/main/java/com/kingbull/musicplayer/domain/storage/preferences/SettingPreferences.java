@@ -33,6 +33,22 @@ public final class SettingPreferences {
     settingsPrefs.edit().putBoolean(Key.IS_FLAT_THEME, isFlatTheme).apply();
   }
 
+  public boolean pauseOnHeadsetUnplugged() {
+    return settingsPrefs.getBoolean(Key.PAUSE_ON_HEADSET_UNPLUGGED, true);
+  }
+
+  public void pauseOnHeadsetUnplugged(boolean shouldPause) {
+    settingsPrefs.edit().putBoolean(Key.PAUSE_ON_HEADSET_UNPLUGGED, shouldPause).apply();
+  }
+
+  public boolean resumeOnHeadsetPlugged() {
+    return settingsPrefs.getBoolean(Key.RESUME_ON_HEADSET_PLUGGED, false);
+  }
+
+  public void resumeOnHeadsetPlugged(boolean shouldResume) {
+    settingsPrefs.edit().putBoolean(Key.RESUME_ON_HEADSET_PLUGGED, shouldResume).apply();
+  }
+
   public boolean isFlatTheme() {
     return settingsPrefs.getBoolean(Key.IS_FLAT_THEME, false);
   }
@@ -105,5 +121,7 @@ public final class SettingPreferences {
     public final static String REVERB_ID = "reverb_id";
     public final static String FILTER_DURATION_IN_SECONDS = "filter_duration_in_seconds";
     public final static String BLUR_RADIUS = "blur_radius";
+    public final static String PAUSE_ON_HEADSET_UNPLUGGED = "pause_on_headset_unplugged";
+    public final static String RESUME_ON_HEADSET_PLUGGED = "resume_on_headset_plugged";
   }
 }
