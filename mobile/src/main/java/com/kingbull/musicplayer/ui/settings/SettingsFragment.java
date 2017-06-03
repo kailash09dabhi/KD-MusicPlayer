@@ -32,6 +32,7 @@ import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.player.MusicService;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
 import com.kingbull.musicplayer.ui.base.ads.AdmobInterstitial;
 import com.kingbull.musicplayer.ui.base.analytics.Analytics;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -128,6 +129,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     setupView();
+    new AdmobBannerLoaded((ViewGroup) view);
     setupAdmobInterstial();
     if (BuildConfig.FLAVOR.equals("pro")) {
       removeAdsView.setVisibility(View.GONE);
