@@ -26,6 +26,9 @@ android {
         "ca-app-pub-1642663068953785/7259499352"
     resConfigs "en"
   }
+  packagingOptions {
+    exclude 'META-INF/rxjava.properties'
+  }
   productFlavors {
     free {
       applicationId "com.kingbull.kdmusicplayer"
@@ -42,7 +45,7 @@ android {
   buildTypes {
     debug {
       minifyEnabled false
-      shrinkResources true
+      shrinkResources false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
     release {
