@@ -54,10 +54,13 @@ android {
   compileOptions.incremental = false
 }
 
-def supportLibraryVersion = "25.2.0";
-def daggerLibraryVersion = "2.10";
-def butterknifeLibraryVersion = "8.5.1";
-def firebaseVersion = "10.2.4";
+def supportLibraryVersion = "25.3.1";
+def daggerLibraryVersion = "2.11";
+def butterknifeLibraryVersion = "8.6.0";
+def firebaseVersion = "11.0.0";
+def rxVersion = "2.1.0";
+def rxAndroidVersion = "2.0.1";
+def facebookVersion = "4.23.0";
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   //  wearApp project(':wear')
@@ -75,23 +78,28 @@ dependencies {
   annotationProcessor "com.google.dagger:dagger-compiler:$daggerLibraryVersion"
 
   compile "com.github.nisrulz:recyclerviewhelper:$supportLibraryVersion"
+
   compile "com.google.firebase:firebase-core:$firebaseVersion"
   compile "com.google.firebase:firebase-crash:$firebaseVersion"
-  freeCompile "com.google.firebase:firebase-ads:$firebaseVersion"
-  freeCompile 'com.facebook.android:facebook-android-sdk:4.22.1'
-  freeCompile 'com.facebook.android:audience-network-sdk:4.22.1'
-  freeCompile 'com.google.ads.mediation:facebook:4.22.1.0'
 
   compile 'com.github.javiersantos:PiracyChecker:1.1'
 
-  compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-  compile 'io.reactivex.rxjava2:rxjava:2.0.1'
+  compile "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+  compile "io.reactivex.rxjava2:rxjava:$rxVersion"
   compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
-  compile 'com.simplecityapps:recyclerview-fastscroll:1.0.14'
+
+  compile 'com.simplecityapps:recyclerview-fastscroll:1.0.16'
   compile 'com.github.Commit451:NativeStackBlur:1.0.5'
-  compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+  compile 'uk.co.chrisjenx:calligraphy:2.3.0'
   compile 'com.facebook.stetho:stetho:1.5.0'
-  compile 'com.github.bumptech.glide:glide:3.7.0'
+  compile 'com.github.bumptech.glide:glide:3.8.0'
+
+  freeCompile "com.google.firebase:firebase-ads:$firebaseVersion"
+  freeCompile "com.facebook.android:facebook-android-sdk:$facebookVersion"
+  freeCompile "com.facebook.android:audience-network-sdk:$facebookVersion"
+  freeCompile 'com.google.ads.mediation:facebook:4.23.0.0'
+
+
   testCompile 'junit:junit:4.12'
   androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
     exclude group: 'com.android.support', module: 'support-annotations'
