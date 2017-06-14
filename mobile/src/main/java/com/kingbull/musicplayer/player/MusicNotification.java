@@ -78,18 +78,22 @@ public final class MusicNotification {
         getPendingIntent(ACTION_PLAY_TOGGLE));
   }
 
-  private void setVectorDrawable(RemoteViews remoteViews, @IdRes int resId,
-      @DrawableRes int drawableId) {
+  private void setVectorDrawable(RemoteViews remoteViews, @IdRes int viewId,
+      @DrawableRes int srcId) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      remoteViews.setImageViewResource(resId, drawableId);
+      remoteViews.setImageViewResource(viewId, srcId);
     } else {
-      Drawable d = AppCompatDrawableManager.get().getDrawable(context, drawableId);
-      Bitmap b = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(),
-          Bitmap.Config.ARGB_8888);
-      Canvas c = new Canvas(b);
-      d.setBounds(0, 0, c.getWidth(), c.getHeight());
-      d.draw(c);
-      remoteViews.setImageViewBitmap(resId, b);
+      Bitmap bitmap = BitmapMemoryCache.instance().get(String.valueOf(srcId));
+      if (bitmap == null) {
+        Drawable drawable = AppCompatDrawableManager.get().getDrawable(context, srcId);
+        bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(),
+            Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        BitmapMemoryCache.instance().add(String.valueOf(srcId), bitmap);
+      }
+      remoteViews.setImageViewBitmap(viewId, bitmap);
     }
   }
 
@@ -147,6 +151,7 @@ public final class MusicNotification {
   private void updateNotification(Pair<Music, Bitmap> pair) {
     Music music = pair.first;
     Bitmap album = pair.second;
+    BitmapMemoryCache.instance().add(String.valueOf(music.media().albumId()), album);
     updateRemoteViews(smallRemoteView(), music.media(), album);
     updateRemoteViews(bigRemoteView(), music.media(), album);
     updateMediaSessionMetaData(music.media(),
