@@ -70,6 +70,37 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   private StatusBarColor statusBarColor;
   private AdmobInterstitial equalizerInterstitial;
   private AdmobInterstitial nowPlayingListInterstitial;
+  private SimpleTarget<Bitmap> albumBitmapSimpleTarget = new SimpleTarget<Bitmap>() {
+    @Override
+    public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+      setAlbumImageAndAnimateBackground(bitmap);
+      Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+        public void onGenerated(Palette palette) {
+          if (palette != null && getView() != null) {
+            Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
+            Palette.Swatch mutedSwatch = palette.getMutedSwatch();
+            Palette.Swatch lightMutedSwatch = palette.getLightMutedSwatch();
+            Palette.Swatch lightVibrantSwatch = palette.getLightVibrantSwatch();
+            Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();
+            Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
+            if (darkMutedSwatch != null && lightMutedSwatch != null) {
+              applyColorTheme(darkMutedSwatch.getRgb());
+            } else if (darkVibrantSwatch != null && lightVibrantSwatch != null) {
+              applyColorTheme(darkVibrantSwatch.getRgb());
+            } else if (vibrantSwatch != null && mutedSwatch != null) {
+              applyColorTheme(vibrantSwatch.getRgb());
+            } else {
+              applyColorTheme(flatTheme.header().intValue());
+            }
+          }
+        }
+      });
+    }
+
+    @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
+      setAlbumImageAndAnimateBackground(((BitmapDrawable) errorDrawable).getBitmap());
+    }
+  };
 
   public static MusicPlayerFragment newInstance() {
     MusicPlayerFragment fragment = new MusicPlayerFragment();
@@ -116,6 +147,23 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
     applyColorTheme(flatTheme.header().intValue());
+  }
+
+  private void applyColorTheme(int darkColor) {
+    statusBarColor = new StatusBarColor(darkColor);
+    statusBarColor.applyOn(getActivity().getWindow());
+    nameTextView.setTextColor(Color.WHITE);
+    textViewArtist.setTextColor(Color.WHITE);
+    progressTextView.setTextColor(Color.WHITE);
+    durationTextView.setTextColor(Color.WHITE);
+    equalizerView.setImageDrawable(new IconDrawable(R.drawable.ic_equalizer, darkColor));
+    nowPlayingView.setImageDrawable(new IconDrawable(R.drawable.ic_queue_music, darkColor));
+  }
+
+  @Override public void onDestroyView() {
+    Glide.clear(albumBitmapSimpleTarget);
+    Glide.with(this).onLowMemory();
+    super.onDestroyView();
   }
 
   @Override protected PresenterFactory<MusicPlayer.Presenter> presenterFactory() {
@@ -216,66 +264,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         .centerCrop()
         .signature(
             new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
-        .into(new SimpleTarget<Bitmap>() {
-          @Override public void onResourceReady(Bitmap bitmap,
-              GlideAnimation<? super Bitmap> glideAnimation) {
-            setAlbumImageAndAnimateBackground(bitmap);
-            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-              public void onGenerated(Palette palette) {
-                if (palette != null && getView() != null) {
-                  Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
-                  Palette.Swatch mutedSwatch = palette.getMutedSwatch();
-                  Palette.Swatch lightMutedSwatch = palette.getLightMutedSwatch();
-                  Palette.Swatch lightVibrantSwatch = palette.getLightVibrantSwatch();
-                  Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();
-                  Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
-                  if (darkMutedSwatch != null && lightMutedSwatch != null) {
-                    applyColorTheme(darkMutedSwatch.getRgb());
-                  } else if (darkVibrantSwatch != null && lightVibrantSwatch != null) {
-                    applyColorTheme(darkVibrantSwatch.getRgb());
-                  } else if (vibrantSwatch != null && mutedSwatch != null) {
-                    applyColorTheme(vibrantSwatch.getRgb());
-                  } else {
-                    applyColorTheme(flatTheme.header().intValue());
-                  }
-                }
-              }
-            });
-          }
-
-          @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
-            setAlbumImageAndAnimateBackground(((BitmapDrawable) errorDrawable).getBitmap());
-          }
-        });
-  }
-
-  private void setAlbumImageAndAnimateBackground(Bitmap bitmap) {
-    RoundedBitmapDrawable circularBitmapDrawable =
-        RoundedBitmapDrawableFactory.create(getResources(), bitmap);
-    circularBitmapDrawable.setCircular(true);
-    albumImageView.setImageDrawable(circularBitmapDrawable);
-    Observable.just(bitmap)
-        .map(new Function<Bitmap, BitmapDrawable>() {
-          @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
-            return new BitmapImage(bitmap, getResources()).blurred(52)
-                .saturated()
-                .asBitmapDrawable();
-          }
-        })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new DisposableObserver<BitmapDrawable>() {
-          @Override public void onNext(BitmapDrawable bitmap) {
-            backgroundView.setBackground(bitmap);
-            new Alpha.Animation(0.16f, 2500).fadeIn(backgroundView);
-          }
-
-          @Override public void onError(Throwable e) {
-          }
-
-          @Override public void onComplete() {
-          }
-        });
+        .into(albumBitmapSimpleTarget);
   }
 
   @Override public void gotoNowPlayingListScreen() {
@@ -288,17 +277,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
 
   @Override public void close() {
     getActivity().finish();
-  }
-
-  private void applyColorTheme(int darkColor) {
-    statusBarColor = new StatusBarColor(darkColor);
-    statusBarColor.applyOn(getActivity().getWindow());
-    nameTextView.setTextColor(Color.WHITE);
-    textViewArtist.setTextColor(Color.WHITE);
-    progressTextView.setTextColor(Color.WHITE);
-    durationTextView.setTextColor(Color.WHITE);
-    equalizerView.setImageDrawable(new IconDrawable(R.drawable.ic_equalizer, darkColor));
-    nowPlayingView.setImageDrawable(new IconDrawable(R.drawable.ic_queue_music, darkColor));
   }
 
   private void setupInterstitial() {
@@ -332,6 +310,35 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         .add(android.R.id.content, NowPlayingFragment.newInstance(statusBarColor.intValue()))
         .addToBackStack(NowPlayingFragment.class.getSimpleName())
         .commitAllowingStateLoss();
+  }
+
+  private void setAlbumImageAndAnimateBackground(Bitmap bitmap) {
+    RoundedBitmapDrawable circularBitmapDrawable =
+        RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+    circularBitmapDrawable.setCircular(true);
+    albumImageView.setImageDrawable(circularBitmapDrawable);
+    Observable.just(bitmap)
+        .map(new Function<Bitmap, BitmapDrawable>() {
+          @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
+            return new BitmapImage(bitmap, getResources()).blurred(52)
+                .saturated()
+                .asBitmapDrawable();
+          }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new DisposableObserver<BitmapDrawable>() {
+          @Override public void onNext(BitmapDrawable bitmap) {
+            backgroundView.setBackground(bitmap);
+            new Alpha.Animation(0.16f, 2500).fadeIn(backgroundView);
+          }
+
+          @Override public void onError(Throwable e) {
+          }
+
+          @Override public void onComplete() {
+          }
+        });
   }
 
   @OnClick(R.id.button_play_toggle) public void onPlayToggleAction() {
