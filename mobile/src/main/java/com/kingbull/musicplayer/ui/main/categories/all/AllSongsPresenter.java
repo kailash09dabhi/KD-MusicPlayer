@@ -61,7 +61,6 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                         songs.add(music);
                       }
                     } while (cursor.moveToNext());
-                    cursor.close();
                   }
                   return Flowable.just(songs);
                 }
