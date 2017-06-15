@@ -1,8 +1,13 @@
 package com.kingbull.musicplayer.ui.base;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
@@ -13,7 +18,9 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import com.kingbull.musicplayer.di.AppModule;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
+import com.kingbull.musicplayer.ui.base.musiclist.ringtone.Ringtone;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
+import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
@@ -109,11 +116,41 @@ public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatAct
     return null;
   }
 
+  @RequiresApi(api = Build.VERSION_CODES.M) @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == Ringtone.PERMISSION_REQUEST_CODE) {
+      if (Settings.System.canWrite(this)) {
+        Ringtone.onPermissionGranted(this);
+      } else {
+        new Snackbar(findViewById(android.R.id.content)).show(
+            "Please grant permission to set ringtone!");
+      }
+    }
+  }
+
   @Override protected void onResume() {
     super.onResume();
     if (settingPreferences.isFullScreen()) {
       getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
           WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+  }
+
+  @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+      @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    switch (requestCode) {
+      case Ringtone.PERMISSION_REQUEST_CODE: {
+        // If request is cancelled, the result arrays are empty.
+        if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          Ringtone.onPermissionGranted(this);
+        } else {
+          new Snackbar(findViewById(android.R.id.content)).show(
+              "Please grant permission to set ringtone!");
+        }
+        return;
+      }
     }
   }
 }

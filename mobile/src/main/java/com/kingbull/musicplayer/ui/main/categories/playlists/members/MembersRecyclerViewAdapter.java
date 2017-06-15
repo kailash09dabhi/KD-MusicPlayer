@@ -145,7 +145,8 @@ public final class MembersRecyclerViewAdapter
             new IconDrawable(R.drawable.ic_ringtone_48dp, fillColor),
             new ActionItem.OnClickListener() {
               @Override public void onClick(ActionItem item) {
-                new Ringtone(activity, songs.get(holder.getAdapterPosition())).set();
+                new Ringtone(songs.get(holder.getAdapterPosition())).requestPermissionToBeSet(
+                    activity);
               }
             });
         final ActionItem deleteItem = new ActionItem("Delete from playlist",
