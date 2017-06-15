@@ -99,7 +99,10 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override public void onClick(View view) {
-      presenter.onFolderClick(files.get(getAdapterPosition()));
+      int adapterPosition = getAdapterPosition();
+      if (adapterPosition != RecyclerView.NO_POSITION) {
+        presenter.onFolderClick(files.get(adapterPosition));
+      }
     }
   }
 
@@ -115,7 +118,10 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override public void onClick(View view) {
-      presenter.onMusicClick(files.get(getAdapterPosition()));
+      int adapterPosition = getAdapterPosition();
+      if (adapterPosition != RecyclerView.NO_POSITION) {
+        presenter.onMusicClick(files.get(adapterPosition));
+      }
     }
   }
 }
