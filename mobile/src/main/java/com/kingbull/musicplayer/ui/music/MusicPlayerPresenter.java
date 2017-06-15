@@ -112,6 +112,12 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
   }
 
   @Override public void onNowPlayingClick() {
-    view().gotoNowPlayingListScreen();
+    if (!player.nowPlayingMusicList().isEmpty()) {
+      view().gotoNowPlayingListScreen();
+    } else {
+      FirebaseCrash.report(new RuntimeException("How we get into this state? "
+          + "User clicked NowPlayingList but it is empty! Just go back to Main screen!"));
+      view().close();
+    }
   }
 }
