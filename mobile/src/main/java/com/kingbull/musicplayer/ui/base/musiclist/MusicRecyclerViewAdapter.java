@@ -147,6 +147,8 @@ public final class MusicRecyclerViewAdapter
     holder.durationView.setText(new Milliseconds(music.media().duration()).toMmSs());
     holder.moreActionsView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(final View v) {
+        final int adapterPosition = holder.getAdapterPosition();
+        if (adapterPosition == RecyclerView.NO_POSITION) return;
         QuickActionPopupWindow quickActionPopupWindow = new QuickActionPopupWindow(activity);
         int fillColor = new ColorTheme.Flat().header().intValue();
         final ActionItem playItem =
@@ -154,7 +156,7 @@ public final class MusicRecyclerViewAdapter
                 new ActionItem.OnClickListener() {
                   @Override public void onClick(ActionItem item) {
                     player.addToNowPlaylist(songs);
-                    player.play(songs.get(holder.getAdapterPosition()));
+                    player.play(songs.get(adapterPosition));
                     activity.startActivity(new Intent(activity, MusicPlayerActivity.class));
                   }
                 });
@@ -163,7 +165,7 @@ public final class MusicRecyclerViewAdapter
             new ActionItem.OnClickListener() {
               @Override public void onClick(ActionItem item) {
                 List<SqlMusic> musicList = new ArrayList<>();
-                musicList.add((SqlMusic) songs.get(holder.getAdapterPosition()));
+                musicList.add((SqlMusic) songs.get(adapterPosition));
                 AddToPlayListDialogFragment.newInstance(musicList)
                     .show(activity.getSupportFragmentManager(),
                         AddToPlayListDialogFragment.class.getName());
@@ -173,7 +175,7 @@ public final class MusicRecyclerViewAdapter
             new ActionItem("Edit Tags", new IconDrawable(R.drawable.ic_edit_48dp, fillColor),
                 new ActionItem.OnClickListener() {
                   @Override public void onClick(ActionItem item) {
-                    EditTagsDialogFragment.newInstance(songs.get(holder.getAdapterPosition()))
+                    EditTagsDialogFragment.newInstance(songs.get(adapterPosition))
                         .show(activity.getSupportFragmentManager(),
                             EditTagsDialogFragment.class.getName());
                   }
@@ -182,7 +184,7 @@ public final class MusicRecyclerViewAdapter
             new IconDrawable(R.drawable.ic_info_outline_48dp, fillColor),
             new ActionItem.OnClickListener() {
               @Override public void onClick(ActionItem item) {
-                StatisticsDialogFragment.newInstance(songs.get(holder.getAdapterPosition()))
+                StatisticsDialogFragment.newInstance(songs.get(adapterPosition))
                     .show(activity.getSupportFragmentManager(),
                         StatisticsDialogFragment.class.getName());
               }
@@ -191,22 +193,20 @@ public final class MusicRecyclerViewAdapter
             new IconDrawable(R.drawable.ic_ringtone_48dp, fillColor),
             new ActionItem.OnClickListener() {
               @Override public void onClick(ActionItem item) {
-                new Ringtone(
-                    songs.get(holder.getAdapterPosition()).media()).requestPermissionToBeSet(
-                    activity);
+                new Ringtone(songs.get(adapterPosition).media()).requestPermissionToBeSet(activity);
               }
             });
         final ActionItem deleteItem =
             new ActionItem("Delete", new IconDrawable(R.drawable.ic_delete_48dp, fillColor),
                 new ActionItem.OnClickListener() {
                   @Override public void onClick(ActionItem item) {
-                    new File(songs.get(holder.getAdapterPosition()).media().path()).delete();
-                    activity.sendBroadcast(new Intent(Intent.ACTION_DELETE, Uri.fromFile(
-                        new File(songs.get(holder.getAdapterPosition()).media().path()))));
+                    new File(songs.get(adapterPosition).media().path()).delete();
+                    activity.sendBroadcast(new Intent(Intent.ACTION_DELETE,
+                        Uri.fromFile(new File(songs.get(adapterPosition).media().path()))));
                     new Snackbar(holder.itemView).show(String.format("%s has been deleted!",
-                        songs.get(holder.getAdapterPosition()).media().title()));
-                    songs.remove(holder.getAdapterPosition());
-                    notifyItemRemoved(holder.getAdapterPosition());
+                        songs.get(adapterPosition).media().title()));
+                    songs.remove(adapterPosition);
+                    notifyItemRemoved(adapterPosition);
                   }
                 });
         final ActionItem sendItem =
@@ -215,8 +215,8 @@ public final class MusicRecyclerViewAdapter
                   @Override public void onClick(ActionItem item) {
                     Intent share = new Intent(Intent.ACTION_SEND);
                     share.setType("audio/*");
-                    share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(
-                        new File(songs.get(holder.getAdapterPosition()).media().path())));
+                    share.putExtra(Intent.EXTRA_STREAM,
+                        Uri.fromFile(new File(songs.get(adapterPosition).media().path())));
                     activity.startActivity(Intent.createChooser(share, "Share Sound File"));
                   }
                 });
@@ -277,16 +277,19 @@ public final class MusicRecyclerViewAdapter
     }
 
     @Override public final boolean onLongClick(View view) {
+      if (getAdapterPosition() == RecyclerView.NO_POSITION) return false;
       toggleSelection(getAdapterPosition());
       return true;
     }
 
     @Override public void onClick(final View view) {
+      int adapterPosition = getAdapterPosition();
+      if (adapterPosition == RecyclerView.NO_POSITION) return;
       if (getSelectedItemCount() > 0) {
-        toggleSelection(getAdapterPosition());
+        toggleSelection(adapterPosition);
       } else {
         player.addToNowPlaylist(songs);
-        player.play(songs.get(getAdapterPosition()));
+        player.play(songs.get(adapterPosition));
         view.getContext().startActivity(new Intent(view.getContext(), MusicPlayerActivity.class));
       }
     }
