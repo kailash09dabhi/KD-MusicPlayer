@@ -191,7 +191,8 @@ public final class MusicRecyclerViewAdapter
             new IconDrawable(R.drawable.ic_ringtone_48dp, fillColor),
             new ActionItem.OnClickListener() {
               @Override public void onClick(ActionItem item) {
-                new Ringtone(songs.get(holder.getAdapterPosition())).requestPermissionToBeSet(
+                new Ringtone(
+                    songs.get(holder.getAdapterPosition()).media()).requestPermissionToBeSet(
                     activity);
               }
             });

@@ -12,7 +12,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import java.io.File;
 
@@ -23,10 +23,10 @@ import java.io.File;
 public final class Ringtone {
   public static final int PERMISSION_REQUEST_CODE = 999;
   private static Ringtone instance;
-  private final Music music;
+  private final Media media;
 
-  public Ringtone(Music music) {
-    this.music = music;
+  public Ringtone(Media media) {
+    this.media = media;
     instance = this;
   }
 
@@ -36,14 +36,14 @@ public final class Ringtone {
   }
 
   private void set(Activity activity) {
-    File ringtoneFile = new File(music.media().path());
+    File ringtoneFile = new File(media.path());
     ContentValues content = new ContentValues();
     content.put(MediaStore.MediaColumns.DATA, ringtoneFile.getAbsolutePath());
-    content.put(MediaStore.MediaColumns.TITLE, music.media().title());
-    content.put(MediaStore.Audio.Media.ALBUM, music.media().album());
+    content.put(MediaStore.MediaColumns.TITLE, media.title());
+    content.put(MediaStore.Audio.Media.ALBUM, media.album());
     content.put(MediaStore.MediaColumns.MIME_TYPE, "audio/*");
-    content.put(MediaStore.Audio.Media.ARTIST, music.media().artist());
-    content.put(MediaStore.Audio.Media.DURATION, music.media().duration());
+    content.put(MediaStore.Audio.Media.ARTIST, media.artist());
+    content.put(MediaStore.Audio.Media.DURATION, media.duration());
     content.put(MediaStore.Audio.Media.IS_RINGTONE, true);
     content.put(MediaStore.Audio.Media.IS_NOTIFICATION, false);
     content.put(MediaStore.Audio.Media.IS_ALARM, false);
@@ -55,7 +55,7 @@ public final class Ringtone {
     Uri newUri = activity.getContentResolver().insert(uri, content);
     RingtoneManager.setActualDefaultRingtoneUri(activity, RingtoneManager.TYPE_RINGTONE, newUri);
     new Snackbar(activity.findViewById(android.R.id.content)).show(
-        music.media().title() + " is set as Ringtone successfully!");
+        media.title() + " is set as Ringtone successfully!");
   }
 
   public void requestPermissionToBeSet(Activity activity) {
