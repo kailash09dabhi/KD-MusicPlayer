@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import com.google.firebase.crash.FirebaseCrash;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlEqualizerPreset;
@@ -122,21 +123,29 @@ public final class EqualizerView extends View {
         }
         break;
       case MotionEvent.ACTION_MOVE:
-        if (y <= maxHeight && y >= minHeight) {
-          lastTouchedPoint.y = y;
-        } else if (y < minHeight) {
-          lastTouchedPoint.y = minHeight;
+        if (lastTouchedPoint != null) {
+          if (y <= maxHeight && y >= minHeight) {
+            lastTouchedPoint.y = y;
+          } else if (y < minHeight) {
+            lastTouchedPoint.y = minHeight;
+          } else {
+            lastTouchedPoint.y = maxHeight;
+          }
+          invalidate();
         } else {
-          lastTouchedPoint.y = maxHeight;
+          FirebaseCrash.report(new RuntimeException("how lastTouchedPoint becomes null?",
+              new NullPointerException()));
         }
-        invalidate();
         break;
       case MotionEvent.ACTION_UP:
-        if (onBandValueChangeListener != null) {
+        if (onBandValueChangeListener != null && lastTouchedPoint != null) {
           onBandValueChangeListener.onBandValueChange(
               (short) equalizerPointList.indexOf(lastTouchedPoint),
               100 - (int) ((lastTouchedPoint.y - minHeight) / ((float) (maxHeight - minHeight))
                   * 100.0));
+        } else {
+          FirebaseCrash.report(new RuntimeException("how lastTouchedPoint becomes null?",
+              new NullPointerException()));
         }
         break;
     }
