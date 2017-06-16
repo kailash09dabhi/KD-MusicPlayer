@@ -106,7 +106,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
           try {
             bassBoost.setStrength((short) (percentage * 10));
           } catch (Exception e) {
-            FirebaseCrash.report(new RuntimeException("percentage is " + percentage, e));
+            FirebaseCrash.report(new RuntimeException("bassboost percentage is " + percentage, e));
           }
         }
       }
@@ -145,7 +145,8 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
           try {
             virtualizer.setStrength((short) (percentage * 10));
           } catch (Exception e) {
-            FirebaseCrash.report(new RuntimeException("percentage is " + percentage, e));
+            FirebaseCrash.report(
+                new RuntimeException("virtualizer percentage is " + percentage, e));
           }
         }
       }
