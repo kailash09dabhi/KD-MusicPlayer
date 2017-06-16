@@ -73,7 +73,12 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                       }
                     });
                   }
-                })
+                }).filter(new Predicate<List<Music>>() {
+              @Override public boolean test(@io.reactivex.annotations.NonNull List<Music> musics)
+                  throws Exception {
+                return musics != null;
+              }
+            })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new ResourceSubscriber<List<Music>>() {
