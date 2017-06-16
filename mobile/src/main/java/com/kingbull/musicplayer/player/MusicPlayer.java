@@ -5,7 +5,7 @@ import android.media.audiofx.BassBoost;
 import android.media.audiofx.PresetReverb;
 import android.media.audiofx.Virtualizer;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import com.google.firebase.crash.FirebaseCrash;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.Time;
@@ -69,7 +69,10 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
         time = new Time.Now();
         music.mediaStat().saveLastPlayed();
       } catch (IOException e) {
-        Log.e(TAG, "play: ", e);
+        FirebaseCrash.report(new IOException("play() got IOException!", e));
+        return false;
+      } catch (IllegalStateException e) {
+        FirebaseCrash.report(new IllegalStateException("play() got IllegalStateException!", e));
         return false;
       }
     }
