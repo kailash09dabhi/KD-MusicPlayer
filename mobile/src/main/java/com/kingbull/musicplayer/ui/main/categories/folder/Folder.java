@@ -11,7 +11,6 @@ import java.util.List;
  * @author Kailash Dabhi
  * @date 12/14/2016.
  */
-
 public interface Folder {
   /** includes all subfolders recursively to give all music list */
   List<File> allMusics();
@@ -29,16 +28,11 @@ public interface Folder {
         return new Folder.Smart(key);
       }
     };
-
     private static final AudioFileFilter audioFileFilter = new AudioFileFilter();
     private final File file;
 
     private Smart(File file) {
       this.file = file;
-    }
-
-    public static Folder from(File file) {
-      return cache.get(file);
     }
 
     @Override public List<File> allMusics() {
@@ -51,12 +45,19 @@ public interface Folder {
       return allMusics;
     }
 
+    public static Folder from(File file) {
+      return cache.get(file);
+    }
+
     @Override public List<File> musics() {
       List<File> onlyMusics = new ArrayList<>();
-      List<File> files = Arrays.asList(file.listFiles(audioFileFilter));
-      for (File file : files) {
-        if (!file.isDirectory()) {
-          onlyMusics.add(file);
+      File[] fileArray = file.listFiles(audioFileFilter);
+      if (fileArray != null && fileArray.length > 0) {
+        List<File> files = Arrays.asList(fileArray);
+        for (File file : files) {
+          if (!file.isDirectory()) {
+            onlyMusics.add(file);
+          }
         }
       }
       return onlyMusics;
@@ -106,7 +107,6 @@ public interface Folder {
             return Collections.unmodifiableList(key.musicFoldersAsFiles());
           }
         };
-
     private final Folder folder;
 
     public Cached(Folder folder) {
