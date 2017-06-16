@@ -151,7 +151,6 @@ public final class MusicNotification {
   private void updateNotification(Pair<Music, Bitmap> pair) {
     Music music = pair.first;
     Bitmap album = pair.second;
-    BitmapMemoryCache.instance().add(String.valueOf(music.media().albumId()), album);
     updateRemoteViews(smallRemoteView(), music.media(), album);
     updateRemoteViews(bigRemoteView(), music.media(), album);
     updateMediaSessionMetaData(music.media(),

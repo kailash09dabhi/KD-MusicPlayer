@@ -1,10 +1,12 @@
 package com.kingbull.musicplayer.player;
 
 import android.app.Service;
+import android.content.ComponentCallbacks2;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
@@ -14,6 +16,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import com.bumptech.glide.Glide;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
@@ -42,6 +45,18 @@ public final class MusicService extends Service implements Player {
     super.onCreate();
     MusicPlayerApp.instance().component().inject(this);
     registerReceiver(headsetPlugReceiver, headsetPlugReceiver.intentFilter());
+    registerComponentCallbacks(new ComponentCallbacks2() {
+      @Override public void onTrimMemory(int level) {
+        Glide.with(MusicService.this).onTrimMemory(level);
+      }
+
+      @Override public void onConfigurationChanged(Configuration newConfig) {
+      }
+
+      @Override public void onLowMemory() {
+        Glide.with(MusicService.this).onLowMemory();
+      }
+    });
     compositeDisposable = new CompositeDisposable();
     compositeDisposable.add(RxBus.getInstance()
         .toObservable()
