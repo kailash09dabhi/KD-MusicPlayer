@@ -1,4 +1,5 @@
--keepattributes LineNumberTable
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
 -dontwarn sun.misc.**
 
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
