@@ -42,16 +42,16 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
   private List<Music> songs;
 
   @Override public void onAllSongsCursorLoadFinished(Cursor cursor) {
-    if (cursor.isClosed()) {
-      musicPlayer.addToNowPlaylist(songs);
-      view().showAllSongs(songs);
-    } else {
-      compositeDisposable.add(
-          Flowable.just(cursor)
-              .flatMap(new Function<Cursor, Flowable<List<Music>>>() {
-                @Override public Flowable<List<Music>> apply(Cursor cursor) {
-                  List<Music> songs = new ArrayList<>();
-                  if (cursor != null && cursor.getCount() > 0) {
+    if (cursor != null && cursor.getCount() > 0) {
+      if (cursor.isClosed()) {
+        musicPlayer.addToNowPlaylist(songs);
+        view().showAllSongs(songs);
+      } else {
+        compositeDisposable.add(
+            Flowable.just(cursor)
+                .flatMap(new Function<Cursor, Flowable<List<Music>>>() {
+                  @Override public Flowable<List<Music>> apply(Cursor cursor) {
+                    List<Music> songs = new ArrayList<>();
                     cursor.moveToFirst();
                     do {
                       Music music = new SqlMusic(new Media.Smart(cursor));
@@ -61,36 +61,36 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                         songs.add(music);
                       }
                     } while (cursor.moveToNext());
+                    return Flowable.just(songs);
                   }
-                  return Flowable.just(songs);
-                }
-              })
-              .doOnNext(new Consumer<List<Music>>() {
-                @Override public void accept(List<Music> songs) {
-                  Log.d(TAG, "onLoadFinished: " + songs.size());
-                  Collections.sort(songs, new Comparator<Music>() {
-                    @Override public int compare(Music left, Music right) {
-                      return left.media().title().compareTo(right.media().title());
-                    }
-                  });
-                }
-              })
-              .subscribeOn(Schedulers.io())
-              .observeOn(AndroidSchedulers.mainThread())
-              .subscribeWith(new ResourceSubscriber<List<Music>>() {
-                @Override public void onNext(List<Music> songs) {
-                  AllSongsPresenter.this.songs = songs;
-                  musicPlayer.addToNowPlaylist(songs);
-                  view().showAllSongs(songs);
-                }
+                })
+                .doOnNext(new Consumer<List<Music>>() {
+                  @Override public void accept(List<Music> songs) {
+                    Log.d(TAG, "onLoadFinished: " + songs.size());
+                    Collections.sort(songs, new Comparator<Music>() {
+                      @Override public int compare(Music left, Music right) {
+                        return left.media().title().compareTo(right.media().title());
+                      }
+                    });
+                  }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new ResourceSubscriber<List<Music>>() {
+                  @Override public void onNext(List<Music> songs) {
+                    AllSongsPresenter.this.songs = songs;
+                    musicPlayer.addToNowPlaylist(songs);
+                    view().showAllSongs(songs);
+                  }
 
-                @Override public void onError(Throwable throwable) {
-                  Log.e(TAG, "onError: ", throwable);
-                }
+                  @Override public void onError(Throwable throwable) {
+                    Log.e(TAG, "onError: ", throwable);
+                  }
 
-                @Override public void onComplete() {
-                }
-              }));
+                  @Override public void onComplete() {
+                  }
+                }));
+      }
     }
   }
 
