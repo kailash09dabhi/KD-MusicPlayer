@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.6.55 (18 June 2017) 
+----------------------------
+- Fix crash on setting ringtone on marshmallow or above
+- Several NPE crashes fixed
+- Various patches to avoid OutOfMemoryError
+
 Version 0.6.46 (4 June 2017) 
 ----------------------------
 - Show keyboard implicitly where needed
