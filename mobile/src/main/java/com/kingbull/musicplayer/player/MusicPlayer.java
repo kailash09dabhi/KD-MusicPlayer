@@ -12,6 +12,9 @@ import com.kingbull.musicplayer.domain.Time;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -69,10 +72,36 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
         time = new Time.Now();
         music.mediaStat().saveLastPlayed();
       } catch (IOException e) {
-        FirebaseCrash.report(new IOException("play() got IOException!", e));
-        return false;
+        FirebaseCrash.report(new IOException(
+            "play() got IOException! " + e.getMessage() + " is File readable? " + new File(
+                music.media().path()).canRead(), e));
+        try {
+          FileInputStream fis = new FileInputStream(music.media().path());
+          player.setDataSource(fis.getFD());
+          player.reset();
+          player.setDataSource(music.media().path());
+          player.prepare();
+          player.start();
+          isAudioSessionIdUpdated = true;
+          time = new Time.Now();
+          music.mediaStat().saveLastPlayed();
+        } catch (FileNotFoundException e1) {
+          FirebaseCrash.report(new IllegalStateException(
+              "play() catch(FileNotFoundException){}  parent: " + e + "child:" + e1, e1));
+          return false;
+        } catch (IOException e1) {
+          FirebaseCrash.report(
+              new IOException("play() catch(IOException)  parent: " + e + "child:" + e1, e1));
+          return false;
+        } catch (IllegalStateException e1) {
+          FirebaseCrash.report(new IllegalStateException(
+              "play() catch(IllegalStateException){}  parent: " + e + "child:" + e1, e1));
+          return false;
+        }
+        return true;
       } catch (IllegalStateException e) {
-        FirebaseCrash.report(new IllegalStateException("play() got IllegalStateException!", e));
+        FirebaseCrash.report(
+            new IllegalStateException("play() got IllegalStateException! " + e.getMessage(), e));
         return false;
       }
     }
