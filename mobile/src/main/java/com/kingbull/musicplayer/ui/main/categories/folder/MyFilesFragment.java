@@ -21,6 +21,7 @@ import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -45,6 +46,7 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
     applyUIColors();
+    new AdmobBannerLoaded((ViewGroup) view);
     return view;
   }
 

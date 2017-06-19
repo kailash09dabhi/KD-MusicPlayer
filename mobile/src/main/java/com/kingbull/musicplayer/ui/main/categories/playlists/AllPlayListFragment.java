@@ -21,6 +21,7 @@ import com.kingbull.musicplayer.event.PlaylistRenameEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -44,6 +45,7 @@ public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presente
     View view = inflater.inflate(R.layout.fragment_all_playlist, container, false);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
+    new AdmobBannerLoaded((ViewGroup) view);
     setupView();
     return view;
   }
