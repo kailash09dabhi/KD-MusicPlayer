@@ -43,6 +43,6 @@ import javax.inject.Singleton;
   }
 
   @Singleton @Provides Analytics provideAnalytics() {
-    return new Analytics.Firebase();
+    return new Analytics.Fabric();
   }
 }

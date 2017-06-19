@@ -1,8 +1,7 @@
 package com.kingbull.musicplayer.ui.base.analytics;
 
-import android.os.Bundle;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.kingbull.musicplayer.MusicPlayerApp;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 
 /**
  * @author Kailash Dabhi
@@ -19,35 +18,32 @@ public interface Analytics {
 
   void logScreen(String name);
 
-  class Firebase implements Analytics {
-    private final FirebaseAnalytics firebaseAnalytics =
-        FirebaseAnalytics.getInstance(MusicPlayerApp.instance());
-    private final Bundle bundle = new Bundle();
+  class Fabric implements Analytics {
+    private final Answers analytics = Answers.getInstance();
 
     @Override public void logDurationFilter(int durationInSeconds) {
-      firebaseAnalytics.logEvent("duration_filter", bundle);
-      firebaseAnalytics.setUserProperty("duration_filter", String.valueOf(durationInSeconds));
+      analytics.logCustom(
+          new CustomEvent("duration filter").putCustomAttribute("seconds", durationInSeconds));
     }
 
     @Override public void logBlurRadius(int radius) {
-      firebaseAnalytics.logEvent("blur_radius_" + radius, bundle);
-      firebaseAnalytics.setUserProperty("blur_radius", String.valueOf(radius));
+      analytics.logCustom(
+          new CustomEvent("Background blurred").putCustomAttribute("blur radius", radius));
     }
 
     @Override public void logTheme(boolean isFlatTheme) {
       String theme = isFlatTheme ? "flat" : "glassy";
-      firebaseAnalytics.logEvent("theme_" + theme, bundle);
-      firebaseAnalytics.setUserProperty("theme", theme);
+      analytics.logCustom(new CustomEvent("Theme changed").putCustomAttribute("to", theme));
     }
 
     @Override public void logFullScreen(boolean isFullScreen) {
-      String screenMode = isFullScreen ? "full_screen" : "normal_screen";
-      firebaseAnalytics.logEvent(screenMode, bundle);
-      firebaseAnalytics.setUserProperty("screen_mode", screenMode);
+      String screenMode = isFullScreen ? "full screen" : "normal screen";
+      analytics.logCustom(
+          new CustomEvent("screen mode").putCustomAttribute("screen mode", screenMode));
     }
 
     @Override public void logScreen(String name) {
-      firebaseAnalytics.logEvent("screen_" + name, bundle);
+      analytics.logCustom(new CustomEvent(name));
     }
   }
 }
