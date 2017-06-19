@@ -19,6 +19,9 @@
     <meta-data
       android:name="com.google.android.gms.version"
       android:value="@integer/google_play_services_version" />
+    <meta-data
+      android:name="io.fabric.ApiKey"
+      android:value="def5d4aa838355cc20b712816a92e68b594b0109" />
 
     <activity
       android:name=".ui.splash.SplashActivity"

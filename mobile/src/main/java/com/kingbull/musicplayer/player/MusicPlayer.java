@@ -5,7 +5,7 @@ import android.media.audiofx.BassBoost;
 import android.media.audiofx.PresetReverb;
 import android.media.audiofx.Virtualizer;
 import android.support.annotation.Nullable;
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.Time;
@@ -72,7 +72,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
         time = new Time.Now();
         music.mediaStat().saveLastPlayed();
       } catch (IOException e) {
-        FirebaseCrash.report(new IOException(
+        Crashlytics.logException(new IOException(
             "play() got IOException! " + e.getMessage() + " is File readable? " + new File(
                 music.media().path()).canRead(), e));
         try {
@@ -86,21 +86,21 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
           time = new Time.Now();
           music.mediaStat().saveLastPlayed();
         } catch (FileNotFoundException e1) {
-          FirebaseCrash.report(new IllegalStateException(
+          Crashlytics.logException(new IllegalStateException(
               "play() catch(FileNotFoundException){}  parent: " + e + "child:" + e1, e1));
           return false;
         } catch (IOException e1) {
-          FirebaseCrash.report(
+          Crashlytics.logException(
               new IOException("play() catch(IOException)  parent: " + e + "child:" + e1, e1));
           return false;
         } catch (IllegalStateException e1) {
-          FirebaseCrash.report(new IllegalStateException(
+          Crashlytics.logException(new IllegalStateException(
               "play() catch(IllegalStateException){}  parent: " + e + "child:" + e1, e1));
           return false;
         }
         return true;
       } catch (IllegalStateException e) {
-        FirebaseCrash.report(
+        Crashlytics.logException(
             new IllegalStateException("play() got IllegalStateException! " + e.getMessage(), e));
         return false;
       }

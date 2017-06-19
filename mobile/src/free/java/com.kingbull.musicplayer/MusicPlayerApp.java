@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatDelegate;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.stetho.Stetho;
 import com.google.android.gms.ads.MobileAds;
@@ -13,6 +14,7 @@ import com.kingbull.musicplayer.di.AppModule;
 import com.kingbull.musicplayer.di.DaggerAppComponent;
 import com.kingbull.musicplayer.di.StorageModule;
 import com.kingbull.musicplayer.player.MusicService;
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -34,6 +36,7 @@ public final class MusicPlayerApp extends Application {
   @Override public void onCreate() {
     super.onCreate();
     application = this;
+    Fabric.with(this, new Crashlytics());
     MobileAds.initialize(getApplicationContext(), "ca-app-pub-1642663068953785~5782766159");
     if (BuildConfig.DEBUG) {
       Stetho.initializeWithDefaults(this);

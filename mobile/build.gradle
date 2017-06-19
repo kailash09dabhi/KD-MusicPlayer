@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
+repositories {
+  maven { url 'https://maven.fabric.io/public' }
+}
 apply from: "$project.rootDir/tools/script-git-version.gradle"
 apply from: "$project.rootDir/tools/script-findbugs.gradle"
 apply from: "$project.rootDir/tools/script-lint.gradle"
@@ -83,8 +87,10 @@ dependencies {
   compile "com.github.nisrulz:recyclerviewhelper:$supportLibraryVersion"
 
   compile "com.google.firebase:firebase-core:$firebaseVersion"
-  compile "com.google.firebase:firebase-crash:$firebaseVersion"
 
+  compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+    transitive = true;
+  }
   compile 'com.github.javiersantos:PiracyChecker:1.1'
 
   compile "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"

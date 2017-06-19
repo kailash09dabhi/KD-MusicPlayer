@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.ui.main.categories.all;
 
 import android.database.Cursor;
 import android.util.Log;
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
@@ -238,7 +238,8 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
             ++count;
             int position = songs.indexOf(music);
             if (position == -1) {
-              FirebaseCrash.report(new IllegalStateException("How songs.indexOf returning -1?"));
+              Crashlytics.logException(
+                  new IllegalStateException("How songs.indexOf returning -1?"));
             } else {
               view().notifyItemRemoved(position);
               songs.remove(music);
