@@ -36,6 +36,18 @@ public final class MusicService extends Service implements Player {
   public static final String ACTION_PLAY_NEXT = "com.kingbull.kdmusicplayer.ACTION_PLAY_NEXT";
   private final Binder mBinder = new LocalBinder();
   private final HeadsetPlugReceiver headsetPlugReceiver = new HeadsetPlugReceiver();
+  private final ComponentCallbacks2 componentCallbacks2 = new ComponentCallbacks2() {
+    @Override public void onTrimMemory(int level) {
+      Glide.with(MusicService.this).onTrimMemory(level);
+    }
+
+    @Override public void onConfigurationChanged(Configuration newConfig) {
+    }
+
+    @Override public void onLowMemory() {
+      Glide.with(MusicService.this).onLowMemory();
+    }
+  };
   @Inject Player musicPlayer;
   private MediaSessionCompat mediaSession;
   private CompositeDisposable compositeDisposable;
@@ -45,18 +57,7 @@ public final class MusicService extends Service implements Player {
     super.onCreate();
     MusicPlayerApp.instance().component().inject(this);
     registerReceiver(headsetPlugReceiver, headsetPlugReceiver.intentFilter());
-    registerComponentCallbacks(new ComponentCallbacks2() {
-      @Override public void onTrimMemory(int level) {
-        Glide.with(MusicService.this).onTrimMemory(level);
-      }
-
-      @Override public void onConfigurationChanged(Configuration newConfig) {
-      }
-
-      @Override public void onLowMemory() {
-        Glide.with(MusicService.this).onLowMemory();
-      }
-    });
+    registerComponentCallbacks(componentCallbacks2);
     compositeDisposable = new CompositeDisposable();
     compositeDisposable.add(RxBus.getInstance()
         .toObservable()
@@ -111,6 +112,7 @@ public final class MusicService extends Service implements Player {
   @Override public void onDestroy() {
     if (compositeDisposable != null) compositeDisposable.clear();
     unregisterReceiver(headsetPlugReceiver);
+    unregisterComponentCallbacks(componentCallbacks2);
     super.onDestroy();
   }
 
