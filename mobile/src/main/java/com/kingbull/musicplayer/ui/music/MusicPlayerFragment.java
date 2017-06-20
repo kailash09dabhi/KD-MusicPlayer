@@ -1,6 +1,8 @@
 package com.kingbull.musicplayer.ui.music;
 
+import android.content.ComponentCallbacks2;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -101,6 +103,20 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
       setAlbumImageAndAnimateBackground(((BitmapDrawable) errorDrawable).getBitmap());
     }
   };
+  private final ComponentCallbacks2 componentCallback = new ComponentCallbacks2() {
+    @Override public void onTrimMemory(int level) {
+      Glide.with(MusicPlayerFragment.this).onTrimMemory(level);
+      Glide.clear(albumBitmapSimpleTarget);
+    }
+
+    @Override public void onConfigurationChanged(Configuration newConfig) {
+    }
+
+    @Override public void onLowMemory() {
+      Glide.with(MusicPlayerFragment.this).onLowMemory();
+      Glide.clear(albumBitmapSimpleTarget);
+    }
+  };
 
   public static MusicPlayerFragment newInstance() {
     MusicPlayerFragment fragment = new MusicPlayerFragment();
@@ -129,6 +145,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     super.onViewCreated(view, savedInstanceState);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
+    getActivity().registerComponentCallbacks(componentCallback);
     setupInterstitial();
   }
 
@@ -149,20 +166,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     applyColorTheme(flatTheme.header().intValue());
   }
 
-  private void applyColorTheme(int darkColor) {
-    statusBarColor = new StatusBarColor(darkColor);
-    statusBarColor.applyOn(getActivity().getWindow());
-    nameTextView.setTextColor(Color.WHITE);
-    textViewArtist.setTextColor(Color.WHITE);
-    progressTextView.setTextColor(Color.WHITE);
-    durationTextView.setTextColor(Color.WHITE);
-    equalizerView.setImageDrawable(new IconDrawable(R.drawable.ic_equalizer, darkColor));
-    nowPlayingView.setImageDrawable(new IconDrawable(R.drawable.ic_queue_music, darkColor));
-  }
-
   @Override public void onDestroyView() {
-    Glide.clear(albumBitmapSimpleTarget);
-    Glide.with(this).onLowMemory();
+    getActivity().unregisterComponentCallbacks(componentCallback);
     super.onDestroyView();
   }
 
@@ -277,6 +282,17 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
 
   @Override public void close() {
     getActivity().finish();
+  }
+
+  private void applyColorTheme(int darkColor) {
+    statusBarColor = new StatusBarColor(darkColor);
+    statusBarColor.applyOn(getActivity().getWindow());
+    nameTextView.setTextColor(Color.WHITE);
+    textViewArtist.setTextColor(Color.WHITE);
+    progressTextView.setTextColor(Color.WHITE);
+    durationTextView.setTextColor(Color.WHITE);
+    equalizerView.setImageDrawable(new IconDrawable(R.drawable.ic_equalizer, darkColor));
+    nowPlayingView.setImageDrawable(new IconDrawable(R.drawable.ic_queue_music, darkColor));
   }
 
   private void setupInterstitial() {
