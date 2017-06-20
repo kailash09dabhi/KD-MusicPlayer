@@ -3,9 +3,16 @@ package com.kingbull.musicplayer.ui.main.categories.folder;
 import android.support.annotation.NonNull;
 import com.kingbull.musicplayer.domain.FileMusicMap;
 import com.kingbull.musicplayer.player.Player;
+import com.kingbull.musicplayer.ui.base.DefaultDisposableObserver;
 import com.kingbull.musicplayer.ui.base.Presenter;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import java.io.File;
+import java.util.List;
+import java.util.concurrent.Callable;
 import javax.inject.Inject;
 
 /**
@@ -16,12 +23,25 @@ public final class MyFilesPresenter extends Presenter<MyFiles.View> implements M
   @Inject Player player;
   @Inject FileMusicMap fileMusicMap;
   @Inject MyFilesModel model;
+  private final Observable<List<File>> currentFileListObservable =
+      Observable.fromCallable(new Callable<List<File>>() {
+        @Override public List<File> call() throws Exception {
+          return model.filesOfCurrentFolder();
+        }
+      })
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .doOnNext(new Consumer<List<File>>() {
+            @Override public void accept(@io.reactivex.annotations.NonNull List<File> files) {
+              view().showFiles(files);
+            }
+          });
 
   @Override public void takeView(@NonNull MyFiles.View view) {
     super.takeView(view);
     compositeDisposable = new CompositeDisposable();
     view().updateFolder(model.currentFolder());
-    view().showFiles(model.filesOfCurrentFolder());
+    currentFileListObservable.subscribe(new DefaultDisposableObserver<List<File>>());
   }
 
   @Override public void onFolderClick(File file) {
@@ -35,7 +55,7 @@ public final class MyFilesPresenter extends Presenter<MyFiles.View> implements M
       view().close();
     } else {
       model.currentFolder(model.currentFolder().getParentFile());
-      view().showFiles(model.filesOfCurrentFolder());
+      currentFileListObservable.subscribe(new DefaultDisposableObserver<List<File>>());
       view().updateFolder(model.currentFolder());
     }
   }

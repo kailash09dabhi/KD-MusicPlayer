@@ -13,9 +13,17 @@ import com.kingbull.musicplayer.di.AppModule;
 import com.kingbull.musicplayer.domain.FileMusicMap;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Milliseconds;
+import com.kingbull.musicplayer.ui.base.DefaultDisposableObserver;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.Callable;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -50,16 +58,25 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
     return holder;
   }
 
-  @Override public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+  @Override public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
     int titleColor = colorTheme.titleText().intValue();
     int bodyColor = colorTheme.bodyText().intValue();
     if (viewHolder instanceof FolderFileViewHolder) {
-      FolderFileViewHolder holder = (FolderFileViewHolder) viewHolder;
+      final FolderFileViewHolder holder = (FolderFileViewHolder) viewHolder;
       holder.folderNameView.setText(files.get(position).getName());
-      holder.totalFilesView.setText(
-          new Folder.Cached(Folder.Smart.from(files.get(position))).allMusics().size()
-              + " "
-              + "song");
+      Observable.fromCallable(new Callable<Integer>() {
+        @Override public Integer call() throws Exception {
+          return new Folder.Cached(Folder.Smart.from(files.get(position))).allMusics().size();
+        }
+      }).subscribeOn(Schedulers.io()).map(new Function<Integer, String>() {
+        @Override public String apply(@NonNull Integer integer) throws Exception {
+          return String.valueOf(integer);
+        }
+      }).observeOn(AndroidSchedulers.mainThread()).doOnNext(new Consumer<String>() {
+        @Override public void accept(@NonNull String s) throws Exception {
+          holder.totalFilesView.setText(s + " song");
+        }
+      }).subscribe(new DefaultDisposableObserver<String>());
       holder.folderNameView.setTextColor(titleColor);
       holder.totalFilesView.setTextColor(bodyColor);
     } else if (viewHolder instanceof SongFileViewHolder) {
