@@ -34,7 +34,7 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
   private final List<Music> songs = new ArrayList<>();
   @Inject Player musicPlayer;
   private AlbumMusicsMap albumMusicsMap;
-  private List<Album> albums;
+  private List<Album> albums = new ArrayList<>();
   private CompositeDisposable compositeDisposable;
   private int albumPosition;
 
@@ -67,9 +67,10 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
               @Override public void onNext(List<Music> musicList) {
                 songs.clear();
                 songs.addAll(musicList);
+                albums.clear();
                 if (musicList.size() > 0) {
                   albumMusicsMap = new AlbumMusicsMap(musicList);
-                  albums = new ArrayList<>(albumMusicsMap.keySet());
+                  albums.addAll(albumMusicsMap.keySet());
                   Album allSongs = new Album.Smart("All Songs");
                   albums.add(0, allSongs);
                   albumMusicsMap.put(allSongs, musicList);
