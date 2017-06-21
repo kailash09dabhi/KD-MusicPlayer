@@ -65,18 +65,24 @@ public interface Folder {
 
     @Override public List<Folder> musicFolders() {
       List<Folder> onlyDirectories = new ArrayList<>();
-      List<File> files = Arrays.asList(file.listFiles(audioFileFilter));
-      for (File file : files) {
-        if (file.isDirectory()) onlyDirectories.add(Folder.Smart.from(file));
+      File[] fileArray = file.listFiles(audioFileFilter);
+      if (fileArray != null && fileArray.length > 0) {
+        List<File> files = Arrays.asList(fileArray);
+        for (File file : files) {
+          if (file.isDirectory()) onlyDirectories.add(Folder.Smart.from(file));
+        }
       }
       return onlyDirectories;
     }
 
     @Override public List<File> musicFoldersAsFiles() {
       List<File> onlyDirectories = new ArrayList<>();
-      List<File> files = Arrays.asList(file.listFiles(audioFileFilter));
-      for (File file : files) {
-        if (file.isDirectory()) onlyDirectories.add(file);
+      File[] fileArray = file.listFiles(audioFileFilter);
+      if (fileArray != null && fileArray.length > 0) {
+        List<File> files = Arrays.asList(fileArray);
+        for (File file : files) {
+          if (file.isDirectory()) onlyDirectories.add(file);
+        }
       }
       return onlyDirectories;
     }
