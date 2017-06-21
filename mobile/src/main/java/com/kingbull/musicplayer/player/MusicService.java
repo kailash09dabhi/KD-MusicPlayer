@@ -8,9 +8,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.media.AudioManager;
-import android.media.audiofx.BassBoost;
-import android.media.audiofx.Equalizer;
-import android.media.audiofx.Virtualizer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -19,17 +16,14 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import com.bumptech.glide.Glide;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.RxBus;
-import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.event.MusicEvent;
-import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
-public final class MusicService extends Service implements Player {
+public final class MusicService extends Service {
   public static final String ACTION_STOP_SERVICE = "com.kingbull.kdmusicplayer.ACTION_STOP_SERVICE";
   public static final String ACTION_PLAY_TOGGLE = "com.kingbull.kdmusicplayer.ACTION_PLAY_TOGGLE";
   public static final String ACTION_PLAY_LAST = "com.kingbull.kdmusicplayer.ACTION_PLAY_LAST";
@@ -90,18 +84,18 @@ public final class MusicService extends Service implements Player {
     if (intent != null) {
       String action = intent.getAction();
       if (ACTION_PLAY_TOGGLE.equals(action)) {
-        if (isPlaying()) {
-          pause();
+        if (musicPlayer.isPlaying()) {
+          musicPlayer.pause();
         } else {
-          play();
+          musicPlayer.play();
         }
       } else if (ACTION_PLAY_NEXT.equals(action)) {
-        playNext();
+        musicPlayer.playNext();
       } else if (ACTION_PLAY_LAST.equals(action)) {
-        playPrevious();
+        musicPlayer.playPrevious();
       } else if (ACTION_STOP_SERVICE.equals(action)) {
-        if (isPlaying()) {
-          pause();
+        if (musicPlayer.isPlaying()) {
+          musicPlayer.pause();
         }
         stopForeground(true);
       }
@@ -118,70 +112,6 @@ public final class MusicService extends Service implements Player {
 
   @Nullable @Override public IBinder onBind(Intent intent) {
     return mBinder;
-  }
-
-  @Override public boolean play() {
-    return musicPlayer.play();
-  }
-
-  @Override public boolean play(Music music) {
-    return musicPlayer.play(music);
-  }
-
-  @Override public boolean playPrevious() {
-    return musicPlayer.playPrevious();
-  }
-
-  @Override public boolean playNext() {
-    return musicPlayer.playNext();
-  }
-
-  @Override public boolean pause() {
-    return musicPlayer.pause();
-  }
-
-  @Override public boolean isPlaying() {
-    return musicPlayer.isPlaying();
-  }
-
-  @Override public int getProgress() {
-    return musicPlayer.getProgress();
-  }
-
-  @Override public Music getPlayingSong() {
-    return musicPlayer.getPlayingSong();
-  }
-
-  @Override public Equalizer equalizer() {
-    return musicPlayer.equalizer();
-  }
-
-  @Override public boolean seekTo(int progress) {
-    return musicPlayer.seekTo(progress);
-  }
-
-  @Override public void useEffect(Reverb reverb) {
-    musicPlayer.useEffect(reverb);
-  }
-
-  @Override public BassBoost bassBoost() {
-    return musicPlayer.bassBoost();
-  }
-
-  @Override public Virtualizer virtualizer() {
-    return null;
-  }
-
-  @Override public void releasePlayer() {
-    musicPlayer.releasePlayer();
-  }
-
-  @Override public void addToNowPlaylist(List<Music> songs) {
-    musicPlayer.addToNowPlaylist(songs);
-  }
-
-  @Override public NowPlayingList nowPlayingMusicList() {
-    return musicPlayer.nowPlayingMusicList();
   }
 
   private void lockScreenMediaSessionSetup() {
