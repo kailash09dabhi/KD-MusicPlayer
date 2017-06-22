@@ -21,11 +21,12 @@ public final class MostPlayedPlayList implements PlayList, Parcelable {
   };
   @Inject MediaStatTable mediaStatTable;
 
-  public MostPlayedPlayList() {
-    MusicPlayerApp.instance().component().inject(this);
+  protected MostPlayedPlayList(Parcel in) {
+    this();
   }
 
-  protected MostPlayedPlayList(Parcel in) {
+  public MostPlayedPlayList() {
+    MusicPlayerApp.instance().component().inject(this);
   }
 
   @Override public String name() {

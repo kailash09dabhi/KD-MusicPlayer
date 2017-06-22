@@ -21,11 +21,12 @@ public final class FavouritesPlayList implements PlayList, Parcelable {
   };
   @Inject MediaStatTable mediaStatTable;
 
-  public FavouritesPlayList() {
-    MusicPlayerApp.instance().component().inject(this);
+  protected FavouritesPlayList(Parcel in) {
+    this();
   }
 
-  protected FavouritesPlayList(Parcel in) {
+  public FavouritesPlayList() {
+    MusicPlayerApp.instance().component().inject(this);
   }
 
   @Override public String name() {

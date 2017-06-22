@@ -25,10 +25,11 @@ public final class RecentlyAddedPlayList implements PlayList, Parcelable {
         }
       };
 
-  public RecentlyAddedPlayList() {
+  protected RecentlyAddedPlayList(Parcel in) {
+    this();
   }
 
-  protected RecentlyAddedPlayList(Parcel in) {
+  public RecentlyAddedPlayList() {
   }
 
   @Override public String name() {
