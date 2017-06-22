@@ -3,11 +3,9 @@ package com.kingbull.musicplayer.player;
 import android.app.Service;
 import android.content.ComponentCallbacks2;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
-import android.media.AudioManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -123,12 +121,6 @@ public final class MusicService extends Service {
         new PlaybackStateCompat.Builder().setState(PlaybackStateCompat.STATE_PAUSED, 0, 0)
             .setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE)
             .build());
-    AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-    audioManager.requestAudioFocus(new AudioManager.OnAudioFocusChangeListener() {
-      @Override public void onAudioFocusChange(int focusChange) {
-        // Ignore
-      }
-    }, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
     mediaSession.setActive(true);
   }
 

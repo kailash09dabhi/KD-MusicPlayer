@@ -6,6 +6,7 @@ import android.media.audiofx.PresetReverb;
 import android.media.audiofx.Virtualizer;
 import android.support.annotation.Nullable;
 import com.crashlytics.android.Crashlytics;
+import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.Time;
@@ -20,14 +21,14 @@ import java.util.List;
 
 public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListener {
   private static final String TAG = MusicPlayer.class.getSimpleName();
-  SettingPreferences settingPrefs;
+  private final SettingPreferences settingPrefs;
+  private final AudioFocus audioFocus;
   private boolean isAudioSessionIdUpdated = false;
   private BassBoost bassBoost;
   private Virtualizer virtualizer;
   private Time time;
   private MediaPlayer player;
   private NowPlayingList nowPlayingList;
-  // Default size 2: for service and UI
   private boolean isPaused;
   private android.media.audiofx.Equalizer equalizer;
 
@@ -36,6 +37,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
     settingPrefs = settingPreferences;
     nowPlayingList = new NowPlayingList.Smart();
     player.setOnCompletionListener(this);
+    audioFocus = new AudioFocus(MusicPlayerApp.instance(), new AudioFocusListener(this));
   }
 
   @Override public void onCompletion(MediaPlayer mp) {
@@ -57,6 +59,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   @Override public boolean play() {
+    audioFocus.requestFocus();
     if (isPaused) {
       time = new Time.Now();
       player.start();
@@ -166,6 +169,10 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
 
   @Override public boolean isPlaying() {
     return player.isPlaying();
+  }
+
+  @Override public void setVolume(float volume) {
+    player.setVolume(volume, volume);
   }
 
   @Override public int getProgress() {

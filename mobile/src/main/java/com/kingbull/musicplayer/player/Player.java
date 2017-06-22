@@ -15,7 +15,6 @@ import java.util.List;
  * Desc: IPlayer
  */
 public interface Player {
-
   boolean play();
 
   boolean play(Music music);
@@ -27,6 +26,8 @@ public interface Player {
   boolean pause();
 
   boolean isPlaying();
+
+  void setVolume(float volume);
 
   int getProgress();
 
@@ -47,4 +48,4 @@ public interface Player {
   void addToNowPlaylist(List<Music> songs);
 
   NowPlayingList nowPlayingMusicList();
-} 
+}
