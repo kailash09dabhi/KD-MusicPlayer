@@ -13,6 +13,7 @@ import butterknife.OnClick;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.domain.SortBy;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
 
@@ -37,19 +38,19 @@ public final class SortDialogFragment extends BaseDialogFragment {
 
   @OnClick(R.id.doneButton) void onDoneClick() {
     boolean sortInDescending = sortInDescendingCheckbox.isChecked();
-    @SortEvent.SortBy int sortBy = 0;
+    @SortBy int sortBy = 0;
     if (titleRadioButton.isChecked()) {
-      sortBy = SortEvent.SortBy.TITLE;
+      sortBy = SortBy.TITLE;
     } else if (artistRadioButton.isChecked()) {
-      sortBy = SortEvent.SortBy.ARTIST;
+      sortBy = SortBy.ARTIST;
     } else if (albumRadioButton.isChecked()) {
-      sortBy = SortEvent.SortBy.ALBUM;
+      sortBy = SortBy.ALBUM;
     } else if (durationRadioButton.isChecked()) {
-      sortBy = SortEvent.SortBy.DURATION;
+      sortBy = SortBy.DURATION;
     } else if (dateAddedRadioButton.isChecked()) {
-      sortBy = SortEvent.SortBy.DATE_ADDED;
+      sortBy = SortBy.DATE_ADDED;
     } else if (yearRadioButton.isChecked()) {
-      sortBy = SortEvent.SortBy.YEAR;
+      sortBy = SortBy.YEAR;
     }
     RxBus.getInstance().post(new SortEvent(sortBy, sortInDescending));
     dismiss();

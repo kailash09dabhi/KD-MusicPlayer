@@ -8,4 +8,8 @@ public interface Music {
   Media media();
 
   MediaStat mediaStat();
+
+  interface Group {
+    void sort(@SortBy int sortBy);
+  }
 }

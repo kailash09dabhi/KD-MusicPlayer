@@ -6,11 +6,11 @@ import android.os.Parcelable;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.MusicGroup;
 import com.kingbull.musicplayer.domain.PlayList;
+import com.kingbull.musicplayer.domain.SortBy;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaTable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public final class RecentlyAddedPlayList implements PlayList, Parcelable {
@@ -40,18 +40,18 @@ public final class RecentlyAddedPlayList implements PlayList, Parcelable {
     Cursor cursor = MusicPlayerApp.instance()
         .getContentResolver()
         .query(MediaTable.URI, MediaTable.projections(), null, null, null);
-    List<Music> itemList = new ArrayList<>();
+    List<Music> musicList = new ArrayList<>();
     if (cursor != null) {
       if (cursor.getCount() > 0 && cursor.moveToFirst()) {
         do {
           SqlMusic song = new SqlMusic(new Media.Smart(cursor));
-          itemList.add(song);
+          musicList.add(song);
         } while (cursor.moveToNext());
       }
       cursor.close();
     }
-    Collections.sort(itemList, new RecentlyAddedComparator());
-    return itemList;
+    new MusicGroup(musicList).sort(SortBy.DATE_ADDED);
+    return musicList;
   }
 
   @Override public int describeContents() {
@@ -59,19 +59,5 @@ public final class RecentlyAddedPlayList implements PlayList, Parcelable {
   }
 
   @Override public void writeToParcel(Parcel dest, int flags) {
-  }
-
-  private static final class RecentlyAddedComparator implements Comparator<Music> {
-    @Override public int compare(Music song1, Music song2) {
-      long dateAddedSong1 = song1.media().dateAdded();
-      long dateAddedSong2 = song2.media().dateAdded();
-      if (dateAddedSong1 < dateAddedSong2) {
-        return 1;
-      } else if (dateAddedSong1 > dateAddedSong2) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
   }
 }
