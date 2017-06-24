@@ -15,7 +15,7 @@
   <dimen name="padding.button.clear.selectionOption">12dp</dimen>
   <dimen name="pager.title.text.size">18sp</dimen>
   <dimen name="equalizer.knob.button.size">115dp</dimen>
-  <dimen name="music.player.album.size">241dp</dimen>
+  <dimen name="music.player.album.size">223dp</dimen>
   <dimen name="music.player.seekBar.marginTop">32dp</dimen>
   <dimen name="music.player.playControls.marginTop">24dp</dimen>
   <dimen name="music.player.playControls.marginBottom">8dp</dimen>

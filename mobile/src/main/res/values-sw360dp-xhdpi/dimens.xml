@@ -10,8 +10,8 @@
   <dimen name="mp.margin.large">16dp</dimen>
   <dimen name="mp.margin.xlarge">24dp</dimen>
   <!-- MediaStatTable -->
-  <dimen name="music.player.album.size">260dp</dimen>
-  <dimen name="music.player.seekBar.marginTop">40dp</dimen>
+  <dimen name="music.player.album.size">223dp</dimen>
+  <dimen name="music.player.seekBar.marginTop">24dp</dimen>
   <dimen name="music.player.playControls.marginTop">24dp</dimen>
   <dimen name="music.player.playControls.marginBottom">8dp</dimen>
   <dimen name="cover_size">155dp</dimen>
