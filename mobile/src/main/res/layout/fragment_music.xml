@@ -64,7 +64,7 @@
     </LinearLayout>
 
     <TextView
-      android:id="@+id/nameTextView"
+      android:id="@+id/nameView"
       style="@style/AppTheme.TextAppearance.Medium"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -73,17 +73,21 @@
       android:layout_marginRight="@dimen/mp.margin.xlarge"
       android:layout_marginTop="16dp"
       android:gravity="center"
+      android:maxLines="1"
+      android:singleLine="true"
       tools:text="Drag me down"
       tools:textColor="?attr/colorAccent" />
 
     <TextView
-      android:id="@+id/text_view_artist"
+      android:id="@+id/artistView"
       style="@style/AppTheme.TextAppearance.Small"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginLeft="@dimen/mp.margin.xlarge"
       android:layout_marginRight="@dimen/mp.margin.xlarge"
       android:gravity="center"
+      android:maxLines="1"
+      android:singleLine="true"
       android:textColor="?attr/colorAccent"
       tools:text="One Direction" />
 

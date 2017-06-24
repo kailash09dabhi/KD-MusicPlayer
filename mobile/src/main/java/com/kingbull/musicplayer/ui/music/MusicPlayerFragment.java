@@ -60,8 +60,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @BindView(R.id.equalizerView) ImageView equalizerView;
   @BindView(R.id.nowPlayingView) ImageView nowPlayingView;
   @BindView(R.id.albumImageView) ShadowImageView albumImageView;
-  @BindView(R.id.nameTextView) TextView nameTextView;
-  @BindView(R.id.text_view_artist) TextView textViewArtist;
+  @BindView(R.id.nameView) TextView nameView;
+  @BindView(R.id.artistView) TextView artistView;
   @BindView(R.id.progressTextView) TextView progressTextView;
   @BindView(R.id.durationTextView) TextView durationTextView;
   @BindView(R.id.seekbar) MusicSeekBar seekBarProgress;
@@ -250,8 +250,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   }
 
   @Override public void displayNewSongInfo(Music song) {
-    nameTextView.setText(song.media().title());
-    textViewArtist.setText(song.media().artist());
+    nameView.setText(song.media().title());
+    artistView.setText(song.media().artist());
     buttonFavoriteToggle.setImageResource(
         song.mediaStat().isFavorite() ? R.drawable.ic_favorite_yes : R.drawable.ic_favorite_no);
     durationTextView.setText(new Milliseconds(song.media().duration()).toString());
@@ -287,8 +287,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   private void applyColorTheme(int darkColor) {
     statusBarColor = new StatusBarColor(darkColor);
     statusBarColor.applyOn(getActivity().getWindow());
-    nameTextView.setTextColor(Color.WHITE);
-    textViewArtist.setTextColor(Color.WHITE);
+    nameView.setTextColor(Color.WHITE);
+    artistView.setTextColor(Color.WHITE);
     progressTextView.setTextColor(Color.WHITE);
     durationTextView.setTextColor(Color.WHITE);
     equalizerView.setImageDrawable(new IconDrawable(R.drawable.ic_equalizer, darkColor));
