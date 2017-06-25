@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+Version 0.6.64 (25 June 2017) 
+----------------------------
+- Lots of small tweaks on Music Player & Settings screen
+- Refactor to remove duplication 
+- Play/Pause Player according to audio focus
+- Fix few crashes in Folder Screen
+- Various patches to avoid OutOfMemoryError
+- Switch from Firebase to Fiber Crashlytics
+- Don't crash apps but report it to firebase 
+
 Version 0.6.55 (18 June 2017) 
 ----------------------------
 - Fix crash on setting ringtone on marshmallow or above
