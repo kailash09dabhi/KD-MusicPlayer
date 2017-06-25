@@ -70,25 +70,27 @@ public final class MusicGroup implements Music.Group {
   }
 
   @Override public void sort(@SortBy int sortBy) {
-    switch (sortBy) {
-      case SortBy.ALBUM:
-        Collections.sort(songs, byAlbum);
-        break;
-      case SortBy.ARTIST:
-        Collections.sort(songs, byArtist);
-        break;
-      case SortBy.TITLE:
-        Collections.sort(songs, byTitle);
-        break;
-      case SortBy.YEAR:
-        Collections.sort(songs, byYear);
-        break;
-      case SortBy.DURATION:
-        Collections.sort(songs, byDuration);
-        break;
-      case SortBy.DATE_ADDED:
-        Collections.sort(songs, byDateAdded);
-        break;
+    if (songs != null) {
+      switch (sortBy) {
+        case SortBy.ALBUM:
+          Collections.sort(songs, byAlbum);
+          break;
+        case SortBy.ARTIST:
+          Collections.sort(songs, byArtist);
+          break;
+        case SortBy.TITLE:
+          Collections.sort(songs, byTitle);
+          break;
+        case SortBy.YEAR:
+          Collections.sort(songs, byYear);
+          break;
+        case SortBy.DURATION:
+          Collections.sort(songs, byDuration);
+          break;
+        case SortBy.DATE_ADDED:
+          Collections.sort(songs, byDateAdded);
+          break;
+      }
     }
   }
 }
