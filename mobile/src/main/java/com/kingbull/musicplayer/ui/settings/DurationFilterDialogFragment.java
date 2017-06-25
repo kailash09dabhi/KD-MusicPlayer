@@ -3,14 +3,18 @@ package com.kingbull.musicplayer.ui.settings;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -23,11 +27,21 @@ import com.kingbull.musicplayer.ui.base.BaseDialogFragment;
  */
 public final class DurationFilterDialogFragment extends BaseDialogFragment {
   @BindView(R.id.durationSecondsView) EditText durationSecondsView;
+  @BindView(R.id.doneButton) ImageView doneButton;
 
   public static DurationFilterDialogFragment newInstance() {
     DurationFilterDialogFragment frag = new DurationFilterDialogFragment();
     MusicPlayerApp.instance().component().inject(frag);
     return frag;
+  }
+
+  @OnEditorAction(R.id.durationSecondsView) boolean onDurationFilterEditorAction(int id,
+      KeyEvent key) {
+    if (id == R.id.apply || id == EditorInfo.IME_NULL) {
+      doneButton.performClick();
+      return true;
+    }
+    return false;
   }
 
   @OnClick(R.id.doneButton) void onDoneClick() {

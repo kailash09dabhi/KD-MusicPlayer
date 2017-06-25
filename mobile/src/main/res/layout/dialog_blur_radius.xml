@@ -43,6 +43,9 @@
       android:layout_height="wrap_content"
       android:layout_weight="0.40"
       android:gravity="center"
+      android:imeActionId="@+id/apply"
+      android:imeActionLabel="@string/apply"
+      android:imeOptions="actionUnspecified"
       android:inputType="number"
       android:maxLines="1"
       android:singleLine="true" />
