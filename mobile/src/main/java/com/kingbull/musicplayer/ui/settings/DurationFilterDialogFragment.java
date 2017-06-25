@@ -71,5 +71,6 @@ public final class DurationFilterDialogFragment extends BaseDialogFragment {
     getDialog().getWindow()
         .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     durationSecondsView.setText(String.valueOf(settingPreferences.filterDurationInSeconds()));
+    durationSecondsView.setSelection(durationSecondsView.length());
   }
 }

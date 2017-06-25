@@ -94,5 +94,6 @@ public final class BlurRadiusDialogFragment extends BaseDialogFragment {
     getDialog().getWindow()
         .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     blurRadiusValueView.setText(String.valueOf(settingPreferences.blurRadius()));
+    blurRadiusValueView.setSelection(blurRadiusValueView.length());
   }
 }
