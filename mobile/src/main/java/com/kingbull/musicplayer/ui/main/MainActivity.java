@@ -24,9 +24,11 @@ import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.DeviceConfig;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.RequiredPermissions;
 import com.kingbull.musicplayer.ui.base.analytics.FbKeyHash;
 import com.kingbull.musicplayer.ui.main.categories.artistlist.artist.Artist;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
+import com.kingbull.musicplayer.ui.splash.SplashActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -43,6 +45,10 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    if (!new RequiredPermissions(this).isGranted()) {
+      finish();
+      startActivity(new Intent(this, SplashActivity.class));
+    }
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
     MusicPlayerApp.instance().component().inject(this);

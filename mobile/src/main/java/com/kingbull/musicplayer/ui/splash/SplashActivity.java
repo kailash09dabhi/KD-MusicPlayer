@@ -1,13 +1,11 @@
 package com.kingbull.musicplayer.ui.splash;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import com.kingbull.musicplayer.ui.base.RequiredPermissions;
 import com.kingbull.musicplayer.ui.main.MainActivity;
 
 /**
@@ -19,22 +17,11 @@ public final class SplashActivity extends AppCompatActivity {
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    askPermission();
-  }
-
-  private void askPermission() {
-    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-        != PackageManager.PERMISSION_GRANTED
-        || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        != PackageManager.PERMISSION_GRANTED
-        || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-        != PackageManager.PERMISSION_GRANTED) {
-      ActivityCompat.requestPermissions(this, new String[] {
-          Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-          Manifest.permission.READ_PHONE_STATE
-      }, REQUEST_CODE_PERMISSION);
-    } else {
+    RequiredPermissions requiredPermissions = new RequiredPermissions(this);
+    if (requiredPermissions.isGranted()) {
       gotoMainActivity();
+    } else {
+      requiredPermissions.acquire(REQUEST_CODE_PERMISSION);
     }
   }
 
