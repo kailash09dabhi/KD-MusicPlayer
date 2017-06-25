@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   package="com.kingbull.musicplayer"
   android:installLocation="auto">
 
@@ -18,7 +19,8 @@
     android:theme="@style/AppTheme">
     <meta-data
       android:name="com.google.android.gms.version"
-      android:value="@integer/google_play_services_version" />
+      android:value="@integer/google_play_services_version"
+      tools:node="remove" />
     <meta-data
       android:name="io.fabric.ApiKey"
       android:value="def5d4aa838355cc20b712816a92e68b594b0109" />
