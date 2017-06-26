@@ -2,6 +2,7 @@ package com.kingbull.musicplayer.ui.main.categories.genreslist.genre;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.AlbumMusicsMap;
 import com.kingbull.musicplayer.domain.Music;
@@ -141,9 +142,14 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
   }
 
   @Override public void onSortEvent(SortEvent sortEvent) {
-    List<Music> songs = albumMusicsMap.get(albums.get(albumPosition));
-    new MusicGroup(songs).sort(sortEvent.sortBy());
-    if (sortEvent.isSortInDescending()) Collections.reverse(songs);
-    view().showSongs(songs);
+    if (albums.size() > 0 && albumPosition >= 0 && albumPosition < albums.size()) {
+      List<Music> songs = albumMusicsMap.get(albums.get(albumPosition));
+      new MusicGroup(songs).sort(sortEvent.sortBy());
+      if (sortEvent.isSortInDescending()) Collections.reverse(songs);
+      view().showSongs(songs);
+    } else {
+      Crashlytics.logException(new IndexOutOfBoundsException(
+          "album size is " + albums.size() + " & albumPosition is " + albumPosition));
+    }
   }
 }
