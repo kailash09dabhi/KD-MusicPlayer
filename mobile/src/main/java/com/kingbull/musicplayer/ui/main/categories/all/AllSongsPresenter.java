@@ -70,12 +70,14 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                   @Override public void accept(List<Music> songs) {
                     new MusicGroup(songs).sort(SortBy.TITLE);
                   }
-                }).filter(new Predicate<List<Music>>() {
-              @Override public boolean test(@io.reactivex.annotations.NonNull List<Music> musics)
-                  throws Exception {
-                return musics != null;
-              }
-            })
+                })
+                .filter(new Predicate<List<Music>>() {
+                  @Override
+                  public boolean test(@io.reactivex.annotations.NonNull List<Music> musics)
+                      throws Exception {
+                    return musics != null;
+                  }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new ResourceSubscriber<List<Music>>() {
@@ -97,22 +99,25 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
   }
 
   @Override public void onSearchTextChanged(final String text) {
-    compositeDisposable.add(Flowable.fromIterable(songs).subscribeOn(Schedulers.computation())
-        .filter(new Predicate<Music>() {
-          @Override public boolean test(Music music) {
-            return music.media().title().toLowerCase().contains(text.toLowerCase());
-          }
-        })
-        .toList()
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribeWith(new ResourceSingleObserver<List<Music>>() {
-          @Override public void onSuccess(List<Music> musicList) {
-            view().showAllSongs(musicList);
-          }
+    if (songs != null) {
+      compositeDisposable.add(Flowable.fromIterable(songs)
+          .subscribeOn(Schedulers.computation())
+          .filter(new Predicate<Music>() {
+            @Override public boolean test(Music music) {
+              return music.media().title().toLowerCase().contains(text.toLowerCase());
+            }
+          })
+          .toList()
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribeWith(new ResourceSingleObserver<List<Music>>() {
+            @Override public void onSuccess(List<Music> musicList) {
+              view().showAllSongs(musicList);
+            }
 
-          @Override public void onError(Throwable e) {
-          }
-        }));
+            @Override public void onError(Throwable e) {
+            }
+          }));
+    }
   }
 
   @Override public void onExitSearchClick() {
