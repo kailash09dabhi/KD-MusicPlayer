@@ -41,20 +41,22 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   @Override public void onCompletion(MediaPlayer mp) {
-    RxBus.getInstance()
-        .post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.COMPLETED));
-    switch (settingPrefs.musicMode()) {
-      case REPEAT_ALL:
-        playNext();
-        break;
-      case REPEAT_SINGLE:
-        play();
-        break;
-      case REPEAT_NONE:
-        if (nowPlayingList.indexOf(nowPlayingList.currentMusic()) < nowPlayingList.size() - 1) {
+    if (!nowPlayingList.isEmpty()) {
+      RxBus.getInstance()
+          .post(new MusicEvent(nowPlayingList.currentMusic(), MusicPlayerEvent.COMPLETED));
+      switch (settingPrefs.musicMode()) {
+        case REPEAT_ALL:
           playNext();
-        }
-        break;
+          break;
+        case REPEAT_SINGLE:
+          play();
+          break;
+        case REPEAT_NONE:
+          if (nowPlayingList.indexOf(nowPlayingList.currentMusic()) < nowPlayingList.size() - 1) {
+            playNext();
+          }
+          break;
+      }
     }
   }
 
@@ -64,7 +66,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
       time = new Time.Now();
       player.start();
     } else {
-      if (nowPlayingList.isEmpty()) return false;
+      if (nowPlayingList.isEmpty()) { return false; }
       Music music = nowPlayingList.currentMusic();
       try {
         player.reset();
@@ -114,12 +116,15 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   @Override public boolean play(Music music) {
-    if (time != null) {
-      nowPlayingList.currentMusic().mediaStat().addToListenedTime(time.difference(new Time.Now()));
-    }
-    nowPlayingList.jumpTo(music);
-    play();
-    return true;
+    if (!nowPlayingList.isEmpty()) {
+      if (time != null) {
+        nowPlayingList.currentMusic().mediaStat()
+            .addToListenedTime(time.difference(new Time.Now()));
+      }
+      nowPlayingList.jumpTo(music);
+      play();
+      return true;
+    } else { return false; }
   }
 
   @Override public boolean playPrevious() {
@@ -192,7 +197,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   @Override public boolean seekTo(int millSeconds) {
-    if (nowPlayingList.isEmpty()) return false;
+    if (nowPlayingList.isEmpty()) { return false; }
     Music currentSong = nowPlayingList.currentMusic();
     if (currentSong != null) {
       player.seekTo(millSeconds);

@@ -16,15 +16,19 @@ public final class NowPlayingPresenter extends Presenter<NowPlaying.View>
 
   @Override public void takeView(@NonNull NowPlaying.View view) {
     super.takeView(view);
-    view().showNowPlayingList(player.nowPlayingMusicList(),
-        player.nowPlayingMusicList().indexOf(player.nowPlayingMusicList().currentMusic()));
+    if (!player.nowPlayingMusicList().isEmpty()) {
+      view().showNowPlayingList(player.nowPlayingMusicList(),
+          player.nowPlayingMusicList().indexOf(player.nowPlayingMusicList().currentMusic()));
+    }
   }
 
   @Override public void onShuffleClick() {
-    Collections.shuffle(player.nowPlayingMusicList());
-    view().showNowPlayingList(player.nowPlayingMusicList(),
-        player.nowPlayingMusicList().indexOf(player.nowPlayingMusicList().currentMusic()));
-    player.play(player.nowPlayingMusicList().currentMusic());
+    if (!player.nowPlayingMusicList().isEmpty()) {
+      Collections.shuffle(player.nowPlayingMusicList());
+      view().showNowPlayingList(player.nowPlayingMusicList(),
+          player.nowPlayingMusicList().indexOf(player.nowPlayingMusicList().currentMusic()));
+      player.play(player.nowPlayingMusicList().currentMusic());
+    }
   }
 }
 
