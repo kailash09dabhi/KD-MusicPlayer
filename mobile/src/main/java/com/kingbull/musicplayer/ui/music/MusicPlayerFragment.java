@@ -300,8 +300,10 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         getResources().getString(R.string.kd_music_player_settings_interstitial),
         new AdmobInterstitial.AdListener() {
           @Override public void onAdClosed() {
-            equalizerInterstitial.load();
-            launchEqualizerScreen();
+            if (!getActivity().isFinishing()) {
+              equalizerInterstitial.load();
+              launchEqualizerScreen();
+            }
           }
         });
     equalizerInterstitial.load();
@@ -309,8 +311,10 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         getResources().getString(R.string.kd_music_player_settings_interstitial),
         new AdmobInterstitial.AdListener() {
           @Override public void onAdClosed() {
-            nowPlayingListInterstitial.load();
-            launchNowPlayingListScreen();
+            if (!getActivity().isFinishing()) {
+              nowPlayingListInterstitial.load();
+              launchNowPlayingListScreen();
+            }
           }
         });
     nowPlayingListInterstitial.load();
