@@ -1,7 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  package="com.kingbull.musicplayer"
-  android:installLocation="auto">
+    package="com.kingbull.musicplayer"
+    android:installLocation="auto">
 
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -11,16 +10,12 @@
   <uses-permission android:name="android.permission.INTERNET" />
 
   <application
-    android:name="MusicPlayerApp"
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
+      android:name="MusicPlayerApp"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <meta-data
-      android:name="com.google.android.gms.version"
-      android:value="@integer/google_play_services_version"
-      tools:node="remove" />
     <meta-data
       android:name="io.fabric.ApiKey"
       android:value="def5d4aa838355cc20b712816a92e68b594b0109" />
@@ -34,13 +29,13 @@
       </intent-filter>
     </activity>
     <activity
-      android:name=".ui.main.MainActivity"
       android:launchMode="singleTask"
+        android:name=".ui.main.MainActivity"
       android:windowSoftInputMode="stateAlwaysHidden" />
     <activity android:name=".ui.main.categories.genreslist.genre.GenreActivity" />
     <activity
-      android:name=".ui.music.MusicPlayerActivity"
       android:launchMode="singleTask"
+        android:name=".ui.music.MusicPlayerActivity"
       android:screenOrientation="portrait" />
     <activity
       android:name=".ui.equalizer.EqualizerActivity"

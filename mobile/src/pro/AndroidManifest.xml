@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kingbull.musicplayer">
+
+  <application>
+    <provider
+        android:authorities="com.kingbull.kdmusicplayer.pro"
+        android:exported="false"
+        android:grantUriPermissions="true"
+        android:name="com.kingbull.musicplayer.GenericFileProvider">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/provider_paths" />
+    </provider>
+  </application>
+</manifest>
