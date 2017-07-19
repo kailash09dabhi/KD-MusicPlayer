@@ -20,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import com.crashlytics.android.Crashlytics;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
@@ -50,6 +51,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Represents All Songs screen.
+ *
  * @author Kailash Dabhi
  * @date 8th Nov, 2016
  */
@@ -107,15 +110,28 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
-            if (o instanceof SortEvent) {
-              presenter.onSortEvent((SortEvent) o);
-            } else if (o instanceof DurationFilterEvent) {
-              getLoaderManager().restartLoader(0, null, AllSongsFragment.this);
-            } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              updateDrawableOfButtons(
-                  smartTheme.header().dark(0.01f).transparent(0.16f).intValue());
-              applyUiColors();
+            if (presenter != null && presenter.hasView()) {
+              if (o instanceof SortEvent) {
+                presenter.onSortEvent((SortEvent) o);
+              } else if (o instanceof DurationFilterEvent) {
+                getLoaderManager().restartLoader(0, null, AllSongsFragment.this);
+              } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+                updateDrawableOfButtons(
+                    smartTheme.header().dark(0.01f).transparent(0.16f).intValue());
+                applyUiColors();
+              }
+            } else {
+              Crashlytics.logException(
+                  new NullPointerException(
+                      String.format(
+                          "class: %s presenter- %s hasView- %b",
+                          AllSongsFragment.class.getSimpleName(),
+                          presenter, presenter != null && presenter.hasView()
+                      )
+                  )
+              );
             }
+
           }
         });
   }

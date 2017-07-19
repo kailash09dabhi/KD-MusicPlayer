@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.BuildConfig;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
@@ -42,6 +43,7 @@ import java.util.Calendar;
 import javax.inject.Inject;
 
 /**
+ * Represents Settings screen.
  * @author Kailash Dabhi
  * @date 27th Nov, 2016
  */
@@ -77,7 +79,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   }
 
   @OnClick(R.id.feedback) void onClickFeedback() {
-    composeEmail(new String[] { "kingbulltechnology@gmail.com" }, "KD MusicPlayer Feedback");
+    composeEmail(new String[]{"kingbulltechnology@gmail.com"}, "KD MusicPlayer Feedback");
   }
 
   private void composeEmail(String[] addresses, String subject) {
@@ -140,21 +142,35 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     return RxBus.getInstance()
         .toObservable()
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            if (o instanceof DurationFilterEvent) {
-              int durationInSeconds = settingPreferences.filterDurationInSeconds();
-              durationSecondsView.setText(durationInSeconds + " sec");
-              analytics.logDurationFilter(durationInSeconds);
-              admobInterstitial.showIfLoaded();
-            } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              applyUiColors();
-            } else if (o instanceof BlurRadiusEvent) {
-              admobInterstitial.showIfLoaded();
-              analytics.logBlurRadius(((BlurRadiusEvent) o).blurRadius());
+        .subscribe(
+            new Consumer<Object>() {
+              @Override public void accept(Object o) throws Exception {
+                if (presenter != null && presenter.hasView()) {
+                  if (o instanceof DurationFilterEvent) {
+                    int durationInSeconds = settingPreferences.filterDurationInSeconds();
+                    durationSecondsView.setText(durationInSeconds + " sec");
+                    analytics.logDurationFilter(durationInSeconds);
+                    admobInterstitial.showIfLoaded();
+                  } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+                    applyUiColors();
+                  } else if (o instanceof BlurRadiusEvent) {
+                    admobInterstitial.showIfLoaded();
+                    analytics.logBlurRadius(((BlurRadiusEvent) o).blurRadius());
+                  }
+                } else {
+                  Crashlytics.logException(
+                      new NullPointerException(
+                          String.format(
+                              "class: %s presenter- %s hasView- %b",
+                              SettingsFragment.class.getSimpleName(),
+                              presenter, presenter != null && presenter.hasView()
+                          )
+                      )
+                  );
+                }
+              }
             }
-          }
-        });
+        );
   }
 
   @Override protected PresenterFactory<Settings.Presenter> presenterFactory() {
@@ -186,7 +202,9 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
       View viewOne = parentLayout.getChildAt(count);
       View viewTwo = parentLayout.getChildAt(count + 1);
       if (viewOne instanceof TextView) {
-        if (viewTwo != null) ((TextView) viewOne).setTextColor(smartTheme.titleText().intValue());
+        if (viewTwo != null) {
+          ((TextView) viewOne).setTextColor(smartTheme.titleText().intValue());
+        }
         ((TextView) viewTwo).setTextColor(smartTheme.bodyText().intValue());
       } else if (viewOne instanceof ViewGroup) {
         deepChangeTextColor((ViewGroup) viewOne);

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -61,8 +62,20 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
-            if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              pagerTitleStrip.setBackgroundColor(smartTheme.header().intValue());
+            if (presenter != null && presenter.hasView()) {
+              if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+                pagerTitleStrip.setBackgroundColor(smartTheme.header().intValue());
+              }
+            } else {
+              Crashlytics.logException(
+                  new NullPointerException(
+                      String.format(
+                          "class: %s presenter- %s hasView- %b",
+                          MusicCategoryFragment.class.getSimpleName(),
+                          presenter, presenter != null && presenter.hasView()
+                      )
+                  )
+              );
             }
           }
         });

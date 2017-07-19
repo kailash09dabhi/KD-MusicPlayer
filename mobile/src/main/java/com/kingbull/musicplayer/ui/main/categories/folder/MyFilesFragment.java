@@ -2,7 +2,6 @@ package com.kingbull.musicplayer.ui.main.categories.folder;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,12 +44,12 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
     View view = inflater.inflate(R.layout.fragment_my_files, container, false);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
-    applyUIColors();
+    applyUiColors();
     new AdmobBannerLoaded((ViewGroup) view);
     return view;
   }
 
-  private void applyUIColors() {
+  private void applyUiColors() {
     recyclerView.setBackgroundColor(smartTheme.screen().intValue());
     ((View) directoryPathView.getParent()).setBackgroundColor(smartTheme.tab().intValue());
     directoryPathView.setTextColor(smartTheme.bodyText().intValue());
@@ -89,28 +88,37 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
 
   @Override public void refresh() {
     myFilesAdapter.notifyDataSetChanged();
-    applyUIColors();
+    applyUiColors();
   }
 
   @Override protected Disposable subscribeEvents() {
     return RxBus.getInstance()
         .toObservable()
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              if (presenter != null && presenter.hasView()) {
-                presenter.onPaletteOrThemeEvent();
-              } else {
-                Crashlytics.logException(new NullPointerException(
-                    "presenter is null! this is weird as MyFilesFragment receiving events means onDestroy() is not called yet, then why should presenter becomes null"));
+        .subscribe(
+            new Consumer<Object>() {
+              @Override public void accept(Object o) throws Exception {
+                if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+                  if (presenter != null && presenter.hasView()) {
+                    presenter.onPaletteOrThemeEvent();
+                  } else {
+                    Crashlytics.logException(
+                        new NullPointerException(
+                            String.format(
+                                "class: %s presenter- %s hasView- %b",
+                                MyFilesFragment.class.getSimpleName(),
+                                presenter, presenter != null && presenter.hasView()
+                            )
+                        )
+                    );
+                  }
+                }
               }
             }
-          }
-        });
+        );
   }
 
-  @NonNull @Override protected PresenterFactory<MyFiles.Presenter> presenterFactory() {
+  @Override protected PresenterFactory<MyFiles.Presenter> presenterFactory() {
     return new PresenterFactory.MyFiles();
   }
 

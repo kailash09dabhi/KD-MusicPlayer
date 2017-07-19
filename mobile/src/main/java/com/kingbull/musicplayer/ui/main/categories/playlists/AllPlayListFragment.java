@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -61,16 +62,28 @@ public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presente
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
-            if (o instanceof PlaylistCreatedEvent) {
-              PlaylistCreatedEvent playlistCreatedEvent = (PlaylistCreatedEvent) o;
-              presenter.onPlaylistCreated(playlistCreatedEvent.playList());
-            } else if (o instanceof PlaylistRenameEvent) {
-              presenter.onPlaylistRename((PlaylistRenameEvent) o);
-            } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              recyclerView.setBackgroundColor(smartTheme.screen().intValue());
-              headerLayout.setBackgroundColor(smartTheme.header().intValue());
-              headerView.setTextColor(smartTheme.titleText().intValue());
-              descriptionView.setTextColor(smartTheme.bodyText().intValue());
+            if (presenter != null && presenter.hasView()) {
+              if (o instanceof PlaylistCreatedEvent) {
+                PlaylistCreatedEvent playlistCreatedEvent = (PlaylistCreatedEvent) o;
+                presenter.onPlaylistCreated(playlistCreatedEvent.playList());
+              } else if (o instanceof PlaylistRenameEvent) {
+                presenter.onPlaylistRename((PlaylistRenameEvent) o);
+              } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+                recyclerView.setBackgroundColor(smartTheme.screen().intValue());
+                headerLayout.setBackgroundColor(smartTheme.header().intValue());
+                headerView.setTextColor(smartTheme.titleText().intValue());
+                descriptionView.setTextColor(smartTheme.bodyText().intValue());
+              }
+            } else {
+              Crashlytics.logException(
+                  new NullPointerException(
+                      String.format(
+                          "class: %s presenter- %s hasView- %b",
+                          AllPlayListFragment.class.getSimpleName(),
+                          presenter, presenter != null && presenter.hasView()
+                      )
+                  )
+              );
             }
           }
         });

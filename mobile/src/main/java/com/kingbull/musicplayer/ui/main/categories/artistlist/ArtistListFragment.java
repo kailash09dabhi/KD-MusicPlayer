@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -29,6 +30,8 @@ import io.reactivex.functions.Consumer;
 import java.util.List;
 
 /**
+ * Represents Artist list screen.
+ *
  * @author Kailash Dabhi
  * @date 8th Nov, 2016 9:09 PM
  */
@@ -79,8 +82,20 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
-            if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
-              recyclerView.setBackgroundColor(smartTheme.screen().intValue());
+            if (presenter != null && presenter.hasView()) {
+              if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+                recyclerView.setBackgroundColor(smartTheme.screen().intValue());
+              }
+            } else {
+              Crashlytics.logException(
+                  new NullPointerException(
+                      String.format(
+                          "class: %s presenter- %s hasView- %b",
+                          ArtistListFragment.class.getSimpleName(),
+                          presenter, presenter != null && presenter.hasView()
+                      )
+                  )
+              );
             }
           }
         });

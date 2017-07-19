@@ -161,18 +161,31 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<Preset>() {
           @Override public void accept(Preset preset) {
-            switch (preset.event()) {
-              case Preset.Event.CLICK:
-                presenter.onPresetSelected(preset.equalizerPreset());
-                break;
-              case Preset.Event.NEW:
-                presenter.onNewPresetEvent(preset.presetName());
-                break;
-              case Preset.Event.REVERB:
-                effectButton.setText(preset.reverb().name());
-                break;
+            if (presenter != null && presenter.hasView()) {
+              switch (preset.event()) {
+                case Preset.Event.CLICK:
+                  presenter.onPresetSelected(preset.equalizerPreset());
+                  break;
+                case Preset.Event.NEW:
+                  presenter.onNewPresetEvent(preset.presetName());
+                  break;
+                case Preset.Event.REVERB:
+                  effectButton.setText(preset.reverb().name());
+                  break;
+              }
+            } else {
+              Crashlytics.logException(
+                  new NullPointerException(
+                      String.format(
+                          "class: %s presenter- %s hasView- %b",
+                          EqualizerFragment.class.getSimpleName(),
+                          presenter, presenter != null && presenter.hasView()
+                      )
+                  )
+              );
             }
           }
+
         });
   }
 
