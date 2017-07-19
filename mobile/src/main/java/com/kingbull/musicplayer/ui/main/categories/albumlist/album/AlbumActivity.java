@@ -38,7 +38,7 @@ import com.kingbull.musicplayer.event.CoverArtDownloadedEvent;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
-import com.kingbull.musicplayer.ui.base.BitmapImage;
+import com.kingbull.musicplayer.ui.base.Image;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
@@ -71,7 +71,7 @@ import javax.inject.Inject;
  */
 public final class AlbumActivity extends BaseActivity<Album.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Album.View {
-  private final int PICK_COVER_ART_GALLERY = 9;
+  private static final int PICK_COVER_ART_GALLERY = 9;
   private final Alpha.Animation alphaAnimation = new Alpha.Animation();
   private final List<Music> songList = new ArrayList<>();
   private final StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
@@ -146,7 +146,9 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
             Observable.just(bitmap)
                 .map(new Function<Bitmap, BitmapDrawable>() {
                   @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
-                    return new BitmapImage(bitmap, getResources()).blurred().asBitmapDrawable();
+                    return new Image.Smart(bitmap)
+                        .blurred()
+                        .bitmapDrawable();
                   }
                 })
                 .subscribeOn(Schedulers.io())
@@ -169,7 +171,9 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
             Observable.just(bitmap)
                 .map(new Function<Bitmap, BitmapDrawable>() {
                   @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
-                    return new BitmapImage(bitmap, getResources()).blurred().asBitmapDrawable();
+                    return new Image.Smart(bitmap)
+                        .blurred()
+                        .bitmapDrawable();
                   }
                 })
                 .subscribeOn(Schedulers.io())
@@ -291,7 +295,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   }
 
   @Override public void showPickOptions() {
-    final CharSequence[] items = { "Gallery", "Internet" };
+    final CharSequence[] items = {"Gallery", "Internet"};
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setTitle("Pick From");
     builder.setItems(items, new DialogInterface.OnClickListener() {

@@ -18,7 +18,7 @@ public interface Image {
   Bitmap bitmap();
 
   class Base implements Image {
-    protected final Image image;
+    private final Image image;
 
     public Base(Image image) {
       this.image = image;

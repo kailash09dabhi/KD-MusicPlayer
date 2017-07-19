@@ -1,5 +1,10 @@
 package com.kingbull.musicplayer.player;
 
+import static com.kingbull.musicplayer.player.MusicService.ACTION_PLAY_LAST;
+import static com.kingbull.musicplayer.player.MusicService.ACTION_PLAY_NEXT;
+import static com.kingbull.musicplayer.player.MusicService.ACTION_PLAY_TOGGLE;
+import static com.kingbull.musicplayer.player.MusicService.ACTION_STOP_SERVICE;
+
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -24,7 +29,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
-import com.kingbull.musicplayer.ui.base.BitmapImage;
+import com.kingbull.musicplayer.ui.base.Image;
 import com.kingbull.musicplayer.ui.main.MainActivity;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -33,17 +38,14 @@ import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.kingbull.musicplayer.player.MusicService.ACTION_PLAY_LAST;
-import static com.kingbull.musicplayer.player.MusicService.ACTION_PLAY_NEXT;
-import static com.kingbull.musicplayer.player.MusicService.ACTION_PLAY_TOGGLE;
-import static com.kingbull.musicplayer.player.MusicService.ACTION_STOP_SERVICE;
-
 /**
+ * Represents Notification of music player.
+ *
  * @author Kailash Dabhi
  * @date 05 May, 2017 11:29 PM
  */
 public final class MusicNotification {
-  private final int NOTIFICATION_ID = 1;
+  private static final int NOTIFICATION_ID = 1;
   private final Service context;
   private final AlbumTable albumTable = new AlbumTable();
   private final MediaSessionCompat mediaSessionCompat;
@@ -51,6 +53,11 @@ public final class MusicNotification {
   private RemoteViews bigRemoteView;
   private RemoteViews smallRemoteView;
 
+  /**
+   * @param context
+   * @param musicPlayer
+   * @param mediaSessionCompat
+   */
   public MusicNotification(Service context, Player musicPlayer,
       MediaSessionCompat mediaSessionCompat) {
     this.context = context;
@@ -109,6 +116,9 @@ public final class MusicNotification {
     return bigRemoteView;
   }
 
+  /**
+   * Display notification for music player.
+   */
   public void show() {
     Observable.just(musicPlayer.getPlayingSong())
         .subscribeOn(Schedulers.io())
@@ -153,8 +163,13 @@ public final class MusicNotification {
     Bitmap album = pair.second;
     updateRemoteViews(smallRemoteView(), music.media(), album);
     updateRemoteViews(bigRemoteView(), music.media(), album);
-    updateMediaSessionMetaData(music.media(),
-        new BitmapImage(album, context.getResources()).blurred(25).saturated().bitmap());
+    updateMediaSessionMetaData(
+        music.media(),
+        new Image.Smart(album)
+            .blurred(25)
+            .saturated()
+            .bitmap()
+    );
     // The PendingIntent to launch our activity if the user selects this notification
     Intent intent = new Intent(context, MainActivity.class);
     intent.putExtra("from", "notification");

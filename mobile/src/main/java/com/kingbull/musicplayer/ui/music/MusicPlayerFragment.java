@@ -34,7 +34,7 @@ import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
-import com.kingbull.musicplayer.ui.base.BitmapImage;
+import com.kingbull.musicplayer.ui.base.Image;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.ads.AdmobInterstitial;
@@ -260,7 +260,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.startProgresssAnimation();
     final Album album = albumTable.albumById(song.media().albumId());
     File file = null;
-    if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
+    if (!TextUtils.isEmpty(album.albumArt())) { file = new File(album.albumArt()); }
     Glide.with(this)
         .load(albumTable.albumById(song.media().albumId()).albumArt())
         .asBitmap()
@@ -340,9 +340,10 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     Observable.just(bitmap)
         .map(new Function<Bitmap, BitmapDrawable>() {
           @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
-            return new BitmapImage(bitmap, getResources()).blurred(52)
+            return new Image.Smart(bitmap)
+                .blurred(52)
                 .saturated()
-                .asBitmapDrawable();
+                .bitmapDrawable();
           }
         })
         .subscribeOn(Schedulers.io())
