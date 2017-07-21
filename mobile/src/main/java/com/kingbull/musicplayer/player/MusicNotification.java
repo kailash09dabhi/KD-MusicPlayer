@@ -136,7 +136,6 @@ public final class MusicNotification {
                 .load(value.second)
                 .asBitmap()
                 .error(R.drawable.bass_guitar)
-                .skipMemoryCache(false)
                 .into(new SimpleTarget<Bitmap>(205, 205) {
                   @Override public void onResourceReady(Bitmap resource,
                       GlideAnimation<? super Bitmap> glideAnimation) {
@@ -158,7 +157,7 @@ public final class MusicNotification {
         });
   }
 
-  private void updateNotification(Pair<Music, Bitmap> pair) {
+  private synchronized void updateNotification(Pair<Music, Bitmap> pair) {
     Music music = pair.first;
     Bitmap album = pair.second;
     updateRemoteViews(smallRemoteView(), music.media(), album);

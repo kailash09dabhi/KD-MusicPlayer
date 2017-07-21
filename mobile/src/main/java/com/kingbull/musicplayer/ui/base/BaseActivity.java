@@ -89,10 +89,10 @@ public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatAct
   }
 
   @Override protected void onDestroy() {
-    super.onDestroy();
     if (compositeDisposable != null) {
       compositeDisposable.clear();
     }
+    super.onDestroy();
   }
 
   /**
@@ -105,7 +105,9 @@ public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatAct
   protected abstract void onPresenterPrepared(P presenter);
 
   protected void addDisposable(Disposable disposable) {
-    if (disposable == null) return;
+    if (disposable == null) {
+      return;
+    }
     if (compositeDisposable == null) {
       compositeDisposable = new CompositeDisposable();
     }
