@@ -104,7 +104,8 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
       view().updateProgressDurationText((int) musicEvent.music().media().duration());
       view().displayPlayButton();
       view().stopAlbumImageRotationAnimation();
-    } else if (eventType == MusicPlayerEvent.NEXT || eventType == MusicPlayerEvent.PREVIOUS) {
+    }
+    if (currentPlayingSong != null && !currentPlayingSong.equals(musicEvent.music())) {
       currentPlayingSong = musicEvent.music();
       currentPlayingSongDuration = currentPlayingSong.media().duration();
       view().displayNewSongInfo(currentPlayingSong);
