@@ -62,14 +62,14 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   @Override public boolean play() {
+    if (nowPlayingList.isEmpty()) {
+      return false;
+    }
     audioFocus.requestFocus();
     if (isPaused && !isMusicChanged) {
       time = new Time.Now();
       player.start();
     } else {
-      if (nowPlayingList.isEmpty()) {
-        return false;
-      }
       Music music = nowPlayingList.currentMusic();
       isMusicChanged = false;
       try {
