@@ -31,6 +31,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   private NowPlayingList nowPlayingList;
   private boolean isPaused;
   private android.media.audiofx.Equalizer equalizer;
+  private boolean isMusicChanged = false;
 
   public MusicPlayer(SettingPreferences settingPreferences) {
     player = new MediaPlayer();
@@ -62,12 +63,15 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
 
   @Override public boolean play() {
     audioFocus.requestFocus();
-    if (isPaused) {
+    if (isPaused && !isMusicChanged) {
       time = new Time.Now();
       player.start();
     } else {
-      if (nowPlayingList.isEmpty()) { return false; }
+      if (nowPlayingList.isEmpty()) {
+        return false;
+      }
       Music music = nowPlayingList.currentMusic();
+      isMusicChanged = false;
       try {
         player.reset();
         player.setDataSource(music.media().path());
@@ -122,9 +126,12 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
             .addToListenedTime(time.difference(new Time.Now()));
       }
       nowPlayingList.jumpTo(music);
+      isMusicChanged = true;
       play();
       return true;
-    } else { return false; }
+    } else {
+      return false;
+    }
   }
 
   @Override public boolean playPrevious() {
@@ -197,7 +204,9 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   @Override public boolean seekTo(int millSeconds) {
-    if (nowPlayingList.isEmpty()) { return false; }
+    if (nowPlayingList.isEmpty()) {
+      return false;
+    }
     Music currentSong = nowPlayingList.currentMusic();
     if (currentSong != null) {
       player.seekTo(millSeconds);
