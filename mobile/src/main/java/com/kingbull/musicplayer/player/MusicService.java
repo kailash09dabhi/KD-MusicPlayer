@@ -13,12 +13,10 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import com.bumptech.glide.Glide;
 import com.kingbull.musicplayer.MusicPlayerApp;
-import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.MusicEvent;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
-import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 public final class MusicService extends Service {
@@ -51,22 +49,19 @@ public final class MusicService extends Service {
     registerReceiver(headsetPlugReceiver, headsetPlugReceiver.intentFilter());
     registerComponentCallbacks(componentCallbacks2);
     compositeDisposable = new CompositeDisposable();
-    compositeDisposable.add(RxBus.getInstance()
-        .toObservable()
-        .ofType(MusicEvent.class)
-        .debounce(151, TimeUnit.MILLISECONDS)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribeWith(new DisposableObserver<MusicEvent>() {
-          @Override public void onNext(MusicEvent musicEvent) {
-            musicNotification.show();
-          }
+    compositeDisposable
+        .add(MusicEventRelay.instance().asObservable().observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(new DisposableObserver<MusicEvent>() {
+              @Override public void onNext(MusicEvent musicEvent) {
+                musicNotification.show();
+              }
 
-          @Override public void onError(Throwable e) {
-          }
+              @Override public void onError(Throwable e) {
+              }
 
-          @Override public void onComplete() {
-          }
-        }));
+              @Override public void onComplete() {
+              }
+            }));
     bindService(new Intent(this, MusicService.class), new ServiceConnection() {
       @Override public void onServiceConnected(ComponentName name, IBinder service) {
       }
@@ -102,7 +97,9 @@ public final class MusicService extends Service {
   }
 
   @Override public void onDestroy() {
-    if (compositeDisposable != null) compositeDisposable.clear();
+    if (compositeDisposable != null) {
+      compositeDisposable.clear();
+    }
     unregisterReceiver(headsetPlugReceiver);
     unregisterComponentCallbacks(componentCallbacks2);
     super.onDestroy();

@@ -26,12 +26,12 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.signature.StringSignature;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
-import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.event.MusicEvent;
+import com.kingbull.musicplayer.player.MusicEventRelay;
 import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.Image;
@@ -150,9 +150,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   }
 
   @Override protected Disposable subscribeEvents() {
-    return RxBus.getInstance()
-        .toObservable()
-        .ofType(MusicEvent.class)
+    return MusicEventRelay.instance().asObservable()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<MusicEvent>() {
           @Override public void accept(MusicEvent musicEvent) {
@@ -260,7 +258,9 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     seekBarProgress.startProgresssAnimation();
     final Album album = albumTable.albumById(song.media().albumId());
     File file = null;
-    if (!TextUtils.isEmpty(album.albumArt())) { file = new File(album.albumArt()); }
+    if (!TextUtils.isEmpty(album.albumArt())) {
+      file = new File(album.albumArt());
+    }
     Glide.with(this)
         .load(albumTable.albumById(song.media().albumId()).albumArt())
         .asBitmap()
