@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.MusicGroup;
+import com.kingbull.musicplayer.domain.MusicGroupOrder;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.SortBy;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaTable;
@@ -50,7 +50,7 @@ public final class RecentlyAddedPlayList implements PlayList, Parcelable {
       }
       cursor.close();
     }
-    new MusicGroup(musicList).sort(SortBy.DATE_ADDED);
+    new MusicGroupOrder(musicList).by(SortBy.DATE_ADDED);
     return musicList;
   }
 

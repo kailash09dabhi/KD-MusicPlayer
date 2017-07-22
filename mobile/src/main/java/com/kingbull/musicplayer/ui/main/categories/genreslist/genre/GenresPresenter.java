@@ -6,7 +6,7 @@ import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.AlbumMusicsMap;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.MusicGroup;
+import com.kingbull.musicplayer.domain.MusicGroupOrder;
 import com.kingbull.musicplayer.domain.SortBy;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
@@ -55,7 +55,7 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
             })
             .doOnNext(new Consumer<List<Music>>() {
               @Override public void accept(List<Music> songs) {
-                new MusicGroup(songs).sort(SortBy.TITLE);
+                new MusicGroupOrder(songs).by(SortBy.TITLE);
               }
             })
             .subscribeOn(Schedulers.io())
@@ -144,7 +144,7 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
   @Override public void onSortEvent(SortEvent sortEvent) {
     if (albums.size() > 0 && albumPosition >= 0 && albumPosition < albums.size()) {
       List<Music> songs = albumMusicsMap.get(albums.get(albumPosition));
-      new MusicGroup(songs).sort(sortEvent.sortBy());
+      new MusicGroupOrder(songs).by(sortEvent.sortBy());
       if (sortEvent.isSortInDescending()) Collections.reverse(songs);
       view().showSongs(songs);
     } else {

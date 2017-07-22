@@ -3,9 +3,9 @@ package com.kingbull.musicplayer.ui.main.categories.all;
 import android.database.Cursor;
 import android.util.Log;
 import com.crashlytics.android.Crashlytics;
-import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.MusicGroup;
+import com.kingbull.musicplayer.domain.MusicGroupOrder;
 import com.kingbull.musicplayer.domain.SortBy;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * @author Kailash Dabhi
  * @date 11/10/2016.
@@ -53,22 +51,12 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
             Flowable.just(cursor)
                 .flatMap(new Function<Cursor, Flowable<List<Music>>>() {
                   @Override public Flowable<List<Music>> apply(Cursor cursor) {
-                    List<Music> songs = new ArrayList<>();
-                    cursor.moveToFirst();
-                    do {
-                      Music music = new SqlMusic(new Media.Smart(cursor));
-                      if (!new File(music.media().path()).exists()) {
-                        androidMediaStoreDatabase.deleteAndBroadcastDeletion(music.media().path());
-                      } else {
-                        songs.add(music);
-                      }
-                    } while (cursor.moveToNext());
-                    return Flowable.just(songs);
+                    return Flowable.just(new MusicGroup.FromCursor(cursor).asList());
                   }
                 })
                 .doOnNext(new Consumer<List<Music>>() {
                   @Override public void accept(List<Music> songs) {
-                    new MusicGroup(songs).sort(SortBy.TITLE);
+                    new MusicGroupOrder(songs).by(SortBy.TITLE);
                   }
                 })
                 .filter(new Predicate<List<Music>>() {
@@ -88,7 +76,7 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
                   }
 
                   @Override public void onError(Throwable throwable) {
-                    Log.e(TAG, "onError: ", throwable);
+                    Log.e(AllSongsPresenter.class.getSimpleName(), "onError: ", throwable);
                   }
 
                   @Override public void onComplete() {
@@ -140,8 +128,10 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
   }
 
   @Override public void onSortEvent(SortEvent sortEvent) {
-    new MusicGroup(songs).sort(sortEvent.sortBy());
-    if (sortEvent.isSortInDescending()) Collections.reverse(songs);
+    new MusicGroupOrder(songs).by(sortEvent.sortBy());
+    if (sortEvent.isSortInDescending()) {
+      Collections.reverse(songs);
+    }
     view().showAllSongs(songs);
   }
 
