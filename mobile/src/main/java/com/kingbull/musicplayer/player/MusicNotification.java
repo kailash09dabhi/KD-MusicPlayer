@@ -29,6 +29,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
+import com.kingbull.musicplayer.image.GlideBitmapPool;
 import com.kingbull.musicplayer.ui.base.Image;
 import com.kingbull.musicplayer.ui.main.MainActivity;
 import io.reactivex.Observable;
@@ -52,6 +53,8 @@ public final class MusicNotification {
   private final com.kingbull.musicplayer.player.Player musicPlayer;
   private RemoteViews bigRemoteView;
   private RemoteViews smallRemoteView;
+  private Bitmap currentLockScreenBitmap;
+  private Bitmap currentAlbumBitmap;
 
   /**
    * @param context
@@ -162,13 +165,19 @@ public final class MusicNotification {
     Bitmap album = pair.second;
     updateRemoteViews(smallRemoteView(), music.media(), album);
     updateRemoteViews(bigRemoteView(), music.media(), album);
-    updateMediaSessionMetaData(
-        music.media(),
+    if (currentLockScreenBitmap != null) {
+      GlideBitmapPool.instance().put(currentLockScreenBitmap);
+    }
+    if (currentAlbumBitmap != null) {
+      GlideBitmapPool.instance().put(currentAlbumBitmap);
+    }
+    currentAlbumBitmap = album;
+    currentLockScreenBitmap =
         new Image.Smart(album)
             .blurred(25)
             .saturated()
-            .bitmap()
-    );
+            .bitmap();
+    updateMediaSessionMetaData(music.media(), currentLockScreenBitmap);
     // The PendingIntent to launch our activity if the user selects this notification
     Intent intent = new Intent(context, MainActivity.class);
     intent.putExtra("from", "notification");
