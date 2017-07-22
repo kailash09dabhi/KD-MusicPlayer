@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.AlbumMusicsMap;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.MusicGroup;
 import com.kingbull.musicplayer.domain.MusicGroupOrder;
 import com.kingbull.musicplayer.domain.SortBy;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
@@ -26,6 +27,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
+ * Represents Artist presenter.
+ *
  * @author Kailash Dabhi
  * @date 11/9/2016.
  */
@@ -49,7 +52,7 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
         Flowable.just(cursor)
             .flatMap(new Function<Cursor, Flowable<List<Music>>>() {
               @Override public Flowable<List<Music>> apply(Cursor cursor) {
-                return new Songs(cursor).toFlowable();
+                return Flowable.just(new MusicGroup.FromCursor(cursor).asList());
               }
             })
             .doOnNext(new Consumer<List<Music>>() {
@@ -139,7 +142,9 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
   @Override public void onSortEvent(SortEvent sortEvent) {
     List<Music> songs = albumMusicsMap.get(albums.get(albumPosition));
     new MusicGroupOrder(songs).by(sortEvent.sortBy());
-    if (sortEvent.isSortInDescending()) Collections.reverse(songs);
+    if (sortEvent.isSortInDescending()) {
+      Collections.reverse(songs);
+    }
     view().showSongs(songs);
   }
 }

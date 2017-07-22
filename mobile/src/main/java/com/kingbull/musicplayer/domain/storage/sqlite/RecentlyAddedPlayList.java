@@ -4,13 +4,12 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.kingbull.musicplayer.MusicPlayerApp;
-import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.MusicGroup;
 import com.kingbull.musicplayer.domain.MusicGroupOrder;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.SortBy;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaTable;
-import java.util.ArrayList;
 import java.util.List;
 
 public final class RecentlyAddedPlayList implements PlayList, Parcelable {
@@ -40,17 +39,9 @@ public final class RecentlyAddedPlayList implements PlayList, Parcelable {
     Cursor cursor = MusicPlayerApp.instance()
         .getContentResolver()
         .query(MediaTable.URI, MediaTable.projections(), null, null, null);
-    List<Music> musicList = new ArrayList<>();
-    if (cursor != null) {
-      if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-        do {
-          SqlMusic song = new SqlMusic(new Media.Smart(cursor));
-          musicList.add(song);
-        } while (cursor.moveToNext());
-      }
-      cursor.close();
-    }
+    List<Music> musicList = new MusicGroup.FromCursor(cursor).asList();
     new MusicGroupOrder(musicList).by(SortBy.DATE_ADDED);
+    cursor.close();
     return musicList;
   }
 

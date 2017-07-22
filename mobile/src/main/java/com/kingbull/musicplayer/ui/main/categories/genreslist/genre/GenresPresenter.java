@@ -6,6 +6,7 @@ import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.AlbumMusicsMap;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.MusicGroup;
 import com.kingbull.musicplayer.domain.MusicGroupOrder;
 import com.kingbull.musicplayer.domain.SortBy;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
@@ -27,13 +28,15 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
+ * Represents Genre Presenter
  * @author Kailash Dabhi
  * @date 11/9/2016.
  */
 public final class GenresPresenter extends Presenter<Genre.View> implements Genre.Presenter {
   private final AndroidMediaStoreDatabase androidMediaStoreDatabase =
       new AndroidMediaStoreDatabase();
-  private final List<Music> songs = new ArrayList<>();
+  private final List<Music> songs
+      = new ArrayList<>();
   @Inject Player musicPlayer;
   private AlbumMusicsMap albumMusicsMap;
   private List<Album> albums = new ArrayList<>();
@@ -50,7 +53,7 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
         Flowable.just(cursor)
             .flatMap(new Function<Cursor, Flowable<List<Music>>>() {
               @Override public Flowable<List<Music>> apply(Cursor cursor) {
-                return new Songs(cursor).toFlowable();
+                return Flowable.just(new MusicGroup.FromCursor(cursor).asList());
               }
             })
             .doOnNext(new Consumer<List<Music>>() {
@@ -145,7 +148,9 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
     if (albums.size() > 0 && albumPosition >= 0 && albumPosition < albums.size()) {
       List<Music> songs = albumMusicsMap.get(albums.get(albumPosition));
       new MusicGroupOrder(songs).by(sortEvent.sortBy());
-      if (sortEvent.isSortInDescending()) Collections.reverse(songs);
+      if (sortEvent.isSortInDescending()) {
+        Collections.reverse(songs);
+      }
       view().showSongs(songs);
     } else {
       Crashlytics.logException(new IndexOutOfBoundsException(

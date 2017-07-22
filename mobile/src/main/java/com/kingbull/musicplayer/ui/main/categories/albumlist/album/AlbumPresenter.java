@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
+import com.kingbull.musicplayer.domain.MusicGroup;
 import com.kingbull.musicplayer.domain.MusicGroupOrder;
 import com.kingbull.musicplayer.domain.SortBy;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
@@ -27,6 +28,7 @@ import javax.inject.Inject;
 import org.reactivestreams.Publisher;
 
 /**
+ * Represents Album presenter.
  * @author Kailash Dabhi
  * @date 11/9/2016.
  */
@@ -47,7 +49,7 @@ public final class AlbumPresenter extends Presenter<Album.View> implements Album
         Flowable.just(cursor)
             .flatMap(new Function<Cursor, Flowable<List<Music>>>() {
               @Override public Flowable<List<Music>> apply(Cursor cursor) {
-                return new Songs(cursor).toFlowable();
+                return Flowable.just(new MusicGroup.FromCursor(cursor).asList());
               }
             })
             .doOnNext(new Consumer<List<Music>>() {
@@ -71,8 +73,9 @@ public final class AlbumPresenter extends Presenter<Album.View> implements Album
                     .map(new Function<List<Long>, Long>() {
                       @Override public Long apply(List<Long> longs) throws Exception {
                         long sum = 0L;
-                        for (long lng : longs)
+                        for (long lng : longs) {
                           sum = sum + lng;
+                        }
                         return sum;
                       }
                     })
@@ -126,7 +129,9 @@ public final class AlbumPresenter extends Presenter<Album.View> implements Album
 
   @Override public void onSortEvent(SortEvent sortEvent) {
     new MusicGroupOrder(songs).by(sortEvent.sortBy());
-    if (sortEvent.isSortInDescending()) Collections.reverse(songs);
+    if (sortEvent.isSortInDescending()) {
+      Collections.reverse(songs);
+    }
     view().showSongs(songs);
   }
 
