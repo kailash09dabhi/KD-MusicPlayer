@@ -216,10 +216,14 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   }
 
   @Override public void useEffect(Reverb reverb) {
-    PresetReverb mReverb = new PresetReverb(0, player.getAudioSessionId());
-    mReverb.setPreset(reverb.id());
-    mReverb.setEnabled(true);
-    player.setAuxEffectSendLevel(1.0f);
+    try {
+      PresetReverb presetReverb = new PresetReverb(0, player.getAudioSessionId());
+      presetReverb.setPreset(reverb.id());
+      presetReverb.setEnabled(true);
+      player.setAuxEffectSendLevel(1.0f);
+    } catch (IllegalArgumentException | IllegalStateException | UnsupportedOperationException e) {
+      Crashlytics.logException(e);
+    }
   }
 
   @Override public BassBoost bassBoost() {
