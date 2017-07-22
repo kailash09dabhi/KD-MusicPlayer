@@ -20,6 +20,7 @@ import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
 import com.kingbull.musicplayer.ui.base.ads.AdmobInterstitial;
 import com.kingbull.musicplayer.ui.main.categories.genreslist.genre.GenreActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -29,6 +30,7 @@ import java.util.List;
 
 /**
  * Represents Genres list screen.
+ *
  * @author Kailash Dabhi
  * @date 8th Nov, 2016 9:09 PM
  */
@@ -43,6 +45,7 @@ public final class GenresListFragment extends BaseFragment<GenresList.Presenter>
     View view = inflater.inflate(R.layout.fragment_genres, container, false);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
+    new AdmobBannerLoaded((ViewGroup) view);
     setupInterstitial();
     return view;
   }

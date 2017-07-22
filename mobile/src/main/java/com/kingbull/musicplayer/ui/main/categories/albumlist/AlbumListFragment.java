@@ -22,6 +22,7 @@ import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
+import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
 import com.kingbull.musicplayer.ui.base.ads.AdmobInterstitial;
 import com.kingbull.musicplayer.ui.main.categories.albumlist.album.AlbumActivity;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
@@ -46,6 +47,7 @@ public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
     View view = inflater.inflate(R.layout.fragment_albumlist, container, false);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
+    new AdmobBannerLoaded((ViewGroup) view);
     setupView();
     setupInterstitial();
     return view;
