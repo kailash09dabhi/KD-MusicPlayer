@@ -54,7 +54,6 @@ public final class MusicNotification {
   private RemoteViews bigRemoteView;
   private RemoteViews smallRemoteView;
   private Bitmap currentLockScreenBitmap;
-  private Bitmap currentAlbumBitmap;
 
   /**
    * @param context
@@ -168,10 +167,6 @@ public final class MusicNotification {
     if (currentLockScreenBitmap != null) {
       GlideBitmapPool.instance().put(currentLockScreenBitmap);
     }
-    if (currentAlbumBitmap != null) {
-      GlideBitmapPool.instance().put(currentAlbumBitmap);
-    }
-    currentAlbumBitmap = album;
     currentLockScreenBitmap =
         new Image.Smart(album)
             .blurred(25)
