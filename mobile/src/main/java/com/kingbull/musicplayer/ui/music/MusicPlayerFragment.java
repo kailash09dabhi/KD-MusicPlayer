@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,27 +75,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     @Override
     public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
       setAlbumImageAndAnimateBackground(bitmap);
-      Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-        public void onGenerated(Palette palette) {
-          if (palette != null && getView() != null) {
-            Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
-            Palette.Swatch mutedSwatch = palette.getMutedSwatch();
-            Palette.Swatch lightMutedSwatch = palette.getLightMutedSwatch();
-            Palette.Swatch lightVibrantSwatch = palette.getLightVibrantSwatch();
-            Palette.Swatch darkMutedSwatch = palette.getDarkMutedSwatch();
-            Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
-            if (darkMutedSwatch != null && lightMutedSwatch != null) {
-              applyColorTheme(darkMutedSwatch.getRgb());
-            } else if (darkVibrantSwatch != null && lightVibrantSwatch != null) {
-              applyColorTheme(darkVibrantSwatch.getRgb());
-            } else if (vibrantSwatch != null && mutedSwatch != null) {
-              applyColorTheme(vibrantSwatch.getRgb());
-            } else {
-              applyColorTheme(flatTheme.header().intValue());
-            }
-          }
-        }
-      });
     }
 
     @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {

@@ -36,7 +36,8 @@
     <activity
       android:launchMode="singleTask"
         android:name=".ui.music.MusicPlayerActivity"
-      android:screenOrientation="portrait" />
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.MusicPlayer" />
     <activity
       android:name=".ui.equalizer.EqualizerActivity"
       android:screenOrientation="portrait" />
