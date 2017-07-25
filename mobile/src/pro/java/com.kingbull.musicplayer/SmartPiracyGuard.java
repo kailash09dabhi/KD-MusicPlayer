@@ -15,11 +15,17 @@ public final class SmartPiracyGuard implements PiracyGuard {
   private final String debugSignature = "l4daumxV6ujKWVULjiffryt3CHQ=";
 
   public SmartPiracyGuard(Context context) {
-    Log.e("SIGNATURE", PiracyCheckerUtils.getAPKSignature(context));
+    if (BuildConfig.DEBUG) {
+      Log.e("SIGNATURE", PiracyCheckerUtils.getAPKSignature(context));
+    }
     this.checker = new PiracyChecker(context).display(Display.ACTIVITY)
-        .saveResultToSharedPreferences(PreferenceManager.getDefaultSharedPreferences(context),
-            "valid_license").enableSigningCertificate(productionSignature)
-        .enableUnauthorizedAppsCheck().enableGooglePlayLicensing(licenseKeyBase64);
+        .saveResultToSharedPreferences(
+            PreferenceManager.getDefaultSharedPreferences(context),
+            "valid_license"
+        )
+        .enableSigningCertificate(productionSignature)
+        .enableUnauthorizedAppsCheck()
+        .enableGooglePlayLicensing(licenseKeyBase64);
   }
 
   @Override public void check() {
