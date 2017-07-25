@@ -1,6 +1,6 @@
-
 package com.kingbull.musicplayer.ui.nowplaying;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,10 +49,21 @@ public final class NowPlayingFragment extends BaseFragment<NowPlaying.Presenter>
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_now_playing_list, container, false);
+    Rect rect = new Rect(0, getStatusBarHeight(), 0, 0);
+    view.setPadding(rect.left, rect.top, rect.right, rect.bottom);
     ButterKnife.bind(this, view);
     MusicPlayerApp.instance().component().inject(this);
     setupView(view);
     return view;
+  }
+
+  private int getStatusBarHeight() {
+    int result = 0;
+    int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+    if (resourceId > 0) {
+      result = getResources().getDimensionPixelSize(resourceId);
+    }
+    return result;
   }
 
   private void setupView(View v) {
