@@ -20,10 +20,7 @@ import io.reactivex.observers.DisposableObserver;
 import javax.inject.Inject;
 
 public final class MusicService extends Service {
-  public static final String ACTION_STOP_SERVICE = "com.kingbull.kdmusicplayer.ACTION_STOP_SERVICE";
-  public static final String ACTION_PLAY_TOGGLE = "com.kingbull.kdmusicplayer.ACTION_PLAY_TOGGLE";
-  public static final String ACTION_PLAY_LAST = "com.kingbull.kdmusicplayer.ACTION_PLAY_LAST";
-  public static final String ACTION_PLAY_NEXT = "com.kingbull.kdmusicplayer.ACTION_PLAY_NEXT";
+  private final BroadcastActionNames broadcastActionNames = new BroadcastActionNames();
   private final Binder mBinder = new LocalBinder();
   private final HeadsetPlugReceiver headsetPlugReceiver = new HeadsetPlugReceiver();
   private final ComponentCallbacks2 componentCallbacks2 = new ComponentCallbacks2() {
@@ -76,17 +73,17 @@ public final class MusicService extends Service {
   @Override public int onStartCommand(Intent intent, int flags, int startId) {
     if (intent != null) {
       String action = intent.getAction();
-      if (ACTION_PLAY_TOGGLE.equals(action)) {
+      if (broadcastActionNames.ofPlayToggle().equals(action)) {
         if (musicPlayer.isPlaying()) {
           musicPlayer.pause();
         } else {
           musicPlayer.play();
         }
-      } else if (ACTION_PLAY_NEXT.equals(action)) {
+      } else if (broadcastActionNames.ofPlayNext().equals(action)) {
         musicPlayer.playNext();
-      } else if (ACTION_PLAY_LAST.equals(action)) {
+      } else if (broadcastActionNames.ofPlayLast().equals(action)) {
         musicPlayer.playPrevious();
-      } else if (ACTION_STOP_SERVICE.equals(action)) {
+      } else if (broadcastActionNames.ofStop().equals(action)) {
         if (musicPlayer.isPlaying()) {
           musicPlayer.pause();
         }

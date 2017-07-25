@@ -1,10 +1,5 @@
 package com.kingbull.musicplayer.player;
 
-import static com.kingbull.musicplayer.player.MusicService.ACTION_PLAY_LAST;
-import static com.kingbull.musicplayer.player.MusicService.ACTION_PLAY_NEXT;
-import static com.kingbull.musicplayer.player.MusicService.ACTION_PLAY_TOGGLE;
-import static com.kingbull.musicplayer.player.MusicService.ACTION_STOP_SERVICE;
-
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -51,6 +46,7 @@ public final class MusicNotification {
   private final AlbumTable albumTable = new AlbumTable();
   private final MediaSessionCompat mediaSessionCompat;
   private final com.kingbull.musicplayer.player.Player musicPlayer;
+  private final BroadcastActionNames broadcastActionNames = new BroadcastActionNames();
   private RemoteViews bigRemoteView;
   private RemoteViews smallRemoteView;
   private Bitmap currentLockScreenBitmap;
@@ -80,11 +76,14 @@ public final class MusicNotification {
     setVectorDrawable(remoteView, R.id.image_view_close, R.drawable.ic_remote_view_close);
     setVectorDrawable(remoteView, R.id.image_view_play_last, R.drawable.ic_remote_view_play_last);
     setVectorDrawable(remoteView, R.id.image_view_play_next, R.drawable.ic_remote_view_play_next);
-    remoteView.setOnClickPendingIntent(R.id.button_close, getPendingIntent(ACTION_STOP_SERVICE));
-    remoteView.setOnClickPendingIntent(R.id.button_play_last, getPendingIntent(ACTION_PLAY_LAST));
-    remoteView.setOnClickPendingIntent(R.id.button_play_next, getPendingIntent(ACTION_PLAY_NEXT));
+    remoteView.setOnClickPendingIntent(R.id.button_close,
+        getPendingIntent(broadcastActionNames.ofStop()));
+    remoteView.setOnClickPendingIntent(R.id.button_play_last,
+        getPendingIntent(broadcastActionNames.ofPlayLast()));
+    remoteView.setOnClickPendingIntent(R.id.button_play_next,
+        getPendingIntent(broadcastActionNames.ofPlayNext()));
     remoteView.setOnClickPendingIntent(R.id.button_play_toggle,
-        getPendingIntent(ACTION_PLAY_TOGGLE));
+        getPendingIntent(broadcastActionNames.ofPlayToggle()));
   }
 
   private void setVectorDrawable(RemoteViews remoteViews, @IdRes int viewId,

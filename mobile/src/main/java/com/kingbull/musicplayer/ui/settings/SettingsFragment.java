@@ -30,7 +30,7 @@ import com.kingbull.musicplayer.event.BlurRadiusEvent;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
-import com.kingbull.musicplayer.player.MusicService;
+import com.kingbull.musicplayer.player.BroadcastActionNames;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
@@ -44,11 +44,13 @@ import javax.inject.Inject;
 
 /**
  * Represents Settings screen.
+ *
  * @author Kailash Dabhi
  * @date 27th Nov, 2016
  */
 public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     implements Settings.View {
+  private final BroadcastActionNames broadcastActionNames = new BroadcastActionNames();
   @BindView(R.id.fullScreenCheckbox) CheckBox fullScreenCheckbox;
   @BindView(R.id.flatThemeCheckbox) CheckBox flatThemeCheckbox;
   @BindView(R.id.durationSecondsView) TextView durationSecondsView;
@@ -234,7 +236,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
 
   private void setAlarmToStopApp(long scheduleAt) {
     PendingIntent pendingIntent =
-        PendingIntent.getService(getActivity(), 0, new Intent(MusicService.ACTION_STOP_SERVICE), 0);
+        PendingIntent.getService(getActivity(), 0, new Intent(broadcastActionNames.ofStop()), 0);
     AlarmManager mgr = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
     mgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + scheduleAt, pendingIntent);
   }
