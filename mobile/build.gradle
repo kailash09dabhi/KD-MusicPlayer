@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 repositories {
-  maven { url 'https://maven.fabric.io/public' }
+    maven { url 'https://maven.fabric.io/public' }
 }
 apply from: "$project.rootDir/tools/script-git-version.gradle"
 apply from: "$project.rootDir/tools/script-findbugs.gradle"
@@ -11,54 +11,54 @@ apply from: "$project.rootDir/tools/script-pmd.gradle"
 apply from: "$project.rootDir/tools/script-java-code-coverage.gradle"
 
 android {
-  compileSdkVersion 25
-  buildToolsVersion "25.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
-  defaultConfig {
-    minSdkVersion 16
-    targetSdkVersion 25
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    vectorDrawables {
-      useSupportLibrary = false
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 25
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = false
+        }
+        resValue "string", "admob_app_id", "ca-app-pub-1642663068953785~5782766159"
+        resValue "string", "kd_music_player_small_native_banner",
+                "ca-app-pub-1642663068953785/6701096157"
+        resValue "string", "kd_music_player_banner",
+                "ca-app-pub-1642663068953785/7201696550"
+        resValue "string", "kd_music_player_settings_interstitial",
+                "ca-app-pub-1642663068953785/7259499352"
+        resConfigs "en"
     }
-    resValue "string", "admob_app_id", "ca-app-pub-1642663068953785~5782766159"
-    resValue "string", "kd_music_player_small_native_banner",
-        "ca-app-pub-1642663068953785/6701096157"
-    resValue "string", "kd_music_player_banner",
-        "ca-app-pub-1642663068953785/7201696550"
-    resValue "string", "kd_music_player_settings_interstitial",
-        "ca-app-pub-1642663068953785/7259499352"
-    resConfigs "en"
-  }
-  packagingOptions {
-    exclude 'META-INF/rxjava.properties'
-  }
-  productFlavors {
-    free {
-      applicationId "com.kingbull.kdmusicplayer"
-      versionCode gitVersionCode
-      versionName gitVersionName
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
     }
-    pro {
-      applicationId "com.kingbull.kdmusicplayer.pro"
-      versionCode gitVersionCode
-      versionName gitVersionName
+    productFlavors {
+        free {
+            applicationId "com.kingbull.kdmusicplayer"
+            versionCode gitVersionCode
+            versionName gitVersionName
+        }
+        pro {
+            applicationId "com.kingbull.kdmusicplayer.pro"
+            versionCode gitVersionCode
+            versionName gitVersionName
+        }
     }
-  }
 
-  buildTypes {
-    debug {
-      minifyEnabled false
-      shrinkResources false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
-    release {
-      minifyEnabled true
-      shrinkResources true
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-    }
-  }
-  compileOptions.incremental = false
+    compileOptions.incremental = false
 }
 
 def supportLibraryVersion = "25.3.1";
@@ -68,54 +68,54 @@ def rxVersion = "2.1.0";
 def rxAndroidVersion = "2.0.1";
 def facebookVersion = "4.23.0";
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
-  //  wearApp project(':wear')
-  //  compile 'com.google.android.gms:play-services:9.8.0'
-  compile "com.android.support:appcompat-v7:$supportLibraryVersion"
-  compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
-  compile "com.android.support:palette-v7:$supportLibraryVersion"
-  compile "com.android.support:design:$supportLibraryVersion"
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    //  wearApp project(':wear')
+    //  compile 'com.google.android.gms:play-services:9.8.0'
+    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    compile "com.android.support:palette-v7:$supportLibraryVersion"
+    compile "com.android.support:design:$supportLibraryVersion"
 
 
-  compile "com.jakewharton:butterknife:$butterknifeLibraryVersion"
-  annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeLibraryVersion"
+    compile "com.jakewharton:butterknife:$butterknifeLibraryVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeLibraryVersion"
 
-  compile "com.google.dagger:dagger:$daggerLibraryVersion"
-  annotationProcessor "com.google.dagger:dagger-compiler:$daggerLibraryVersion"
+    compile "com.google.dagger:dagger:$daggerLibraryVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerLibraryVersion"
 
-  compile "com.github.nisrulz:recyclerviewhelper:$supportLibraryVersion"
+    compile "com.github.nisrulz:recyclerviewhelper:$supportLibraryVersion"
 
-  compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
-    transitive = true;
-  }
-  compile 'com.github.javiersantos:PiracyChecker:1.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
+    }
+    compile 'com.github.javiersantos:PiracyChecker:1.1'
 
-  compile "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
-  compile "io.reactivex.rxjava2:rxjava:$rxVersion"
-  compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+    compile "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    compile "io.reactivex.rxjava2:rxjava:$rxVersion"
+    compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
 
-  compile 'com.simplecityapps:recyclerview-fastscroll:1.0.16'
-  compile 'com.github.Commit451:NativeStackBlur:1.0.5'
-  compile 'uk.co.chrisjenx:calligraphy:2.3.0'
-  compile 'com.facebook.stetho:stetho:1.5.0'
-  compile 'com.github.bumptech.glide:glide:3.8.0'
+    compile 'com.simplecityapps:recyclerview-fastscroll:1.0.16'
+    compile 'com.github.Commit451:NativeStackBlur:1.0.5'
+    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
+    compile 'com.facebook.stetho:stetho:1.5.0'
+    compile 'com.github.bumptech.glide:glide:3.8.0'
 
-  freeCompile 'com.google.android.gms:play-services-ads:11.0.1'
-  freeCompile "com.facebook.android:facebook-android-sdk:$facebookVersion"
-  freeCompile "com.facebook.android:audience-network-sdk:$facebookVersion"
-  freeCompile 'com.google.ads.mediation:facebook:4.23.0.0'
+    freeCompile 'com.google.android.gms:play-services-ads:11.0.1'
+    freeCompile "com.facebook.android:facebook-android-sdk:$facebookVersion"
+    freeCompile "com.facebook.android:audience-network-sdk:$facebookVersion"
+    freeCompile 'com.google.ads.mediation:facebook:4.23.0.0'
 
 
-  testCompile 'junit:junit:4.12'
-  androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
-    exclude group: 'com.android.support', module: 'support-annotations'
-    exclude group: 'com.android.support', module: 'support-v4'
-    exclude group: 'com.android.support', module: 'design'
-    exclude group: 'com.android.support', module: 'recyclerview-v7'
-  }
-  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-    exclude group: 'com.android.support', module: 'support-annotations'
-  })
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+    }
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 }
 
 // make sure this line comes *after* you apply the Android plugin

@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+Version 0.6.73 (25 July 2017) 
+----------------------------
+- Fix annoying bug where last music plays on click of new music
+- Translucent statusbar for player screen
+- Refactor for music group and ordering behaviour
+- Handle music events with common relay 
+- Various patches to avoid OutOfMemoryError & stability
+- Fix several crashes & tweaks
+
 Version 0.6.64 (25 June 2017) 
 ----------------------------
 - Lots of small tweaks on Music Player & Settings screen
