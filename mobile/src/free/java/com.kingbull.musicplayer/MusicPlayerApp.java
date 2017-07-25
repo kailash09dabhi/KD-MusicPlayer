@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatDelegate;
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.stetho.Stetho;
 import com.google.android.gms.ads.MobileAds;
@@ -36,7 +37,14 @@ public final class MusicPlayerApp extends Application {
   @Override public void onCreate() {
     super.onCreate();
     application = this;
-    Fabric.with(this, new Crashlytics());
+    Fabric.with(this,
+        new Crashlytics.Builder()
+            .core(
+                new CrashlyticsCore.Builder()
+                    .disabled(BuildConfig.DEBUG)
+                    .build()
+            ).build()
+    );
     MobileAds.initialize(getApplicationContext(), "ca-app-pub-1642663068953785~5782766159");
     if (BuildConfig.DEBUG) {
       Stetho.initializeWithDefaults(this);
