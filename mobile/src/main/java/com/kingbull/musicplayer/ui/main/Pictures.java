@@ -21,6 +21,6 @@ public final class Pictures {
   }
 
   public int random() {
-    return pictures[random.nextInt(pictures.length - 1)];
+    return pictures[random.nextInt(pictures.length)];
   }
 }
