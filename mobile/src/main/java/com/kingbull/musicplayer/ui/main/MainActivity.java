@@ -56,7 +56,9 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
     new FbKeyHash().print(this);
     piracyGuard = new SmartPiracyGuard(this);
     piracyGuard.check();
-    if (player.isPlaying()) startActivity(new Intent(this, MusicPlayerActivity.class));
+    if (player.isPlaying()) {
+      startActivity(new Intent(this, MusicPlayerActivity.class));
+    }
     adapter = new MainPagerAdapter(getSupportFragmentManager(), tabs);
     viewPager.setAdapter(adapter);
     viewPager.setOffscreenPageLimit(4);
@@ -89,8 +91,8 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
   }
 
   @Override protected void onDestroy() {
-    super.onDestroy();
     piracyGuard.free();
+    super.onDestroy();
   }
 
   @NonNull @Override protected PresenterFactory<Artist.Presenter> presenterFactory() {
@@ -136,7 +138,9 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
     super.onNewIntent(intent);
     if (intent.getExtras() != null) {
       if (intent.getStringExtra("from").equals("notification")) {
-        if (player.isPlaying()) startActivity(new Intent(this, MusicPlayerActivity.class));
+        if (player.isPlaying()) {
+          startActivity(new Intent(this, MusicPlayerActivity.class));
+        }
       }
     }
   }
