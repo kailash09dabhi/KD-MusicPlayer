@@ -30,16 +30,18 @@ public interface MusicGroup {
 
     @Override public List<Music> asList() {
       List<Music> songs = new ArrayList<>();
-      cursor.moveToFirst();
-      do {
-        Music music = new SqlMusic(new Media.Smart(cursor));
-        File file = new File(music.media().path());
-        if (!file.exists()) {
-          androidMediaStoreDatabase.deleteAndBroadcastDeletion(music.media().path());
-        } else if (file.canRead()) {
-          songs.add(music);
-        }
-      } while (cursor.moveToNext());
+      if (cursor != null && cursor.getCount() > 0) {
+        cursor.moveToFirst();
+        do {
+          Music music = new SqlMusic(new Media.Smart(cursor));
+          File file = new File(music.media().path());
+          if (!file.exists()) {
+            androidMediaStoreDatabase.deleteAndBroadcastDeletion(music.media().path());
+          } else if (file.canRead()) {
+            songs.add(music);
+          }
+        } while (cursor.moveToNext());
+      }
       return songs;
     }
   }
