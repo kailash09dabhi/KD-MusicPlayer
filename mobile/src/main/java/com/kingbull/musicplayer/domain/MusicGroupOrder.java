@@ -72,27 +72,25 @@ public final class MusicGroupOrder implements MusicGroup.Order {
   }
 
   @Override public void by(@SortBy int sortBy) {
-    if (songs != null) {
-      switch (sortBy) {
-        case SortBy.ALBUM:
-          Collections.sort(songs, byAlbum);
-          break;
-        case SortBy.ARTIST:
-          Collections.sort(songs, byArtist);
-          break;
-        case SortBy.TITLE:
-          Collections.sort(songs, byTitle);
-          break;
-        case SortBy.YEAR:
-          Collections.sort(songs, byYear);
-          break;
-        case SortBy.DURATION:
-          Collections.sort(songs, byDuration);
-          break;
-        case SortBy.DATE_ADDED:
-          Collections.sort(songs, byDateAdded);
-          break;
-      }
+    switch (sortBy) {
+      case SortBy.ALBUM:
+        Collections.sort(songs, byAlbum);
+        break;
+      case SortBy.ARTIST:
+        Collections.sort(songs, byArtist);
+        break;
+      case SortBy.TITLE:
+        Collections.sort(songs, byTitle);
+        break;
+      case SortBy.YEAR:
+        Collections.sort(songs, byYear);
+        break;
+      case SortBy.DURATION:
+        Collections.sort(songs, byDuration);
+        break;
+      case SortBy.DATE_ADDED:
+        Collections.sort(songs, byDateAdded);
+        break;
     }
   }
 }

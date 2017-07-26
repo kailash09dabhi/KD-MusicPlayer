@@ -44,8 +44,10 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
   @Override public void onAllSongsCursorLoadFinished(Cursor cursor) {
     if (cursor != null && cursor.getCount() > 0) {
       if (cursor.isClosed()) {
-        musicPlayer.addToNowPlaylist(songs);
-        view().showAllSongs(songs);
+        if (isSongListAvailable()) {
+          musicPlayer.addToNowPlaylist(songs);
+          view().showAllSongs(songs);
+        }
       } else {
         compositeDisposable.add(
             Flowable.just(cursor)
@@ -86,8 +88,12 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
     }
   }
 
+  private boolean isSongListAvailable() {
+    return songs != null && !songs.isEmpty();
+  }
+
   @Override public void onSearchTextChanged(final String text) {
-    if (songs != null) {
+    if (isSongListAvailable()) {
       compositeDisposable.add(Flowable.fromIterable(songs)
           .subscribeOn(Schedulers.computation())
           .filter(new Predicate<Music>() {
@@ -128,11 +134,13 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
   }
 
   @Override public void onSortEvent(SortEvent sortEvent) {
-    new MusicGroupOrder(songs).by(sortEvent.sortBy());
-    if (sortEvent.isSortInDescending()) {
-      Collections.reverse(songs);
+    if (isSongListAvailable()) {
+      new MusicGroupOrder(songs).by(sortEvent.sortBy());
+      if (sortEvent.isSortInDescending()) {
+        Collections.reverse(songs);
+      }
+      view().showAllSongs(songs);
     }
-    view().showAllSongs(songs);
   }
 
   @Override public void onDeleteSelectedMusic() {
