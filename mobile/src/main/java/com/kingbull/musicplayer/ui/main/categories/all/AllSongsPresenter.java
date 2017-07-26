@@ -7,7 +7,6 @@ import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.MusicGroup;
 import com.kingbull.musicplayer.domain.MusicGroupOrder;
 import com.kingbull.musicplayer.domain.SortBy;
-import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
@@ -39,7 +38,7 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
   private final AndroidMediaStoreDatabase androidMediaStoreDatabase =
       new AndroidMediaStoreDatabase();
   @Inject Player musicPlayer;
-  private List<Music> songs;
+  List<Music> songs;
 
   @Override public void onAllSongsCursorLoadFinished(Cursor cursor) {
     if (cursor != null && cursor.getCount() > 0) {
@@ -146,27 +145,27 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
   @Override public void onDeleteSelectedMusic() {
     view().percentage(0);
     view().showProgressLayout();
-    List<SqlMusic> selectedMusicList = view().selectedMusicList();
+    List<Music> selectedMusicList = view().selectedMusicList();
     final int selectedCount = selectedMusicList.size();
     view().deletedOutOfText(0 + " / " + selectedCount);
     Observable.zip(Observable.fromIterable(selectedMusicList),
-        Observable.interval(25, TimeUnit.MILLISECONDS), new BiFunction<SqlMusic, Long, SqlMusic>() {
-          @Override public SqlMusic apply(SqlMusic sqlMusic, Long aLong) throws Exception {
+        Observable.interval(25, TimeUnit.MILLISECONDS), new BiFunction<Music, Long, Music>() {
+          @Override public Music apply(Music sqlMusic, Long aLong) throws Exception {
             return sqlMusic;
           }
         })
-        .doOnNext(new Consumer<SqlMusic>() {
-          @Override public void accept(SqlMusic music) throws Exception {
+        .doOnNext(new Consumer<Music>() {
+          @Override public void accept(Music music) throws Exception {
             String path = music.media().path();
             new File(path).delete();
             androidMediaStoreDatabase.deleteAndBroadcastDeletion(path);
           }
         })
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnNext(new Consumer<SqlMusic>() {
+        .doOnNext(new Consumer<Music>() {
           int count = 0;
 
-          @Override public void accept(SqlMusic music) throws Exception {
+          @Override public void accept(Music music) throws Exception {
             ++count;
             int position = songs.indexOf(music);
             if (position == -1) {

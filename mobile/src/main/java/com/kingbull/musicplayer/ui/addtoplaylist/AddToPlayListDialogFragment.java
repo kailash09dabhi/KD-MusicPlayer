@@ -20,6 +20,7 @@ import butterknife.OnClick;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaStatTable;
@@ -47,7 +48,7 @@ public final class AddToPlayListDialogFragment extends BaseDialogFragment
   private List<SqlMusic> musics;
   private List<PlayList> playLists;
 
-  public static AddToPlayListDialogFragment newInstance(List<SqlMusic> musicList) {
+  public static AddToPlayListDialogFragment newInstance(List<Music> musicList) {
     AddToPlayListDialogFragment frag = new AddToPlayListDialogFragment();
     MusicPlayerApp.instance().component().inject(frag);
     Bundle bundle = new Bundle();

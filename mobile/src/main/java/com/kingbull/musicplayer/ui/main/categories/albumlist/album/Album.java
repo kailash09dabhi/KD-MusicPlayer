@@ -2,7 +2,6 @@ package com.kingbull.musicplayer.ui.main.categories.albumlist.album;
 
 import android.database.Cursor;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.util.List;
@@ -32,7 +31,7 @@ public interface Album {
 
     void clearSelection();
 
-    List<SqlMusic> selectedMusicList();
+    List<Music> selectedMusicList();
 
     void removeFromList(Music music);
 

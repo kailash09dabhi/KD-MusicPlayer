@@ -8,7 +8,6 @@ import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.MusicGroup;
 import com.kingbull.musicplayer.domain.MusicGroupOrder;
 import com.kingbull.musicplayer.domain.SortBy;
-import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
@@ -111,7 +110,7 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
   }
 
   @Override public void onDeleteSelectedMusicClick() {
-    List<SqlMusic> musicList = view().selectedMusicList();
+    List<Music> musicList = view().selectedMusicList();
     for (Music music : musicList) {
       String path = music.media().path();
       new File(path).delete();

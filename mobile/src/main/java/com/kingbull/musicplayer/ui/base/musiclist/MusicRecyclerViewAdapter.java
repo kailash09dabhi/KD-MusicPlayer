@@ -19,7 +19,6 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.di.AppModule;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
@@ -120,10 +119,10 @@ public final class MusicRecyclerViewAdapter
     return items;
   }
 
-  public List<SqlMusic> getSelectedMusics() {
-    List<SqlMusic> items = new ArrayList<>(selectedItems.size());
+  public List<Music> getSelectedMusics() {
+    List<Music> items = new ArrayList<>(selectedItems.size());
     for (int i = 0; i < selectedItems.size(); ++i) {
-      items.add((SqlMusic) songs.get(selectedItems.keyAt(i)));
+      items.add(songs.get(selectedItems.keyAt(i)));
     }
     return items;
   }
@@ -164,8 +163,8 @@ public final class MusicRecyclerViewAdapter
             new IconDrawable(R.drawable.ic_playlist_add_48dp, fillColor),
             new ActionItem.OnClickListener() {
               @Override public void onClick(ActionItem item) {
-                List<SqlMusic> musicList = new ArrayList<>();
-                musicList.add((SqlMusic) songs.get(adapterPosition));
+                List<Music> musicList = new ArrayList<>();
+                musicList.add(songs.get(adapterPosition));
                 AddToPlayListDialogFragment.newInstance(musicList)
                     .show(activity.getSupportFragmentManager(),
                         AddToPlayListDialogFragment.class.getName());

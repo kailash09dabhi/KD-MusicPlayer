@@ -2,7 +2,6 @@ package com.kingbull.musicplayer.ui.main.categories.all;
 
 import android.database.Cursor;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.util.List;
@@ -21,7 +20,7 @@ public interface AllSongs {
 
     void showSortMusicScreen();
 
-    List<SqlMusic> selectedMusicList();
+    List<Music> selectedMusicList();
 
     void notifyItemRemoved(int position);
 

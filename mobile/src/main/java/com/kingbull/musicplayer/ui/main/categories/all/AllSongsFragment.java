@@ -26,7 +26,6 @@ import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.SortEvent;
@@ -246,7 +245,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
         .show(getActivity().getSupportFragmentManager(), SortDialogFragment.class.getName());
   }
 
-  @Override public List<SqlMusic> selectedMusicList() {
+  @Override public List<Music> selectedMusicList() {
     return musicRecyclerViewAdapter.getSelectedMusics();
   }
 

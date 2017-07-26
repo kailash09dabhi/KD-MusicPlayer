@@ -33,7 +33,6 @@ import com.kingbull.musicplayer.di.StorageModule;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.ImageFile;
 import com.kingbull.musicplayer.domain.storage.StorageDirectory;
-import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.CoverArtDownloadedEvent;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
@@ -344,7 +343,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     hideSelectionContextOptions();
   }
 
-  @Override public List<SqlMusic> selectedMusicList() {
+  @Override public List<Music> selectedMusicList() {
     return adapter.getSelectedMusics();
   }
 

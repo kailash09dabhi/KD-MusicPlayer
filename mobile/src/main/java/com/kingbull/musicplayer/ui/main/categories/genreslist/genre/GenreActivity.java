@@ -22,7 +22,6 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
@@ -208,7 +207,7 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     alphaAnimation.fadeIn(titleView);
   }
 
-  @Override public List<SqlMusic> selectedMusicList() {
+  @Override public List<Music> selectedMusicList() {
     return adapter.getSelectedMusics();
   }
 

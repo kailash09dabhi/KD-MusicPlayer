@@ -3,7 +3,6 @@ package com.kingbull.musicplayer.ui.main.categories.genreslist.genre;
 import android.database.Cursor;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.Music;
-import com.kingbull.musicplayer.domain.storage.sqlite.SqlMusic;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.util.List;
@@ -28,7 +27,7 @@ public interface Genre {
 
     void hideSelectionOptions();
 
-    List<SqlMusic> selectedMusicList();
+    List<Music> selectedMusicList();
 
     void removeFromList(Music music);
 
