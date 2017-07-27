@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,84 +46,27 @@ public final class MusicRecyclerViewAdapter
     implements FastScrollRecyclerView.SectionedAdapter {
   private final List<Music> songs;
   private final AppCompatActivity activity;
-  private final SparseBooleanArray selectedItems = new SparseBooleanArray();
+  private final SelectedAdapterItems selectedAdapterItems;
   @Inject Player player;
-  private OnSelectionListener onSelectionListener = new OnSelectionListener() {
-    @Override public void onClearSelection() {
-    }
-
-    @Override public void onMultiSelection(int selectionCount) {
-    }
-  };
 
   public MusicRecyclerViewAdapter(List<Music> songs, AppCompatActivity activity) {
     this.songs = songs;
     this.activity = activity;
+    this.selectedAdapterItems = new SelectedAdapterItems(this);
     MusicPlayerApp.instance().component().inject(this);
   }
 
-  public void addOnSelectionListener(OnSelectionListener onSelectionListener) {
-    this.onSelectionListener = onSelectionListener;
+  public void addOnSelectionListener(
+      final OnSelectionListener onSelectionListener) {
+    selectedAdapterItems.addOnSelectionListener(onSelectionListener);
   }
 
-  /**
-   * Toggle the selection status of the item at a given position
-   *
-   * @param position Position of the item to toggle the selection status for
-   */
-  private void toggleSelection(int position) {
-    if (selectedItems.get(position, false)) {
-      selectedItems.delete(position);
-    } else {
-      selectedItems.put(position, true);
-    }
-    if (getSelectedItemCount() == 0) {
-      onSelectionListener.onClearSelection();
-    } else {
-      onSelectionListener.onMultiSelection(getSelectedItemCount());
-    }
-    notifyItemChanged(position);
-  }
-
-  private int getSelectedItemCount() {
-    return selectedItems.size();
-  }
-
-  public boolean isAnyItemSelected() {
-    boolean isAnySelected = false;
-    for (int i = 0; i < selectedItems.size(); ++i) {
-      isAnySelected = selectedItems.valueAt(i);
-      if (isAnySelected) break;
-    }
-    return isAnySelected;
-  }
-
-  /**
-   * Clear the selection status for all items
-   */
-  public final void clearSelection() {
-    List<Integer> selection = getSelectedItems();
-    selectedItems.clear();
-    for (Integer i : selection) {
-      notifyItemChanged(i);
-    }
-    onSelectionListener.onClearSelection();
-  }
-
-  private List<Integer> getSelectedItems() {
-    List<Integer> items = new ArrayList<>(selectedItems.size());
-    for (int i = 0; i < selectedItems.size(); ++i) {
-      items.add(selectedItems.keyAt(i));
-    }
-    return items;
+  public void clearSelection() {
+    selectedAdapterItems.removeAll();
   }
 
   public List<Music> getSelectedMusics() {
-    List<Music> items = new ArrayList<>(selectedItems.size());
-    for (int i = 0; i < selectedItems.size(); ++i) {
-      items.add(songs.get(selectedItems.keyAt(i)));
-    }
-    return items;
+    return selectedAdapterItems.of(songs);
   }
 
   @Override public MusicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -133,7 +75,7 @@ public final class MusicRecyclerViewAdapter
   }
 
   @Override public void onBindViewHolder(final MusicViewHolder holder, int position) {
-    if (isSelected(position)) {
+    if (selectedAdapterItems.has(position)) {
       holder.itemView.setBackgroundColor(
           ContextCompat.getColor(holder.itemView.getContext(), R.color.transparent_strong_black));
     } else {
@@ -147,7 +89,9 @@ public final class MusicRecyclerViewAdapter
     holder.moreActionsView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(final View v) {
         final int adapterPosition = holder.getAdapterPosition();
-        if (adapterPosition == RecyclerView.NO_POSITION) return;
+        if (adapterPosition == RecyclerView.NO_POSITION) {
+          return;
+        }
         QuickActionPopupWindow quickActionPopupWindow = new QuickActionPopupWindow(activity);
         int fillColor = new ColorTheme.Flat().header().intValue();
         final ActionItem playItem =
@@ -237,10 +181,6 @@ public final class MusicRecyclerViewAdapter
     });
   }
 
-  private boolean isSelected(int position) {
-    return getSelectedItems().contains(position);
-  }
-
   @Override public int getItemCount() {
     return songs.size();
   }
@@ -248,12 +188,6 @@ public final class MusicRecyclerViewAdapter
   @NonNull @Override public String getSectionName(int position) {
     return String.valueOf(
         songs.get(position).media().title().substring(0, 1).toUpperCase(Locale.ENGLISH));
-  }
-
-  public interface OnSelectionListener {
-    void onClearSelection();
-
-    void onMultiSelection(int selectionCount);
   }
 
   public class MusicViewHolder extends RecyclerView.ViewHolder
@@ -264,7 +198,7 @@ public final class MusicRecyclerViewAdapter
     @BindView(R.id.artistView) TextView albumView;
     @BindView(R.id.moreActionsView) ImageView moreActionsView;
 
-    public MusicViewHolder(View itemView) {
+    MusicViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
       MusicPlayerApp.instance().component().inject(this);
@@ -276,16 +210,20 @@ public final class MusicRecyclerViewAdapter
     }
 
     @Override public final boolean onLongClick(View view) {
-      if (getAdapterPosition() == RecyclerView.NO_POSITION) return false;
-      toggleSelection(getAdapterPosition());
+      if (getAdapterPosition() == RecyclerView.NO_POSITION) {
+        return false;
+      }
+      selectedAdapterItems.toggleSelection(getAdapterPosition());
       return true;
     }
 
     @Override public void onClick(final View view) {
       int adapterPosition = getAdapterPosition();
-      if (adapterPosition == RecyclerView.NO_POSITION) return;
-      if (getSelectedItemCount() > 0) {
-        toggleSelection(adapterPosition);
+      if (adapterPosition == RecyclerView.NO_POSITION) {
+        return;
+      }
+      if (selectedAdapterItems.count() > 0) {
+        selectedAdapterItems.toggleSelection(adapterPosition);
       } else {
         player.addToNowPlaylist(songs);
         player.play(songs.get(adapterPosition));
