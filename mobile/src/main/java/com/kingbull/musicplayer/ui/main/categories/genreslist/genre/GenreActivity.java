@@ -32,6 +32,7 @@ import com.kingbull.musicplayer.ui.base.analytics.Analytics;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.base.musiclist.OnSelectionListener;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.base.view.SelectionOptionsLayout;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
@@ -88,7 +89,7 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     coverRecyclerView.setHasFixedSize(true);
     initializeWithThemeColors();
     adapter = new MusicRecyclerViewAdapter(songList, this);
-    adapter.addOnSelectionListener(new MusicRecyclerViewAdapter.OnSelectionListener() {
+    adapter.addOnSelectionListener(new OnSelectionListener() {
       @Override public void onClearSelection() {
         presenter.onClearSelection();
       }

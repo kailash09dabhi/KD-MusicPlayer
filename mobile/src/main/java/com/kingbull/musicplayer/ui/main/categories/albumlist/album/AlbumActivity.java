@@ -45,6 +45,7 @@ import com.kingbull.musicplayer.ui.base.analytics.Analytics;
 import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.base.musiclist.OnSelectionListener;
 import com.kingbull.musicplayer.ui.base.view.SelectionOptionsLayout;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.coverarts.CoverArtsFragment;
@@ -128,7 +129,9 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
 
   private void showAlbumArt() {
     File file = null;
-    if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
+    if (!TextUtils.isEmpty(album.albumArt())) {
+      file = new File(album.albumArt());
+    }
     Glide.with(this)
         .load(album.albumArt())
         .asBitmap()
@@ -201,7 +204,7 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     new StatusBarColor(flatTheme.statusBar()).applyOn(getWindow());
     album = getIntent().getParcelableExtra("album");
     adapter = new MusicRecyclerViewAdapter(songList, this);
-    adapter.addOnSelectionListener(new MusicRecyclerViewAdapter.OnSelectionListener() {
+    adapter.addOnSelectionListener(new OnSelectionListener() {
       @Override public void onClearSelection() {
         hideSelectionContextOptions();
       }

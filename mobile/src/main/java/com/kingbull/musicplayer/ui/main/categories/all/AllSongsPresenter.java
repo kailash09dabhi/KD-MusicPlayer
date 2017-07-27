@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.all;
 
 import android.database.Cursor;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.domain.Music;
@@ -35,10 +36,10 @@ import javax.inject.Inject;
  */
 public final class AllSongsPresenter extends Presenter<AllSongs.View>
     implements AllSongs.Presenter {
-  private final AndroidMediaStoreDatabase androidMediaStoreDatabase =
+  @VisibleForTesting AndroidMediaStoreDatabase androidMediaStoreDatabase =
       new AndroidMediaStoreDatabase();
   @Inject Player musicPlayer;
-  List<Music> songs;
+  @VisibleForTesting List<Music> songs;
 
   @Override public void onAllSongsCursorLoadFinished(Cursor cursor) {
     if (cursor != null && cursor.getCount() > 0) {

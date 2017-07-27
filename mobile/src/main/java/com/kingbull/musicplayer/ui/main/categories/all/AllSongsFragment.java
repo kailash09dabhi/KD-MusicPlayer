@@ -38,6 +38,7 @@ import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.base.animators.SlideHorizontal;
 import com.kingbull.musicplayer.ui.base.drawable.IconDrawable;
 import com.kingbull.musicplayer.ui.base.musiclist.MusicRecyclerViewAdapter;
+import com.kingbull.musicplayer.ui.base.musiclist.OnSelectionListener;
 import com.kingbull.musicplayer.ui.base.view.SelectionOptionsLayout;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
@@ -153,7 +154,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
         new MusicRecyclerViewAdapter(musicList, (AppCompatActivity) getActivity());
     recyclerView.setAdapter(musicRecyclerViewAdapter);
     musicRecyclerViewAdapter.addOnSelectionListener(
-        new MusicRecyclerViewAdapter.OnSelectionListener() {
+        new OnSelectionListener() {
           @Override public void onClearSelection() {
             hideSelectionContextOptions();
           }
