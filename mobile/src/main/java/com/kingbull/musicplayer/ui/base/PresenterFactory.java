@@ -26,6 +26,12 @@ import com.kingbull.musicplayer.ui.statistics.StatisticsPresenter;
  * @param <T> presenter type
  */
 public interface PresenterFactory<T extends Mvp.Presenter> {
+  PresenterFactory NONE = new PresenterFactory() {
+    @Override public Mvp.Presenter create() {
+      return Mvp.Presenter.NONE;
+    }
+  };
+
   T create();
 
   class SongList implements PresenterFactory<GenresPresenter> {
