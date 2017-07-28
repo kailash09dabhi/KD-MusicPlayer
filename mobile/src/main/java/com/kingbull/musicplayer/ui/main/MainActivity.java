@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.ui.main;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +19,8 @@ import com.kingbull.musicplayer.PiracyGuard;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.SmartPiracyGuard;
+import com.kingbull.musicplayer.domain.storage.preferences.Background;
+import com.kingbull.musicplayer.event.BackgroundEvent;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.player.Player;
@@ -40,6 +43,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
   @BindArray(R.array.main_tabs) String[] tabs;
   @BindView(R.id.sliding_tabs) TabLayout tabLayout;
   @Inject Player player;
+  @Inject SharedPreferences sharedPreferences;
   private PiracyGuard piracyGuard;
   private MainPagerAdapter adapter;
 
@@ -113,6 +117,10 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
               tabLayout.setBackgroundColor(color);
               new ViewPagerEdgeEffectHack(viewPager).applyColor(color);
               viewPager.applyBackgroundAccordingToTheme();
+            } else if (o instanceof BackgroundEvent) {
+              viewPager.setBackgroundAsset(
+                  new Background.Smart(sharedPreferences).resId(), getWindow()
+              );
             }
           }
         });
