@@ -36,6 +36,7 @@ import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
 import com.kingbull.musicplayer.ui.base.ads.AdmobInterstitial;
 import com.kingbull.musicplayer.ui.base.analytics.Analytics;
+import com.kingbull.musicplayer.ui.settings.background.BackgroundsDialogFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -67,6 +68,12 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     DurationFilterDialogFragment.newInstance()
         .show(getActivity().getSupportFragmentManager(),
             DurationFilterDialogFragment.class.getName());
+  }
+
+  @OnClick(R.id.backgrounds) void onBackgroundsClick() {
+    BackgroundsDialogFragment.newInstance()
+        .show(getActivity().getSupportFragmentManager(),
+            BackgroundsDialogFragment.class.getName());
   }
 
   @OnClick(R.id.removeAdsView) void onClickRemoveAds() {

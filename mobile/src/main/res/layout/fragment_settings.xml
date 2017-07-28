@@ -9,10 +9,10 @@
     android:id="@+id/headerLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="vertical"
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?android:attr/listPreferredItemPaddingLeft">
+      android:paddingRight="?android:attr/listPreferredItemPaddingLeft"
+      android:gravity="center_vertical"
+      android:orientation="vertical">
 
     <TextView
       android:id="@+id/titleView"
@@ -38,10 +38,10 @@
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:layout_weight="1"
+      android:paddingBottom="16dp"
     android:fadeScrollbars="true"
     android:fadingEdgeLength="34dp"
     android:overScrollMode="never"
-    android:paddingBottom="16dp"
     android:requiresFadingEdge="vertical"
     android:scrollbars="vertical">
 
@@ -49,9 +49,9 @@
       xmlns:tools="http://schemas.android.com/tools"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="vertical"
       android:paddingLeft="16dp"
-      android:paddingRight="16dp">
+        android:paddingRight="16dp"
+        android:orientation="vertical">
 
       <TextView
         android:id="@+id/removeAdsView"
@@ -109,8 +109,8 @@
           android:id="@+id/fullScreenCheckbox"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:gravity="center"
-          android:padding="8dp" />
+            android:padding="8dp"
+            android:gravity="center" />
       </LinearLayout>
 
       <LinearLayout
@@ -122,8 +122,8 @@
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:orientation="horizontal"
-          android:paddingBottom="@dimen/mp.padding.small">
+            android:paddingBottom="@dimen/mp.padding.small"
+            android:orientation="horizontal">
 
           <TextView
             style="@style/AppTheme.TextAppearance.Medium"
@@ -179,8 +179,8 @@
           android:id="@+id/flatThemeCheckbox"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:gravity="center"
-          android:padding="8dp" />
+            android:padding="8dp"
+            android:gravity="center" />
       </LinearLayout>
 
       <LinearLayout
@@ -193,8 +193,8 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:orientation="vertical"
-          android:paddingBottom="@dimen/mp.padding.small">
+            android:paddingBottom="@dimen/mp.padding.small"
+            android:orientation="vertical">
 
           <TextView
             style="@style/AppTheme.TextAppearance.Medium"
@@ -219,8 +219,8 @@
           android:id="@+id/pauseOnHeadsetUnplugged"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:gravity="center"
-          android:padding="8dp" />
+            android:padding="8dp"
+            android:gravity="center" />
       </LinearLayout>
 
       <LinearLayout
@@ -233,8 +233,8 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:orientation="vertical"
-          android:paddingBottom="@dimen/mp.padding.small">
+            android:paddingBottom="@dimen/mp.padding.small"
+            android:orientation="vertical">
 
           <TextView
             style="@style/AppTheme.TextAppearance.Medium"
@@ -259,8 +259,8 @@
           android:id="@+id/resumeOnHeadsetPlugged"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:gravity="center"
-          android:padding="8dp" />
+            android:padding="8dp"
+            android:gravity="center" />
       </LinearLayout>
 
       <LinearLayout
@@ -272,8 +272,8 @@
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:orientation="horizontal"
-          android:paddingBottom="@dimen/mp.padding.small">
+            android:paddingBottom="@dimen/mp.padding.small"
+            android:orientation="horizontal">
 
           <TextView
             style="@style/AppTheme.TextAppearance.Medium"
@@ -307,6 +307,17 @@
           android:fontFamily="sans-serif"
           android:text="Set blurring value for your background images." />
       </LinearLayout>
+      <TextView
+          android:id="@+id/backgrounds"
+          style="@style/AppTheme.TextAppearance.Medium"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif"
+          android:lines="1"
+          android:maxLines="1"
+          android:minHeight="?listPreferredItemHeight"
+          android:singleLine="true"
+          android:text="Background" />
 
       <LinearLayout
         android:id="@+id/feedback"
@@ -320,10 +331,10 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_weight="1"
+            android:paddingBottom="@dimen/mp.padding.small"
           android:fontFamily="sans-serif"
           android:lines="1"
           android:maxLines="1"
-          android:paddingBottom="@dimen/mp.padding.small"
           android:singleLine="true"
           android:text="Feedback" />
 
@@ -347,10 +358,10 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_weight="1"
+            android:paddingBottom="@dimen/mp.padding.small"
           android:fontFamily="sans-serif"
           android:lines="1"
           android:maxLines="1"
-          android:paddingBottom="@dimen/mp.padding.small"
           android:singleLine="true"
           android:text="Share KDabhi Music Player" />
 
@@ -373,10 +384,10 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_weight="1"
+            android:paddingBottom="@dimen/mp.padding.small"
           android:fontFamily="sans-serif"
           android:lines="1"
           android:maxLines="1"
-          android:paddingBottom="@dimen/mp.padding.small"
           android:singleLine="true"
           android:text="App Version" />
 
