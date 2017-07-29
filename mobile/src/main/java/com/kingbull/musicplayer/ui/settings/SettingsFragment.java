@@ -26,6 +26,7 @@ import com.kingbull.musicplayer.BuildConfig;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
+import com.kingbull.musicplayer.event.BackgroundEvent;
 import com.kingbull.musicplayer.event.BlurRadiusEvent;
 import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.event.PaletteEvent;
@@ -165,6 +166,8 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
                   } else if (o instanceof BlurRadiusEvent) {
                     admobInterstitial.showIfLoaded();
                     analytics.logBlurRadius(((BlurRadiusEvent) o).blurRadius());
+                  } else if (o instanceof BackgroundEvent) {
+                    admobInterstitial.showIfLoaded();
                   }
                 } else {
                   Crashlytics.logException(
