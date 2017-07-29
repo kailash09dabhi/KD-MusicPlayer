@@ -4,13 +4,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
+import com.kingbull.musicplayer.BuildConfig;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.main.Pictures;
 import com.kingbull.musicplayer.ui.settings.background.BackgroundsDialogFragment.OnClickListener;
+import com.lid.lib.LabelImageView;
 
 /**
  * @author Kailash Dabhi
@@ -19,6 +21,8 @@ import com.kingbull.musicplayer.ui.settings.background.BackgroundsDialogFragment
 public final class BackgroundsAdapter extends RecyclerView.Adapter<BackgroundsAdapter.ViewHolder> {
   private final int[] pictures = new Pictures().toDrawablesId();
   private final OnClickListener onClickListener;
+  private final int proStartIndex = 8;
+  private final ColorTheme colorTheme = new ColorTheme.Flat();
 
   public BackgroundsAdapter(OnClickListener onClickListener) {
     this.onClickListener = onClickListener;
@@ -31,6 +35,13 @@ public final class BackgroundsAdapter extends RecyclerView.Adapter<BackgroundsAd
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
     Glide.with(holder.imageView.getContext()).load(pictures[position]).into(holder.imageView);
+    if (BuildConfig.FLAVOR.equals("free")) {
+      if (proStartIndex >= position) {
+        holder.imageView.setLabelVisual(false);
+      } else {
+        holder.imageView.setLabelVisual(true);
+      }
+    }
   }
 
   @Override public int getItemCount() {
@@ -38,11 +49,13 @@ public final class BackgroundsAdapter extends RecyclerView.Adapter<BackgroundsAd
   }
 
   class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    @BindView(R.id.imageView) ImageView imageView;
+    @BindView(R.id.imageView) LabelImageView imageView;
 
     public ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
+      imageView.setLabelBackgroundColor(colorTheme.header().intValue());
+      imageView.setLabelVisual(false);
       itemView.setOnClickListener(this);
     }
 
