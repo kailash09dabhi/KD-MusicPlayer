@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.6.82 (30 July 2017) 
+----------------------------
+- Add option to pick background
+- Fix FileUriExposedException 
+- Fix few crashes & tweaks
+- Refactor for optimization & performance
+
 Version 0.6.73 (25 July 2017) 
 ----------------------------
 - Fix annoying bug where last music plays on click of new music
