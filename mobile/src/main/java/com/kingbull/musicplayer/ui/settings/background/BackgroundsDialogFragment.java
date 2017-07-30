@@ -1,8 +1,6 @@
 package com.kingbull.musicplayer.ui.settings.background;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,6 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.kingbull.musicplayer.BuildConfig;
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.ProLink;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.storage.preferences.Background;
@@ -62,15 +61,7 @@ public final class BackgroundsDialogFragment extends BaseDialogFragment {
           @Override public void onBackgroundSelection(int index) {
             if (BuildConfig.FLAVOR.equals("free")) {
               if (index >= proStartIndex) {
-                final String appPackageName = getActivity().getPackageName() + ".pro";
-                try {
-                  startActivity(
-                      new Intent(Intent.ACTION_VIEW,
-                          Uri.parse("market://details?id=" + appPackageName)));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                  startActivity(new Intent(Intent.ACTION_VIEW,
-                      Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                }
+                new ProLink.PlayStore(getContext()).open();
               }
             } else {
               new Background.Smart(sharedPreferences).take(index);

@@ -24,6 +24,7 @@ import butterknife.OnClick;
 import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.BuildConfig;
 import com.kingbull.musicplayer.MusicPlayerApp;
+import com.kingbull.musicplayer.ProLink;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.BackgroundEvent;
@@ -78,14 +79,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   }
 
   @OnClick(R.id.removeAdsView) void onClickRemoveAds() {
-    final String appPackageName = getActivity().getPackageName() + ".pro";
-    try {
-      startActivity(
-          new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-    } catch (android.content.ActivityNotFoundException anfe) {
-      startActivity(new Intent(Intent.ACTION_VIEW,
-          Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-    }
+    new ProLink.PlayStore(getContext()).open();
   }
 
   @OnClick(R.id.feedback) void onClickFeedback() {
