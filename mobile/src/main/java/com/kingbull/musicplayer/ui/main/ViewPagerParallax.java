@@ -86,14 +86,22 @@ public final class ViewPagerParallax extends ViewPager {
   }
 
   private void setNewBackground() {
-    if (backgroundId == -1) return;
-    if (maxNumPages == 0) return;
-    if (getWidth() == 0 || getHeight() == 0) return;
+    if (backgroundId == -1) {
+      return;
+    }
+    if (maxNumPages == 0) {
+      return;
+    }
+    if (getWidth() == 0 || getHeight() == 0) {
+      return;
+    }
     if ((saved_height == getHeight()) && (saved_width == getWidth()) && (backgroundSavedId
         == backgroundId) && (saved_max_num_pages == maxNumPages)) {
       return;
     }
-    if (savedBitmap != null && !savedBitmap.isRecycled()) savedBitmap.recycle();
+    if (savedBitmap != null && !savedBitmap.isRecycled()) {
+      savedBitmap.recycle();
+    }
     InputStream is;
     try {
       is = getContext().getResources().openRawResource(backgroundId);
@@ -102,7 +110,9 @@ public final class ViewPagerParallax extends ViewPager {
       BitmapFactory.decodeStream(is, null, options);
       imageHeight = options.outHeight;
       imageWidth = options.outWidth;
-      if (loggable) Log.v(TAG, "imageHeight=" + imageHeight + ", imageWidth=" + imageWidth);
+      if (loggable) {
+        Log.v(TAG, "imageHeight=" + imageHeight + ", imageWidth=" + imageWidth);
+      }
       zoomLevel = ((float) imageHeight) / getHeight();  // we are always in 'fitY' mode
       options.inJustDecodeBounds = false;
       options.inSampleSize = Math.round(zoomLevel);
@@ -110,7 +120,9 @@ public final class ViewPagerParallax extends ViewPager {
         imageHeight = imageHeight / options.inSampleSize;
         imageWidth = imageWidth / options.inSampleSize;
       }
-      if (loggable) Log.v(TAG, "imageHeight=" + imageHeight + ", imageWidth=" + imageWidth);
+      if (loggable) {
+        Log.v(TAG, "imageHeight=" + imageHeight + ", imageWidth=" + imageWidth);
+      }
       double max = Runtime.getRuntime().maxMemory(); //the maximum memory the app can use
       double heapSize = Runtime.getRuntime().totalMemory(); //current heap size
       double heapRemaining = Runtime.getRuntime().freeMemory(); //amount available in heap
@@ -118,8 +130,12 @@ public final class ViewPagerParallax extends ViewPager {
       double remaining = max - (heapSize - heapRemaining) - nativeUsage;
       int freeMemory = (int) (remaining / 1024);
       int bitmap_size = imageHeight * imageWidth * 4 / 1024;
-      if (loggable) Log.v(TAG, "freeMemory = " + freeMemory);
-      if (loggable) Log.v(TAG, "calculated bitmap size = " + bitmap_size);
+      if (loggable) {
+        Log.v(TAG, "freeMemory = " + freeMemory);
+      }
+      if (loggable) {
+        Log.v(TAG, "calculated bitmap size = " + bitmap_size);
+      }
       if (bitmap_size > freeMemory / 5) {
         inSufficientMemory = true;
         return; // we aren't going to use more than one fifth of free memory
@@ -130,8 +146,12 @@ public final class ViewPagerParallax extends ViewPager {
               getWidth() / 2); // how many pixels to shift for each panel
       is.reset();
       Bitmap bitmap = BitmapFactory.decodeStream(is, null, options);
-      savedBitmap = NativeStackBlur.process(bitmap, settingPreferences.blurRadius());
-      bitmap.recycle();
+      if (settingPreferences.blurRadius() != 0) {
+        savedBitmap = NativeStackBlur.process(bitmap, settingPreferences.blurRadius());
+        bitmap.recycle();
+      } else {
+        savedBitmap = bitmap;
+      }
       if (window != null) {
         Palette.from(savedBitmap).generate(new Palette.PaletteAsyncListener() {
           public void onGenerated(Palette palette) {
@@ -143,7 +163,9 @@ public final class ViewPagerParallax extends ViewPager {
           }
         });
       }
-      if (loggable) Log.i(TAG, "real bitmap size = " + sizeOf(savedBitmap) / 1024);
+      if (loggable) {
+        Log.i(TAG, "real bitmap size = " + sizeOf(savedBitmap) / 1024);
+      }
       if (loggable) {
         Log.v(TAG, "savedBitmap.getHeight()="
             + savedBitmap.getHeight()
@@ -152,7 +174,9 @@ public final class ViewPagerParallax extends ViewPager {
       }
       is.close();
     } catch (IOException e) {
-      if (loggable) Log.e(TAG, "Cannot decode: " + e.getMessage());
+      if (loggable) {
+        Log.e(TAG, "Cannot decode: " + e.getMessage());
+      }
       backgroundId = -1;
       return;
     }
@@ -209,8 +233,12 @@ public final class ViewPagerParallax extends ViewPager {
 
   @Override public void setAdapter(PagerAdapter adapter) {
     super.setAdapter(adapter);
-    if (adapter == null) window = null;
-    if (savedBitmap != null && !savedBitmap.isRecycled()) savedBitmap.recycle();
+    if (adapter == null) {
+      window = null;
+    }
+    if (savedBitmap != null && !savedBitmap.isRecycled()) {
+      savedBitmap.recycle();
+    }
     savedBitmap = null;
   }
 
@@ -238,7 +266,9 @@ public final class ViewPagerParallax extends ViewPager {
 
   @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
     super.onLayout(changed, l, t, r, b);
-    if (!inSufficientMemory && parallaxEnabled) setNewBackground();
+    if (!inSufficientMemory && parallaxEnabled) {
+      setNewBackground();
+    }
   }
 
   @Override protected void onPageScrolled(int position, float offset, int offsetPixels) {
@@ -272,7 +302,9 @@ public final class ViewPagerParallax extends ViewPager {
         && savedBitmap != null
         && canvas != null
         && !isFlatTheme) {
-      if (currentPosition == -1) currentPosition = getCurrentItem();
+      if (currentPosition == -1) {
+        currentPosition = getCurrentItem();
+      }
       // maybe we could get the current position from the getScrollX instead?
       src.set((int) (overlapLevel * (currentPosition + currentOffset)), 0,
           (int) (overlapLevel * (currentPosition + currentOffset) + (getWidth() * zoomLevel)),
