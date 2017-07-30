@@ -28,7 +28,7 @@ import javax.inject.Inject;
  * @date 11/27/2016.
  */
 public final class BackgroundsDialogFragment extends BaseDialogFragment {
-  private static final int proStartIndex = 8;
+  private static final int proStartIndex = 6;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
   @BindView(R.id.randomBackground) Button randomBackgroundButton;
   @BindView(R.id.titleView) TextView titleView;
