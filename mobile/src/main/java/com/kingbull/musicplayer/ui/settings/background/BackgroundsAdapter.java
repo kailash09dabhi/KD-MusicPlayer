@@ -11,7 +11,7 @@ import com.kingbull.musicplayer.BuildConfig;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.main.Pictures;
-import com.kingbull.musicplayer.ui.settings.background.BackgroundsDialogFragment.OnClickListener;
+import com.kingbull.musicplayer.ui.settings.background.BackgroundsDialogFragment.OnBackgroundSelectionListener;
 import com.lid.lib.LabelImageView;
 
 /**
@@ -20,12 +20,14 @@ import com.lid.lib.LabelImageView;
  */
 public final class BackgroundsAdapter extends RecyclerView.Adapter<BackgroundsAdapter.ViewHolder> {
   private final int[] pictures = new Pictures().toDrawablesId();
-  private final OnClickListener onClickListener;
-  private final int proStartIndex = 8;
+  private final OnBackgroundSelectionListener onBackgroundSelectionListener;
   private final ColorTheme colorTheme = new ColorTheme.Flat();
+  private final int proStartIndex;
 
-  public BackgroundsAdapter(OnClickListener onClickListener) {
-    this.onClickListener = onClickListener;
+  public BackgroundsAdapter(OnBackgroundSelectionListener onBackgroundSelectionListener,
+      int proStartIndex) {
+    this.onBackgroundSelectionListener = onBackgroundSelectionListener;
+    this.proStartIndex = proStartIndex;
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -61,7 +63,7 @@ public final class BackgroundsAdapter extends RecyclerView.Adapter<BackgroundsAd
 
     @Override public void onClick(View view) {
       if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-        onClickListener.onClick(getAdapterPosition());
+        onBackgroundSelectionListener.onBackgroundSelection(getAdapterPosition());
       }
     }
   }
