@@ -62,17 +62,23 @@ public final class BackgroundsDialogFragment extends BaseDialogFragment {
             if (BuildConfig.FLAVOR.equals("free")) {
               if (index >= proStartIndex) {
                 new ProLink.PlayStore(getContext()).open();
+              } else {
+                makeSelection(index);
               }
             } else {
-              new Background.Smart(sharedPreferences).take(index);
-              dismiss();
-              RxBus.getInstance().post(new BackgroundEvent());
+              makeSelection(index);
             }
           }
         }, proStartIndex)
     );
     titleView.setBackgroundColor(smartTheme.statusBar().intValue());
     randomBackgroundButton.setBackgroundColor(smartTheme.statusBar().intValue());
+  }
+
+  private void makeSelection(int index) {
+    new Background.Smart(sharedPreferences).take(index);
+    dismiss();
+    RxBus.getInstance().post(new BackgroundEvent());
   }
 
   interface OnBackgroundSelectionListener {
