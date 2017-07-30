@@ -64,5 +64,14 @@
         <action android:name="${applicationId}.ACTION_STOP_SERVICE" />
       </intent-filter>
     </service>
+    <provider
+        android:authorities="${applicationId}.provider"
+        android:exported="false"
+        android:grantUriPermissions="true"
+        android:name="com.kingbull.musicplayer.GenericFileProvider">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/provider_paths" />
+    </provider>
   </application>
 </manifest>

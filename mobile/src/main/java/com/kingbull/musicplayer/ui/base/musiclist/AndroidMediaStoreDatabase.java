@@ -3,6 +3,7 @@ package com.kingbull.musicplayer.ui.base.musiclist;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.content.FileProvider;
+import com.kingbull.musicplayer.BuildConfig;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import java.io.File;
 
@@ -17,9 +18,11 @@ public final class AndroidMediaStoreDatabase {
         .delete(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
             android.provider.MediaStore.MediaColumns.DATA + "=?", new String[]{mediaPath});
     Uri uri = FileProvider.getUriForFile(app,
-        app.getApplicationContext().getPackageName() + ".GenericFileProvider",
+        BuildConfig.APPLICATION_ID + ".provider",
         new File(mediaPath)
     );
-    app.sendBroadcast(new Intent(Intent.ACTION_DELETE, uri));
+    Intent intent = new Intent(Intent.ACTION_DELETE, uri);
+    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+    app.sendBroadcast(intent);
   }
 }

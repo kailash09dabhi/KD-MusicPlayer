@@ -5,14 +5,5 @@
     <meta-data
         android:name="com.google.android.gms.version"
         android:value="@integer/google_play_services_version" />
-    <provider
-        android:authorities="com.kingbull.kdmusicplayer.GenericFileProvider"
-        android:exported="false"
-        android:grantUriPermissions="true"
-        android:name="com.kingbull.musicplayer.GenericFileProvider">
-      <meta-data
-          android:name="android.support.FILE_PROVIDER_PATHS"
-          android:resource="@xml/provider_paths" />
-    </provider>
   </application>
 </manifest>
