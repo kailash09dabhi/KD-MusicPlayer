@@ -67,7 +67,9 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
     viewPager.setAdapter(adapter);
     viewPager.setOffscreenPageLimit(4);
     viewPager.setCurrentItem(0);
-    viewPager.setBackgroundAsset(pictures.random(), getWindow());
+    viewPager.setBackgroundAsset(
+        new Background.Smart(sharedPreferences).resId(), getWindow()
+    );
     viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
     viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
       @Override
