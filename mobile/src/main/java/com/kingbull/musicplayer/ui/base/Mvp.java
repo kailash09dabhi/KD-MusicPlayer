@@ -13,6 +13,20 @@ public interface Mvp {
   }
 
   interface Presenter<V> {
+    Presenter NONE = new Presenter() {
+      @Override public void takeView(Object view) {
+
+      }
+
+      @Override public boolean hasView() {
+        return false;
+      }
+
+      @Override public Object view() {
+        return null;
+      }
+    };
+
     void takeView(V view);
 
     boolean hasView();

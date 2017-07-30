@@ -15,6 +15,7 @@
  */
 package com.kingbull.musicplayer.di;
 
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
@@ -30,7 +31,8 @@ import dagger.Provides;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-@Module public final class StorageModule {
+@Module
+public final class StorageModule {
   public static final String COVER_ART_DIR = "Cover Art";
 
   @Provides @Singleton SQLiteOpenHelper provideOpenHelper(MusicPlayerApp app) {
@@ -59,5 +61,9 @@ import javax.inject.Singleton;
 
   @Singleton @Provides SettingPreferences providesSettingPreferences(MusicPlayerApp application) {
     return new SettingPreferences(PreferenceManager.getDefaultSharedPreferences(application));
+  }
+
+  @Singleton @Provides SharedPreferences providesSharedPreferences(MusicPlayerApp application) {
+    return PreferenceManager.getDefaultSharedPreferences(application);
   }
 }

@@ -55,12 +55,14 @@ import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
 import com.kingbull.musicplayer.ui.settings.BlurRadiusDialogFragment;
 import com.kingbull.musicplayer.ui.settings.DurationFilterDialogFragment;
 import com.kingbull.musicplayer.ui.settings.SettingsFragment;
+import com.kingbull.musicplayer.ui.settings.background.BackgroundsDialogFragment;
 import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
 import com.kingbull.musicplayer.ui.statistics.StatisticsDialogFragment;
 import dagger.Component;
 import javax.inject.Singleton;
 
-@Singleton @Component(modules = { AppModule.class, StorageModule.class })
+@Singleton
+@Component(modules = {AppModule.class, StorageModule.class})
 public interface AppComponent {
   void inject(MusicService service);
 
@@ -175,6 +177,8 @@ public interface AppComponent {
   void inject(MoveToDialogFragment fragment);
 
   void inject(StatisticsDialogFragment fragment);
+
+  void inject(BackgroundsDialogFragment fragment);
 
   void inject(ViewPagerParallax pagerParallax);
 
