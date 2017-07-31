@@ -21,8 +21,8 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
+import com.kingbull.musicplayer.ui.base.Mvp.Presenter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
-import com.kingbull.musicplayer.ui.main.categories.playlists.members.Members;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -31,7 +31,7 @@ import io.reactivex.functions.Consumer;
  * @author Kailash Dabhi
  * @date 12/20/2016.
  */
-public final class MusicCategoryFragment extends BaseFragment<Members.Presenter> {
+public final class MusicCategoryFragment extends BaseFragment<Presenter> {
   @BindView(R.id.pager) ViewPager viewPager;
   @BindView(R.id.tabTitleStrip) PagerTitleStrip pagerTitleStrip;
   @BindArray(R.array.tabs) String[] tabs;
@@ -62,6 +62,7 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
+            // TODO: 7/31/2017 Is presenter and this subscribe should be here? something wrong i feel!
             if (presenter != null && presenter.hasView()) {
               if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
                 pagerTitleStrip.setBackgroundColor(smartTheme.header().intValue());
@@ -81,11 +82,12 @@ public final class MusicCategoryFragment extends BaseFragment<Members.Presenter>
         });
   }
 
-  @Override protected PresenterFactory<Members.Presenter> presenterFactory() {
-    return new PresenterFactory.MusicListOfPlaylist();
+  @Override protected PresenterFactory presenterFactory() {
+    return PresenterFactory.BASIC;
   }
 
-  @Override protected void onPresenterPrepared(Members.Presenter presenter) {
+  @Override protected void onPresenterPrepared(Presenter presenter) {
+    presenter.takeView(this);
   }
 
   private void setupPagerTitleStrip() {

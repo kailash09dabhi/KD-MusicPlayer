@@ -18,7 +18,6 @@ import com.kingbull.musicplayer.ui.main.categories.playlists.members.MembersPres
 import com.kingbull.musicplayer.ui.music.MusicPlayerPresenter;
 import com.kingbull.musicplayer.ui.nowplaying.NowPlayingPresenter;
 import com.kingbull.musicplayer.ui.settings.SettingsPresenter;
-import com.kingbull.musicplayer.ui.statistics.StatisticsPresenter;
 
 /**
  * Creates a Presenter object.
@@ -26,19 +25,13 @@ import com.kingbull.musicplayer.ui.statistics.StatisticsPresenter;
  * @param <T> presenter type
  */
 public interface PresenterFactory<T extends Mvp.Presenter> {
-  PresenterFactory NONE = new PresenterFactory() {
+  PresenterFactory BASIC = new PresenterFactory() {
     @Override public Mvp.Presenter create() {
-      return Mvp.Presenter.NONE;
+      return new Presenter();
     }
   };
 
   T create();
-
-  class SongList implements PresenterFactory<GenresPresenter> {
-    @Override public GenresPresenter create() {
-      return new GenresPresenter();
-    }
-  }
 
   class AlbumList implements
       PresenterFactory<com.kingbull.musicplayer.ui.main.categories.albumlist.AlbumList.Presenter> {
@@ -72,13 +65,6 @@ public interface PresenterFactory<T extends Mvp.Presenter> {
     public com.kingbull.musicplayer.ui.main.categories.genreslist.GenresList.Presenter create() {
       GenresListPresenter genresListPresenter = new GenresListPresenter();
       return genresListPresenter;
-    }
-  }
-
-  class Statistics
-      implements PresenterFactory<com.kingbull.musicplayer.ui.statistics.Statistics.Presenter> {
-    @Override public com.kingbull.musicplayer.ui.statistics.Statistics.Presenter create() {
-      return new StatisticsPresenter();
     }
   }
 

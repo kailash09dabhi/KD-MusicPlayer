@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import java.lang.ref.WeakReference;
 
-public abstract class Presenter<V> implements Mvp.Presenter<V> {
+public class Presenter<V> implements Mvp.Presenter<V> {
   protected CompositeDisposable compositeDisposable;
   private WeakReference<V> view;
 
