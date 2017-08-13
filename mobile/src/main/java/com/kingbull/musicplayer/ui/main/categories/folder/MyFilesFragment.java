@@ -18,6 +18,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
+import com.kingbull.musicplayer.event.TransparencyChangedEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
@@ -98,7 +99,8 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
         .subscribe(
             new Consumer<Object>() {
               @Override public void accept(Object o) throws Exception {
-                if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+                if (o instanceof PaletteEvent || o instanceof ThemeEvent || o instanceof
+                    TransparencyChangedEvent) {
                   if (presenter != null && presenter.hasView()) {
                     presenter.onPaletteOrThemeEvent();
                   } else {

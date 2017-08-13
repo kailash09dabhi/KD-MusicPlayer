@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.di;
 
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
@@ -12,9 +13,11 @@ import dagger.Provides;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-@Module public final class AppModule {
+@Module
+public final class AppModule {
   public static final String SMART_THEME = "smart_theme";
   public static final String FLAT_THEME = "flat_theme";
+  public static final String TRANSPARENT_THEME = "transparent_theme";
   private final MusicPlayerApp app;
 
   public AppModule(MusicPlayerApp app) {
@@ -34,12 +37,18 @@ import javax.inject.Singleton;
   }
 
   @Singleton @Provides @Named(SMART_THEME) ColorTheme provideSmartColorTheme(
-      SettingPreferences settingPreferences) {
-    return new ColorTheme.Smart(settingPreferences);
+      @Named(TRANSPARENT_THEME) ColorTheme transparentTheme,
+      @Named(FLAT_THEME) ColorTheme flatTheme, SettingPreferences settingPreferences) {
+    return new ColorTheme.Smart(transparentTheme, flatTheme, settingPreferences);
   }
 
   @Singleton @Provides @Named(FLAT_THEME) ColorTheme provideFlatColorTheme() {
     return new ColorTheme.Flat();
+  }
+
+  @Singleton @Provides @Named(TRANSPARENT_THEME) ColorTheme provideTransparentColorTheme(
+      SharedPreferences sharedPreferences) {
+    return new ColorTheme.Transparent(sharedPreferences);
   }
 
   @Singleton @Provides Analytics provideAnalytics() {

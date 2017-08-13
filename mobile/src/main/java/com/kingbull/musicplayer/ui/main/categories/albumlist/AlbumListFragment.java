@@ -20,6 +20,7 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
+import com.kingbull.musicplayer.event.TransparencyChangedEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
@@ -33,6 +34,7 @@ import java.util.List;
 
 /**
  * Represents Album List screen.
+ *
  * @author Kailash Dabhi
  * @date 8th Nov, 2016
  */
@@ -90,7 +92,8 @@ public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (presenter != null && presenter.hasView()) {
-              if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+              if (o instanceof PaletteEvent || o instanceof ThemeEvent
+                  || o instanceof TransparencyChangedEvent) {
                 recyclerView.setBackgroundColor(smartTheme.screen().intValue());
               }
             } else {

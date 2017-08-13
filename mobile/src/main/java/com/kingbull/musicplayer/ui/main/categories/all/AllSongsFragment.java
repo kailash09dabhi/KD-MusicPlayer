@@ -30,6 +30,7 @@ import com.kingbull.musicplayer.event.DurationFilterEvent;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.SortEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
+import com.kingbull.musicplayer.event.TransparencyChangedEvent;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.Keyboard;
@@ -115,7 +116,8 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
                 presenter.onSortEvent((SortEvent) o);
               } else if (o instanceof DurationFilterEvent) {
                 getLoaderManager().restartLoader(0, null, AllSongsFragment.this);
-              } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+              } else if (o instanceof PaletteEvent || o instanceof ThemeEvent || o instanceof
+                  TransparencyChangedEvent) {
                 updateDrawableOfButtons(
                     smartTheme.header().dark(0.01f).transparent(0.16f).intValue());
                 applyUiColors();

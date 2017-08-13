@@ -23,6 +23,7 @@ import com.kingbull.musicplayer.domain.storage.preferences.Background;
 import com.kingbull.musicplayer.event.BackgroundEvent;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
+import com.kingbull.musicplayer.event.TransparencyChangedEvent;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.DeviceConfig;
@@ -45,7 +46,6 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
   @Inject Player player;
   @Inject SharedPreferences sharedPreferences;
   private PiracyGuard piracyGuard;
-  private MainPagerAdapter adapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -63,7 +63,7 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
     if (player.isPlaying()) {
       startActivity(new Intent(this, MusicPlayerActivity.class));
     }
-    adapter = new MainPagerAdapter(getSupportFragmentManager(), tabs);
+    MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager(), tabs);
     viewPager.setAdapter(adapter);
     viewPager.setOffscreenPageLimit(4);
     viewPager.setCurrentItem(0);
@@ -114,7 +114,8 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
-            if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+            if ((o instanceof PaletteEvent) || (o instanceof ThemeEvent)
+                || (o instanceof TransparencyChangedEvent)) {
               int color = smartTheme.tab().intValue();
               tabLayout.setBackgroundColor(color);
               new ViewPagerEdgeEffectHack(viewPager).applyColor(color);

@@ -20,6 +20,7 @@ import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
+import com.kingbull.musicplayer.event.TransparencyChangedEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.Mvp.Presenter;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
@@ -64,7 +65,8 @@ public final class MusicCategoryFragment extends BaseFragment<Presenter> {
           @Override public void accept(Object o) throws Exception {
             // TODO: 7/31/2017 Is presenter and this subscribe should be here? something wrong i feel!
             if (presenter != null && presenter.hasView()) {
-              if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+              if (o instanceof PaletteEvent || o instanceof ThemeEvent
+                  || o instanceof TransparencyChangedEvent) {
                 pagerTitleStrip.setBackgroundColor(smartTheme.header().intValue());
               }
             } else {
