@@ -56,9 +56,11 @@ import com.kingbull.musicplayer.ui.settings.BlurRadiusDialogFragment;
 import com.kingbull.musicplayer.ui.settings.DurationFilterDialogFragment;
 import com.kingbull.musicplayer.ui.settings.SettingsFragment;
 import com.kingbull.musicplayer.ui.settings.background.BackgroundsDialogFragment;
+import com.kingbull.musicplayer.ui.settings.transparency.TransparencyDialogFragment;
 import com.kingbull.musicplayer.ui.sorted.SortDialogFragment;
 import com.kingbull.musicplayer.ui.statistics.StatisticsDialogFragment;
 import dagger.Component;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
@@ -184,7 +186,11 @@ public interface AppComponent {
 
   MusicPlayerApp app();
 
-  ColorTheme.Smart smartColorTheme();
+  @Named(AppModule.SMART_THEME) ColorTheme smartColorTheme();
+
+  @Named(AppModule.TRANSPARENT_THEME) ColorTheme transparentTheme();
+
+  @Named(AppModule.FLAT_THEME) ColorTheme flatTheme();
 
   SettingPreferences settingPreferences();
 }

@@ -1,6 +1,8 @@
 package com.kingbull.musicplayer.ui.base.theme;
 
+import android.content.SharedPreferences;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
+import com.kingbull.musicplayer.domain.storage.preferences.Transparency;
 import com.kingbull.musicplayer.ui.base.Color;
 import javax.inject.Inject;
 
@@ -26,12 +28,15 @@ public interface ColorTheme {
   Color titleText();
 
   class Smart extends AbstractColorTheme {
-    private final ColorTheme.Transparent transparentTheme = new ColorTheme.Transparent();
-    private final ColorTheme.Flat flatTheme = new ColorTheme.Flat();
-    @Inject SettingPreferences settingPreferences;
+    private final ColorTheme transparentTheme;
+    private final ColorTheme flatTheme;
+    SettingPreferences settingPreferences;
 
-    @Inject public Smart(SettingPreferences settingPreferences) {
+    @Inject public Smart(ColorTheme transparentTheme, ColorTheme flatTheme,
+        SettingPreferences settingPreferences) {
       this.settingPreferences = settingPreferences;
+      this.transparentTheme = transparentTheme;
+      this.flatTheme = flatTheme;
     }
 
     @Override public Color header() {
@@ -79,12 +84,20 @@ public interface ColorTheme {
   }
 
   class Transparent extends AbstractColorTheme {
+    private final Transparency header;
+    private final Transparency body;
+
+    @Inject public Transparent(SharedPreferences sharedPreferences) {
+      header = new Transparency.Header(sharedPreferences);
+      body = new Transparency.Body(sharedPreferences);
+    }
+
     @Override public Color header() {
-      return screen().dark(0.16f).transparent(0.52f);
+      return new Color(prefs.swatch(type).getRgb()).dark(0.16f).transparent(header.value());
     }
 
     @Override public Color screen() {
-      return new Color(prefs.swatch(type).getRgb()).transparent(0.7f);
+      return new Color(android.graphics.Color.parseColor("#cc000000")).transparent(body.value());
     }
 
     @Override public Color dialog() {
