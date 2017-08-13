@@ -42,12 +42,16 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_my_files, container, false);
-    ButterKnife.bind(this, view);
+    return inflater.inflate(R.layout.fragment_my_files, container, false);
+  }
+
+  @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
     MusicPlayerApp.instance().component().inject(this);
+    ButterKnife.bind(this, view);
+    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     applyUiColors();
     new AdmobBannerLoaded((ViewGroup) view);
-    return view;
   }
 
   private void applyUiColors() {
@@ -128,7 +132,6 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
     myFilesAdapter = new MyFilesAdapter(files, presenter);
     recyclerView.setAdapter(myFilesAdapter);
     presenter.takeView(this);
-    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     getView().setOnKeyListener(new View.OnKeyListener() {
       @Override public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
