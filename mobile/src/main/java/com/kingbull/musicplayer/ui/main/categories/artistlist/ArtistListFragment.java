@@ -20,6 +20,7 @@ import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Artist;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
+import com.kingbull.musicplayer.event.TransparencyChangedEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
@@ -85,7 +86,8 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
         .subscribe(new Consumer<Object>() {
           @Override public void accept(Object o) throws Exception {
             if (presenter != null && presenter.hasView()) {
-              if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+              if (o instanceof PaletteEvent || o instanceof ThemeEvent
+                  || o instanceof TransparencyChangedEvent) {
                 recyclerView.setBackgroundColor(smartTheme.screen().intValue());
               }
             } else {

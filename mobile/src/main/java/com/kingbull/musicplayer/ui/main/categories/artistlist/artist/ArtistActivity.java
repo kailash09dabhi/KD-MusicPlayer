@@ -63,6 +63,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
   @BindView(R.id.sortButton) ImageView sortButton;
   @BindView(R.id.shuffleButton) ImageView shuffleButton;
   @Inject Analytics analytics;
+  @Inject ColorTheme.Transparent transparentTheme;
   private MusicRecyclerViewAdapter adapter;
   private com.kingbull.musicplayer.domain.Artist artist;
 
@@ -138,7 +139,7 @@ public final class ArtistActivity extends BaseActivity<Artist.Presenter>
     ((View) titleView.getParent()).setBackgroundColor(headerColor);
     ((View) coverRecyclerView.getParent()).setBackgroundColor(screenColor);
     buttonLayout.setBackgroundColor(flatTheme.screen().transparent(0.16f).intValue());
-    recyclerView.setBackgroundColor(new ColorTheme.Transparent().header().intValue());
+    recyclerView.setBackgroundColor(transparentTheme.header().intValue());
     ((View) recyclerView.getParent()).setBackgroundColor(headerColor);
   }
 

@@ -20,6 +20,7 @@ import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.PlaylistCreatedEvent;
 import com.kingbull.musicplayer.event.PlaylistRenameEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
+import com.kingbull.musicplayer.event.TransparencyChangedEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
@@ -68,7 +69,8 @@ public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presente
                 presenter.onPlaylistCreated(playlistCreatedEvent.playList());
               } else if (o instanceof PlaylistRenameEvent) {
                 presenter.onPlaylistRename((PlaylistRenameEvent) o);
-              } else if (o instanceof PaletteEvent || o instanceof ThemeEvent) {
+              } else if (o instanceof PaletteEvent || o instanceof ThemeEvent ||
+                  o instanceof TransparencyChangedEvent) {
                 recyclerView.setBackgroundColor(smartTheme.screen().intValue());
                 headerLayout.setBackgroundColor(smartTheme.header().intValue());
                 headerView.setTextColor(smartTheme.titleText().intValue());
