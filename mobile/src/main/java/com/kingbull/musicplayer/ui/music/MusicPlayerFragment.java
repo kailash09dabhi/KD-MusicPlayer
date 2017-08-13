@@ -243,7 +243,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     Glide.with(this)
         .load(albumTable.albumById(song.media().albumId()).albumArt())
         .asBitmap()
-        .placeholder(pictures.random())
+        .placeholder(pictures.toDrawablesId()[0])
         .error(pictures.random())
         .centerCrop()
         .signature(
