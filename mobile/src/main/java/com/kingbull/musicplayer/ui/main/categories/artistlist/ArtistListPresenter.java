@@ -31,48 +31,50 @@ public final class ArtistListPresenter extends Presenter<ArtistList.View>
   }
 
   @Override public void onArtistCursorLoadFinished(Cursor cursor) {
-    compositeDisposable.add(
-        Flowable.just(cursor)
-            .flatMap(new Function<Cursor, Flowable<List<Artist>>>() {
-              @Override public Flowable<List<Artist>> apply(Cursor cursor) {
-                List<Artist> artistItems = new ArrayList<>();
-                if (cursor != null && cursor.getCount() > 0) {
-                  cursor.moveToFirst();
-                  do {
-                    Artist artist = new Artist.Smart(cursor);
-                    artistItems.add(artist);
-                  } while (cursor.moveToNext());
-                }
-                return Flowable.just(artistItems);
-              }
-            })
-            .doOnNext(new Consumer<List<Artist>>() {
-              @Override public void accept(List<Artist> songs) {
-                Log.d(TAG, "onLoadFinished: " + songs.size());
-                Collections.sort(songs, new Comparator<Artist>() {
-                  @Override public int compare(Artist left, Artist right) {
-                    return left.name().compareTo(right.name());
+    if (cursor != null && cursor.getCount() > 0) {
+      compositeDisposable.add(
+          Flowable.just(cursor)
+              .flatMap(new Function<Cursor, Flowable<List<Artist>>>() {
+                @Override public Flowable<List<Artist>> apply(Cursor cursor) {
+                  List<Artist> artistItems = new ArrayList<>();
+                  if (cursor != null && cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    do {
+                      Artist artist = new Artist.Smart(cursor);
+                      artistItems.add(artist);
+                    } while (cursor.moveToNext());
                   }
-                });
-              }
-            })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(new ResourceSubscriber<List<Artist>>() {
-              @Override public void onNext(List<Artist> songs) {
-                //mView.onLocalMusicLoaded(genres);
-                //mView.emptyView(genres.isEmpty());
-                view().showAlbums(songs);
-              }
+                  return Flowable.just(artistItems);
+                }
+              })
+              .doOnNext(new Consumer<List<Artist>>() {
+                @Override public void accept(List<Artist> songs) {
+                  Log.d(TAG, "onLoadFinished: " + songs.size());
+                  Collections.sort(songs, new Comparator<Artist>() {
+                    @Override public int compare(Artist left, Artist right) {
+                      return left.name().compareTo(right.name());
+                    }
+                  });
+                }
+              })
+              .subscribeOn(Schedulers.io())
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribeWith(new ResourceSubscriber<List<Artist>>() {
+                @Override public void onNext(List<Artist> songs) {
+                  //mView.onLocalMusicLoaded(genres);
+                  //mView.emptyView(genres.isEmpty());
+                  view().showAlbums(songs);
+                }
 
-              @Override public void onError(Throwable throwable) {
-                //mView.hideProgress();
-                Log.e(TAG, "onError: ", throwable);
-              }
+                @Override public void onError(Throwable throwable) {
+                  //mView.hideProgress();
+                  Log.e(TAG, "onError: ", throwable);
+                }
 
-              @Override public void onComplete() {
-              }
-            }));
+                @Override public void onComplete() {
+                }
+              }));
+    }
   }
 
   @Override public void onArtistClick(Artist artist) {
