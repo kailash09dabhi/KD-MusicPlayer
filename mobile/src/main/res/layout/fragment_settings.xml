@@ -38,7 +38,6 @@
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:layout_weight="1"
-    android:paddingBottom="16dp"
     android:fadeScrollbars="true"
     android:fadingEdgeLength="34dp"
     android:overScrollMode="never"
@@ -49,33 +48,37 @@
       xmlns:tools="http://schemas.android.com/tools"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingLeft="16dp"
-      android:paddingRight="16dp"
       android:orientation="vertical">
-
-      <TextView
-        android:id="@+id/removeAdsView"
-        style="@style/AppTheme.TextAppearance.Medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:lines="1"
-        android:maxLines="1"
-        android:minHeight="?listPreferredItemHeight"
-        android:singleLine="true"
-        android:text="Remove Ads" />
 
       <TextView
         android:id="@+id/sleepTimerView"
         style="@style/AppTheme.TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@drawable/selector"
         android:fontFamily="sans-serif"
         android:lines="1"
+        android:gravity="center_vertical"
         android:minHeight="?listPreferredItemHeight"
         android:singleLine="true"
         android:text="Sleep Timer" />
 
+      <TextView
+        android:id="@+id/removeAdsView"
+        style="@style/AppTheme.TextAppearance.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@drawable/selector"
+        android:fontFamily="sans-serif"
+        android:lines="1"
+        android:maxLines="1"
+        android:minHeight="?listPreferredItemHeight"
+        android:singleLine="true"
+        android:text="Remove Ads" />
       <TextView
         android:id="@+id/languageView"
         style="@style/AppTheme.TextAppearance.Medium"
@@ -91,7 +94,9 @@
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
         android:minHeight="?listPreferredItemHeight"
         android:orientation="horizontal">
 
@@ -114,9 +119,119 @@
       </LinearLayout>
 
       <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        android:minHeight="?listPreferredItemHeight"
+        android:orientation="horizontal">
+
+        <TextView
+          android:id="@+id/textView3"
+          style="@style/AppTheme.TextAppearance.Medium"
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:fontFamily="sans-serif"
+          android:lines="1"
+          android:singleLine="true"
+          android:text="Flat Theme" />
+
+        <CheckBox
+          android:id="@+id/flatThemeCheckbox"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:padding="8dp"
+          android:gravity="center" />
+      </LinearLayout>
+
+      <TextView
+        android:id="@+id/backgrounds"
+        style="@style/AppTheme.TextAppearance.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@drawable/selector"
+        android:fontFamily="sans-serif"
+        android:lines="1"
+        android:maxLines="1"
+        android:minHeight="?listPreferredItemHeight"
+        android:singleLine="true"
+        android:text="Background" />
+      <LinearLayout
+        android:id="@+id/blurBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        android:minHeight="?listPreferredItemHeight"
+        android:orientation="vertical">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingBottom="@dimen/mp.padding.small"
+          android:orientation="horizontal">
+
+          <TextView
+            style="@style/AppTheme.TextAppearance.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="Blur Background" />
+
+          <TextView
+            android:id="@+id/blurRadiusValue"
+            style="@style/AppTheme.TextAppearance.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="1"
+            android:visibility="gone"
+            tools:text="afd" />
+        </LinearLayout>
+
+        <TextView
+          style="@style/AppTheme.TextAppearance.Small"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif"
+          android:text="Set blurring value for your background images." />
+      </LinearLayout>
+
+      <TextView
+        android:id="@+id/transparency"
+        style="@style/AppTheme.TextAppearance.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@drawable/selector"
+        android:fontFamily="sans-serif"
+        android:lines="1"
+        android:maxLines="1"
+        android:minHeight="?listPreferredItemHeight"
+        android:singleLine="true"
+        android:text="Transparency" />
+
+      <LinearLayout
         android:id="@+id/hideSmallClips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        android:minHeight="?listPreferredItemHeight"
         android:orientation="vertical">
 
         <LinearLayout
@@ -160,32 +275,9 @@
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:minHeight="?listPreferredItemHeight"
-        android:orientation="horizontal">
-
-        <TextView
-          android:id="@+id/textView3"
-          style="@style/AppTheme.TextAppearance.Medium"
-          android:layout_width="0dp"
-          android:layout_height="match_parent"
-          android:layout_weight="1"
-          android:fontFamily="sans-serif"
-          android:lines="1"
-          android:singleLine="true"
-          android:text="Flat Theme" />
-
-        <CheckBox
-          android:id="@+id/flatThemeCheckbox"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:padding="8dp"
-          android:gravity="center" />
-      </LinearLayout>
-
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
         android:minHeight="?listPreferredItemHeight"
         android:orientation="horizontal">
 
@@ -226,6 +318,9 @@
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
         android:minHeight="?listPreferredItemHeight"
         android:orientation="horizontal">
 
@@ -264,84 +359,20 @@
       </LinearLayout>
 
       <LinearLayout
-        android:id="@+id/blurBackground"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:paddingBottom="@dimen/mp.padding.small"
-          android:orientation="horizontal">
-
-          <TextView
-            style="@style/AppTheme.TextAppearance.Medium"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif"
-            android:lines="1"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:text="Blur Background" />
-
-          <TextView
-            android:id="@+id/blurRadiusValue"
-            style="@style/AppTheme.TextAppearance.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:lines="1"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:text="1"
-            android:visibility="gone"
-            tools:text="afd" />
-        </LinearLayout>
-
-        <TextView
-          style="@style/AppTheme.TextAppearance.Small"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:fontFamily="sans-serif"
-          android:text="Set blurring value for your background images." />
-      </LinearLayout>
-      <TextView
-        android:id="@+id/backgrounds"
-        style="@style/AppTheme.TextAppearance.Medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:lines="1"
-        android:maxLines="1"
-        android:minHeight="?listPreferredItemHeight"
-        android:singleLine="true"
-        android:text="Background" />
-      <TextView
-        android:id="@+id/transparency"
-        style="@style/AppTheme.TextAppearance.Medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:lines="1"
-        android:maxLines="1"
-        android:minHeight="?listPreferredItemHeight"
-        android:singleLine="true"
-        android:text="Transparency" />
-
-      <LinearLayout
         android:id="@+id/feedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@drawable/selector"
+        android:gravity="center_vertical"
+        android:minHeight="?listPreferredItemHeight"
         android:orientation="vertical">
 
         <TextView
           style="@style/AppTheme.TextAppearance.Medium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_weight="1"
           android:paddingBottom="@dimen/mp.padding.small"
           android:fontFamily="sans-serif"
           android:lines="1"
@@ -361,14 +392,17 @@
         android:id="@+id/share"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@drawable/selector"
+        android:gravity="center_vertical"
+        android:minHeight="?listPreferredItemHeight"
         android:orientation="vertical">
 
         <TextView
           style="@style/AppTheme.TextAppearance.Medium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_weight="1"
           android:paddingBottom="@dimen/mp.padding.small"
           android:fontFamily="sans-serif"
           android:lines="1"
@@ -387,14 +421,16 @@
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        android:minHeight="?listPreferredItemHeight"
         android:orientation="vertical">
 
         <TextView
           style="@style/AppTheme.TextAppearance.Medium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_weight="1"
           android:paddingBottom="@dimen/mp.padding.small"
           android:fontFamily="sans-serif"
           android:lines="1"
