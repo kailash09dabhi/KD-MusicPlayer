@@ -64,6 +64,7 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
     if (viewHolder instanceof FolderFileViewHolder) {
       final FolderFileViewHolder holder = (FolderFileViewHolder) viewHolder;
       holder.folderNameView.setText(files.get(position).getName());
+      holder.totalFilesView.setText("");
       Observable.fromCallable(new Callable<Integer>() {
         @Override public Integer call() throws Exception {
           return new Folder.Cached(Folder.Smart.from(files.get(position))).allMusics().size();
