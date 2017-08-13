@@ -23,6 +23,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
   private static final String TAG = MusicPlayer.class.getSimpleName();
   private final SettingPreferences settingPrefs;
   private final AudioFocus audioFocus;
+  private final int priority = 0;
   private boolean isAudioSessionIdUpdated = false;
   private BassBoost bassBoost;
   private Virtualizer virtualizer;
@@ -217,7 +218,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
 
   @Override public void useEffect(Reverb reverb) {
     try {
-      PresetReverb presetReverb = new PresetReverb(0, player.getAudioSessionId());
+      PresetReverb presetReverb = new PresetReverb(priority, player.getAudioSessionId());
       presetReverb.setPreset(reverb.id());
       presetReverb.setEnabled(true);
       player.setAuxEffectSendLevel(1.0f);
@@ -228,7 +229,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
 
   @Override public BassBoost bassBoost() {
     if (isAudioSessionIdUpdated || bassBoost == null) {
-      bassBoost = new android.media.audiofx.BassBoost(5, player.getAudioSessionId());
+      bassBoost = new android.media.audiofx.BassBoost(priority, player.getAudioSessionId());
       bassBoost.setEnabled(true);
     }
     return bassBoost;
@@ -236,7 +237,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
 
   @Override public Virtualizer virtualizer() {
     if (isAudioSessionIdUpdated || virtualizer == null) {
-      virtualizer = new android.media.audiofx.Virtualizer(5, player.getAudioSessionId());
+      virtualizer = new android.media.audiofx.Virtualizer(priority, player.getAudioSessionId());
       virtualizer.setEnabled(true);
     }
     return virtualizer;
