@@ -182,6 +182,8 @@ public interface AppComponent {
 
   void inject(BackgroundsDialogFragment fragment);
 
+  void inject(TransparencyDialogFragment fragment);
+
   void inject(ViewPagerParallax pagerParallax);
 
   MusicPlayerApp app();
