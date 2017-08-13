@@ -30,10 +30,11 @@ import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.event.MusicEvent;
+import com.kingbull.musicplayer.image.GlideBitmapPool;
 import com.kingbull.musicplayer.player.MusicEventRelay;
 import com.kingbull.musicplayer.player.MusicMode;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
-import com.kingbull.musicplayer.ui.base.Image;
+import com.kingbull.musicplayer.ui.base.Image.Smart;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.StatusBarColor;
 import com.kingbull.musicplayer.ui.base.ads.AdmobInterstitial;
@@ -310,6 +311,8 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         .commitAllowingStateLoss();
   }
 
+  private Bitmap lastBlurredRecyclableBitmap;
+
   private void setAlbumImageAndAnimateBackground(Bitmap bitmap) {
     RoundedBitmapDrawable circularBitmapDrawable =
         RoundedBitmapDrawableFactory.create(getResources(), bitmap);
@@ -318,10 +321,15 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     Observable.just(bitmap)
         .map(new Function<Bitmap, BitmapDrawable>() {
           @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
-            return new Image.Smart(bitmap)
+            if (lastBlurredRecyclableBitmap != null && !lastBlurredRecyclableBitmap.isRecycled()) {
+              GlideBitmapPool.instance().put(lastBlurredRecyclableBitmap);
+            }
+            Smart smartImage = new Smart(bitmap)
                 .blurred(52)
-                .saturated()
-                .bitmapDrawable();
+                .saturated();
+            lastBlurredRecyclableBitmap = smartImage
+                .bitmap();
+            return smartImage.bitmapDrawable();
           }
         })
         .subscribeOn(Schedulers.io())
