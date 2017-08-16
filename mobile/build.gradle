@@ -134,7 +134,7 @@ dependencies {
 
     compile 'com.github.linger1216:labelview:v1.1.2'
 
-    freeCompile 'com.google.android.gms:play-services-ads:11.0.1'
+    freeCompile 'com.google.android.gms:play-services-ads:11.0.4'
     freeCompile "com.facebook.android:facebook-android-sdk:$facebookVersion"
     freeCompile "com.facebook.android:audience-network-sdk:$facebookVersion"
     freeCompile 'com.google.ads.mediation:facebook:4.23.0.0'
