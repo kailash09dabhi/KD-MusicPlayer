@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+Version 0.6.91 (16 August 2017)
+----------------------------
+- Add transparency config for body & header/footer
+- Polish settings ui
+- Fix wrong file count due to cache issue
+- Recycle last blurred bitmap
+- Add more file path to fix finding of configured root
+- Fix few crashes & Refactor for optimization
+
 Version 0.6.82 (30 July 2017) 
 ----------------------------
 - Add option to pick background
