@@ -3,6 +3,7 @@ package com.kingbull.musicplayer.ui.main.categories.folder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -94,6 +95,14 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
   @Override public void refresh() {
     myFilesAdapter.notifyDataSetChanged();
     applyUiColors();
+  }
+
+  @Override public void showProgressOnFolder(Pair<File, Integer> pairOfFolderAndItsIndex) {
+    myFilesAdapter.showProgressOnFolder(pairOfFolderAndItsIndex.second);
+  }
+
+  @Override public void hideProgressOnFolder(Pair<File, Integer> pairOfFolderAndItsIndex) {
+    myFilesAdapter.hideProgressOnFolder(pairOfFolderAndItsIndex.second);
   }
 
   @Override protected Disposable subscribeEvents() {
