@@ -321,22 +321,22 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     Observable.just(bitmap)
         .map(new Function<Bitmap, BitmapDrawable>() {
           @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
-            if (lastBlurredRecyclableBitmap != null && !lastBlurredRecyclableBitmap.isRecycled()) {
-              GlideBitmapPool.instance().put(lastBlurredRecyclableBitmap);
-            }
-            Smart smartImage = new Smart(bitmap)
+            return new Smart(bitmap)
                 .blurred(52)
-                .saturated();
-            lastBlurredRecyclableBitmap = smartImage
-                .bitmap();
-            return smartImage.bitmapDrawable();
+                .saturated()
+                .bitmapDrawable();
           }
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new DisposableObserver<BitmapDrawable>() {
-          @Override public void onNext(BitmapDrawable bitmap) {
-            backgroundView.setBackground(bitmap);
+          @Override public void onNext(BitmapDrawable bitmapDrawable) {
+            backgroundView.setBackground(null);
+            if (lastBlurredRecyclableBitmap != null && !lastBlurredRecyclableBitmap.isRecycled()) {
+              GlideBitmapPool.instance().put(lastBlurredRecyclableBitmap);
+            }
+            lastBlurredRecyclableBitmap = bitmapDrawable.getBitmap();
+            backgroundView.setBackground(bitmapDrawable);
             new Alpha.Animation(0.16f, 2500).fadeIn(backgroundView);
           }
 
