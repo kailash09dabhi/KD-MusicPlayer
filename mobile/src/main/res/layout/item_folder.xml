@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingLeft="16dp"
+  android:paddingRight="16dp"
+  android:background="@drawable/selector"
+  android:clickable="true"
+  android:gravity="center_vertical"
+  android:minHeight="?android:attr/listPreferredItemHeight"
+  android:orientation="horizontal">
+  <LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical">
+    <TextView
+      android:id="@+id/folderName"
+      style="@style/AppTheme.TextAppearance.Medium"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:fontFamily="sans-serif"
+      android:lines="1"
+      android:singleLine="true"
+      tools:text="afd" />
+    <TextView
+      android:id="@+id/totalSongCountView"
+      style="@style/AppTheme.TextAppearance.Small"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:singleLine="true"
+      tools:text="afd" />
+  </LinearLayout>
+  <ProgressBar
+    android:id="@+id/progressBar"
+    style="?android:progressBarStyleSmall"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="8dp" />
+</LinearLayout>
