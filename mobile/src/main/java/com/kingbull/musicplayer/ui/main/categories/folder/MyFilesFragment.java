@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +24,7 @@ import com.kingbull.musicplayer.event.TransparencyChangedEvent;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
+import com.kingbull.musicplayer.ui.base.animators.Alpha;
 import com.kingbull.musicplayer.ui.music.MusicPlayerActivity;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -38,8 +40,10 @@ import java.util.List;
 public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> implements MyFiles.View {
   @BindView(R.id.directoryPathView) TextView directoryPathView;
   @BindView(R.id.recyclerView) RecyclerView recyclerView;
+  @BindView(R.id.progressBar) ProgressBar progressBar;
   private MyFilesAdapter myFilesAdapter;
   private ArrayList<File> files = new ArrayList<>();
+  private final Alpha.Animation animation = new Alpha.Animation();
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -74,6 +78,8 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
   }
 
   @Override public void showFiles(List<File> songs) {
+    animation.fadeIn(recyclerView);
+    animation.fadeOut(progressBar);
     files.clear();
     files.addAll(songs);
     myFilesAdapter.notifyDataSetChanged();
