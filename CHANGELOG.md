@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.7.0 (20 August 2017)
+----------------------------
+- Show progressbar until all files available
+- Remove bitmap as background before putting it to recycle pool
+- Fix few crashes & Refactor for optimization
+
 Version 0.6.91 (16 August 2017)
 ----------------------------
 - Add transparency config for body & header/footer
