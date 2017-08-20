@@ -45,7 +45,10 @@ public final class MyFilesPresenter extends Presenter<MyFiles.View> implements M
     currentFileListObservable.subscribe(new DefaultDisposableObserver<List<File>>());
   }
 
+  private Pair<File, Integer> lastClickedFolderAndItsIndexPair;
+
   @Override public void onFolderClick(final Pair<File, Integer> pairOfFolderAndItsIndex) {
+    lastClickedFolderAndItsIndexPair = pairOfFolderAndItsIndex;
     final File folder = pairOfFolderAndItsIndex.first;
     model.currentFolder(folder);
     view().showProgressOnFolder(pairOfFolderAndItsIndex);
@@ -56,9 +59,11 @@ public final class MyFilesPresenter extends Presenter<MyFiles.View> implements M
     }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doOnNext(
         new Consumer<List<File>>() {
           @Override public void accept(@io.reactivex.annotations.NonNull List<File> files) {
-            view().showFiles(files);
-            view().updateFolder(folder);
-            view().hideProgressOnFolder(pairOfFolderAndItsIndex);
+            if (lastClickedFolderAndItsIndexPair == pairOfFolderAndItsIndex) {
+              view().showFiles(files);
+              view().updateFolder(folder);
+              view().hideProgressOnFolder(pairOfFolderAndItsIndex);
+            }
           }
         }).subscribe();
   }
