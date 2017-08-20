@@ -1,9 +1,12 @@
 package com.kingbull.musicplayer.ui.main.categories.folder;
 
+import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,7 +52,7 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
     RecyclerView.ViewHolder holder = null;
     switch (viewType) {
       case FOLDER:
-        holder = new FolderFileViewHolder(inflater.inflate(R.layout.item_file_song, parent, false));
+        holder = new FolderFileViewHolder(inflater.inflate(R.layout.item_folder, parent, false));
         break;
       case SONG:
         holder = new SongFileViewHolder(inflater.inflate(R.layout.item_file_song, parent, false));
@@ -58,13 +61,15 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
     return holder;
   }
 
+  int loadingFolderPosition = -1;
+
   @Override public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
     int titleColor = colorTheme.titleText().intValue();
     int bodyColor = colorTheme.bodyText().intValue();
     if (viewHolder instanceof FolderFileViewHolder) {
       final FolderFileViewHolder holder = (FolderFileViewHolder) viewHolder;
       holder.folderNameView.setText(files.get(position).getName());
-      holder.totalFilesView.setText("");
+      holder.totalSongCountView.setText("");
       Observable.fromCallable(new Callable<Integer>() {
         @Override public Integer call() throws Exception {
           return new Folder.Cached(Folder.Smart.from(files.get(position))).allMusics().size();
@@ -75,11 +80,21 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
       }).observeOn(AndroidSchedulers.mainThread()).doOnNext(new Consumer<String>() {
         @Override public void accept(@NonNull String s) throws Exception {
-          holder.totalFilesView.setText(s + " song");
+          holder.totalSongCountView.setText(s + " song");
         }
       }).subscribe(new DefaultDisposableObserver<String>());
       holder.folderNameView.setTextColor(titleColor);
-      holder.totalFilesView.setTextColor(bodyColor);
+      holder.totalSongCountView.setTextColor(bodyColor);
+      if (loadingFolderPosition == position) {
+        holder.itemView.setBackgroundColor(
+            ContextCompat.getColor(holder.itemView.getContext(), R.color.transparent_strong_black));
+        holder.progressBar.setVisibility(View.VISIBLE);
+      } else {
+        holder.itemView.setBackgroundColor(
+            ContextCompat.getColor(holder.itemView.getContext(), R.color.transparent));
+        holder.progressBar.setVisibility(View.GONE);
+
+      }
     } else if (viewHolder instanceof SongFileViewHolder) {
       SongFileViewHolder holder = (SongFileViewHolder) viewHolder;
       Media media = fileMusicMap.music(files.get(position)).media();
@@ -104,22 +119,31 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
     return files.size();
   }
 
+  public void hideProgressOnFolder(int index) {
+    loadingFolderPosition = -1;
+    notifyItemChanged(index);
+  }
+
+  public void showProgressOnFolder(int index) {
+    loadingFolderPosition = index;
+    notifyItemChanged(index);
+  }
+
   class FolderFileViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    @BindView(R.id.fileName) TextView folderNameView;
-    @BindView(R.id.durationView) TextView totalFilesView;
-    @BindView(R.id.artistView) TextView artistView;
+    @BindView(R.id.folderName) TextView folderNameView;
+    @BindView(R.id.totalSongCountView) TextView totalSongCountView;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
     public FolderFileViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
-      artistView.setVisibility(View.GONE);
       itemView.setOnClickListener(this);
     }
 
     @Override public void onClick(View view) {
       int adapterPosition = getAdapterPosition();
       if (adapterPosition != RecyclerView.NO_POSITION) {
-        presenter.onFolderClick(files.get(adapterPosition));
+        presenter.onFolderClick(new Pair<>(files.get(adapterPosition), adapterPosition));
       }
     }
   }

@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.folder;
 
 import android.support.annotation.NonNull;
+import android.support.v4.util.Pair;
 import com.kingbull.musicplayer.domain.FileMusicMap;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.DefaultDisposableObserver;
@@ -44,10 +45,27 @@ public final class MyFilesPresenter extends Presenter<MyFiles.View> implements M
     currentFileListObservable.subscribe(new DefaultDisposableObserver<List<File>>());
   }
 
-  @Override public void onFolderClick(File file) {
-    model.currentFolder(file);
-    view().showFiles(model.filesOfCurrentFolder());
-    view().updateFolder(file);
+  private Pair<File, Integer> lastClickedFolderAndItsIndexPair;
+
+  @Override public void onFolderClick(final Pair<File, Integer> pairOfFolderAndItsIndex) {
+    lastClickedFolderAndItsIndexPair = pairOfFolderAndItsIndex;
+    final File folder = pairOfFolderAndItsIndex.first;
+    model.currentFolder(folder);
+    view().showProgressOnFolder(pairOfFolderAndItsIndex);
+    Observable.fromCallable(new Callable<List<File>>() {
+      @Override public List<File> call() throws Exception {
+        return model.filesOfCurrentFolder();
+      }
+    }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doOnNext(
+        new Consumer<List<File>>() {
+          @Override public void accept(@io.reactivex.annotations.NonNull List<File> files) {
+            if (lastClickedFolderAndItsIndexPair == pairOfFolderAndItsIndex) {
+              view().showFiles(files);
+              view().updateFolder(folder);
+              view().hideProgressOnFolder(pairOfFolderAndItsIndex);
+            }
+          }
+        }).subscribe();
   }
 
   @Override public void onBackPressed() {

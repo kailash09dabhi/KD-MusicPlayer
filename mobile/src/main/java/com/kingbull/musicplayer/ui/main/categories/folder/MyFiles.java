@@ -1,5 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.folder;
 
+import android.support.v4.util.Pair;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.io.File;
@@ -20,6 +21,10 @@ public interface MyFiles {
     void showMusicPlayer();
 
     void refresh();
+
+    void showProgressOnFolder(android.support.v4.util.Pair<File, Integer> pairOfFolderAndItsIndex);
+
+    void hideProgressOnFolder(android.support.v4.util.Pair<File, Integer> pairOfFolderAndItsIndex);
   }
 
   interface Model extends Mvp.Model {
@@ -35,7 +40,7 @@ public interface MyFiles {
   }
 
   interface Presenter extends Mvp.Presenter<MyFiles.View> {
-    void onFolderClick(File directory);
+    void onFolderClick(Pair<File, Integer> pairOfFolderAndItsIndex);
 
     void onBackPressed();
 
