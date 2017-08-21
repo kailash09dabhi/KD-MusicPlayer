@@ -51,6 +51,15 @@ public class AllSongsPresenterTest {
     assertEquals(0, songs.size());
   }
 
+  @Test public void testIsSongListAvailable() {
+    allSongsPresenter.songs = songs;
+    assertEquals(true,allSongsPresenter.isSongListAvailable());
+    allSongsPresenter.songs =null;
+    assertEquals(false,allSongsPresenter.isSongListAvailable());
+    allSongsPresenter.songs = new ArrayList<>();
+    assertEquals(false,allSongsPresenter.isSongListAvailable());
+  }
+
   private Music fakeMusic() {
     Music music = mock(Music.class);
     when(music.media()).thenReturn(Media.NONE);

@@ -88,7 +88,7 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
     }
   }
 
-  private boolean isSongListAvailable() {
+   boolean isSongListAvailable() {
     return songs != null && !songs.isEmpty();
   }
 
