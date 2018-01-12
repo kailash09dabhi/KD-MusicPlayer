@@ -163,8 +163,8 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
                     durationSecondsView.setText(durationInSeconds + " sec");
                     analytics.logDurationFilter(durationInSeconds);
                     admobInterstitial.showIfLoaded();
-                  } else if (o instanceof PaletteEvent || o instanceof ThemeEvent || o instanceof
-                      TransparencyChangedEvent) {
+                  } else if (o instanceof PaletteEvent || o instanceof ThemeEvent
+                      || o instanceof TransparencyChangedEvent) {
                     applyUiColors();
                   } else if (o instanceof BlurRadiusEvent) {
                     admobInterstitial.showIfLoaded();
