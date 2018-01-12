@@ -20,9 +20,9 @@ public class GlideBitmapPool {
 
   private GlideBitmapPool() {
     bitmapPool = new LruBitmapPool(
-        new MemorySizeCalculator(
+        new MemorySizeCalculator.Builder(
             MusicPlayerApp.instance()
-        ).getBitmapPoolSize()
+        ).build().getBitmapPoolSize()
     );
   }
 

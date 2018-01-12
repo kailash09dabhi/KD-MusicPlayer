@@ -11,19 +11,21 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.AppCompatDrawableManager;
 import android.widget.RemoteViews;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Media;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
+import com.kingbull.musicplayer.image.GlideApp;
 import com.kingbull.musicplayer.image.GlideBitmapPool;
 import com.kingbull.musicplayer.ui.base.Image;
 import com.kingbull.musicplayer.ui.main.MainActivity;
@@ -41,6 +43,7 @@ import io.reactivex.schedulers.Schedulers;
  * @date 05 May, 2017 11:29 PM
  */
 public final class MusicNotification {
+
   private static final int NOTIFICATION_ID = 1;
   private final Service context;
   private final AlbumTable albumTable = new AlbumTable();
@@ -133,17 +136,17 @@ public final class MusicNotification {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeWith(new DisposableObserver<Pair<Music, String>>() {
           @Override public void onNext(final Pair<Music, String> value) {
-            Glide.with(context)
-                .load(value.second)
+            GlideApp.with(context)
                 .asBitmap()
+                .load(value.second)
                 .error(R.drawable.bass_guitar)
                 .into(new SimpleTarget<Bitmap>(205, 205) {
-                  @Override public void onResourceReady(Bitmap resource,
-                      GlideAnimation<? super Bitmap> glideAnimation) {
+                  @Override public void onResourceReady(@NonNull Bitmap resource,
+                      @Nullable Transition<? super Bitmap> transition) {
                     updateNotification(new Pair<Music, Bitmap>(value.first, resource));
                   }
 
-                  @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                  @Override public void onLoadFailed(@Nullable Drawable errorDrawable) {
                     updateNotification(new Pair<Music, Bitmap>(value.first,
                         ((BitmapDrawable) errorDrawable).getBitmap()));
                   }

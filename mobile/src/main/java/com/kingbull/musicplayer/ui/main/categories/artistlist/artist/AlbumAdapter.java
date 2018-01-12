@@ -8,9 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Album;
+import com.kingbull.musicplayer.image.GlideApp;
 import java.util.List;
 
 /**
@@ -31,10 +32,10 @@ public final class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHo
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    Glide.with(holder.itemView.getContext())
+    GlideApp.with(holder.itemView.getContext())
         .load(albums.get(position).albumArt()).placeholder(R.drawable.ic_music_note)
         .error(R.drawable.bass_guitar)
-        .crossFade()
+        .transition(DrawableTransitionOptions.withCrossFade())
         .into(holder.imageView);
     holder.labelView.setText(albums.get(position).name());
   }

@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -18,8 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -42,6 +44,7 @@ import java.util.List;
  */
 public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
     implements CoverArts.View {
+
   private final StorageDirectory coverArtDir = new StorageDirectory(StorageModule.COVER_ART_DIR);
   private final List<String> coverArtUrls = new ArrayList<>();
   @BindView(R.id.titleView) TextView titleView;
@@ -166,9 +169,9 @@ public final class CoverArtsFragment extends BaseFragment<CoverArts.Presenter>
 
   @Override public void saveCoverArt(String coverArtUrl) {
     final File file = new File(coverArtDir.asFile(), album.name() + ".jpg");
-    Glide.with(this).load(coverArtUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
-      @Override
-      public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+    Glide.with(this).asBitmap().load(coverArtUrl).into(new SimpleTarget<Bitmap>() {
+      @Override public void onResourceReady(@NonNull Bitmap bitmap,
+          @Nullable Transition<? super Bitmap> transition) {
         try {
           new ImageFile(file).save(bitmap);
           album = album.saveCoverArt(file.getPath());

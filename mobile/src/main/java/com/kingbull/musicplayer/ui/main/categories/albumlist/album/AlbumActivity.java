@@ -8,8 +8,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,10 +25,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.signature.StringSignature;
+import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.signature.ObjectKey;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -35,6 +37,7 @@ import com.kingbull.musicplayer.domain.storage.ImageFile;
 import com.kingbull.musicplayer.domain.storage.StorageDirectory;
 import com.kingbull.musicplayer.event.CoverArtDownloadedEvent;
 import com.kingbull.musicplayer.event.SortEvent;
+import com.kingbull.musicplayer.image.GlideApp;
 import com.kingbull.musicplayer.ui.addtoplaylist.AddToPlayListDialogFragment;
 import com.kingbull.musicplayer.ui.base.BaseActivity;
 import com.kingbull.musicplayer.ui.base.Image;
@@ -71,6 +74,7 @@ import javax.inject.Inject;
  */
 public final class AlbumActivity extends BaseActivity<Album.Presenter>
     implements LoaderManager.LoaderCallbacks<Cursor>, Album.View {
+
   private static final int PICK_COVER_ART_GALLERY = 9;
   private final Alpha.Animation alphaAnimation = new Alpha.Animation();
   private final List<Music> songList = new ArrayList<>();
@@ -103,16 +107,18 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
   }
 
   @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
+    if (VERSION.SDK_INT >= VERSION_CODES.M) {
+      super.onActivityResult(requestCode, resultCode, data);
+    }
     if (requestCode == PICK_COVER_ART_GALLERY && resultCode == Activity.RESULT_OK) {
       if (data == null) {
         //Display an error
         new Snackbar(recyclerView).show("Sorry to say but we couldn't fetch the album art!");
         return;
       }
-      Glide.with(this).load(data.getData()).asBitmap().into(new SimpleTarget<Bitmap>(300, 300) {
-        @Override
-        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+      GlideApp.with(this).asBitmap().load(data.getData()).into(new SimpleTarget<Bitmap>(300, 300) {
+        @Override public void onResourceReady(@NonNull Bitmap bitmap,
+            @Nullable Transition<? super Bitmap> transition) {
           try {
             final File file = new File(coverArtDir.asFile(), album.name() + ".jpg");
             new ImageFile(file).save(bitmap);
@@ -132,19 +138,18 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     if (!TextUtils.isEmpty(album.albumArt())) {
       file = new File(album.albumArt());
     }
-    Glide.with(this)
-        .load(album.albumArt())
+    GlideApp.with(this)
         .asBitmap()
+        .load(album.albumArt())
         .placeholder(pictures.random())
         .error(pictures.random())
         .centerCrop()
         .signature(
-            new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
+            new ObjectKey(file == null ? "" : (file.length() + "@" + file.lastModified())))
         .into(new SimpleTarget<Bitmap>(300, 300) {
-          @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
-            super.onLoadFailed(e, errorDrawable);
-            albumArtView.setImageDrawable(errorDrawable);
-            Bitmap bitmap = ((BitmapDrawable) errorDrawable).getBitmap();
+          @Override public void onResourceReady(@NonNull Bitmap bitmap,
+              @Nullable Transition<? super Bitmap> transition) {
+            albumArtView.setImageBitmap(bitmap);
             Observable.just(bitmap)
                 .map(new Function<Bitmap, BitmapDrawable>() {
                   @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
@@ -168,8 +173,10 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
                 });
           }
 
-          @Override public void onResourceReady(Bitmap bitmap, GlideAnimation glideAnimation) {
-            albumArtView.setImageBitmap(bitmap);
+          @Override public void onLoadFailed(@Nullable Drawable errorDrawable) {
+            super.onLoadFailed(errorDrawable);
+            albumArtView.setImageDrawable(errorDrawable);
+            Bitmap bitmap = ((BitmapDrawable) errorDrawable).getBitmap();
             Observable.just(bitmap)
                 .map(new Function<Bitmap, BitmapDrawable>() {
                   @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {

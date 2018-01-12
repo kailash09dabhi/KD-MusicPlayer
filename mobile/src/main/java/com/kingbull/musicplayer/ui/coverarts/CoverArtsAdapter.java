@@ -9,8 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.kingbull.musicplayer.R;
+import com.kingbull.musicplayer.image.GlideApp;
 import java.util.List;
 
 /**
@@ -37,10 +38,10 @@ public final class CoverArtsAdapter extends RecyclerView.Adapter<CoverArtsAdapte
   }
 
   @Override public void onBindViewHolder(final ViewHolder holder, int position) {
-    Glide.with(holder.itemView.getContext())
+    GlideApp.with(holder.itemView.getContext())
         .load(coverUrls.get(position)).placeholder(R.drawable.ic_music_note)
         .error(R.drawable.bass_guitar)
-        .crossFade()
+        .transition(DrawableTransitionOptions.withCrossFade())
         .into(holder.imageView);
     if (selectedPosition == position) {
       holder.hoverView.setVisibility(View.VISIBLE);

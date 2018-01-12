@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.text.TextUtils;
@@ -20,9 +22,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.signature.StringSignature;
+import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.signature.ObjectKey;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Album;
@@ -30,6 +32,7 @@ import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
 import com.kingbull.musicplayer.event.MusicEvent;
+import com.kingbull.musicplayer.image.GlideApp;
 import com.kingbull.musicplayer.image.GlideBitmapPool;
 import com.kingbull.musicplayer.player.MusicEventRelay;
 import com.kingbull.musicplayer.player.MusicMode;
@@ -55,6 +58,7 @@ import java.io.File;
 
 public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presenter>
     implements MusicPlayer.View {
+
   private final AlbumTable albumTable = new AlbumTable();
   private final Pictures pictures = new Pictures();
   @BindView(R.id.equalizerView) ImageView equalizerView;
@@ -72,20 +76,21 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   private StatusBarColor statusBarColor;
   private AdmobInterstitial equalizerInterstitial;
   private AdmobInterstitial nowPlayingListInterstitial;
+  private Bitmap lastBlurredRecyclableBitmap;
   private SimpleTarget<Bitmap> albumBitmapSimpleTarget = new SimpleTarget<Bitmap>() {
-    @Override
-    public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+    @Override public void onResourceReady(@NonNull Bitmap bitmap,
+        @Nullable Transition<? super Bitmap> transition) {
       setAlbumImageAndAnimateBackground(bitmap);
     }
 
-    @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
+    @Override public void onLoadFailed(@Nullable Drawable errorDrawable) {
       setAlbumImageAndAnimateBackground(((BitmapDrawable) errorDrawable).getBitmap());
     }
   };
   private final ComponentCallbacks2 componentCallback = new ComponentCallbacks2() {
     @Override public void onTrimMemory(int level) {
       Glide.with(MusicPlayerFragment.this).onTrimMemory(level);
-      Glide.clear(albumBitmapSimpleTarget);
+      Glide.with(MusicPlayerFragment.this).clear(albumBitmapSimpleTarget);
     }
 
     @Override public void onConfigurationChanged(Configuration newConfig) {
@@ -93,7 +98,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
 
     @Override public void onLowMemory() {
       Glide.with(MusicPlayerFragment.this).onLowMemory();
-      Glide.clear(albumBitmapSimpleTarget);
+      Glide.with(MusicPlayerFragment.this).clear(albumBitmapSimpleTarget);
     }
   };
 
@@ -240,14 +245,14 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     if (!TextUtils.isEmpty(album.albumArt())) {
       file = new File(album.albumArt());
     }
-    Glide.with(this)
-        .load(albumTable.albumById(song.media().albumId()).albumArt())
+    GlideApp.with(this)
         .asBitmap()
+        .load(albumTable.albumById(song.media().albumId()).albumArt())
         .placeholder(pictures.toDrawablesId()[0])
         .error(pictures.random())
         .centerCrop()
         .signature(
-            new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
+            new ObjectKey(file == null ? "" : (file.length() + "@" + file.lastModified())))
         .into(albumBitmapSimpleTarget);
   }
 
@@ -310,8 +315,6 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
         .addToBackStack(NowPlayingFragment.class.getSimpleName())
         .commitAllowingStateLoss();
   }
-
-  private Bitmap lastBlurredRecyclableBitmap;
 
   private void setAlbumImageAndAnimateBackground(Bitmap bitmap) {
     RoundedBitmapDrawable circularBitmapDrawable =

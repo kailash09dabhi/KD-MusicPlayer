@@ -10,10 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.signature.StringSignature;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Album;
+import com.kingbull.musicplayer.image.GlideApp;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 import java.io.File;
 import java.util.List;
@@ -43,14 +44,14 @@ public final class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapte
     holder.labelView.setText(album.name());
     File file = null;
     if (!TextUtils.isEmpty(album.albumArt())) file = new File(album.albumArt());
-    Glide.with(holder.itemView.getContext())
+    GlideApp.with(holder.itemView.getContext())
         .load(album.albumArt())
         .signature(
-            new StringSignature(file == null ? "" : (file.length() + "@" + file.lastModified())))
+            new ObjectKey(file == null ? "" : (file.length() + "@" + file.lastModified())))
         .placeholder(R.drawable.bass_guitar)
         .error(R.drawable.ic_music_note)
         .centerCrop()
-        .crossFade()
+        .transition(DrawableTransitionOptions.withCrossFade())
         .into(holder.imageView);
   }
 
