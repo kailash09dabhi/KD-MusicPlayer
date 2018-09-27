@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.7.2 (27 September 2018)
+----------------------------
+- Fix bad notification crash on Oreo 
+- Upgrade project to android studio 3.2.0 & upgrade libs to latest version 
+
 Version 0.7.0 (20 August 2017)
 ----------------------------
 - Show progressbar until all files available
