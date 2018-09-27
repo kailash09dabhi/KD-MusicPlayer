@@ -1,11 +1,15 @@
 package com.kingbull.musicplayer.player;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -13,7 +17,10 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.util.Pair;
@@ -96,7 +103,7 @@ public final class MusicNotification {
     } else {
       Bitmap bitmap = BitmapMemoryCache.instance().get(String.valueOf(srcId));
       if (bitmap == null) {
-        Drawable drawable = AppCompatDrawableManager.get().getDrawable(context, srcId);
+        Drawable drawable = ContextCompat.getDrawable(context, srcId);
         bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(),
             Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -180,7 +187,11 @@ public final class MusicNotification {
     intent.putExtra("from", "notification");
     PendingIntent contentIntent =
         PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    Notification notification = new NotificationCompat.Builder(context).setSmallIcon(
+    String channelId = "";
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      channelId = notificationChannel();
+    }
+    Notification notification = new NotificationCompat.Builder(context, channelId).setSmallIcon(
         R.drawable.ic_notification_app_logo)  // the status icon
         .setWhen(System.currentTimeMillis())  // the time stamp
         .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
@@ -191,6 +202,19 @@ public final class MusicNotification {
         .build();
     // Send the notification.
     context.startForeground(NOTIFICATION_ID, notification);
+  }
+
+  @RequiresApi(api = Build.VERSION_CODES.O) private String notificationChannel() {
+    String channelId = "com.kingbull.musicplayer.musicnotification.channel";
+    String channelName = "com.kingbull.musicplayer.player.MusicService";
+    NotificationChannel channel = new NotificationChannel(channelId,
+        channelName, NotificationManagerCompat.IMPORTANCE_NONE);
+    channel.setLightColor(Color.BLUE);
+    channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+    NotificationManager service =
+        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    service.createNotificationChannel(channel);
+    return channelId;
   }
 
   private void updateRemoteViews(final RemoteViews remoteView, Media media, Bitmap album) {
