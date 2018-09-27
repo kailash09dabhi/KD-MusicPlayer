@@ -25,14 +25,14 @@ public final class MusicService extends Service {
   private final HeadsetPlugReceiver headsetPlugReceiver = new HeadsetPlugReceiver();
   private final ComponentCallbacks2 componentCallbacks2 = new ComponentCallbacks2() {
     @Override public void onTrimMemory(int level) {
-      Glide.with(MusicService.this).onTrimMemory(level);
+      Glide.get(MusicService.this).onTrimMemory(level);
     }
 
     @Override public void onConfigurationChanged(Configuration newConfig) {
     }
 
     @Override public void onLowMemory() {
-      Glide.with(MusicService.this).onLowMemory();
+      Glide.get(MusicService.this).onLowMemory();
     }
   };
   @Inject Player musicPlayer;

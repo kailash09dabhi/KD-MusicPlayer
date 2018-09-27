@@ -89,7 +89,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   };
   private final ComponentCallbacks2 componentCallback = new ComponentCallbacks2() {
     @Override public void onTrimMemory(int level) {
-      Glide.with(MusicPlayerFragment.this).onTrimMemory(level);
+      Glide.get(MusicPlayerFragment.this.getContext()).onTrimMemory(level);
       Glide.with(MusicPlayerFragment.this).clear(albumBitmapSimpleTarget);
     }
 
@@ -97,7 +97,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     }
 
     @Override public void onLowMemory() {
-      Glide.with(MusicPlayerFragment.this).onLowMemory();
+      Glide.get(MusicPlayerFragment.this.getContext()).onLowMemory();
       Glide.with(MusicPlayerFragment.this).clear(albumBitmapSimpleTarget);
     }
   };

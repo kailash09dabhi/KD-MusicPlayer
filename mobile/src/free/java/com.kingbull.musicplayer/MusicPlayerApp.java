@@ -1,9 +1,9 @@
 package com.kingbull.musicplayer;
 
-import android.app.Application;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.StrictMode;
+import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
@@ -22,7 +22,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  * @author Kailash Dabhi
  * @date 11/9/2016.
  */
-public final class MusicPlayerApp extends Application {
+public final class MusicPlayerApp extends MultiDexApplication {
   private static MusicPlayerApp application;
   private AppComponent appComponent;
 

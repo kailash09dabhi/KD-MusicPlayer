@@ -45,6 +45,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 27
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = false
@@ -155,6 +156,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     unmock 'org.robolectric:android-all:6.0.0_r1-robolectric-0'
+
+    implementation 'com.android.support:multidex:1.0.3'
 }
 configurations.all{
     resolutionStrategy{
