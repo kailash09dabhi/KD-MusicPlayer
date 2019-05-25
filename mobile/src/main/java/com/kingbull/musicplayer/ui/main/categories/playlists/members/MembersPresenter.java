@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists.members;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import javax.inject.Inject;

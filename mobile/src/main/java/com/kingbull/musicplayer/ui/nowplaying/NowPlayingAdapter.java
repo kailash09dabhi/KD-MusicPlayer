@@ -3,7 +3,7 @@ package com.kingbull.musicplayer.ui.nowplaying;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;

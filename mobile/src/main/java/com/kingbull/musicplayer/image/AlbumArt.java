@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.image;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.bumptech.glide.load.Key;
 import java.security.MessageDigest;
 

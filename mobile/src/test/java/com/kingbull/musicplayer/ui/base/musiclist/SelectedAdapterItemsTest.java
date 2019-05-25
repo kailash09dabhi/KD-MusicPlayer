@@ -3,7 +3,7 @@ package com.kingbull.musicplayer.ui.base.musiclist;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

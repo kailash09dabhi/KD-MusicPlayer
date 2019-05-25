@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.base;
 
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.FloatRange;
+import androidx.annotation.FloatRange;
 
 /**
  * @author Kailash Dabhi

@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.playlists;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.kingbull.musicplayer.domain.PlayList;
 import com.kingbull.musicplayer.event.PlaylistRenameEvent;
 import com.kingbull.musicplayer.ui.base.Presenter;

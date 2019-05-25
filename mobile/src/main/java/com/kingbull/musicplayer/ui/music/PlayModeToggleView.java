@@ -9,7 +9,7 @@ import com.kingbull.musicplayer.player.MusicMode;
  * @author Kailash Dabhi
  * @date 11/11/2016.
  */
-public final class PlayModeToggleView extends android.support.v7.widget.AppCompatImageView {
+public final class PlayModeToggleView extends androidx.appcompat.widget.AppCompatImageView {
 
   public PlayModeToggleView(Context context) {
     super(context);

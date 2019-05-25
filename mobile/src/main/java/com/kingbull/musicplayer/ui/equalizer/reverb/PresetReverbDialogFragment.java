@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.ui.equalizer.reverb;
 
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;

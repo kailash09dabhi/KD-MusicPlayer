@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.artistlist.artist;
 
 import android.database.Cursor;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.AlbumMusicsMap;
 import com.kingbull.musicplayer.domain.Music;

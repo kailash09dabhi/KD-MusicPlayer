@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.genreslist.genre;
 
 import android.database.Cursor;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.AlbumMusicsMap;

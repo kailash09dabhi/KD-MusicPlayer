@@ -8,7 +8,7 @@ import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.os.Binder;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import com.bumptech.glide.Glide;

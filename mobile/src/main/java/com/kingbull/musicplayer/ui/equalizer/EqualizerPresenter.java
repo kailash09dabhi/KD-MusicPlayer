@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.equalizer;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
 import com.kingbull.musicplayer.ui.base.Presenter;
 

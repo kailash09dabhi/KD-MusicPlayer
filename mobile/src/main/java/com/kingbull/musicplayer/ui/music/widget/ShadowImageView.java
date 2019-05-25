@@ -11,9 +11,11 @@ import android.graphics.Shader;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
-import android.support.v4.view.ViewCompat;
+import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.animation.LinearInterpolator;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
  * Created with Android Studio.
@@ -21,11 +23,11 @@ import android.view.animation.LinearInterpolator;
  * Date: 9/8/16
  * Time: 4:23 PM
  * Desc: ShadowImageView
- * Stole from {@link android.support.v4.widget.SwipeRefreshLayout}'s implementation to display
+ * Stole from {@link SwipeRefreshLayout}'s implementation to display
  * beautiful ic_shadow
  * for circle ImageView.
  */
-public final class ShadowImageView extends android.support.v7.widget.AppCompatImageView {
+public final class ShadowImageView extends androidx.appcompat.widget.AppCompatImageView {
   private static final int KEY_SHADOW_COLOR = 0x1E000000;
   private static final int FILL_SHADOW_COLOR = 0x3D000000;
   private static final float X_OFFSET = 0f;

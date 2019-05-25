@@ -33,20 +33,16 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 apply from: "$project.rootDir/tools/script-git-version.gradle"
-apply from: "$project.rootDir/tools/script-findbugs.gradle"
 apply from: "$project.rootDir/tools/script-lint.gradle"
-apply from: "$project.rootDir/tools/script-pmd.gradle"
-apply from: "$project.rootDir/tools/script-java-code-coverage.gradle"
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '28.0.2'
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 27
         multiDexEnabled true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = false
         }
@@ -84,20 +80,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
     compileOptions.incremental = false
 }
 
 def supportLibraryVersion = "27.1.1"
 def daggerLibraryVersion = "2.11"
-def butterknifeLibraryVersion = "8.8.1"
 def rxVersion = "2.2.2"
 def rxAndroidVersion = "2.1.0"
 def facebookVersion = "4.27.0"
@@ -105,15 +104,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //  wearApp project(':wear')
     //  compile 'com.google.android.gms:play-services:9.8.0'
-    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
-    implementation "com.android.support:support-compat:$supportLibraryVersion"
-    implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
-    implementation "com.android.support:palette-v7:$supportLibraryVersion"
-    implementation "com.android.support:design:$supportLibraryVersion"
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.core:core:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
 
 
-    implementation "com.jakewharton:butterknife:$butterknifeLibraryVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeLibraryVersion"
+    implementation "com.jakewharton:butterknife:10.1.0"
+    annotationProcessor "com.jakewharton:butterknife-compiler:10.1.0"
 
     implementation "com.google.dagger:dagger:$daggerLibraryVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerLibraryVersion"
@@ -126,19 +125,19 @@ dependencies {
     implementation 'com.github.javiersantos:PiracyChecker:1.1'
 
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava2:rxjava:$rxVersion"
-    implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+    implementation "io.reactivex.rxjava2:rxjava:${rxVersion}"
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.0'
 
     implementation 'com.simplecityapps:recyclerview-fastscroll:1.0.16'
     implementation 'com.github.Commit451:NativeStackBlur:1.0.5'
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
-    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     implementation 'com.github.linger1216:labelview:v1.1.2'
 
-    freeImplementation 'com.google.android.gms:play-services-ads:15.0.1'
+    freeImplementation 'com.google.android.gms:play-services-ads:17.2.1'
     freeImplementation "com.facebook.android:facebook-android-sdk:$facebookVersion"
     freeImplementation "com.facebook.android:audience-network-sdk:$facebookVersion"
     freeImplementation 'com.google.ads.mediation:facebook:4.23.0.0'
@@ -146,18 +145,19 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.21.0'
-    androidTestImplementation  'com.android.support.test.espresso:espresso-contrib:2.2.2', {
+    androidTestImplementation  'androidx.test.espresso:espresso-contrib:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'design'
         exclude group: 'com.android.support', module: 'recyclerview-v7'
     }
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    unmock 'org.robolectric:android-all:6.0.0_r1-robolectric-0'
-
-    implementation 'com.android.support:multidex:1.0.3'
+    unmock 'org.robolectric:android-all:9-robolectric-4913185-2'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    implementation 'androidx.multidex:multidex:2.0.0'
 }
 configurations.all{
     resolutionStrategy{

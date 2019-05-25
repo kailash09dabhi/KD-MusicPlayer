@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.image;
 
 import android.media.MediaMetadataRetriever;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.data.DataFetcher;

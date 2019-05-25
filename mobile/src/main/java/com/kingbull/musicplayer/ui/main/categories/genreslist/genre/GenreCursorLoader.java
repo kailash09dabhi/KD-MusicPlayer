@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.ui.main.categories.genreslist.genre;
 
 import android.content.Context;
 import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
+import androidx.loader.content.CursorLoader;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.MediaTable;
 import java.util.concurrent.TimeUnit;

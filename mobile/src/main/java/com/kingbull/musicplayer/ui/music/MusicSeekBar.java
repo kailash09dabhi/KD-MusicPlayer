@@ -5,7 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.support.v7.widget.AppCompatSeekBar;
+import androidx.appcompat.widget.AppCompatSeekBar;
 import android.util.AttributeSet;
 import android.widget.SeekBar;
 import com.kingbull.musicplayer.domain.Music;

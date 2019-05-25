@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.folder;
 
-import android.support.v4.util.Pair;
+import androidx.core.util.Pair;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.ui.base.Mvp;
 import java.io.File;
@@ -22,9 +22,9 @@ public interface MyFiles {
 
     void refresh();
 
-    void showProgressOnFolder(android.support.v4.util.Pair<File, Integer> pairOfFolderAndItsIndex);
+    void showProgressOnFolder(androidx.core.util.Pair<File, Integer> pairOfFolderAndItsIndex);
 
-    void hideProgressOnFolder(android.support.v4.util.Pair<File, Integer> pairOfFolderAndItsIndex);
+    void hideProgressOnFolder(androidx.core.util.Pair<File, Integer> pairOfFolderAndItsIndex);
   }
 
   interface Model extends Mvp.Model {

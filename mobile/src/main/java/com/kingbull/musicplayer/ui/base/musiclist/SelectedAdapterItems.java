@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.base.musiclist;
 
-import android.support.annotation.VisibleForTesting;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.VisibleForTesting;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import java.util.ArrayList;
 import java.util.List;

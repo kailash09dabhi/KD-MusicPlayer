@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.albumlist.album;
 
 import android.database.Cursor;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.MusicGroup;

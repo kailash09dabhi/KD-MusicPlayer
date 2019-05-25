@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.base;
 
 import android.content.Context;
-import android.support.v4.content.Loader;
+import androidx.loader.content.Loader;
 import android.util.Log;
 
 import static android.R.attr.tag;

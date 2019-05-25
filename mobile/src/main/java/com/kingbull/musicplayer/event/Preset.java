@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.event;
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
 import com.kingbull.musicplayer.ui.equalizer.reverb.Reverb;
 import java.lang.annotation.Retention;

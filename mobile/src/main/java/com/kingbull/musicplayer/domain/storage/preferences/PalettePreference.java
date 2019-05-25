@@ -2,8 +2,8 @@ package com.kingbull.musicplayer.domain.storage.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.IntDef;
-import android.support.v7.graphics.Palette;
+import androidx.annotation.IntDef;
+import androidx.palette.graphics.Palette;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

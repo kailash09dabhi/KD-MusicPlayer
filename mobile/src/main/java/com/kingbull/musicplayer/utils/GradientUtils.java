@@ -1,8 +1,8 @@
 package com.kingbull.musicplayer.utils;
 
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.FloatRange;
+import androidx.annotation.ColorInt;
+import androidx.annotation.FloatRange;
 
 /**
  * Created with Android Studio.

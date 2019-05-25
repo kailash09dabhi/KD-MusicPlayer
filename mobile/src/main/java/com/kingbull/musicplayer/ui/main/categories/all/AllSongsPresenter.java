@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.all;
 
 import android.database.Cursor;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.domain.Music;

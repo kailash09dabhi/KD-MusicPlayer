@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.genreslist;
 
 import android.database.Cursor;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import com.kingbull.musicplayer.ui.base.Presenter;
 import io.reactivex.Flowable;

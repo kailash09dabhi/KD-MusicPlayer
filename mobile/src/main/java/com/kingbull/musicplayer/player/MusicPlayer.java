@@ -4,7 +4,7 @@ import android.media.MediaPlayer;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.PresetReverb;
 import android.media.audiofx.Virtualizer;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.RxBus;

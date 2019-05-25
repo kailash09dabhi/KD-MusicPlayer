@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.StrictMode;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.appcompat.app.AppCompatDelegate;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.facebook.stetho.Stetho;

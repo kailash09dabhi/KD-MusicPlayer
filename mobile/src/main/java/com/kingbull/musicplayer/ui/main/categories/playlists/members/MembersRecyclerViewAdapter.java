@@ -2,9 +2,10 @@ package com.kingbull.musicplayer.ui.main.categories.playlists.members;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,7 @@ import javax.inject.Inject;
 public final class MembersRecyclerViewAdapter
     extends RecyclerView.Adapter<MembersRecyclerViewAdapter.ViewHolder> {
   private final List<Music> songs;
-  private final android.support.v4.app.FragmentManager fragmentManager;
+  private final FragmentManager fragmentManager;
   private final AppCompatActivity activity;
   private final SparseBooleanArray selectedItems = new SparseBooleanArray();
   private final PlayList playList;

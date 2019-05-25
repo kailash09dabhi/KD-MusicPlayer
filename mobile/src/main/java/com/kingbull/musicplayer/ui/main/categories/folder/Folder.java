@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.main.categories.folder;
 
-import android.support.v4.util.LruCache;
+import androidx.collection.LruCache;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;

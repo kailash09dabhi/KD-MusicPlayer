@@ -3,7 +3,7 @@ package com.kingbull.musicplayer.ui.main.categories.artistlist;
 import android.content.Context;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
+import androidx.loader.content.CursorLoader;
 
 /**
  * @author Kailash Dabhi

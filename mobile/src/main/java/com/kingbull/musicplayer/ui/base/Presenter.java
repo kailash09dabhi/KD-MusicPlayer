@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.base;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import java.lang.ref.WeakReference;
 

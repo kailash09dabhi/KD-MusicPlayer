@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.ui.music;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.crashlytics.android.Crashlytics;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;

@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.event;
 
-import android.support.v7.graphics.Palette;
+import androidx.palette.graphics.Palette;
 
 /**
  * @author Kailash Dabhi

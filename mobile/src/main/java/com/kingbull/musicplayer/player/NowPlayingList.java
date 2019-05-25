@@ -1,6 +1,6 @@
 package com.kingbull.musicplayer.player;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.kingbull.musicplayer.domain.Music;
 import java.util.ArrayList;
 import java.util.Collection;

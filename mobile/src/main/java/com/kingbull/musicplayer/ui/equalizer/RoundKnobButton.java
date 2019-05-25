@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.ui.equalizer;
 
 import android.content.Context;
 import android.graphics.Matrix;
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;

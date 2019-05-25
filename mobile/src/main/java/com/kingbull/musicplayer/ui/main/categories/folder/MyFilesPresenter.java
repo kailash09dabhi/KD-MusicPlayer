@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.main.categories.folder;
 
-import android.support.annotation.NonNull;
-import android.support.v4.util.Pair;
+import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 import com.kingbull.musicplayer.domain.FileMusicMap;
 import com.kingbull.musicplayer.player.Player;
 import com.kingbull.musicplayer.ui.base.DefaultDisposableObserver;

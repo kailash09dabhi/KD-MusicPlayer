@@ -3,8 +3,8 @@ package com.kingbull.musicplayer.ui.splash;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import com.kingbull.musicplayer.ui.base.RequiredPermissions;
 import com.kingbull.musicplayer.ui.main.MainActivity;
 

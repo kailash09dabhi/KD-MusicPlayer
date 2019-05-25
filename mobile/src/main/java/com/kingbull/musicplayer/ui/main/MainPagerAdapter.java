@@ -1,9 +1,9 @@
 package com.kingbull.musicplayer.ui.main;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import com.kingbull.musicplayer.ui.main.categories.all.AllSongsFragment;
 import com.kingbull.musicplayer.ui.main.categories.folder.MyFilesFragment;
 import com.kingbull.musicplayer.ui.main.categories.playlists.AllPlayListFragment;

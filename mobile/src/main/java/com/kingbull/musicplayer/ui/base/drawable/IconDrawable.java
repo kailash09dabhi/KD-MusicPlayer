@@ -3,7 +3,7 @@ package com.kingbull.musicplayer.ui.base.drawable;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import com.kingbull.musicplayer.MusicPlayerApp;

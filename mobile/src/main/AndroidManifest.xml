@@ -19,7 +19,9 @@
     <meta-data
       android:name="io.fabric.ApiKey"
       android:value="def5d4aa838355cc20b712816a92e68b594b0109" />
-
+    <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-1642663068953785~5782766159"/>
     <activity
       android:name=".ui.splash.SplashActivity"
       android:theme="@style/SplashTheme">
