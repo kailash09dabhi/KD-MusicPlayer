@@ -34,28 +34,20 @@ public final class ArtistListPresenter extends Presenter<ArtistList.View>
     if (cursor != null && cursor.getCount() > 0) {
       compositeDisposable.add(
           Flowable.just(cursor)
-              .flatMap(new Function<Cursor, Flowable<List<Artist>>>() {
-                @Override public Flowable<List<Artist>> apply(Cursor cursor) {
-                  List<Artist> artistItems = new ArrayList<>();
-                  if (cursor != null && cursor.getCount() > 0) {
-                    cursor.moveToFirst();
-                    do {
-                      Artist artist = new Artist.Smart(cursor);
-                      artistItems.add(artist);
-                    } while (cursor.moveToNext());
-                  }
-                  return Flowable.just(artistItems);
+              .flatMap((Function<Cursor, Flowable<List<Artist>>>) cursor1 -> {
+                List<Artist> artistItems = new ArrayList<>();
+                if (cursor1 != null && cursor1.getCount() > 0) {
+                  cursor1.moveToFirst();
+                  do {
+                    Artist artist = new Artist.Smart(cursor1);
+                    artistItems.add(artist);
+                  } while (cursor1.moveToNext());
                 }
+                return Flowable.just(artistItems);
               })
-              .doOnNext(new Consumer<List<Artist>>() {
-                @Override public void accept(List<Artist> songs) {
-                  Log.d(TAG, "onLoadFinished: " + songs.size());
-                  Collections.sort(songs, new Comparator<Artist>() {
-                    @Override public int compare(Artist left, Artist right) {
-                      return left.name().compareTo(right.name());
-                    }
-                  });
-                }
+              .doOnNext(songs -> {
+                Log.d(TAG, "onLoadFinished: " + songs.size());
+                Collections.sort(songs, (left, right) -> left.name().compareTo(right.name()));
               })
               .subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())

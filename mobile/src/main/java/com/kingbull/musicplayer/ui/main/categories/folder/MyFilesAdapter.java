@@ -70,19 +70,7 @@ public final class MyFilesAdapter extends RecyclerView.Adapter<RecyclerView.View
       final FolderFileViewHolder holder = (FolderFileViewHolder) viewHolder;
       holder.folderNameView.setText(files.get(position).getName());
       holder.totalSongCountView.setText("");
-      Observable.fromCallable(new Callable<Integer>() {
-        @Override public Integer call() throws Exception {
-          return new Folder.Cached(Folder.Smart.from(files.get(position))).allMusics().size();
-        }
-      }).subscribeOn(Schedulers.io()).map(new Function<Integer, String>() {
-        @Override public String apply(@NonNull Integer integer) throws Exception {
-          return String.valueOf(integer);
-        }
-      }).observeOn(AndroidSchedulers.mainThread()).doOnNext(new Consumer<String>() {
-        @Override public void accept(@NonNull String s) throws Exception {
-          holder.totalSongCountView.setText(s + " song");
-        }
-      }).subscribe(new DefaultDisposableObserver<String>());
+      Observable.fromCallable(() -> new Folder.Cached(Folder.Smart.from(files.get(position))).allMusics().size()).subscribeOn(Schedulers.io()).map(integer -> String.valueOf(integer)).observeOn(AndroidSchedulers.mainThread()).doOnNext(s -> holder.totalSongCountView.setText(s + " song")).subscribe(new DefaultDisposableObserver<String>());
       holder.folderNameView.setTextColor(titleColor);
       holder.totalSongCountView.setTextColor(bodyColor);
       if (loadingFolderPosition == position) {

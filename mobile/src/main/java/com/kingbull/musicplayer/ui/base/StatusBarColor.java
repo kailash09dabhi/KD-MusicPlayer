@@ -29,11 +29,7 @@ public final class StatusBarColor {
       //not needed if we set <item name="android:windowDrawsSystemBarBackgrounds">true</item> in style
       window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
       ValueAnimator statusBarColorAnim = ValueAnimator.ofArgb(window.getStatusBarColor(), color);
-      statusBarColorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-        @Override public void onAnimationUpdate(ValueAnimator animation) {
-          window.setStatusBarColor((int) animation.getAnimatedValue());
-        }
-      });
+      statusBarColorAnim.addUpdateListener(animation -> window.setStatusBarColor((int) animation.getAnimatedValue()));
       statusBarColorAnim.setDuration(1000L);
       statusBarColorAnim.setInterpolator(fastOutSlowInInterpolator(window.getContext()));
       statusBarColorAnim.start();

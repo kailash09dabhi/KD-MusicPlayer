@@ -46,16 +46,8 @@ public final class AlbumPresenter extends Presenter<Album.View> implements Album
   @Override public void onSongCursorLoadFinished(Cursor cursor) {
     compositeDisposable.add(
         Flowable.just(cursor)
-            .flatMap(new Function<Cursor, Flowable<List<Music>>>() {
-              @Override public Flowable<List<Music>> apply(Cursor cursor) {
-                return Flowable.just(new MusicGroup.FromCursor(cursor).asList());
-              }
-            })
-            .doOnNext(new Consumer<List<Music>>() {
-              @Override public void accept(List<Music> songs) {
-                new MusicGroupOrder(songs).by(SortBy.TITLE);
-              }
-            })
+            .flatMap((Function<Cursor, Flowable<List<Music>>>) cursor1 -> Flowable.just(new MusicGroup.FromCursor(cursor1).asList()))
+            .doOnNext(songs -> new MusicGroupOrder(songs).by(SortBy.TITLE))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(new ResourceSubscriber<List<Music>>() {
@@ -63,20 +55,14 @@ public final class AlbumPresenter extends Presenter<Album.View> implements Album
                 AlbumPresenter.this.songs = musicList;
                 view().showSongs(musicList);
                 compositeDisposable.add(Flowable.fromIterable(musicList)
-                    .flatMap(new Function<Music, Publisher<Long>>() {
-                      @Override public Publisher<Long> apply(Music music) throws Exception {
-                        return Flowable.just(music.media().duration());
-                      }
-                    })
+                    .flatMap((Function<Music, Publisher<Long>>) music -> Flowable.just(music.media().duration()))
                     .toList()
-                    .map(new Function<List<Long>, Long>() {
-                      @Override public Long apply(List<Long> longs) throws Exception {
-                        long sum = 0L;
-                        for (long lng : longs) {
-                          sum = sum + lng;
-                        }
-                        return sum;
+                    .map(longs -> {
+                      long sum = 0L;
+                      for (long lng : longs) {
+                        sum = sum + lng;
                       }
+                      return sum;
                     })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

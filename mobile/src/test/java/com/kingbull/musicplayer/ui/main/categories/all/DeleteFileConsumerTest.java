@@ -72,22 +72,16 @@ public class DeleteFileConsumerTest {
       }
     };
     Observable.just(selectedMusic).delay(25, TimeUnit.MILLISECONDS).doOnNext(
-        new Consumer<List<Music>>() {
-          @Override public void accept(@NonNull List<Music> musicList) throws Exception {
-            for (Music music : musicList) {
-              int position = songs.indexOf(music);
-              if (position == -1) {
-                throw new IllegalStateException("How songs.indexOf returning -1?");
-              } else {
-                songs.remove(music);
+            musicList -> {
+              for (Music music : musicList) {
+                int position = songs.indexOf(music);
+                if (position == -1) {
+                  throw new IllegalStateException("How songs.indexOf returning -1?");
+                } else {
+                  songs.remove(music);
+                }
               }
-            }
-          }
-        }).doOnComplete(new Action() {
-      @Override public void run() throws Exception {
-        assertEquals(95, songs.size());
-      }
-    }).subscribe();
+            }).doOnComplete(() -> assertEquals(95, songs.size())).subscribe();
 
   }
 

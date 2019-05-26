@@ -108,13 +108,10 @@ public final class PresetDialogFragment extends BaseDialogFragment implements Pr
     presetList.addAll(systemPresets());
     presenter.takeView(this);
     listView.setAdapter(new PresetAdapter(getActivity(), presetList));
-    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-        RxBus.getInstance()
-            .post(com.kingbull.musicplayer.event.Preset.Click(presetList.get(position)));
-        dismiss();
-      }
+    listView.setOnItemClickListener((parent, view1, position, id) -> {
+      RxBus.getInstance()
+          .post(com.kingbull.musicplayer.event.Preset.Click(presetList.get(position)));
+      dismiss();
     });
   }
 

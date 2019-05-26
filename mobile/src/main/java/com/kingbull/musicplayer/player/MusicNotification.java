@@ -134,12 +134,9 @@ public final class MusicNotification {
   public void show() {
     Observable.just(musicPlayer.getPlayingSong())
         .subscribeOn(Schedulers.io())
-        .flatMap(new Function<Music, ObservableSource<Pair<Music, String>>>() {
-          @Override public ObservableSource<Pair<Music, String>> apply(Music music)
-              throws Exception {
-            String albumArt = albumTable.albumById(music.media().albumId()).albumArt();
-            return Observable.just(new Pair<>(music, albumArt));
-          }
+        .flatMap((Function<Music, ObservableSource<Pair<Music, String>>>) music -> {
+          String albumArt = albumTable.albumById(music.media().albumId()).albumArt();
+          return Observable.just(new Pair<>(music, albumArt));
         })
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeWith(new DisposableObserver<Pair<Music, String>>() {

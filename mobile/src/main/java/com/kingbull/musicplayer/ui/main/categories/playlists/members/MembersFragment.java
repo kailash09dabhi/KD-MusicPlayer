@@ -76,13 +76,11 @@ public final class MembersFragment extends BaseFragment<Members.Presenter> imple
         .toObservable()
         .ofType(MovedToPlaylistEvent.class)
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<MovedToPlaylistEvent>() {
-          @Override public void accept(MovedToPlaylistEvent movedToPlaylistEvent) throws Exception {
-            new Snackbar(recyclerView).show(
-                "Song has benn moved to " + movedToPlaylistEvent.destinationPlaylistName());
-            musicList.remove(movedToPlaylistEvent.position());
-            recyclerView.getAdapter().notifyItemRemoved(movedToPlaylistEvent.position());
-          }
+        .subscribe(movedToPlaylistEvent -> {
+          new Snackbar(recyclerView).show(
+              "Song has benn moved to " + movedToPlaylistEvent.destinationPlaylistName());
+          musicList.remove(movedToPlaylistEvent.position());
+          recyclerView.getAdapter().notifyItemRemoved(movedToPlaylistEvent.position());
         });
   }
 

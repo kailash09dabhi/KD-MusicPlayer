@@ -61,25 +61,23 @@ public final class MusicCategoryFragment extends BaseFragment<Presenter> {
     return RxBus.getInstance()
         .toObservable()
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            // TODO: 7/31/2017 Is presenter and this subscribe should be here? something wrong i feel!
-            if (presenter != null && presenter.hasView()) {
-              if (o instanceof PaletteEvent || o instanceof ThemeEvent
-                  || o instanceof TransparencyChangedEvent) {
-                pagerTitleStrip.setBackgroundColor(smartTheme.header().intValue());
-              }
-            } else {
-              Crashlytics.logException(
-                  new NullPointerException(
-                      String.format(
-                          "class: %s presenter- %s hasView- %b",
-                          MusicCategoryFragment.class.getSimpleName(),
-                          presenter, presenter != null && presenter.hasView()
-                      )
-                  )
-              );
+        .subscribe(o -> {
+          // TODO: 7/31/2017 Is presenter and this subscribe should be here? something wrong i feel!
+          if (presenter != null && presenter.hasView()) {
+            if (o instanceof PaletteEvent || o instanceof ThemeEvent
+                || o instanceof TransparencyChangedEvent) {
+              pagerTitleStrip.setBackgroundColor(smartTheme.header().intValue());
             }
+          } else {
+            Crashlytics.logException(
+                new NullPointerException(
+                    String.format(
+                        "class: %s presenter- %s hasView- %b",
+                        MusicCategoryFragment.class.getSimpleName(),
+                        presenter, presenter != null && presenter.hasView()
+                    )
+                )
+            );
           }
         });
   }

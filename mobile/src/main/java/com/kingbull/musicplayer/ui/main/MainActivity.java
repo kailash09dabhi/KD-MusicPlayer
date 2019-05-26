@@ -85,15 +85,13 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
     tabLayout.setupWithViewPager(viewPager);
     setupTabLayout();
     getSupportFragmentManager().addOnBackStackChangedListener(
-        new FragmentManager.OnBackStackChangedListener() {
-          public void onBackStackChanged() {
-            // Update your UI here.
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-              Log.e("backstack", getSupportFragmentManager().getBackStackEntryAt(
-                  getSupportFragmentManager().getBackStackEntryCount() - 1).getName());
-            }
-          }
-        });
+            () -> {
+              // Update your UI here.
+              if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                Log.e("backstack", getSupportFragmentManager().getBackStackEntryAt(
+                    getSupportFragmentManager().getBackStackEntryCount() - 1).getName());
+              }
+            });
   }
 
   @Override protected void onDestroy() {
@@ -112,19 +110,17 @@ public final class MainActivity extends BaseActivity<Artist.Presenter> {
     return RxBus.getInstance()
         .toObservable()
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            if ((o instanceof PaletteEvent) || (o instanceof ThemeEvent)
-                || (o instanceof TransparencyChangedEvent)) {
-              int color = smartTheme.tab().intValue();
-              tabLayout.setBackgroundColor(color);
-              new ViewPagerEdgeEffectHack(viewPager).applyColor(color);
-              viewPager.applyBackgroundAccordingToTheme();
-            } else if (o instanceof BackgroundEvent) {
-              viewPager.setBackgroundAsset(
-                  new Background.Smart(sharedPreferences).resId(), getWindow()
-              );
-            }
+        .subscribe(o -> {
+          if ((o instanceof PaletteEvent) || (o instanceof ThemeEvent)
+              || (o instanceof TransparencyChangedEvent)) {
+            int color = smartTheme.tab().intValue();
+            tabLayout.setBackgroundColor(color);
+            new ViewPagerEdgeEffectHack(viewPager).applyColor(color);
+            viewPager.applyBackgroundAccordingToTheme();
+          } else if (o instanceof BackgroundEvent) {
+            viewPager.setBackgroundAsset(
+                new Background.Smart(sharedPreferences).resId(), getWindow()
+            );
           }
         });
   }

@@ -54,12 +54,10 @@ public final class GenresListFragment extends BaseFragment<GenresList.Presenter>
   private void setupInterstitial() {
     admobInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-        new AdmobInterstitial.AdListener() {
-          @Override public void onAdClosed() {
-            admobInterstitial.load();
-            launchGenreActivity(lastClickedGenre);
-          }
-        });
+            () -> {
+              admobInterstitial.load();
+              launchGenreActivity(lastClickedGenre);
+            });
     admobInterstitial.load();
   }
 
@@ -85,24 +83,22 @@ public final class GenresListFragment extends BaseFragment<GenresList.Presenter>
     return RxBus.getInstance()
         .toObservable()
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            if (presenter != null && presenter.hasView()) {
-              if (o instanceof PaletteEvent || o instanceof ThemeEvent
-                  || o instanceof TransparencyChangedEvent) {
-                recyclerView.setBackgroundColor(smartTheme.screen().intValue());
-              }
-            } else {
-              Crashlytics.logException(
-                  new NullPointerException(
-                      String.format(
-                          "class: %s presenter- %s hasView- %b",
-                          GenresListFragment.class.getSimpleName(),
-                          presenter, presenter != null && presenter.hasView()
-                      )
-                  )
-              );
+        .subscribe(o -> {
+          if (presenter != null && presenter.hasView()) {
+            if (o instanceof PaletteEvent || o instanceof ThemeEvent
+                || o instanceof TransparencyChangedEvent) {
+              recyclerView.setBackgroundColor(smartTheme.screen().intValue());
             }
+          } else {
+            Crashlytics.logException(
+                new NullPointerException(
+                    String.format(
+                        "class: %s presenter- %s hasView- %b",
+                        GenresListFragment.class.getSimpleName(),
+                        presenter, presenter != null && presenter.hasView()
+                    )
+                )
+            );
           }
         });
   }

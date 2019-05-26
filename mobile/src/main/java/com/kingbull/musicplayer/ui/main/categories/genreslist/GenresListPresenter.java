@@ -30,28 +30,20 @@ public final class GenresListPresenter extends Presenter<GenresList.View>
   @Override public void onGenresCursorLoadFinished(Cursor cursor) {
     compositeDisposable.add(
         Flowable.just(cursor)
-            .flatMap(new Function<Cursor, Flowable<List<Genre>>>() {
-              @Override public Flowable<List<Genre>> apply(Cursor cursor) {
-                List<Genre> genres = new ArrayList<>();
-                if (cursor != null && cursor.getCount() > 0) {
-                  cursor.moveToFirst();
-                  do {
-                    Genre genre = new Genre(cursor);
-                    genres.add(genre);
-                  } while (cursor.moveToNext());
-                }
-                return Flowable.just(genres);
+            .flatMap((Function<Cursor, Flowable<List<Genre>>>) cursor1 -> {
+              List<Genre> genres = new ArrayList<>();
+              if (cursor1 != null && cursor1.getCount() > 0) {
+                cursor1.moveToFirst();
+                do {
+                  Genre genre = new Genre(cursor1);
+                  genres.add(genre);
+                } while (cursor1.moveToNext());
               }
+              return Flowable.just(genres);
             })
-            .doOnNext(new Consumer<List<Genre>>() {
-              @Override public void accept(List<Genre> songs) {
-                Log.d(TAG, "onLoadFinished: " + songs.size());
-                Collections.sort(songs, new Comparator<Genre>() {
-                  @Override public int compare(Genre left, Genre right) {
-                    return left.name().compareTo(right.name());
-                  }
-                });
-              }
+            .doOnNext(songs -> {
+              Log.d(TAG, "onLoadFinished: " + songs.size());
+              Collections.sort(songs, (left, right) -> left.name().compareTo(right.name()));
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

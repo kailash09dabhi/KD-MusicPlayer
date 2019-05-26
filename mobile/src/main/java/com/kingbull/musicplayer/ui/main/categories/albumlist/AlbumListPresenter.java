@@ -35,28 +35,20 @@ public final class AlbumListPresenter extends Presenter<AlbumList.View>
   @Override public void onAlbumCursorLoadFinished(Cursor cursor) {
     compositeDisposable.add(
         Flowable.just(cursor)
-            .flatMap(new Function<Cursor, Flowable<List<Album>>>() {
-              @Override public Flowable<List<Album>> apply(Cursor cursor) {
-                List<Album> albumItems = new ArrayList<>();
-                if (cursor != null && cursor.getCount() > 0) {
-                  cursor.moveToFirst();
-                  do {
-                    Album album = new Album.Smart(cursor);
-                    albumItems.add(album);
-                  } while (cursor.moveToNext());
-                }
-                return Flowable.just(albumItems);
+            .flatMap((Function<Cursor, Flowable<List<Album>>>) cursor1 -> {
+              List<Album> albumItems = new ArrayList<>();
+              if (cursor1 != null && cursor1.getCount() > 0) {
+                cursor1.moveToFirst();
+                do {
+                  Album album = new Album.Smart(cursor1);
+                  albumItems.add(album);
+                } while (cursor1.moveToNext());
               }
+              return Flowable.just(albumItems);
             })
-            .doOnNext(new Consumer<List<Album>>() {
-              @Override public void accept(List<Album> songs) {
-                Log.d(TAG, "onLoadFinished: " + songs.size());
-                Collections.sort(songs, new Comparator<Album>() {
-                  @Override public int compare(Album left, Album right) {
-                    return left.name().compareTo(right.name());
-                  }
-                });
-              }
+            .doOnNext(songs -> {
+              Log.d(TAG, "onLoadFinished: " + songs.size());
+              Collections.sort(songs, (left, right) -> left.name().compareTo(right.name()));
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

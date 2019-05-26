@@ -58,20 +58,17 @@ public final class MoveToDialogFragment extends BaseDialogFragment {
     final List<PlayList> allPlayLists = new PlayListTable().allPlaylists();
     allPlayLists.remove(sourcePlayList);
     listView.setAdapter(new PlayListAdapter(getActivity(), allPlayLists));
-    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-        Music music = getArguments().getParcelable("music");
-        List<Music> musics = new ArrayList<>(1);
-        musics.add(music);
-        sourcePlayList.remove(music);
-        PlayList.Smart destinationPlaylist = (PlayList.Smart) allPlayLists.get(position);
-        destinationPlaylist.addAll(musics);
-        RxBus.getInstance()
-            .post(new MovedToPlaylistEvent(getArguments().getInt("position"),
-                destinationPlaylist.name()));
-        dismiss();
-      }
+    listView.setOnItemClickListener((parent, view1, position, id) -> {
+      Music music = getArguments().getParcelable("music");
+      List<Music> musics = new ArrayList<>(1);
+      musics.add(music);
+      sourcePlayList.remove(music);
+      PlayList.Smart destinationPlaylist = (PlayList.Smart) allPlayLists.get(position);
+      destinationPlaylist.addAll(musics);
+      RxBus.getInstance()
+          .post(new MovedToPlaylistEvent(getArguments().getInt("position"),
+              destinationPlaylist.name()));
+      dismiss();
     });
   }
 

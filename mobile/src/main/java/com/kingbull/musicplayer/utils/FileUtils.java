@@ -43,11 +43,7 @@ public final class FileUtils {
   public static List<Music> musicFiles(File dir) {
     List<Music> songs = new ArrayList<>();
     if (dir != null && dir.isDirectory()) {
-      final File[] files = dir.listFiles(new FileFilter() {
-        @Override public boolean accept(File item) {
-          return item.isFile() && isMusic(item);
-        }
-      });
+      final File[] files = dir.listFiles(item -> item.isFile() && isMusic(item));
       for (File file : files) {
         Music song = fileToMusic(file);
         if (song != null) {
@@ -56,11 +52,7 @@ public final class FileUtils {
       }
     }
     if (songs.size() > 1) {
-      Collections.sort(songs, new Comparator<Music>() {
-        @Override public int compare(Music left, Music right) {
-          return left.media().title().compareTo(right.media().title());
-        }
-      });
+      Collections.sort(songs, (left, right) -> left.media().title().compareTo(right.media().title()));
     }
     return songs;
   }

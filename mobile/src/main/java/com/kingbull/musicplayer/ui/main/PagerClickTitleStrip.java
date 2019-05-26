@@ -16,20 +16,14 @@ public final class PagerClickTitleStrip extends PagerTitleStrip {
     super(arg0, arg1);
     textPrev = (TextView) getChildAt(0);// This is the previous textview
     textNext = (TextView) getChildAt(2);// This is the next textview
-    textPrev.setOnClickListener(new OnClickListener() {
-
-      @Override public void onClick(View v) {
-        if (pager != null && pager.getCurrentItem() != 0) {
-          pager.setCurrentItem(pager.getCurrentItem() - 1);
-        }
+    textPrev.setOnClickListener(v -> {
+      if (pager != null && pager.getCurrentItem() != 0) {
+        pager.setCurrentItem(pager.getCurrentItem() - 1);
       }
     });
-    textNext.setOnClickListener(new OnClickListener() {
-
-      @Override public void onClick(View v) {
-        if (pager != null && pager.getCurrentItem() != pager.getAdapter().getCount() - 1) {
-          pager.setCurrentItem(pager.getCurrentItem() + 1);
-        }
+    textNext.setOnClickListener(v -> {
+      if (pager != null && pager.getCurrentItem() != pager.getAdapter().getCount() - 1) {
+        pager.setCurrentItem(pager.getCurrentItem() + 1);
       }
     });
     invalidate();

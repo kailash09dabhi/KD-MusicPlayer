@@ -4,18 +4,14 @@ import android.view.View;
 
 public interface Alpha {
   interface FadeOutListener {
-    Alpha.FadeOutListener NONE = new FadeOutListener() {
-      @Override public void onFadeOutAnimationFinished() {
-      }
+    Alpha.FadeOutListener NONE = () -> {
     };
 
     void onFadeOutAnimationFinished();
   }
 
   interface FadeInListener {
-    Alpha.FadeInListener NONE = new FadeInListener() {
-      @Override public void onFadeInAnimationFinished() {
-      }
+    Alpha.FadeInListener NONE = () -> {
     };
 
     void onFadeInAnimationFinished();
@@ -50,16 +46,10 @@ public interface Alpha {
 
     @Override public void fadeIn(final View view, final FadeInListener listener) {
       view.setAlpha(initialAlpha);
-      view.animate().setDuration(duration).alpha(1).withStartAction(new Runnable() {
-        @Override public void run() {
-          view.setAlpha(initialAlpha);
-          view.setVisibility(View.VISIBLE);
-        }
-      }).withEndAction(new Runnable() {
-        @Override public void run() {
-          listener.onFadeInAnimationFinished();
-        }
-      }).start();
+      view.animate().setDuration(duration).alpha(1).withStartAction(() -> {
+        view.setAlpha(initialAlpha);
+        view.setVisibility(View.VISIBLE);
+      }).withEndAction(() -> listener.onFadeInAnimationFinished()).start();
     }
 
     @Override public void fadeIn(View view) {
@@ -71,11 +61,9 @@ public interface Alpha {
     }
 
     @Override public void fadeOut(final View view, final FadeOutListener listener) {
-      view.animate().setDuration(duration).alpha(initialAlpha).withEndAction(new Runnable() {
-        @Override public void run() {
-          view.setVisibility(View.GONE);
-          listener.onFadeOutAnimationFinished();
-        }
+      view.animate().setDuration(duration).alpha(initialAlpha).withEndAction(() -> {
+        view.setVisibility(View.GONE);
+        listener.onFadeOutAnimationFinished();
       }).start();
     }
   }

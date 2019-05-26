@@ -16,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -43,7 +42,6 @@ import com.kingbull.musicplayer.ui.settings.background.BackgroundsDialogFragment
 import com.kingbull.musicplayer.ui.settings.transparency.TransparencyDialogFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import java.util.Calendar;
 import javax.inject.Inject;
 
@@ -155,36 +153,34 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
         .toObservable()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-            new Consumer<Object>() {
-              @Override public void accept(Object o) throws Exception {
-                if (presenter != null && presenter.hasView()) {
-                  if (o instanceof DurationFilterEvent) {
-                    int durationInSeconds = settingPreferences.filterDurationInSeconds();
-                    durationSecondsView.setText(durationInSeconds + " sec");
-                    analytics.logDurationFilter(durationInSeconds);
-                    admobInterstitial.showIfLoaded();
-                  } else if (o instanceof PaletteEvent || o instanceof ThemeEvent
-                      || o instanceof TransparencyChangedEvent) {
-                    applyUiColors();
-                  } else if (o instanceof BlurRadiusEvent) {
-                    admobInterstitial.showIfLoaded();
-                    analytics.logBlurRadius(((BlurRadiusEvent) o).blurRadius());
-                  } else if (o instanceof BackgroundEvent) {
-                    admobInterstitial.showIfLoaded();
+                o -> {
+                  if (presenter != null && presenter.hasView()) {
+                    if (o instanceof DurationFilterEvent) {
+                      int durationInSeconds = settingPreferences.filterDurationInSeconds();
+                      durationSecondsView.setText(durationInSeconds + " sec");
+                      analytics.logDurationFilter(durationInSeconds);
+                      admobInterstitial.showIfLoaded();
+                    } else if (o instanceof PaletteEvent || o instanceof ThemeEvent
+                        || o instanceof TransparencyChangedEvent) {
+                      applyUiColors();
+                    } else if (o instanceof BlurRadiusEvent) {
+                      admobInterstitial.showIfLoaded();
+                      analytics.logBlurRadius(((BlurRadiusEvent) o).blurRadius());
+                    } else if (o instanceof BackgroundEvent) {
+                      admobInterstitial.showIfLoaded();
+                    }
+                  } else {
+                    Crashlytics.logException(
+                        new NullPointerException(
+                            String.format(
+                                "class: %s presenter- %s hasView- %b",
+                                SettingsFragment.class.getSimpleName(),
+                                presenter, presenter != null && presenter.hasView()
+                            )
+                        )
+                    );
                   }
-                } else {
-                  Crashlytics.logException(
-                      new NullPointerException(
-                          String.format(
-                              "class: %s presenter- %s hasView- %b",
-                              SettingsFragment.class.getSimpleName(),
-                              presenter, presenter != null && presenter.hasView()
-                          )
-                      )
-                  );
                 }
-              }
-            }
         );
   }
 
@@ -233,15 +229,12 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
     int minute = currentTime.get(Calendar.MINUTE);
     TimePickerDialog timePickerDialog;
     timePickerDialog =
-        new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-          @Override
-          public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-            int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-            int currentMinute = Calendar.getInstance().get(Calendar.MINUTE);
-            int diffHour = selectedHour - currentHour;
-            int diffMinute = selectedMinute - currentMinute;
-            setAlarmToStopApp(diffHour * 60 * 60 * 1000 + diffMinute * 60 * 1000);
-          }
+        new TimePickerDialog(getActivity(), (timePicker, selectedHour, selectedMinute) -> {
+          int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+          int currentMinute = Calendar.getInstance().get(Calendar.MINUTE);
+          int diffHour = selectedHour - currentHour;
+          int diffMinute = selectedMinute - currentMinute;
+          setAlarmToStopApp(diffHour * 60 * 60 * 1000 + diffMinute * 60 * 1000);
         }, hour, minute, false);//Yes 24 hour time
     timePickerDialog.setTitle("Select Time");
     timePickerDialog.show();
@@ -280,11 +273,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   private void setupAdmobInterstial() {
     admobInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-        new AdmobInterstitial.AdListener() {
-          @Override public void onAdClosed() {
-            admobInterstitial.load();
-          }
-        });
+            () -> admobInterstitial.load());
     admobInterstitial.load();
   }
 

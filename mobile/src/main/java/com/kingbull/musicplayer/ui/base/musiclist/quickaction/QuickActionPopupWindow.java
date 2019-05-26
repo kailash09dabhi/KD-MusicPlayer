@@ -50,13 +50,11 @@ public final class QuickActionPopupWindow extends PopupWindows implements OnDism
     MusicPlayerApp.instance().component().inject(this);
     inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     mTrackAnim = AnimationUtils.loadAnimation(context, R.anim.rail);
-    mTrackAnim.setInterpolator(new Interpolator() {
-      public float getInterpolation(float t) {
-        // Pushes past the target area, then snaps back into place.
-        // Equation for graphing: 1.2-((x*1.6)-1.1)^2
-        final float inner = (t * 1.55f) - 1.1f;
-        return 1.2f - inner * inner;
-      }
+    mTrackAnim.setInterpolator(t -> {
+      // Pushes past the target area, then snaps back into place.
+      // Equation for graphing: 1.2-((x*1.6)-1.1)^2
+      final float inner = (t * 1.55f) - 1.1f;
+      return 1.2f - inner * inner;
     });
     rootView = inflater.inflate(R.layout.quickaction, null);
     mTrack = (ViewGroup) rootView.findViewById(R.id.tracks);
@@ -110,21 +108,15 @@ public final class QuickActionPopupWindow extends PopupWindows implements OnDism
     }
     final int pos = mChildPos;
     final int actionId = action.actionId();
-    container.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(View v) {
-        if (actionClickListener != null) {
-          actionClickListener.onActionClick(mActionItemList.get(pos));
-        }
-        if (!getActionItem(pos).isSticky()) {
-          mDidAction = true;
-          //workaround for transparent background bug
-          //thx to Roman Wozniak <roman.wozniak@gmail.com>
-          v.post(new Runnable() {
-            @Override public void run() {
-              dismiss();
-            }
-          });
-        }
+    container.setOnClickListener(v -> {
+      if (actionClickListener != null) {
+        actionClickListener.onActionClick(mActionItemList.get(pos));
+      }
+      if (!getActionItem(pos).isSticky()) {
+        mDidAction = true;
+        //workaround for transparent background bug
+        //thx to Roman Wozniak <roman.wozniak@gmail.com>
+        v.post(() -> dismiss());
       }
     });
     container.setFocusable(true);

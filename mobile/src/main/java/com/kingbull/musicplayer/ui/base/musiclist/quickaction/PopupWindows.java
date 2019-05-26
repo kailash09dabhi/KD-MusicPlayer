@@ -30,14 +30,12 @@ abstract class PopupWindows {
   PopupWindows(Context context) {
     this.context = context;
     popupWindow = new PopupWindow(context);
-    popupWindow.setTouchInterceptor(new OnTouchListener() {
-      @Override public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-          popupWindow.dismiss();
-          return true;
-        }
-        return false;
+    popupWindow.setTouchInterceptor((v, event) -> {
+      if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+        popupWindow.dismiss();
+        return true;
       }
+      return false;
     });
     windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
   }

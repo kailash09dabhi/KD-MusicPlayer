@@ -25,11 +25,7 @@ import com.kingbull.musicplayer.ui.settings.SettingsPresenter;
  * @param <T> presenter type
  */
 public interface PresenterFactory<T extends Mvp.Presenter> {
-  PresenterFactory BASIC = new PresenterFactory() {
-    @Override public Mvp.Presenter create() {
-      return new Presenter();
-    }
-  };
+  PresenterFactory BASIC = () -> new Presenter();
 
   T create();
 

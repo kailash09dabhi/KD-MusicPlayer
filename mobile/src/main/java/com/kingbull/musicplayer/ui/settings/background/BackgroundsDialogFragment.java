@@ -57,19 +57,17 @@ public final class BackgroundsDialogFragment extends BaseDialogFragment {
     recyclerView.setBackgroundColor(smartTheme.screen().intValue());
     recyclerView.setHasFixedSize(true);
     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-    recyclerView.setAdapter(new BackgroundsAdapter(new OnBackgroundSelectionListener() {
-          @Override public void onBackgroundSelection(int index) {
-            if (BuildConfig.FLAVOR.equals("free")) {
-              if (index >= proStartIndex) {
-                new ProLink.PlayStore(getContext()).open();
-              } else {
-                makeSelection(index);
-              }
-            } else {
-              makeSelection(index);
-            }
-          }
-        }, proStartIndex)
+    recyclerView.setAdapter(new BackgroundsAdapter(index -> {
+      if (BuildConfig.FLAVOR.equals("free")) {
+        if (index >= proStartIndex) {
+          new ProLink.PlayStore(getContext()).open();
+        } else {
+          makeSelection(index);
+        }
+      } else {
+        makeSelection(index);
+      }
+    }, proStartIndex)
     );
     titleView.setBackgroundColor(smartTheme.statusBar().intValue());
     randomBackgroundButton.setBackgroundColor(smartTheme.statusBar().intValue());

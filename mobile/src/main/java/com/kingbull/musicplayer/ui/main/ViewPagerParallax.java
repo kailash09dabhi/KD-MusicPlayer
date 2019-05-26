@@ -153,13 +153,11 @@ public final class ViewPagerParallax extends ViewPager {
         savedBitmap = bitmap;
       }
       if (window != null) {
-        Palette.from(savedBitmap).generate(new Palette.PaletteAsyncListener() {
-          public void onGenerated(Palette palette) {
-            if (palette != null) {
-              new PalettePreference().save(palette);
-              new StatusBarColor(smartTheme.statusBar()).applyOn(window);
-              RxBus.getInstance().post(new PaletteEvent(palette));
-            }
+        Palette.from(savedBitmap).generate(palette -> {
+          if (palette != null) {
+            new PalettePreference().save(palette);
+            new StatusBarColor(smartTheme.statusBar()).applyOn(window);
+            RxBus.getInstance().post(new PaletteEvent(palette));
           }
         });
       }
@@ -252,14 +250,12 @@ public final class ViewPagerParallax extends ViewPager {
     disposable = RxBus.getInstance()
         .toObservable()
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            if (o instanceof ThemeEvent) {
-              applyBackgroundAccordingToTheme();
-              invalidate();
-            } else if (o instanceof BlurRadiusEvent) {
-              invalidate();
-            }
+        .subscribe(o -> {
+          if (o instanceof ThemeEvent) {
+            applyBackgroundAccordingToTheme();
+            invalidate();
+          } else if (o instanceof BlurRadiusEvent) {
+            invalidate();
           }
         });
   }

@@ -151,13 +151,9 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
               @Nullable Transition<? super Bitmap> transition) {
             albumArtView.setImageBitmap(bitmap);
             Observable.just(bitmap)
-                .map(new Function<Bitmap, BitmapDrawable>() {
-                  @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
-                    return new Image.Smart(bitmap)
-                        .blurred()
-                        .bitmapDrawable();
-                  }
-                })
+                .map(bitmap12 -> new Image.Smart(bitmap12)
+                    .blurred()
+                    .bitmapDrawable())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<BitmapDrawable>() {
@@ -178,13 +174,9 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
             albumArtView.setImageDrawable(errorDrawable);
             Bitmap bitmap = ((BitmapDrawable) errorDrawable).getBitmap();
             Observable.just(bitmap)
-                .map(new Function<Bitmap, BitmapDrawable>() {
-                  @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
-                    return new Image.Smart(bitmap)
-                        .blurred()
-                        .bitmapDrawable();
-                  }
-                })
+                .map(bitmap1 -> new Image.Smart(bitmap1)
+                    .blurred()
+                    .bitmapDrawable())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<BitmapDrawable>() {
@@ -267,13 +259,11 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     return RxBus.getInstance()
         .toObservable()
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            if (o instanceof CoverArtDownloadedEvent) {
-              showAlbumArt();
-            } else if (o instanceof SortEvent) {
-              presenter.onSortEvent((SortEvent) o);
-            }
+        .subscribe(o -> {
+          if (o instanceof CoverArtDownloadedEvent) {
+            showAlbumArt();
+          } else if (o instanceof SortEvent) {
+            presenter.onSortEvent((SortEvent) o);
           }
         });
   }
@@ -307,13 +297,11 @@ public final class AlbumActivity extends BaseActivity<Album.Presenter>
     final CharSequence[] items = {"Gallery", "Internet"};
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setTitle("Pick From");
-    builder.setItems(items, new DialogInterface.OnClickListener() {
-      @Override public void onClick(DialogInterface dialog, int item) {
-        if (item == 0) {
-          presenter.onPickFromGalleryClick();
-        } else if (item == 1) {
-          presenter.onPickFromInternetClick();
-        }
+    builder.setItems(items, (dialog, item) -> {
+      if (item == 0) {
+        presenter.onPickFromGalleryClick();
+      } else if (item == 1) {
+        presenter.onPickFromInternetClick();
       }
     });
     builder.show();

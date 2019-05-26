@@ -48,27 +48,25 @@ public final class EqualizerView extends View {
     setupCurvaturePaint();
     setupLinePaint();
     setupCirclePaint();
-    post(new Runnable() {
-      @Override public void run() {
-        maxHeight = getHeight() * 80 / 100;
-        minHeight = getHeight() * 20 / 100;
-        radialGradient = new RadialGradient(0, getHeight() / 2, getWidth() / 2,
-            ContextCompat.getColor(getContext(), R.color.dark_gray_shade),
-            ContextCompat.getColor(getContext(), R.color.light_gray_shade), Shader.TileMode.CLAMP);
-        paint.setShader(radialGradient);
-        linePaint.setColor(new ColorTheme.Flat().header().intValue());
-        equalizerPointList.add(new Point(getWidth() / 10 * 1, getHeight() / 2));
-        equalizerPointList.add(new Point((getWidth() / 10) * 3, getHeight() / 2));
-        equalizerPointList.add(new Point((getWidth() / 10) * 5, getHeight() / 2));
-        equalizerPointList.add(new Point((getWidth() / 10) * 7, getHeight() / 2));
-        equalizerPointList.add(new Point((getWidth() / 10) * 9, getHeight() / 2));
-        curvePivotPointList.add(new Point(0, getHeight() / 2));
-        curvePivotPointList.add(new Point(getWidth() / 10 * 2, getHeight() / 2));
-        curvePivotPointList.add(new Point(getWidth() / 10 * 4, getHeight() / 2));
-        curvePivotPointList.add(new Point(getWidth() / 10 * 6, getHeight() / 2));
-        curvePivotPointList.add(new Point(getWidth() / 10 * 8, getHeight() / 2));
-        curvePivotPointList.add(new Point(getWidth() / 10 * 10, getHeight() / 2));
-      }
+    post(() -> {
+      maxHeight = getHeight() * 80 / 100;
+      minHeight = getHeight() * 20 / 100;
+      radialGradient = new RadialGradient(0, getHeight() / 2, getWidth() / 2,
+          ContextCompat.getColor(getContext(), R.color.dark_gray_shade),
+          ContextCompat.getColor(getContext(), R.color.light_gray_shade), Shader.TileMode.CLAMP);
+      paint.setShader(radialGradient);
+      linePaint.setColor(new ColorTheme.Flat().header().intValue());
+      equalizerPointList.add(new Point(getWidth() / 10 * 1, getHeight() / 2));
+      equalizerPointList.add(new Point((getWidth() / 10) * 3, getHeight() / 2));
+      equalizerPointList.add(new Point((getWidth() / 10) * 5, getHeight() / 2));
+      equalizerPointList.add(new Point((getWidth() / 10) * 7, getHeight() / 2));
+      equalizerPointList.add(new Point((getWidth() / 10) * 9, getHeight() / 2));
+      curvePivotPointList.add(new Point(0, getHeight() / 2));
+      curvePivotPointList.add(new Point(getWidth() / 10 * 2, getHeight() / 2));
+      curvePivotPointList.add(new Point(getWidth() / 10 * 4, getHeight() / 2));
+      curvePivotPointList.add(new Point(getWidth() / 10 * 6, getHeight() / 2));
+      curvePivotPointList.add(new Point(getWidth() / 10 * 8, getHeight() / 2));
+      curvePivotPointList.add(new Point(getWidth() / 10 * 10, getHeight() / 2));
     });
   }
 

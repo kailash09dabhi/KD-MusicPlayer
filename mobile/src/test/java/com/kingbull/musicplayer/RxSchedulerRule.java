@@ -19,19 +19,9 @@ public class RxSchedulerRule implements TestRule {
 
   private Scheduler SCHEDULER_INSTANCE = Schedulers.trampoline();
 
-  private Function<Scheduler, Scheduler> schedulerFunction = new Function<Scheduler, Scheduler>() {
-    @Override
-    public Scheduler apply(Scheduler scheduler) throws Exception {
-      return SCHEDULER_INSTANCE;
-    }
-  };
+  private Function<Scheduler, Scheduler> schedulerFunction = scheduler -> SCHEDULER_INSTANCE;
 
-  private Function<Callable<Scheduler>, Scheduler> schedulerFunctionLazy = new Function<Callable<Scheduler>, Scheduler>() {
-    @Override
-    public Scheduler apply(Callable<Scheduler> schedulerCallable) throws Exception {
-      return SCHEDULER_INSTANCE;
-    }
-  };
+  private Function<Callable<Scheduler>, Scheduler> schedulerFunctionLazy = schedulerCallable -> SCHEDULER_INSTANCE;
 
   @Override
   public Statement apply(final Statement base, Description description) {

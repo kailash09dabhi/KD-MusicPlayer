@@ -61,32 +61,30 @@ public final class AllPlayListFragment extends BaseFragment<AllPlaylist.Presente
     return RxBus.getInstance()
         .toObservable()
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            if (presenter != null && presenter.hasView()) {
-              if (o instanceof PlaylistCreatedEvent) {
-                PlaylistCreatedEvent playlistCreatedEvent = (PlaylistCreatedEvent) o;
-                presenter.onPlaylistCreated(playlistCreatedEvent.playList());
-              } else if (o instanceof PlaylistRenameEvent) {
-                presenter.onPlaylistRename((PlaylistRenameEvent) o);
-              } else if (o instanceof PaletteEvent || o instanceof ThemeEvent ||
-                  o instanceof TransparencyChangedEvent) {
-                recyclerView.setBackgroundColor(smartTheme.screen().intValue());
-                headerLayout.setBackgroundColor(smartTheme.header().intValue());
-                headerView.setTextColor(smartTheme.titleText().intValue());
-                descriptionView.setTextColor(smartTheme.bodyText().intValue());
-              }
-            } else {
-              Crashlytics.logException(
-                  new NullPointerException(
-                      String.format(
-                          "class: %s presenter- %s hasView- %b",
-                          AllPlayListFragment.class.getSimpleName(),
-                          presenter, presenter != null && presenter.hasView()
-                      )
-                  )
-              );
+        .subscribe(o -> {
+          if (presenter != null && presenter.hasView()) {
+            if (o instanceof PlaylistCreatedEvent) {
+              PlaylistCreatedEvent playlistCreatedEvent = (PlaylistCreatedEvent) o;
+              presenter.onPlaylistCreated(playlistCreatedEvent.playList());
+            } else if (o instanceof PlaylistRenameEvent) {
+              presenter.onPlaylistRename((PlaylistRenameEvent) o);
+            } else if (o instanceof PaletteEvent || o instanceof ThemeEvent ||
+                o instanceof TransparencyChangedEvent) {
+              recyclerView.setBackgroundColor(smartTheme.screen().intValue());
+              headerLayout.setBackgroundColor(smartTheme.header().intValue());
+              headerView.setTextColor(smartTheme.titleText().intValue());
+              descriptionView.setTextColor(smartTheme.bodyText().intValue());
             }
+          } else {
+            Crashlytics.logException(
+                new NullPointerException(
+                    String.format(
+                        "class: %s presenter- %s hasView- %b",
+                        AllPlayListFragment.class.getSimpleName(),
+                        presenter, presenter != null && presenter.hasView()
+                    )
+                )
+            );
           }
         });
   }

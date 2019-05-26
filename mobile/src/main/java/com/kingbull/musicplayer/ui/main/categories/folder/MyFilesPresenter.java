@@ -32,11 +32,7 @@ public final class MyFilesPresenter extends Presenter<MyFiles.View> implements M
       })
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .doOnNext(new Consumer<List<File>>() {
-            @Override public void accept(@io.reactivex.annotations.NonNull List<File> files) {
-              view().showFiles(files);
-            }
-          });
+          .doOnNext(files -> view().showFiles(files));
 
   @Override public void takeView(@NonNull MyFiles.View view) {
     super.takeView(view);
@@ -52,20 +48,14 @@ public final class MyFilesPresenter extends Presenter<MyFiles.View> implements M
     final File folder = pairOfFolderAndItsIndex.first;
     model.currentFolder(folder);
     view().showProgressOnFolder(pairOfFolderAndItsIndex);
-    Observable.fromCallable(new Callable<List<File>>() {
-      @Override public List<File> call() throws Exception {
-        return model.filesOfCurrentFolder();
-      }
-    }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doOnNext(
-        new Consumer<List<File>>() {
-          @Override public void accept(@io.reactivex.annotations.NonNull List<File> files) {
-            if (lastClickedFolderAndItsIndexPair == pairOfFolderAndItsIndex) {
-              view().showFiles(files);
-              view().updateFolder(folder);
-              view().hideProgressOnFolder(pairOfFolderAndItsIndex);
-            }
-          }
-        }).subscribe();
+    Observable.fromCallable(() -> model.filesOfCurrentFolder()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doOnNext(
+            files -> {
+              if (lastClickedFolderAndItsIndexPair == pairOfFolderAndItsIndex) {
+                view().showFiles(files);
+                view().updateFolder(folder);
+                view().hideProgressOnFolder(pairOfFolderAndItsIndex);
+              }
+            }).subscribe();
   }
 
   @Override public void onBackPressed() {

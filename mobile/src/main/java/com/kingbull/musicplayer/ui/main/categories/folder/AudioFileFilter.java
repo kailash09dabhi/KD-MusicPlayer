@@ -49,17 +49,15 @@ public final class AudioFileFilter implements FileFilter {
       return false;
     } else {
       final ArrayList<File> subDirs = new ArrayList<>();
-      File[] directories = dir.listFiles(new FileFilter() {
-        @Override public boolean accept(File file) {
-          if (file.isFile()) {
-            if (file.getName().equals(".nomedia")) return false;
-            return checkFileExtension(file);
-          } else if (file.isDirectory()) {
-            subDirs.add(file);
-            return false;
-          } else {
-            return false;
-          }
+      File[] directories = dir.listFiles(file -> {
+        if (file.isFile()) {
+          if (file.getName().equals(".nomedia")) return false;
+          return checkFileExtension(file);
+        } else if (file.isDirectory()) {
+          subDirs.add(file);
+          return false;
+        } else {
+          return false;
         }
       });
       if (directories != null) {

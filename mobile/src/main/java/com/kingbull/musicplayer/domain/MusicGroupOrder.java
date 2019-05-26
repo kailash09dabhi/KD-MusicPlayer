@@ -12,58 +12,40 @@ import java.util.List;
  */
 public final class MusicGroupOrder implements MusicGroup.Order {
   private final List<Music> songs;
-  private Comparator<Music> byTitle = new Comparator<Music>() {
-    @Override public int compare(Music song1, Music song2) {
-      return song1.media().title().compareTo(song2.media().title());
+  private Comparator<Music> byTitle = (song1, song2) -> song1.media().title().compareTo(song2.media().title());
+  private Comparator<Music> byAlbum = (song1, song2) -> song1.media().album().compareTo(song2.media().album());
+  private Comparator<Music> byDuration = (song1, song2) -> {
+    long durationSong1 = song1.media().duration();
+    long durationSong2 = song2.media().duration();
+    if (durationSong1 < durationSong2) {
+      return 1;
+    } else if (durationSong1 > durationSong2) {
+      return -1;
+    } else {
+      return 0;
     }
   };
-  private Comparator<Music> byAlbum = new Comparator<Music>() {
-    @Override public int compare(Music song1, Music song2) {
-      return song1.media().album().compareTo(song2.media().album());
+  private Comparator<Music> byArtist = (song1, song2) -> song1.media().artist().compareTo(song2.media().artist());
+  private Comparator<Music> byDateAdded = (song1, song2) -> {
+    long dateAddedSong1 = song1.media().dateAdded();
+    long dateAddedSong2 = song2.media().dateAdded();
+    if (dateAddedSong1 < dateAddedSong2) {
+      return 1;
+    } else if (dateAddedSong1 > dateAddedSong2) {
+      return -1;
+    } else {
+      return 0;
     }
   };
-  private Comparator<Music> byDuration = new Comparator<Music>() {
-    @Override public int compare(Music song1, Music song2) {
-      long durationSong1 = song1.media().duration();
-      long durationSong2 = song2.media().duration();
-      if (durationSong1 < durationSong2) {
-        return 1;
-      } else if (durationSong1 > durationSong2) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-  };
-  private Comparator<Music> byArtist = new Comparator<Music>() {
-    @Override public int compare(Music song1, Music song2) {
-      return song1.media().artist().compareTo(song2.media().artist());
-    }
-  };
-  private Comparator<Music> byDateAdded = new Comparator<Music>() {
-    @Override public int compare(Music song1, Music song2) {
-      long dateAddedSong1 = song1.media().dateAdded();
-      long dateAddedSong2 = song2.media().dateAdded();
-      if (dateAddedSong1 < dateAddedSong2) {
-        return 1;
-      } else if (dateAddedSong1 > dateAddedSong2) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-  };
-  private Comparator<Music> byYear = new Comparator<Music>() {
-    @Override public int compare(Music song1, Music song2) {
-      long yearSong1 = song1.media().year();
-      long yearSong2 = song2.media().year();
-      if (yearSong1 < yearSong2) {
-        return 1;
-      } else if (yearSong1 > yearSong2) {
-        return -1;
-      } else {
-        return 0;
-      }
+  private Comparator<Music> byYear = (song1, song2) -> {
+    long yearSong1 = song1.media().year();
+    long yearSong2 = song2.media().year();
+    if (yearSong1 < yearSong2) {
+      return 1;
+    } else if (yearSong1 > yearSong2) {
+      return -1;
+    } else {
+      return 0;
     }
   };
 

@@ -51,23 +51,9 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
       } else {
         compositeDisposable.add(
             Flowable.just(cursor)
-                .flatMap(new Function<Cursor, Flowable<List<Music>>>() {
-                  @Override public Flowable<List<Music>> apply(Cursor cursor) {
-                    return Flowable.just(new MusicGroup.FromCursor(cursor).asList());
-                  }
-                })
-                .doOnNext(new Consumer<List<Music>>() {
-                  @Override public void accept(List<Music> songs) {
-                    new MusicGroupOrder(songs).by(SortBy.TITLE);
-                  }
-                })
-                .filter(new Predicate<List<Music>>() {
-                  @Override
-                  public boolean test(@io.reactivex.annotations.NonNull List<Music> musics)
-                      throws Exception {
-                    return musics != null;
-                  }
-                })
+                .flatMap((Function<Cursor, Flowable<List<Music>>>) cursor1 -> Flowable.just(new MusicGroup.FromCursor(cursor1).asList()))
+                .doOnNext(songs -> new MusicGroupOrder(songs).by(SortBy.TITLE))
+                .filter(musics -> musics != null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new ResourceSubscriber<List<Music>>() {
@@ -96,11 +82,7 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
     if (isSongListAvailable()) {
       compositeDisposable.add(Flowable.fromIterable(songs)
           .subscribeOn(Schedulers.computation())
-          .filter(new Predicate<Music>() {
-            @Override public boolean test(Music music) {
-              return music.media().title().toLowerCase().contains(text.toLowerCase());
-            }
-          })
+          .filter(music -> music.media().title().toLowerCase().contains(text.toLowerCase()))
           .toList()
           .observeOn(AndroidSchedulers.mainThread())
           .subscribeWith(new ResourceSingleObserver<List<Music>>() {
@@ -150,17 +132,11 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
     final int selectedCount = selectedMusicList.size();
     view().deletedOutOfText(0 + " / " + selectedCount);
     Observable.zip(Observable.fromIterable(selectedMusicList),
-        Observable.interval(25, TimeUnit.MILLISECONDS), new BiFunction<Music, Long, Music>() {
-          @Override public Music apply(Music sqlMusic, Long aLong) throws Exception {
-            return sqlMusic;
-          }
-        })
-        .doOnNext(new Consumer<Music>() {
-          @Override public void accept(Music music) throws Exception {
-            String path = music.media().path();
-            new File(path).delete();
-            androidMediaStoreDatabase.deleteAndBroadcastDeletion(path);
-          }
+        Observable.interval(25, TimeUnit.MILLISECONDS), (sqlMusic, aLong) -> sqlMusic)
+        .doOnNext(music -> {
+          String path = music.media().path();
+          new File(path).delete();
+          androidMediaStoreDatabase.deleteAndBroadcastDeletion(path);
         })
         .observeOn(AndroidSchedulers.mainThread())
         .doOnNext(new Consumer<Music>() {
@@ -182,14 +158,12 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
         })
         .delay(25, TimeUnit.MILLISECONDS)
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnTerminate(new Action() {
-          @Override public void run() throws Exception {
-            view().showMessage(String.format("%d songs deleted successfully!", selectedCount));
-            view().clearSelection();
-            view().hideSelectionContextOptions();
-            view().refreshSongCount(songs.size());
-            view().showAllSongsLayout();
-          }
+        .doOnTerminate(() -> {
+          view().showMessage(String.format("%d songs deleted successfully!", selectedCount));
+          view().clearSelection();
+          view().hideSelectionContextOptions();
+          view().refreshSongCount(songs.size());
+          view().showAllSongsLayout();
         })
         .subscribe();
   }

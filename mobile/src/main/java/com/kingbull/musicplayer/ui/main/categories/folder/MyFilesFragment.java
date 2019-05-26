@@ -116,26 +116,24 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
         .toObservable()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-            new Consumer<Object>() {
-              @Override public void accept(Object o) throws Exception {
-                if (o instanceof PaletteEvent || o instanceof ThemeEvent || o instanceof
-                    TransparencyChangedEvent) {
-                  if (presenter != null && presenter.hasView()) {
-                    presenter.onPaletteOrThemeEvent();
-                  } else {
-                    Crashlytics.logException(
-                        new NullPointerException(
-                            String.format(
-                                "class: %s presenter- %s hasView- %b",
-                                MyFilesFragment.class.getSimpleName(),
-                                presenter, presenter != null && presenter.hasView()
-                            )
-                        )
-                    );
+                o -> {
+                  if (o instanceof PaletteEvent || o instanceof ThemeEvent || o instanceof
+                      TransparencyChangedEvent) {
+                    if (presenter != null && presenter.hasView()) {
+                      presenter.onPaletteOrThemeEvent();
+                    } else {
+                      Crashlytics.logException(
+                          new NullPointerException(
+                              String.format(
+                                  "class: %s presenter- %s hasView- %b",
+                                  MyFilesFragment.class.getSimpleName(),
+                                  presenter, presenter != null && presenter.hasView()
+                              )
+                          )
+                      );
+                    }
                   }
                 }
-              }
-            }
         );
   }
 
@@ -147,14 +145,12 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
     myFilesAdapter = new MyFilesAdapter(files, presenter);
     recyclerView.setAdapter(myFilesAdapter);
     presenter.takeView(this);
-    getView().setOnKeyListener(new View.OnKeyListener() {
-      @Override public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-          presenter.onBackPressed();
-          return true;
-        } else {
-          return false;
-        }
+    getView().setOnKeyListener((v, keyCode, event) -> {
+      if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+        presenter.onBackPressed();
+        return true;
+      } else {
+        return false;
       }
     });
   }

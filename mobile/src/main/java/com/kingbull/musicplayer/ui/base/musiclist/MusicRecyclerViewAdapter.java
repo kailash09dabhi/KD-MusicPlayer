@@ -86,98 +86,72 @@ public final class MusicRecyclerViewAdapter
     holder.fileNameView.setText(music.media().title());
     holder.albumView.setText(music.media().album());
     holder.durationView.setText(new Milliseconds(music.media().duration()).toMmSs());
-    holder.moreActionsView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(final View v) {
-        final int adapterPosition = holder.getAdapterPosition();
-        if (adapterPosition == RecyclerView.NO_POSITION) {
-          return;
-        }
-        QuickActionPopupWindow quickActionPopupWindow = new QuickActionPopupWindow(activity);
-        int fillColor = new ColorTheme.Flat().header().intValue();
-        final ActionItem playItem =
-            new ActionItem("Play", new IconDrawable(R.drawable.ic_play_48dp, fillColor),
-                new ActionItem.OnClickListener() {
-                  @Override public void onClick(ActionItem item) {
+    holder.moreActionsView.setOnClickListener(v -> {
+      final int adapterPosition = holder.getAdapterPosition();
+      if (adapterPosition == RecyclerView.NO_POSITION) {
+        return;
+      }
+      QuickActionPopupWindow quickActionPopupWindow = new QuickActionPopupWindow(activity);
+      int fillColor = new ColorTheme.Flat().header().intValue();
+      final ActionItem playItem =
+          new ActionItem("Play", new IconDrawable(R.drawable.ic_play_48dp, fillColor),
+                  item -> {
                     player.addToNowPlaylist(songs);
                     player.play(songs.get(adapterPosition));
                     activity.startActivity(new Intent(activity, MusicPlayerActivity.class));
-                  }
-                });
-        final ActionItem addToPlaylistItem = new ActionItem("Add To PlayList",
-            new IconDrawable(R.drawable.ic_playlist_add_48dp, fillColor),
-            new ActionItem.OnClickListener() {
-              @Override public void onClick(ActionItem item) {
+                  });
+      final ActionItem addToPlaylistItem = new ActionItem("Add To PlayList",
+          new IconDrawable(R.drawable.ic_playlist_add_48dp, fillColor),
+              item -> {
                 List<Music> musicList = new ArrayList<>();
                 musicList.add(songs.get(adapterPosition));
                 AddToPlayListDialogFragment.newInstance(musicList)
-                    .show(activity.getSupportFragmentManager(),
-                        AddToPlayListDialogFragment.class.getName());
-              }
-            });
-        final ActionItem editTagsItem =
-            new ActionItem("Edit Tags", new IconDrawable(R.drawable.ic_edit_48dp, fillColor),
-                new ActionItem.OnClickListener() {
-                  @Override public void onClick(ActionItem item) {
-                    EditTagsDialogFragment.newInstance(songs.get(adapterPosition))
                         .show(activity.getSupportFragmentManager(),
-                            EditTagsDialogFragment.class.getName());
-                  }
-                });
-        final ActionItem statisticsItem = new ActionItem("Statistics",
-            new IconDrawable(R.drawable.ic_info_outline_48dp, fillColor),
-            new ActionItem.OnClickListener() {
-              @Override public void onClick(ActionItem item) {
-                StatisticsDialogFragment.newInstance(songs.get(adapterPosition))
-                    .show(activity.getSupportFragmentManager(),
-                        StatisticsDialogFragment.class.getName());
-              }
-            });
-        final ActionItem setAsRingtoneItem = new ActionItem("Set As Ringtone",
-            new IconDrawable(R.drawable.ic_ringtone_48dp, fillColor),
-            new ActionItem.OnClickListener() {
-              @Override public void onClick(ActionItem item) {
-                new Ringtone(songs.get(adapterPosition).media()).requestPermissionToBeSet(activity);
-              }
-            });
-        final ActionItem deleteItem =
-            new ActionItem("Delete", new IconDrawable(R.drawable.ic_delete_48dp, fillColor),
-                new ActionItem.OnClickListener() {
-                  @Override public void onClick(ActionItem item) {
+                                AddToPlayListDialogFragment.class.getName());
+              });
+      final ActionItem editTagsItem =
+          new ActionItem("Edit Tags", new IconDrawable(R.drawable.ic_edit_48dp, fillColor),
+                  item -> EditTagsDialogFragment.newInstance(songs.get(adapterPosition))
+                          .show(activity.getSupportFragmentManager(),
+                                  EditTagsDialogFragment.class.getName()));
+      final ActionItem statisticsItem = new ActionItem("Statistics",
+          new IconDrawable(R.drawable.ic_info_outline_48dp, fillColor),
+              item -> StatisticsDialogFragment.newInstance(songs.get(adapterPosition))
+                      .show(activity.getSupportFragmentManager(),
+                              StatisticsDialogFragment.class.getName()));
+      final ActionItem setAsRingtoneItem = new ActionItem("Set As Ringtone",
+          new IconDrawable(R.drawable.ic_ringtone_48dp, fillColor),
+              item -> new Ringtone(songs.get(adapterPosition).media()).requestPermissionToBeSet(activity));
+      final ActionItem deleteItem =
+          new ActionItem("Delete", new IconDrawable(R.drawable.ic_delete_48dp, fillColor),
+                  item -> {
                     new File(songs.get(adapterPosition).media().path()).delete();
                     activity.sendBroadcast(new Intent(Intent.ACTION_DELETE,
-                        Uri.fromFile(new File(songs.get(adapterPosition).media().path()))));
+                            Uri.fromFile(new File(songs.get(adapterPosition).media().path()))));
                     new Snackbar(holder.itemView).show(String.format("%s has been deleted!",
-                        songs.get(adapterPosition).media().title()));
+                            songs.get(adapterPosition).media().title()));
                     songs.remove(adapterPosition);
                     notifyItemRemoved(adapterPosition);
-                  }
-                });
-        final ActionItem sendItem =
-            new ActionItem("Send", new IconDrawable(R.drawable.ic_send_48dp, fillColor),
-                new ActionItem.OnClickListener() {
-                  @Override public void onClick(ActionItem item) {
+                  });
+      final ActionItem sendItem =
+          new ActionItem("Send", new IconDrawable(R.drawable.ic_send_48dp, fillColor),
+                  item -> {
                     Intent share = new Intent(Intent.ACTION_SEND);
                     share.setType("audio/*");
                     share.putExtra(Intent.EXTRA_STREAM,
-                        Uri.fromFile(new File(songs.get(adapterPosition).media().path())));
+                            Uri.fromFile(new File(songs.get(adapterPosition).media().path())));
                     activity.startActivity(Intent.createChooser(share, "Share Sound File"));
-                  }
-                });
-        quickActionPopupWindow.addActionItem(playItem);
-        quickActionPopupWindow.addActionItem(addToPlaylistItem);
-        quickActionPopupWindow.addActionItem(editTagsItem);
-        quickActionPopupWindow.addActionItem(statisticsItem);
-        quickActionPopupWindow.addActionItem(setAsRingtoneItem);
-        quickActionPopupWindow.addActionItem(deleteItem);
-        quickActionPopupWindow.addActionItem(sendItem);
-        quickActionPopupWindow.addOnActionClickListener(
-            new QuickActionPopupWindow.OnActionClickListener() {
-              @Override public void onActionClick(ActionItem actionItem) {
-                actionItem.onClickListener().onClick(actionItem);
-              }
-            });
-        quickActionPopupWindow.show(v);
-      }
+                  });
+      quickActionPopupWindow.addActionItem(playItem);
+      quickActionPopupWindow.addActionItem(addToPlaylistItem);
+      quickActionPopupWindow.addActionItem(editTagsItem);
+      quickActionPopupWindow.addActionItem(statisticsItem);
+      quickActionPopupWindow.addActionItem(setAsRingtoneItem);
+      quickActionPopupWindow.addActionItem(deleteItem);
+      quickActionPopupWindow.addActionItem(sendItem);
+      quickActionPopupWindow.addOnActionClickListener(
+              actionItem -> actionItem.onClickListener().onClick(actionItem));
+      quickActionPopupWindow.show(v);
     });
   }
 

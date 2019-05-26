@@ -28,33 +28,17 @@ import org.json.JSONObject;
 public final class LastFmCovers implements CoverImages {
 
   @Override public Observable<List<String>> albums(final String album) {
-    return Observable.defer(new Callable<ObservableSource<JSONObject>>() {
-      @Override public ObservableSource<JSONObject> call() throws Exception {
-        return Observable.just(requestWebService(String.format(
-            "http://ws.audioscrobbler.com/2.0/?method=album"
-                + ".search&api_key=2fbdb536c815a3788b8ec3a73069729b&artist=&album=%s&format=json",
-            album)));
-      }
-    }).subscribeOn(Schedulers.io()).flatMap(new Function<JSONObject, Observable<List<String>>>() {
-      @Override public Observable<List<String>> apply(JSONObject jsonObject) throws Exception {
-        return Observable.just(parsedResponse(jsonObject));
-      }
-    });
+    return Observable.defer((Callable<ObservableSource<JSONObject>>) () -> Observable.just(requestWebService(String.format(
+        "http://ws.audioscrobbler.com/2.0/?method=album"
+            + ".search&api_key=2fbdb536c815a3788b8ec3a73069729b&artist=&album=%s&format=json",
+        album)))).subscribeOn(Schedulers.io()).flatMap((Function<JSONObject, Observable<List<String>>>) jsonObject -> Observable.just(parsedResponse(jsonObject)));
   }
 
   @Override public Observable<List<String>> artists(final String artist) {
-    return Observable.defer(new Callable<ObservableSource<JSONObject>>() {
-      @Override public ObservableSource<JSONObject> call() throws Exception {
-        return Observable.just(requestWebService(String.format("http://ws.audioscrobbler.com/2"
-                + ".0/?method=artist"
-                + ".search&api_key=2fbdb536c815a3788b8ec3a73069729b&artist=%s&album=&format=json",
-            artist)));
-      }
-    }).subscribeOn(Schedulers.io()).flatMap(new Function<JSONObject, Observable<List<String>>>() {
-      @Override public Observable<List<String>> apply(JSONObject jsonObject) throws Exception {
-        return Observable.just(parsedResponse(jsonObject));
-      }
-    });
+    return Observable.defer((Callable<ObservableSource<JSONObject>>) () -> Observable.just(requestWebService(String.format("http://ws.audioscrobbler.com/2"
+            + ".0/?method=artist"
+            + ".search&api_key=2fbdb536c815a3788b8ec3a73069729b&artist=%s&album=&format=json",
+        artist)))).subscribeOn(Schedulers.io()).flatMap((Function<JSONObject, Observable<List<String>>>) jsonObject -> Observable.just(parsedResponse(jsonObject)));
   }
 
   private String getResponseText(InputStream inStream) {

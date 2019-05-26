@@ -49,32 +49,16 @@ public final class BlurRadiusDialogFragment extends BaseDialogFragment {
   }
 
   @OnClick(R.id.doneButton) void onDoneClick() {
-    Observable.just(blurRadiusValueView.getText().toString()).filter(new Predicate<String>() {
-      @Override public boolean test(String text) throws Exception {
-        return !text.isEmpty();
+    Observable.just(blurRadiusValueView.getText().toString()).filter(text -> !text.isEmpty()).map(text -> Integer.parseInt(text)).filter(integer -> {
+      if (integer < 255) {
+        return true;
+      } else {
+        throw new IllegalArgumentException("Blur value is too large!");
       }
-    }).map(new Function<String, Integer>() {
-      @Override public Integer apply(String text) throws Exception {
-        return Integer.parseInt(text);
-      }
-    }).filter(new Predicate<Integer>() {
-      @Override public boolean test(Integer integer) throws Exception {
-        if (integer < 255) {
-          return true;
-        } else {
-          throw new IllegalArgumentException("Blur value is too large!");
-        }
-      }
-    }).subscribe(new Consumer<Integer>() {
-      @Override public void accept(Integer blurRadius) throws Exception {
-        settingPreferences.blurRadius(blurRadius);
-        RxBus.getInstance().post(new BlurRadiusEvent(blurRadius));
-      }
-    }, new Consumer<Throwable>() {
-      @Override public void accept(Throwable throwable) throws Exception {
-        Toast.makeText(getActivity(), "Blur value is too large!", Toast.LENGTH_SHORT).show();
-      }
-    });
+    }).subscribe(blurRadius -> {
+      settingPreferences.blurRadius(blurRadius);
+      RxBus.getInstance().post(new BlurRadiusEvent(blurRadius));
+    }, throwable -> Toast.makeText(getActivity(), "Blur value is too large!", Toast.LENGTH_SHORT).show());
     dismiss();
   }
 

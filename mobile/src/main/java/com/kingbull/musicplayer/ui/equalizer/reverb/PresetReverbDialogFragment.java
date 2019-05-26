@@ -67,14 +67,11 @@ public final class PresetReverbDialogFragment extends BaseDialogFragment
     presenter.takeView(this);
     final List<Reverb> reverbs = Arrays.asList(this.reverbs);
     listView.setAdapter(new PresetReverbAdapter(getActivity(), reverbs));
-    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-        player.useEffect(reverbs.get(position));
-        settingPreferences.saveReverb(reverbs.get(position));
-        RxBus.getInstance().post(Preset.Reverb(reverbs.get(position)));
-        dismiss();
-      }
+    listView.setOnItemClickListener((parent, view1, position, id) -> {
+      player.useEffect(reverbs.get(position));
+      settingPreferences.saveReverb(reverbs.get(position));
+      RxBus.getInstance().post(Preset.Reverb(reverbs.get(position)));
+      dismiss();
     });
   }
 }

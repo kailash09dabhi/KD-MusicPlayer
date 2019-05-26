@@ -109,32 +109,30 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
     return RxBus.getInstance()
         .toObservable()
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            if (presenter != null && presenter.hasView()) {
-              if (o instanceof SortEvent) {
-                presenter.onSortEvent((SortEvent) o);
-              } else if (o instanceof DurationFilterEvent) {
-                getLoaderManager().restartLoader(0, null, AllSongsFragment.this);
-              } else if (o instanceof PaletteEvent || o instanceof ThemeEvent || o instanceof
-                  TransparencyChangedEvent) {
-                updateDrawableOfButtons(
-                    smartTheme.header().dark(0.01f).transparent(0.16f).intValue());
-                applyUiColors();
-              }
-            } else {
-              Crashlytics.logException(
-                  new NullPointerException(
-                      String.format(
-                          "class: %s presenter- %s hasView- %b",
-                          AllSongsFragment.class.getSimpleName(),
-                          presenter, presenter != null && presenter.hasView()
-                      )
-                  )
-              );
+        .subscribe(o -> {
+          if (presenter != null && presenter.hasView()) {
+            if (o instanceof SortEvent) {
+              presenter.onSortEvent((SortEvent) o);
+            } else if (o instanceof DurationFilterEvent) {
+              getLoaderManager().restartLoader(0, null, AllSongsFragment.this);
+            } else if (o instanceof PaletteEvent || o instanceof ThemeEvent || o instanceof
+                TransparencyChangedEvent) {
+              updateDrawableOfButtons(
+                  smartTheme.header().dark(0.01f).transparent(0.16f).intValue());
+              applyUiColors();
             }
-
+          } else {
+            Crashlytics.logException(
+                new NullPointerException(
+                    String.format(
+                        "class: %s presenter- %s hasView- %b",
+                        AllSongsFragment.class.getSimpleName(),
+                        presenter, presenter != null && presenter.hasView()
+                    )
+                )
+            );
           }
+
         });
   }
 
@@ -185,11 +183,9 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
           }
         });
     updateDrawableOfButtons(Color.BLACK);
-    searchLayout.post(new Runnable() {
-      @Override public void run() {
-        //searchLayout.setX(searchLayout.getWidth());
-        searchLayout.setTranslationX(totalSongLayout.getWidth());
-      }
+    searchLayout.post(() -> {
+      //searchLayout.setX(searchLayout.getWidth());
+      searchLayout.setTranslationX(totalSongLayout.getWidth());
     });
   }
 
@@ -296,11 +292,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public void exitSearch() {
     searchView.setText("");
-    alphaAnimation.fadeOut(searchLayout, new Alpha.FadeOutListener() {
-      @Override public void onFadeOutAnimationFinished() {
-        keyboard.hide(getActivity());
-      }
-    });
+    alphaAnimation.fadeOut(searchLayout, () -> keyboard.hide(getActivity()));
     alphaAnimation.fadeIn(totalSongLayout);
     slideHorizontalAnimation.slide(searchLayout, searchLayout.getWidth());
     slideHorizontalAnimation.slide(totalSongLayout, 0);
@@ -308,11 +300,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
 
   @Override public void enterSearch() {
     alphaAnimation.fadeOut(totalSongLayout);
-    alphaAnimation.fadeIn(searchLayout, new Alpha.FadeInListener() {
-      @Override public void onFadeInAnimationFinished() {
-        keyboard.show(searchView);
-      }
-    });
+    alphaAnimation.fadeIn(searchLayout, () -> keyboard.show(searchView));
     slideHorizontalAnimation.slide(totalSongLayout, -totalSongLayout.getWidth());
     slideHorizontalAnimation.slide(searchLayout, 0);
   }

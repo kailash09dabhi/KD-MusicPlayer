@@ -136,11 +136,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   @Override protected Disposable subscribeEvents() {
     return MusicEventRelay.instance().asObservable()
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<MusicEvent>() {
-          @Override public void accept(MusicEvent musicEvent) {
-            presenter.onMusicEvent(musicEvent);
-          }
-        });
+        .subscribe(musicEvent -> presenter.onMusicEvent(musicEvent));
   }
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
@@ -282,25 +278,21 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   private void setupInterstitial() {
     equalizerInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-        new AdmobInterstitial.AdListener() {
-          @Override public void onAdClosed() {
-            if (!getActivity().isFinishing()) {
-              equalizerInterstitial.load();
-              launchEqualizerScreen();
-            }
-          }
-        });
+            () -> {
+              if (!getActivity().isFinishing()) {
+                equalizerInterstitial.load();
+                launchEqualizerScreen();
+              }
+            });
     equalizerInterstitial.load();
     nowPlayingListInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-        new AdmobInterstitial.AdListener() {
-          @Override public void onAdClosed() {
-            if (!getActivity().isFinishing()) {
-              nowPlayingListInterstitial.load();
-              launchNowPlayingListScreen();
-            }
-          }
-        });
+            () -> {
+              if (!getActivity().isFinishing()) {
+                nowPlayingListInterstitial.load();
+                launchNowPlayingListScreen();
+              }
+            });
     nowPlayingListInterstitial.load();
   }
 
@@ -322,14 +314,10 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
     circularBitmapDrawable.setCircular(true);
     albumImageView.setImageDrawable(circularBitmapDrawable);
     Observable.just(bitmap)
-        .map(new Function<Bitmap, BitmapDrawable>() {
-          @Override public BitmapDrawable apply(Bitmap bitmap) throws Exception {
-            return new Smart(bitmap)
-                .blurred(52)
-                .saturated()
-                .bitmapDrawable();
-          }
-        })
+        .map(bitmap1 -> new Smart(bitmap1)
+            .blurred(52)
+            .saturated()
+            .bitmapDrawable())
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new DisposableObserver<BitmapDrawable>() {

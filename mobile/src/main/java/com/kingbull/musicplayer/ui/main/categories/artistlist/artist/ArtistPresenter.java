@@ -49,16 +49,8 @@ public final class ArtistPresenter extends Presenter<Artist.View> implements Art
   @Override public void onSongCursorLoadFinished(Cursor cursor) {
     compositeDisposable.add(
         Flowable.just(cursor)
-            .flatMap(new Function<Cursor, Flowable<List<Music>>>() {
-              @Override public Flowable<List<Music>> apply(Cursor cursor) {
-                return Flowable.just(new MusicGroup.FromCursor(cursor).asList());
-              }
-            })
-            .doOnNext(new Consumer<List<Music>>() {
-              @Override public void accept(List<Music> songs) {
-                new MusicGroupOrder(songs).by(SortBy.TITLE);
-              }
-            })
+            .flatMap((Function<Cursor, Flowable<List<Music>>>) cursor1 -> Flowable.just(new MusicGroup.FromCursor(cursor1).asList()))
+            .doOnNext(songs -> new MusicGroupOrder(songs).by(SortBy.TITLE))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(new ResourceSubscriber<List<Music>>() {

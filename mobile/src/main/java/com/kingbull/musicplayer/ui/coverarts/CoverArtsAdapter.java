@@ -48,18 +48,12 @@ public final class CoverArtsAdapter extends RecyclerView.Adapter<CoverArtsAdapte
     } else {
       holder.hoverView.setVisibility(View.GONE);
     }
-    holder.itemView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        notifyItemChanged(selectedPosition);
-        selectedPosition = holder.getAdapterPosition();
-        holder.hoverView.setVisibility(View.VISIBLE);
-      }
+    holder.itemView.setOnClickListener(v -> {
+      notifyItemChanged(selectedPosition);
+      selectedPosition = holder.getAdapterPosition();
+      holder.hoverView.setVisibility(View.VISIBLE);
     });
-    holder.saveButton.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        presenter.onSaveCoverArtClick(coverUrls.get(holder.getAdapterPosition()));
-      }
-    });
+    holder.saveButton.setOnClickListener(v -> presenter.onSaveCoverArtClick(coverUrls.get(holder.getAdapterPosition())));
   }
 
   @Override public int getItemCount() {

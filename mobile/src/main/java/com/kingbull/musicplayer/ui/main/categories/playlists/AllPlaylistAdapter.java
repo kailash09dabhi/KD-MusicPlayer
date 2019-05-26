@@ -68,32 +68,22 @@ public final class AllPlaylistAdapter extends RecyclerView.Adapter<AllPlaylistAd
       int fillColor = new ColorTheme.Flat().header().intValue();
       final ActionItem renameItem =
           new ActionItem("Rename", new IconDrawable(R.drawable.ic_edit_48dp, fillColor),
-              new ActionItem.OnClickListener() {
-                @Override public void onClick(ActionItem item) {
-                  PlaylistRenameDialogFragment.newInstance(
+                  item -> PlaylistRenameDialogFragment.newInstance(
                       (PlayList.Smart) playLists.get(getAdapterPosition()))
                       .show(activity.getSupportFragmentManager(),
-                          PlaylistRenameDialogFragment.class.getName());
-                }
-              });
+                          PlaylistRenameDialogFragment.class.getName()));
       final ActionItem deleteItem =
           new ActionItem("Delete", new IconDrawable(R.drawable.ic_delete_48dp, fillColor),
-              new ActionItem.OnClickListener() {
-                @Override public void onClick(ActionItem item) {
-                  PlayList playList = playLists.get(getAdapterPosition());
-                  if (playList instanceof PlayList.Smart) ((PlayList.Smart) playList).delete();
-                  playLists.remove(getAdapterPosition());
-                  notifyItemRemoved(getAdapterPosition());
-                }
-              });
+                  item -> {
+                    PlayList playList = playLists.get(getAdapterPosition());
+                    if (playList instanceof PlayList.Smart) ((PlayList.Smart) playList).delete();
+                    playLists.remove(getAdapterPosition());
+                    notifyItemRemoved(getAdapterPosition());
+                  });
       quickActionPopupWindow.addActionItem(renameItem);
       quickActionPopupWindow.addActionItem(deleteItem);
       quickActionPopupWindow.addOnActionClickListener(
-          new QuickActionPopupWindow.OnActionClickListener() {
-            @Override public void onActionClick(ActionItem actionItem) {
-              actionItem.onClickListener().onClick(actionItem);
-            }
-          });
+              actionItem -> actionItem.onClickListener().onClick(actionItem));
       quickActionPopupWindow.show(view);
     }
 

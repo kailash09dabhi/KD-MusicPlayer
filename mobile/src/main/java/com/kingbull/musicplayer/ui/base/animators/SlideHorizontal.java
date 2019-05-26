@@ -41,14 +41,8 @@ public interface SlideHorizontal {
     }
 
     @Override public void slide(final View view, int translationX) {
-      view.animate().withStartAction(new Runnable() {
-        @Override public void run() {
-          view.setVisibility(View.VISIBLE);
-        }
-      }).setDuration(duration).translationX(translationX).withEndAction(new Runnable() {
-        @Override public void run() {
-          if (listener != null) listener.onAnimationFinished();
-        }
+      view.animate().withStartAction(() -> view.setVisibility(View.VISIBLE)).setDuration(duration).translationX(translationX).withEndAction(() -> {
+        if (listener != null) listener.onAnimationFinished();
       }).start();
     }
   }

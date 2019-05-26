@@ -105,11 +105,9 @@ public final class AddToPlayListDialogFragment extends BaseDialogFragment
     playLists = new PlayListTable().allPlaylists();
     presenter.takeView(this);
     listView.setAdapter(new PlayListAdapter(getActivity(), playLists));
-    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ((PlayList.Smart) playLists.get(position)).addAll(musics);
-        dismiss();
-      }
+    listView.setOnItemClickListener((parent, view1, position, id) -> {
+      ((PlayList.Smart) playLists.get(position)).addAll(musics);
+      dismiss();
     });
   }
 

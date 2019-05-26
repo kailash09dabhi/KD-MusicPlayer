@@ -82,11 +82,7 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     new AdmobBannerLoaded((ViewGroup) findViewById(android.R.id.content));
     coverRecyclerView.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-    coverRecyclerView.setOnViewSelectedListener(new SnappingRecyclerView.OnViewSelectedListener() {
-      @Override public void onSelected(View view, int position) {
-        presenter.onAlbumSelected(position);
-      }
-    });
+    coverRecyclerView.setOnViewSelectedListener((view, position) -> presenter.onAlbumSelected(position));
     coverRecyclerView.setHasFixedSize(true);
     initializeWithThemeColors();
     adapter = new MusicRecyclerViewAdapter(songList, this);
@@ -153,11 +149,9 @@ public final class GenreActivity extends BaseActivity<Genre.Presenter>
     return RxBus.getInstance()
         .toObservable()
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Object>() {
-          @Override public void accept(Object o) throws Exception {
-            if (o instanceof SortEvent) {
-              presenter.onSortEvent((SortEvent) o);
-            }
+        .subscribe(o -> {
+          if (o instanceof SortEvent) {
+            presenter.onSortEvent((SortEvent) o);
           }
         });
   }
