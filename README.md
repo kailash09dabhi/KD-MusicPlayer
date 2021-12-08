@@ -1,5 +1,7 @@
 # KD-MusicPlayer
 
+https://play.google.com/store/apps/details?id=com.kingbull.kdmusicplayer
+
 KDabhi Music Player is the best local music player in terms of beauty & functionlity with very easy to use interface.
 
 Attractive & advanced Equalizer adds a great value to your music hearing experience.
