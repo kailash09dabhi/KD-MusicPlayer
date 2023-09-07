@@ -21,11 +21,11 @@ import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.ui.base.musiclist.ringtone.Ringtone;
 import com.kingbull.musicplayer.ui.base.theme.ColorTheme;
 import com.kingbull.musicplayer.ui.base.view.Snackbar;
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
 import javax.inject.Named;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatActivity {
   private static final int LOADER_ID = 9;
@@ -36,7 +36,7 @@ public abstract class BaseActivity<P extends Mvp.Presenter> extends AppCompatAct
   private CompositeDisposable compositeDisposable;
 
   @Override protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {

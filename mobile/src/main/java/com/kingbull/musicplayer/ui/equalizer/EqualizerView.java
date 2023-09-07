@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.EqualizerPreset;
 import com.kingbull.musicplayer.domain.storage.sqlite.SqlEqualizerPreset;
@@ -131,7 +131,7 @@ public final class EqualizerView extends View {
           }
           invalidate();
         } else {
-          Crashlytics.logException(new RuntimeException("how lastTouchedPoint becomes null?",
+          FirebaseCrashlytics.getInstance().recordException(new RuntimeException("how lastTouchedPoint becomes null?",
               new NullPointerException()));
         }
         break;
@@ -142,7 +142,7 @@ public final class EqualizerView extends View {
               100 - (int) ((lastTouchedPoint.y - minHeight) / ((float) (maxHeight - minHeight))
                   * 100.0));
         } else {
-          Crashlytics.logException(new RuntimeException("how lastTouchedPoint becomes null?",
+          FirebaseCrashlytics.getInstance().recordException(new RuntimeException("how lastTouchedPoint becomes null?",
               new NullPointerException()));
         }
         break;

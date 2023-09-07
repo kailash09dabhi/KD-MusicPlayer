@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.data.DataFetcher;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,7 +38,11 @@ final class AlbumArtFetcher implements DataFetcher<InputStream> {
         }
       }
     } finally {
-      retriever.release();
+      try {
+        retriever.release();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     }
   }
 
@@ -52,7 +56,7 @@ final class AlbumArtFetcher implements DataFetcher<InputStream> {
         try {
           return stream = new FileInputStream(cover);
         } catch (FileNotFoundException e) {
-          Crashlytics.logException(e);
+          FirebaseCrashlytics.getInstance().recordException(e);
         }
       }
     }

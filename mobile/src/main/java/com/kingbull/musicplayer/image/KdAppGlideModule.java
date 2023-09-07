@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.load.engine.cache.LruResourceCache;
 import com.bumptech.glide.module.AppGlideModule;
 import java.io.InputStream;
@@ -12,7 +13,7 @@ import java.io.InputStream;
 /**
  * Represents AppGlideModule to let the Glide annotation processor generate code for glide builders.
  */
-@com.bumptech.glide.annotation.GlideModule
+@GlideModule
 public final class KdAppGlideModule extends AppGlideModule {
 
   @Override public void applyOptions(Context context, GlideBuilder builder) {

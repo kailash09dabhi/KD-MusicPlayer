@@ -63,9 +63,7 @@ public final class MusicNotification {
   private Bitmap currentLockScreenBitmap;
 
   /**
-   * @param context
-   * @param musicPlayer
-   * @param mediaSessionCompat
+   *
    */
   public MusicNotification(Service context, Player musicPlayer,
       MediaSessionCompat mediaSessionCompat) {
@@ -117,7 +115,7 @@ public final class MusicNotification {
   }
 
   private PendingIntent getPendingIntent(String action) {
-    return PendingIntent.getService(context, 0, new Intent(action), 0);
+    return PendingIntent.getService(context, 0, new Intent(action), PendingIntent.FLAG_IMMUTABLE);
   }
 
   private RemoteViews bigRemoteView() {
@@ -184,13 +182,13 @@ public final class MusicNotification {
     Intent intent = new Intent(context, MainActivity.class);
     intent.putExtra("from", "notification");
     PendingIntent contentIntent =
-        PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     String channelId = "";
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       channelId = notificationChannel();
     }
     Notification notification = new NotificationCompat.Builder(context, channelId).setSmallIcon(
-        R.drawable.ic_notification_app_logo)  // the status icon
+            R.drawable.ic_notification_app_logo)  // the status icon
         .setWhen(System.currentTimeMillis())  // the time stamp
         .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
         .setCustomContentView(smallRemoteView())
@@ -226,7 +224,7 @@ public final class MusicNotification {
   private void updateMediaSessionMetaData(Media media, Bitmap bitmap) {
     mediaSessionCompat.setMetadata(
         new MediaMetadataCompat.Builder().putString(MediaMetadataCompat.METADATA_KEY_ARTIST,
-            media.artist())
+                media.artist())
             .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, media.album())
             .putString(MediaMetadataCompat.METADATA_KEY_TITLE, media.title())
             .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, media.duration())

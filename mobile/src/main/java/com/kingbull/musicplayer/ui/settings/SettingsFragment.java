@@ -16,11 +16,14 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.BuildConfig;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.ProLink;
@@ -159,18 +162,18 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
                       int durationInSeconds = settingPreferences.filterDurationInSeconds();
                       durationSecondsView.setText(durationInSeconds + " sec");
                       analytics.logDurationFilter(durationInSeconds);
-                      admobInterstitial.showIfLoaded();
+                      admobInterstitial.show();
                     } else if (o instanceof PaletteEvent || o instanceof ThemeEvent
                         || o instanceof TransparencyChangedEvent) {
                       applyUiColors();
                     } else if (o instanceof BlurRadiusEvent) {
-                      admobInterstitial.showIfLoaded();
+                      admobInterstitial.show();
                       analytics.logBlurRadius(((BlurRadiusEvent) o).blurRadius());
                     } else if (o instanceof BackgroundEvent) {
-                      admobInterstitial.showIfLoaded();
+                      admobInterstitial.show();
                     }
                   } else {
-                    Crashlytics.logException(
+                    FirebaseCrashlytics.getInstance().recordException(
                         new NullPointerException(
                             String.format(
                                 "class: %s presenter- %s hasView- %b",
@@ -273,8 +276,15 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   private void setupAdmobInterstial() {
     admobInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-            () -> admobInterstitial.load());
-    admobInterstitial.load();
+        new FullScreenContentCallback() {
+          @Override public void onAdDismissedFullScreenContent() {
+            super.onAdDismissedFullScreenContent();
+          }
+
+          @Override public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+            super.onAdFailedToShowFullScreenContent(adError);
+          }
+        });
   }
 
   @OnCheckedChanged(R.id.flatThemeCheckbox) void onThemeCheckedChange(boolean isChecked) {

@@ -33,13 +33,11 @@ public final class SplashActivity extends AppCompatActivity {
 
   @Override public void onRequestPermissionsResult(int requestCode, String permissions[],
       int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     switch (requestCode) {
       case REQUEST_CODE_PERMISSION: {
         // If request is cancelled, the result arrays are empty.
-        if (grantResults.length == 3
-            && grantResults[0] == PackageManager.PERMISSION_GRANTED
-            && grantResults[1] == PackageManager.PERMISSION_GRANTED
-            && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+        if (new RequiredPermissions(this).isGranted()) {
           gotoMainActivity();
         } else {
           finish();

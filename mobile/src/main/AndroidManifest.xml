@@ -1,9 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kingbull.musicplayer"
+    xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto">
 
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
   <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
   <uses-permission android:name="android.permission.READ_PHONE_STATE" />
   <uses-permission android:name="android.permission.WRITE_SETTINGS" />
@@ -15,6 +16,7 @@
     android:label="@string/app_name"
       android:name="MusicPlayerApp"
     android:supportsRtl="true"
+      android:requestLegacyExternalStorage="true"
     android:theme="@style/AppTheme">
     <meta-data
       android:name="io.fabric.ApiKey"
@@ -24,6 +26,7 @@
         android:value="ca-app-pub-1642663068953785~5782766159"/>
     <activity
       android:name=".ui.splash.SplashActivity"
+        android:exported="true"
       android:theme="@style/SplashTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -33,29 +36,35 @@
     <activity
       android:launchMode="singleTask"
         android:name=".ui.main.MainActivity"
+        android:exported="true"
       android:windowSoftInputMode="stateAlwaysHidden" />
     <activity android:name=".ui.main.categories.genreslist.genre.GenreActivity" />
     <activity
       android:launchMode="singleTask"
         android:name=".ui.music.MusicPlayerActivity"
         android:screenOrientation="portrait"
+        android:exported="true"
         android:theme="@style/AppTheme.MusicPlayer" />
     <activity
       android:name=".ui.equalizer.EqualizerActivity"
+        android:exported="true"
       android:screenOrientation="portrait" />
-    <activity android:name=".ui.main.categories.albumlist.album.AlbumActivity" />
-    <activity android:name=".ui.main.categories.artistlist.artist.ArtistActivity" />
+    <activity android:name=".ui.main.categories.albumlist.album.AlbumActivity" android:exported="true"/>
+    <activity android:name=".ui.main.categories.artistlist.artist.ArtistActivity" android:exported="true"/>
 
     <meta-data
       android:name="com.facebook.sdk.ApplicationId"
       android:value="@string/facebook_app_id" />
+    <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_app_client_token"/>
 
-    <receiver android:name=".player.CallReceiver">
+
+    <receiver android:exported="true" android:name=".player.CallReceiver">
       <intent-filter>
         <action android:name="android.intent.action.PHONE_STATE" />
       </intent-filter>
     </receiver>
-    <service android:name=".player.MusicService">
+    <service android:name=".player.MusicService" android:exported="true"
+        tools:ignore="ExportedService">
       <intent-filter>
         <action android:name="${applicationId}.ACTION_PLAY_TOGGLE" />
         <action android:name="${applicationId}.ACTION_PLAY_NEXT" />

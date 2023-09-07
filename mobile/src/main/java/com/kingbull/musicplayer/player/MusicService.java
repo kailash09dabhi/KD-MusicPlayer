@@ -1,5 +1,7 @@
 package com.kingbull.musicplayer.player;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentCallbacks2;
 import android.content.ComponentName;
@@ -108,7 +110,7 @@ public final class MusicService extends Service {
 
   private void lockScreenMediaSessionSetup() {
     ComponentName receiver = new ComponentName(getPackageName(), RemoteReceiver.class.getName());
-    mediaSession = new MediaSessionCompat(this, "PlayerService", receiver, null);
+    mediaSession = new MediaSessionCompat(this, "PlayerService", receiver, PendingIntent.getActivity(getApplicationContext(), 0, new Intent(),PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));
     mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
         | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
     mediaSession.setPlaybackState(

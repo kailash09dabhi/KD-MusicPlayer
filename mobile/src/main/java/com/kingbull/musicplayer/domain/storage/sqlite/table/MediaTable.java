@@ -2,7 +2,9 @@ package com.kingbull.musicplayer.domain.storage.sqlite.table;
 
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
+import androidx.annotation.RequiresApi;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.domain.Media;
 import java.io.File;
@@ -11,7 +13,7 @@ import java.io.File;
  * @author Kailash Dabhi
  * @date 12/1/2016.
  */
-public final class MediaTable {
+@RequiresApi(api = Build.VERSION_CODES.R) public final class MediaTable {
   public final static Uri URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
   private final static String[] PROJECTIONS = new String[] {
       MediaStore.Audio.Media.DATA, // the real path

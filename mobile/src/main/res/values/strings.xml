@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">KD Music Player</string>
   <string name="facebook_app_id">1050428785090775</string>
+  <string name="facebook_app_client_token">5c9cc7997c594790b4ad6971db32bd84</string>
   <string name="tab_Albums">Albums</string>
   <string name="tab_Artists">Artists</string>
   <string name="tab_Genres">Genres</string>

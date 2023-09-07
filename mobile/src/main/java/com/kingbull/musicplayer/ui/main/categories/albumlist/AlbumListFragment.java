@@ -13,7 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -70,11 +71,12 @@ public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
   private void setupInterstitial() {
     admobInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-            () -> {
-              admobInterstitial.load();
-              launchAlbumActivity(lastClickedAlbum);
-            });
-    admobInterstitial.load();
+        new FullScreenContentCallback() {
+          @Override public void onAdDismissedFullScreenContent() {
+            super.onAdDismissedFullScreenContent();
+          }
+        });
+    admobInterstitial.show();
   }
 
   private void launchAlbumActivity(Album album) {
@@ -94,7 +96,7 @@ public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
               recyclerView.setBackgroundColor(smartTheme.screen().intValue());
             }
           } else {
-            Crashlytics.logException(
+            FirebaseCrashlytics.getInstance().recordException(
                 new NullPointerException(
                     String.format(
                         "class: %s presenter- %s hasView- %b",
@@ -133,10 +135,6 @@ public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
 
   @Override public void gotoAlbumScreen(Album album) {
     lastClickedAlbum = album;
-    if (admobInterstitial.isLoaded()) {
-      admobInterstitial.show();
-    } else {
-      launchAlbumActivity(album);
-    }
+    launchAlbumActivity(album);
   }
 }

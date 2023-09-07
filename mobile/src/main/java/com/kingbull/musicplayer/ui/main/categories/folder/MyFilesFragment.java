@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -122,7 +122,7 @@ public final class MyFilesFragment extends BaseFragment<MyFiles.Presenter> imple
                     if (presenter != null && presenter.hasView()) {
                       presenter.onPaletteOrThemeEvent();
                     } else {
-                      Crashlytics.logException(
+                      FirebaseCrashlytics.getInstance().recordException(
                           new NullPointerException(
                               String.format(
                                   "class: %s presenter- %s hasView- %b",

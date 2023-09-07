@@ -52,6 +52,6 @@ public final class AppModule {
   }
 
   @Singleton @Provides Analytics provideAnalytics() {
-    return new Analytics.Fabric();
+    return new Analytics.Firebase();
   }
 }

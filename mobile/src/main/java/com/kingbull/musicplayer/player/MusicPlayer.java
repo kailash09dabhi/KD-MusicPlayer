@@ -5,7 +5,7 @@ import android.media.audiofx.BassBoost;
 import android.media.audiofx.PresetReverb;
 import android.media.audiofx.Virtualizer;
 import androidx.annotation.Nullable;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.RxBus;
 import com.kingbull.musicplayer.domain.Music;
@@ -82,7 +82,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
         time = new Time.Now();
         music.mediaStat().saveLastPlayed();
       } catch (IOException e) {
-        Crashlytics.logException(new IOException(
+        FirebaseCrashlytics.getInstance().recordException(new IOException(
             "play() got IOException! " + e.getMessage() + " is File readable? " + new File(
                 music.media().path()).canRead(), e));
         try {
@@ -96,21 +96,21 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
           time = new Time.Now();
           music.mediaStat().saveLastPlayed();
         } catch (FileNotFoundException e1) {
-          Crashlytics.logException(new IllegalStateException(
+          FirebaseCrashlytics.getInstance().recordException(new IllegalStateException(
               "play() catch(FileNotFoundException){}  parent: " + e + "child:" + e1, e1));
           return false;
         } catch (IOException e1) {
-          Crashlytics.logException(
+          FirebaseCrashlytics.getInstance().recordException(
               new IOException("play() catch(IOException)  parent: " + e + "child:" + e1, e1));
           return false;
         } catch (IllegalStateException e1) {
-          Crashlytics.logException(new IllegalStateException(
+          FirebaseCrashlytics.getInstance().recordException(new IllegalStateException(
               "play() catch(IllegalStateException){}  parent: " + e + "child:" + e1, e1));
           return false;
         }
         return true;
       } catch (IllegalStateException e) {
-        Crashlytics.logException(
+        FirebaseCrashlytics.getInstance().recordException(
             new IllegalStateException("play() got IllegalStateException! " + e.getMessage(), e));
         return false;
       }
@@ -223,7 +223,7 @@ public final class MusicPlayer implements Player, MediaPlayer.OnCompletionListen
       presetReverb.setEnabled(true);
       player.setAuxEffectSendLevel(1.0f);
     } catch (IllegalArgumentException | IllegalStateException | UnsupportedOperationException e) {
-      Crashlytics.logException(e);
+      FirebaseCrashlytics.getInstance().recordException(e);
     }
   }
 

@@ -6,6 +6,7 @@ import android.media.MediaMetadataRetriever;
 import android.util.Log;
 import com.kingbull.musicplayer.domain.Music;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created with Android Studio.
@@ -18,11 +19,11 @@ import java.io.File;
 public final class AlbumUtils {
   private static final String TAG = "AlbumUtils";
 
-  public static Bitmap parseAlbum(Music song) {
+  public static Bitmap parseAlbum(Music song) throws IOException {
     return parseAlbum(new File(song.media().path()));
   }
 
-  private static Bitmap parseAlbum(File file) {
+  private static Bitmap parseAlbum(File file) throws IOException {
     MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
     try {
       metadataRetriever.setDataSource(file.getAbsolutePath());

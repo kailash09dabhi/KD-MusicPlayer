@@ -2,7 +2,7 @@ package com.kingbull.musicplayer.ui.main.categories.genreslist.genre;
 
 import android.database.Cursor;
 import androidx.annotation.NonNull;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.AlbumMusicsMap;
 import com.kingbull.musicplayer.domain.Music;
@@ -144,7 +144,7 @@ public final class GenresPresenter extends Presenter<Genre.View> implements Genr
       }
       view().showSongs(songs);
     } else {
-      Crashlytics.logException(new IndexOutOfBoundsException(
+      FirebaseCrashlytics.getInstance().recordException(new IndexOutOfBoundsException(
           "album size is " + albums.size() + " & albumPosition is " + albumPosition));
     }
   }

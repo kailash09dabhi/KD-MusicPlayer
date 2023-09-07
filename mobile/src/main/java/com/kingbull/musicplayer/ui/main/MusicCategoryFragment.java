@@ -14,7 +14,7 @@ import android.widget.TextView;
 import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -69,7 +69,7 @@ public final class MusicCategoryFragment extends BaseFragment<Presenter> {
               pagerTitleStrip.setBackgroundColor(smartTheme.header().intValue());
             }
           } else {
-            Crashlytics.logException(
+            FirebaseCrashlytics.getInstance().recordException(
                 new NullPointerException(
                     String.format(
                         "class: %s presenter- %s hasView- %b",

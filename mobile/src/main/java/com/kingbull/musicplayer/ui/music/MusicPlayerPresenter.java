@@ -1,7 +1,7 @@
 package com.kingbull.musicplayer.ui.music;
 
 import androidx.annotation.NonNull;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.preferences.SettingPreferences;
 import com.kingbull.musicplayer.event.MusicEvent;
@@ -26,7 +26,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
       currentPlayingSongDuration = currentPlayingSong.media().duration();
       view().displayNewSongInfo(currentPlayingSong);
     } else {
-      Crashlytics.logException(new RuntimeException("How we get into this state? "
+      FirebaseCrashlytics.getInstance().recordException(new RuntimeException("How we get into this state? "
           + "We are in MusicPlayer screen and NowPlayingList is empty! Just go back to Main screen!"));
       view().close();
     }
@@ -116,7 +116,7 @@ public final class MusicPlayerPresenter extends Presenter<MusicPlayer.View>
     if (!player.nowPlayingMusicList().isEmpty()) {
       view().gotoNowPlayingListScreen();
     } else {
-      Crashlytics.logException(new RuntimeException("How we get into this state? "
+      FirebaseCrashlytics.getInstance().recordException(new RuntimeException("How we get into this state? "
           + "User clicked NowPlayingList but it is empty! Just go back to Main screen!"));
       view().close();
     }

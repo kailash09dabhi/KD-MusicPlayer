@@ -20,8 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import com.crashlytics.android.Crashlytics;
 import com.github.lzyzsd.circleprogress.DonutProgress;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -122,7 +122,7 @@ public final class AllSongsFragment extends BaseFragment<AllSongs.Presenter>
               applyUiColors();
             }
           } else {
-            Crashlytics.logException(
+            FirebaseCrashlytics.getInstance().recordException(
                 new NullPointerException(
                     String.format(
                         "class: %s presenter- %s hasView- %b",

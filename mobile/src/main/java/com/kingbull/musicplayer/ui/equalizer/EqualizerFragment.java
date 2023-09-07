@@ -15,7 +15,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -106,7 +106,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
           try {
             bassBoost.setStrength((short) (percentage * 10));
           } catch (Exception e) {
-            Crashlytics.logException(
+            FirebaseCrashlytics.getInstance().recordException(
                 new RuntimeException("bassboost percentage is " + percentage + " " + e, e));
           }
         }
@@ -146,7 +146,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
           try {
             virtualizer.setStrength((short) (percentage * 10));
           } catch (Exception e) {
-            Crashlytics.logException(
+            FirebaseCrashlytics.getInstance().recordException(
                 new RuntimeException("virtualizer percentage is " + percentage + " " + e, e));
           }
         }
@@ -173,7 +173,7 @@ public final class EqualizerFragment extends BaseFragment<Equalizer.Presenter>
                 break;
             }
           } else {
-            Crashlytics.logException(
+            FirebaseCrashlytics.getInstance().recordException(
                 new NullPointerException(
                     String.format(
                         "class: %s presenter- %s hasView- %b",

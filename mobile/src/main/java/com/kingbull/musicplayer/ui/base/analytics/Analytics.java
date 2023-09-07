@@ -1,7 +1,8 @@
 package com.kingbull.musicplayer.ui.base.analytics;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
+import android.os.Bundle;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.kingbull.musicplayer.MusicPlayerApp;
 
 /**
  * @author Kailash Dabhi
@@ -18,32 +19,40 @@ public interface Analytics {
 
   void logScreen(String name);
 
-  class Fabric implements Analytics {
-    private final Answers analytics = Answers.getInstance();
+  class Firebase implements Analytics{
+    private final FirebaseAnalytics analytics = MusicPlayerApp.instance().firebaseAnalytics();
 
     @Override public void logDurationFilter(int durationInSeconds) {
-      analytics.logCustom(
-          new CustomEvent("duration filter").putCustomAttribute("seconds", durationInSeconds));
+      Bundle bundle = new Bundle();
+      bundle.putInt("seconds", durationInSeconds);
+      analytics.logEvent("duration_filter",bundle);
     }
 
     @Override public void logBlurRadius(int radius) {
-      analytics.logCustom(
-          new CustomEvent("Background blurred").putCustomAttribute("blur radius", radius));
+      Bundle bundle = new Bundle();
+      bundle.putInt("blur radius", radius);
+      analytics.logEvent("background_blurred",bundle);
     }
 
     @Override public void logTheme(boolean isFlatTheme) {
       String theme = isFlatTheme ? "flat" : "glassy";
-      analytics.logCustom(new CustomEvent("Theme changed").putCustomAttribute("to", theme));
+      Bundle bundle = new Bundle();
+      bundle.putString("to", theme);
+      analytics.logEvent("theme_changed",bundle);
     }
 
     @Override public void logFullScreen(boolean isFullScreen) {
+
       String screenMode = isFullScreen ? "full screen" : "normal screen";
-      analytics.logCustom(
-          new CustomEvent("screen mode").putCustomAttribute("screen mode", screenMode));
+      Bundle bundle = new Bundle();
+      bundle.putString("screen_mode", screenMode);
+      analytics.logEvent("screen_mode",bundle);
     }
 
     @Override public void logScreen(String name) {
-      analytics.logCustom(new CustomEvent(name));
+      Bundle bundle = new Bundle();
+      bundle.putString("screen_name", name);
+      analytics.logEvent("screen_name",bundle);
     }
   }
 }

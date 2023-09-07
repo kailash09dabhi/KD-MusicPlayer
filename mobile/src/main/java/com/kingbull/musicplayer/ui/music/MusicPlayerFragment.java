@@ -25,6 +25,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.FullScreenContentCallback;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Album;
@@ -58,7 +60,7 @@ import java.io.File;
 
 public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presenter>
     implements MusicPlayer.View {
-
+  private AdmobInterstitial admobInterstitial;
   private final AlbumTable albumTable = new AlbumTable();
   private final Pictures pictures = new Pictures();
   @BindView(R.id.equalizerView) ImageView equalizerView;
@@ -186,11 +188,7 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   }
 
   @Override public void gotoShowEqualizerScreen() {
-    if (equalizerInterstitial.isLoaded()) {
-      equalizerInterstitial.show();
-    } else {
-      launchEqualizerScreen();
-    }
+    launchEqualizerScreen();
   }
 
   @Override public void pause() {
@@ -278,22 +276,30 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   private void setupInterstitial() {
     equalizerInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-            () -> {
-              if (!getActivity().isFinishing()) {
-                equalizerInterstitial.load();
-                launchEqualizerScreen();
-              }
-            });
-    equalizerInterstitial.load();
+        new FullScreenContentCallback() {
+          @Override public void onAdDismissedFullScreenContent() {
+            super.onAdDismissedFullScreenContent();
+            launchEqualizerScreen();
+          }
+
+          @Override public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+            super.onAdFailedToShowFullScreenContent(adError);
+            launchEqualizerScreen();
+          }
+        });
     nowPlayingListInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-            () -> {
-              if (!getActivity().isFinishing()) {
-                nowPlayingListInterstitial.load();
-                launchNowPlayingListScreen();
-              }
-            });
-    nowPlayingListInterstitial.load();
+        new FullScreenContentCallback() {
+          @Override public void onAdDismissedFullScreenContent() {
+            super.onAdDismissedFullScreenContent();
+            launchNowPlayingListScreen();
+          }
+
+          @Override public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+            super.onAdFailedToShowFullScreenContent(adError);
+            launchNowPlayingListScreen();
+          }
+        });
   }
 
   private void launchEqualizerScreen() {

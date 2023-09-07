@@ -12,7 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -54,11 +55,12 @@ public final class GenresListFragment extends BaseFragment<GenresList.Presenter>
   private void setupInterstitial() {
     admobInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-            () -> {
-              admobInterstitial.load();
-              launchGenreActivity(lastClickedGenre);
-            });
-    admobInterstitial.load();
+        new FullScreenContentCallback() {
+          @Override public void onAdClicked() {
+            super.onAdClicked();
+          }
+        });
+    admobInterstitial.show();
   }
 
   private void launchGenreActivity(Genre genre) {
@@ -90,7 +92,7 @@ public final class GenresListFragment extends BaseFragment<GenresList.Presenter>
               recyclerView.setBackgroundColor(smartTheme.screen().intValue());
             }
           } else {
-            Crashlytics.logException(
+            FirebaseCrashlytics.getInstance().recordException(
                 new NullPointerException(
                     String.format(
                         "class: %s presenter- %s hasView- %b",
@@ -125,10 +127,6 @@ public final class GenresListFragment extends BaseFragment<GenresList.Presenter>
 
   @Override public void gotoGenreScreen(Genre genre) {
     lastClickedGenre = genre;
-    if (admobInterstitial.isLoaded()) {
-      admobInterstitial.show();
-    } else {
-      launchGenreActivity(genre);
-    }
+    launchGenreActivity(genre);
   }
 }

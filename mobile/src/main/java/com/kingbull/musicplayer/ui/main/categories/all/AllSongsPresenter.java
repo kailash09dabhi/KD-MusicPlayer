@@ -3,7 +3,7 @@ package com.kingbull.musicplayer.ui.main.categories.all;
 import android.database.Cursor;
 import androidx.annotation.VisibleForTesting;
 import android.util.Log;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.MusicGroup;
 import com.kingbull.musicplayer.domain.MusicGroupOrder;
@@ -146,7 +146,7 @@ public final class AllSongsPresenter extends Presenter<AllSongs.View>
             ++count;
             int position = songs.indexOf(music);
             if (position == -1) {
-              Crashlytics.logException(
+              FirebaseCrashlytics.getInstance().recordException(
                   new IllegalStateException("How songs.indexOf returning -1?"));
             } else {
               view().notifyItemRemoved(position);

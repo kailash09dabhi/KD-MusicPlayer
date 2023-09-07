@@ -2,9 +2,11 @@ package com.kingbull.musicplayer.ui.base.ads;
 
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
 import com.kingbull.musicplayer.R;
 
 /**
@@ -18,12 +20,11 @@ public final class AdmobBannerLoaded {
 
   public AdmobBannerLoaded(ViewGroup rootView) {
     adView = (AdView) rootView.findViewById(R.id.adView);
-    AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-        .addTestDevice("7CCFDE0BCA5D3295A5406D318F0BBCC1") //LS-5005
+    AdRequest adRequest = new AdRequest.Builder()
         .build();
     adView.loadAd(adRequest);
     adView.setAdListener(new AdListener() {
-      @Override public void onAdFailedToLoad(int i) {
+      @Override public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
         adView.setVisibility(View.GONE);
       }
     });

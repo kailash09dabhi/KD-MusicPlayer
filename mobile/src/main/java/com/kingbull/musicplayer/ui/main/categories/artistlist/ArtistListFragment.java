@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
+import androidx.annotation.NonNull;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.RxBus;
@@ -64,11 +67,16 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
   private void setupInterstitial() {
     admobInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-            () -> {
-              admobInterstitial.load();
-              launchArtistActivity(lastClickedArtist);
-            });
-    admobInterstitial.load();
+        new FullScreenContentCallback() {
+          @Override public void onAdDismissedFullScreenContent() {
+            super.onAdDismissedFullScreenContent();
+          }
+
+          @Override public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+            super.onAdFailedToShowFullScreenContent(adError);
+          }
+        });
+    admobInterstitial.show();
   }
 
   private void launchArtistActivity(Artist artist) {
@@ -88,7 +96,7 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
               recyclerView.setBackgroundColor(smartTheme.screen().intValue());
             }
           } else {
-            Crashlytics.logException(
+            FirebaseCrashlytics.getInstance().recordException(
                 new NullPointerException(
                     String.format(
                         "class: %s presenter- %s hasView- %b",
@@ -126,10 +134,6 @@ public final class ArtistListFragment extends BaseFragment<ArtistList.Presenter>
 
   @Override public void gotoArtistScreen(Artist artist) {
     lastClickedArtist = artist;
-    if (admobInterstitial.isLoaded()) {
-      admobInterstitial.show();
-    } else {
-      launchArtistActivity(artist);
-    }
+    launchArtistActivity(artist);
   }
 }
