@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
@@ -22,6 +21,7 @@ import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.event.TransparencyChangedEvent;
+import com.kingbull.musicplayer.ui.base.AdListener;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
@@ -71,10 +71,8 @@ public final class AlbumListFragment extends BaseFragment<AlbumList.Presenter>
   private void setupInterstitial() {
     admobInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-        new FullScreenContentCallback() {
-          @Override public void onAdDismissedFullScreenContent() {
-            super.onAdDismissedFullScreenContent();
-          }
+        () -> {
+
         });
     admobInterstitial.show();
   }

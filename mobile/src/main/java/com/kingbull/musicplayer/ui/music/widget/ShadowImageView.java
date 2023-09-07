@@ -15,7 +15,6 @@ import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.animation.LinearInterpolator;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 /**
  * Created with Android Studio.

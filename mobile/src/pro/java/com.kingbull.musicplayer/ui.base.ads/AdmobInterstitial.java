@@ -1,6 +1,7 @@
 package com.kingbull.musicplayer.ui.base.ads;
 
 import android.app.Activity;
+import com.kingbull.musicplayer.ui.base.AdListener;
 
 /**
  * @author Kailash Dabhi
@@ -21,10 +22,6 @@ public final class AdmobInterstitial {
   }
 
   public void show() {
-  }
-
-  public interface AdListener {
-    void onAdClosed();
   }
 }
 

@@ -5,16 +5,16 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.StrictMode;
 import androidx.appcompat.app.AppCompatDelegate;
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
 import com.facebook.stetho.Stetho;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.kingbull.musicplayer.di.AppComponent;
 import com.kingbull.musicplayer.di.AppModule;
 import com.kingbull.musicplayer.di.DaggerAppComponent;
 import com.kingbull.musicplayer.di.StorageModule;
 import com.kingbull.musicplayer.player.MusicService;
-import io.fabric.sdk.android.Fabric;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import io.github.inflationx.calligraphy3.CalligraphyConfig;
+import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
+import io.github.inflationx.viewpump.ViewPump;
 
 /**
  * @author Kailash Dabhi
@@ -31,18 +31,13 @@ public final class MusicPlayerApp extends Application {
   public AppComponent component() {
     return application.appComponent;
   }
+  public FirebaseAnalytics firebaseAnalytics() {
+    return FirebaseAnalytics.getInstance(this);
+  }
 
   @Override public void onCreate() {
     super.onCreate();
     application = this;
-    Fabric.with(this,
-        new Crashlytics.Builder()
-            .core(
-                new CrashlyticsCore.Builder()
-                    .disabled(BuildConfig.DEBUG)
-                    .build()
-            ).build()
-    );
     if (BuildConfig.DEBUG) {
       Stetho.initializeWithDefaults(this);
       StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()
@@ -57,10 +52,13 @@ public final class MusicPlayerApp extends Application {
           .build());
     }
     // Custom fonts
-    CalligraphyConfig.initDefault(
-        new CalligraphyConfig.Builder().setDefaultFontPath(getString(R.string.font_body))
-            .setFontAttrId(R.attr.fontPath)
-            .build());
+    ViewPump.init(ViewPump.builder()
+        .addInterceptor(new CalligraphyInterceptor(
+            new CalligraphyConfig.Builder()
+                .setDefaultFontPath(getString(R.string.font_body))
+                .setFontAttrId(R.attr.fontPath)
+                .build()))
+        .build());
     injectDependencies();
     startService(new Intent(this, MusicService.class));
     AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);

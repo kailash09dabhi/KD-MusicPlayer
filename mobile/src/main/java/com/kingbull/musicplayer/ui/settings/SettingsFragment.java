@@ -21,8 +21,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.kingbull.musicplayer.BuildConfig;
 import com.kingbull.musicplayer.MusicPlayerApp;
@@ -36,6 +34,7 @@ import com.kingbull.musicplayer.event.PaletteEvent;
 import com.kingbull.musicplayer.event.ThemeEvent;
 import com.kingbull.musicplayer.event.TransparencyChangedEvent;
 import com.kingbull.musicplayer.player.BroadcastActionNames;
+import com.kingbull.musicplayer.ui.base.AdListener;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
 import com.kingbull.musicplayer.ui.base.ads.AdmobBannerLoaded;
@@ -92,7 +91,7 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   }
 
   @OnClick(R.id.feedback) void onClickFeedback() {
-    composeEmail(new String[]{"kingbulltechnology@gmail.com"}, "KD MusicPlayer Feedback");
+    composeEmail(new String[] { "kingbulltechnology@gmail.com" }, "KD MusicPlayer Feedback");
   }
 
   private void composeEmail(String[] addresses, String subject) {
@@ -156,34 +155,34 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
         .toObservable()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-                o -> {
-                  if (presenter != null && presenter.hasView()) {
-                    if (o instanceof DurationFilterEvent) {
-                      int durationInSeconds = settingPreferences.filterDurationInSeconds();
-                      durationSecondsView.setText(durationInSeconds + " sec");
-                      analytics.logDurationFilter(durationInSeconds);
-                      admobInterstitial.show();
-                    } else if (o instanceof PaletteEvent || o instanceof ThemeEvent
-                        || o instanceof TransparencyChangedEvent) {
-                      applyUiColors();
-                    } else if (o instanceof BlurRadiusEvent) {
-                      admobInterstitial.show();
-                      analytics.logBlurRadius(((BlurRadiusEvent) o).blurRadius());
-                    } else if (o instanceof BackgroundEvent) {
-                      admobInterstitial.show();
-                    }
-                  } else {
-                    FirebaseCrashlytics.getInstance().recordException(
-                        new NullPointerException(
-                            String.format(
-                                "class: %s presenter- %s hasView- %b",
-                                SettingsFragment.class.getSimpleName(),
-                                presenter, presenter != null && presenter.hasView()
-                            )
-                        )
-                    );
-                  }
+            o -> {
+              if (presenter != null && presenter.hasView()) {
+                if (o instanceof DurationFilterEvent) {
+                  int durationInSeconds = settingPreferences.filterDurationInSeconds();
+                  durationSecondsView.setText(durationInSeconds + " sec");
+                  analytics.logDurationFilter(durationInSeconds);
+                  admobInterstitial.show();
+                } else if (o instanceof PaletteEvent || o instanceof ThemeEvent
+                    || o instanceof TransparencyChangedEvent) {
+                  applyUiColors();
+                } else if (o instanceof BlurRadiusEvent) {
+                  admobInterstitial.show();
+                  analytics.logBlurRadius(((BlurRadiusEvent) o).blurRadius());
+                } else if (o instanceof BackgroundEvent) {
+                  admobInterstitial.show();
                 }
+              } else {
+                FirebaseCrashlytics.getInstance().recordException(
+                    new NullPointerException(
+                        String.format(
+                            "class: %s presenter- %s hasView- %b",
+                            SettingsFragment.class.getSimpleName(),
+                            presenter, presenter != null && presenter.hasView()
+                        )
+                    )
+                );
+              }
+            }
         );
   }
 
@@ -276,14 +275,8 @@ public final class SettingsFragment extends BaseFragment<Settings.Presenter>
   private void setupAdmobInterstial() {
     admobInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-        new FullScreenContentCallback() {
-          @Override public void onAdDismissedFullScreenContent() {
-            super.onAdDismissedFullScreenContent();
-          }
+        (AdListener) () -> {
 
-          @Override public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-            super.onAdFailedToShowFullScreenContent(adError);
-          }
         });
   }
 

@@ -25,19 +25,17 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.FullScreenContentCallback;
 import com.kingbull.musicplayer.MusicPlayerApp;
 import com.kingbull.musicplayer.R;
 import com.kingbull.musicplayer.domain.Album;
 import com.kingbull.musicplayer.domain.Milliseconds;
 import com.kingbull.musicplayer.domain.Music;
 import com.kingbull.musicplayer.domain.storage.sqlite.table.AlbumTable;
-import com.kingbull.musicplayer.event.MusicEvent;
 import com.kingbull.musicplayer.image.GlideApp;
 import com.kingbull.musicplayer.image.GlideBitmapPool;
 import com.kingbull.musicplayer.player.MusicEventRelay;
 import com.kingbull.musicplayer.player.MusicMode;
+import com.kingbull.musicplayer.ui.base.AdListener;
 import com.kingbull.musicplayer.ui.base.BaseFragment;
 import com.kingbull.musicplayer.ui.base.Image.Smart;
 import com.kingbull.musicplayer.ui.base.PresenterFactory;
@@ -52,8 +50,6 @@ import com.kingbull.musicplayer.ui.nowplaying.NowPlayingFragment;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import java.io.File;
@@ -276,30 +272,10 @@ public final class MusicPlayerFragment extends BaseFragment<MusicPlayer.Presente
   private void setupInterstitial() {
     equalizerInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-        new FullScreenContentCallback() {
-          @Override public void onAdDismissedFullScreenContent() {
-            super.onAdDismissedFullScreenContent();
-            launchEqualizerScreen();
-          }
-
-          @Override public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-            super.onAdFailedToShowFullScreenContent(adError);
-            launchEqualizerScreen();
-          }
-        });
+        (AdListener) () -> launchEqualizerScreen());
     nowPlayingListInterstitial = new AdmobInterstitial(getActivity(),
         getResources().getString(R.string.kd_music_player_settings_interstitial),
-        new FullScreenContentCallback() {
-          @Override public void onAdDismissedFullScreenContent() {
-            super.onAdDismissedFullScreenContent();
-            launchNowPlayingListScreen();
-          }
-
-          @Override public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-            super.onAdFailedToShowFullScreenContent(adError);
-            launchNowPlayingListScreen();
-          }
-        });
+        (AdListener) () -> launchNowPlayingListScreen());
   }
 
   private void launchEqualizerScreen() {
